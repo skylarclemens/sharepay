@@ -1,0 +1,47 @@
+@use '../../utilities/colors' as v;
+
+.nav-container {
+  position: fixed;
+  width: 100%;
+  background: v.$light-gray;
+  display: flex;
+  bottom: 0;
+  height: 48px;
+  border-top: 2px solid v.$accent-gray;
+}
+
+.add-button {
+  position: absolute;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  height: 54px;
+  width: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%), #729B79;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.add-plus {
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: white;
+  }
+  &::after {
+    width: 3px;
+    margin: 16px auto;
+  }
+  &::before {
+    height: 3px;
+    margin: auto 16px;
+  }
+}
