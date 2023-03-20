@@ -1,8 +1,11 @@
+@use '../../utilities/colors' as v;
+
 .header-container {
   position: sticky;
   top: 0;
   height: 50px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 0 20px;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.134) 100%), #729B79;
@@ -12,4 +15,13 @@
 .header-logo {
   height: 32px;
   width: 32px;
+}
+
+.button--transparent {
+  border-radius: 1rem;
+  padding: 6px 10px;
+  background: none;
+  color: v.$white;
+  font-weight: 600;
+  border: 1px solid v.$white;
 }
