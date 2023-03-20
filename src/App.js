@@ -1,7 +1,8 @@
 import './App.scss';
 import Dashboard from './components/Dashboard/Dashboard';
+import SignUp from './components/SignUp/SignUp';
+import Header from './components/Header/Header';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUser } from './slices/userSlice';
 
 const App = () => {
   const user = useSelector(state => state.user);
@@ -9,7 +10,11 @@ const App = () => {
 
   return (
     <>
-      <Dashboard />
+      <Header />
+      {user ?
+        <Dashboard /> :
+        <SignUp />
+      }
     </>
   );
 }
