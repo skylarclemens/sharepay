@@ -38,3 +38,38 @@
   background: none;
   justify-self: flex-start;
 }
+
+.expense-info {
+  margin: 0 20px;
+}
+
+.expense-form {
+  .input-label {
+    font-family: 'Rubik', sans-serif;
+    color: v.$washed-gray;
+    font-weight: 500;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+  }
+
+  .expense-input {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0;
+    gap: 0.5rem;
+
+    input {
+      width: 100%;
+      font-size: 1rem;
+      padding: 0.5rem;
+    }
+  }
+
+  .radio-option {
+    margin: 0.5rem 0;
+  }
+
+  .button {
+    margin-top: 1rem;
+  }
+}
