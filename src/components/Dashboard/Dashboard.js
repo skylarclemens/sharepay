@@ -1,8 +1,11 @@
 import './Dashboard.scss';
 import { useSelector } from 'react-redux';
+import { balanceCalc } from '../../helpers/balance';
 
 const Dashboard = () => {
   const user = useSelector(state => state.user);
+  const expenses = useSelector(state => state.expenses);
+  const balances = balanceCalc(expenses);
 
   return (
     <>
@@ -15,16 +18,16 @@ const Dashboard = () => {
           <div className="balance">
             <div className="balance-block balance-block--total">
               <h3>TOTAL BALANCE</h3>
-              <span>${user.balance.toFixed(2)}</span>
+              <span>${balances.total.toFixed(2) || 0.00}</span>
             </div>
             <div className="secondary-balance">
               <div className="balance-block balance-block--green">
                 <h3>YOU'RE OWED</h3>
-                <span>${user.total_owed.toFixed(2)}</span>
+                <span>${balances.owed.toFixed(2) || 0.00}</span>
               </div>
               <div className="balance-block balance-block--red">
                 <h3>YOU OWE</h3>
-                <span>${user.total_owe.toFixed(2)}</span>
+                <span>${balances.owe.toFixed(2) || 0.00}</span>
               </div>
             </div>
           </div>
