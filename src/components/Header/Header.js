@@ -16,8 +16,7 @@ const Header = () => {
       <img src={logo} className="header-logo" alt="Dollar sign Sharepay logo" />
       <div className="header-right">
         {user ?
-          <button className="button--transparent" onClick={handleLogOut}>Log Out</button> : ''}
-        
+          <button className="button button--transparent button--small" onClick={handleLogOut}>Log Out</button> : ''}
       </div>
     </div>
   )

@@ -1,0 +1,21 @@
+@use './colors' as v;
+
+// Buttons
+.button {
+  border-radius: 1rem;
+  padding: 8px 16px;
+  background: v.$green-gradient;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1px solid white;
+
+  &.button--transparent {
+    background: none;
+  }
+  
+  &.button--small {
+    padding: 6px 10px;
+    font-size: 0.875rem;
+  }
+}

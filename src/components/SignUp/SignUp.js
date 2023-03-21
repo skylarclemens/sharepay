@@ -15,9 +15,6 @@ const SignUp = () => {
     const newUser = {
       email: email,
       name: name,
-      balance: 0,
-      total_owed: 0,
-      total_owe: 0,
       groups: []
     }
     dispatch(setUser(newUser));
