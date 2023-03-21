@@ -1,10 +1,13 @@
 import './NewExpense.scss';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addExpense } from '../../slices/expenseSlice';
 
 const NewExpense = ({ setExpenseOpen }) => {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [split, setSplit] = useState('');
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,6 +16,8 @@ const NewExpense = ({ setExpenseOpen }) => {
       amount: amount,
       split: split
     }
+    dispatch(addExpense(newExpense));
+    setExpenseOpen(false);
   }
   
   const handleRadio = (e) => {

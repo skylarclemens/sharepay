@@ -10,7 +10,7 @@ import NewExpense from './components/NewExpense/NewExpense';
 const App = () => {
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
-  const [expenseOpen, setExpenseOpen] = useState(true);
+  const [expenseOpen, setExpenseOpen] = useState(false);
 
   return (
     <>
