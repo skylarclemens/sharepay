@@ -91,3 +91,30 @@ h2 {
     letter-spacing: 0.02rem;
   }
 }
+
+.summary-expense {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid v.$accent-gray;
+
+  .transaction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    .expense-type {
+      color: v.$washed-gray;
+      font-weight: 500;
+      font-size: 0.75rem;
+    }
+    .expense-amount {
+      color: v.$green;
+      font-weight: 600;
+    }
+    .expense-amount--owe {
+      color: v.$red;
+    }
+  }
+}

@@ -5,7 +5,7 @@ import { balanceCalc } from '../../helpers/balance';
 const Dashboard = () => {
   const user = useSelector(state => state.user);
   const expenses = useSelector(state => state.expenses);
-  const balances = balanceCalc(expenses);
+  const balances = balanceCalc(expenses, user.id);
 
   return (
     <>
@@ -33,8 +33,22 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div>
+      <div className="summary">
         <h2 className="heading">Summary</h2>
+        {expenses.map((expense) => {
+          const details = expense.user1.id === user.id ? expense.user1 : expense.user2;
+          return (
+            <div key={expense.id} className="summary-expense">
+              <div className="desc">
+                {expense.description}
+              </div>
+              <div className="transaction">
+                <div className="expense-type">{details.type}</div>
+                <div className={`expense-amount ${details.type === 'OWE' ? 'expense-amount--owe' : ''}`}>${details.amount.toFixed(2)}</div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </>
   )
