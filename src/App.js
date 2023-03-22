@@ -4,8 +4,9 @@ import SignUp from './components/SignUp/SignUp';
 import Header from './components/Header/Header';
 import Nav from './components/Nav/Nav';
 import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NewExpense from './components/NewExpense/NewExpense';
+import { supabase } from './supabaseClient';
 
 const App = () => {
   const user = useSelector(state => state.user);
