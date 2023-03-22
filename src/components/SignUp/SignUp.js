@@ -4,7 +4,6 @@ import { supabase } from '../../supabaseClient';
 
 const SignUp = () => {
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,7 +28,6 @@ const SignUp = () => {
       console.error(error);
     } finally {
       setLoading(false);
-      setSubmitted(true);
     }
   }
 
@@ -42,7 +40,6 @@ const SignUp = () => {
         <button className="button" type="submit">Sign Up</button>
       </form>
       <div>{loading ? 'Signing up...' : null}</div>
-      <div>{submitted ? 'Check your email for verification' : null}</div>
     </div>
   )
 }

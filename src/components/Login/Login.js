@@ -1,7 +1,7 @@
 import './Login.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
 import { setUser } from '../../slices/userSlice';
 
@@ -12,6 +12,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -30,12 +31,13 @@ const Login = () => {
       console.error(error);
     } finally {
       setLoading(false);
+      navigate('/');
     }
   }
 
   return (
     <div className="log-in">
-      {loading ? 'Logging up...' :
+      {loading ? 'Logging in...' :
         (<>
           <form className="log-in-form" onSubmit={handleLogin}>
             <input type="email" value={email} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />

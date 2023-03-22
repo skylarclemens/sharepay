@@ -5,7 +5,7 @@ import { balanceCalc } from '../../helpers/balance';
 const Dashboard = () => {
   const user = useSelector(state => state.user);
   const expenses = useSelector(state => state.expenses);
-  const balances = balanceCalc(expenses, user.id);
+  const balances = user ? balanceCalc(expenses, user.id) : null;
 
   return (
     <>
