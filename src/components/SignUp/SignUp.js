@@ -13,6 +13,7 @@ const SignUp = () => {
   const handleSignUp = (e) => {
     e.preventDefault();
     const newUser = {
+      id: crypto.randomUUID(),
       email: email,
       name: name,
       groups: []

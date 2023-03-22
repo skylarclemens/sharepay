@@ -1,27 +1,53 @@
 import './NewExpense.scss';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { addExpense } from '../../slices/expenseSlice';
 
 const NewExpense = ({ setExpenseOpen }) => {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
+  const [paidBy, setPaidBy] = useState('');
   const [split, setSplit] = useState('');
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const [user1Details, user2Details] = transaction(amount, paidBy, split);
+
     const newExpense = {
+      id: window.crypto.randomUUID(),
       description: description,
       amount: amount,
-      split: split
+      user1: {
+        id: user.id,
+        ...user1Details
+      },
+      user2: {
+        id: 0,
+        ...user2Details
+      }
     }
     dispatch(addExpense(newExpense));
     setExpenseOpen(false);
   }
-  
-  const handleRadio = (e) => {
-    setSplit(e.target.value);
+
+  const transaction = (amount, paidBy, split) => {
+    let user1Type = paidBy === 'ME' ? 'OWED' : 'OWE';
+    let user2Type = paidBy === 'ME' ? 'OWE' : 'OWED';
+    const payAmount = split === 'EQUALLY' ? amount/2 : amount;
+
+    return [
+      {
+        amount: payAmount,
+        type: user1Type
+      },
+      {
+        amount: payAmount,
+        type: user2Type
+      }
+    ]
   }
 
   return (
@@ -41,30 +67,35 @@ const NewExpense = ({ setExpenseOpen }) => {
             <input id="amount" name="amount" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
           </div>
           <fieldset>
+            <legend className="input-label">Paid By</legend>
+            <div className="expense-radio">
+              <div className="radio-option">
+                <label>
+                  <input id="me-split-equally" name="paid-by" type="radio" value="ME" checked={paidBy === 'ME'} onChange={(e) => setPaidBy(e.target.value)} />
+                  Me
+                </label>
+              </div>
+              <div className="radio-option">
+                <label>
+                  <input id="them-split-equally" name="paid-by" type="radio" value="THEM" checked={paidBy === 'THEM'} onChange={(e) => setPaidBy(e.target.value)} />
+                  Them
+                </label>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset>
             <legend className="input-label">Split</legend>
-            <div className="split-radio">
+            <div className="expense-radio">
               <div className="radio-option">
                 <label>
-                  <input id="me-split-equally" name="expense-split" type="radio" value="me-split-equally" checked={split === 'me-split-equally'} onChange={handleRadio} />
-                  Paid by me, split equally
+                  <input id="split-equally" name="expense-split" type="radio" value="EQUALLY" checked={split === 'EQUALLY'} onChange={(e) => setSplit(e.target.value)} />
+                  Split equally
                 </label>
               </div>
               <div className="radio-option">
                 <label>
-                  <input id="them-split-equally" name="expense-split" type="radio" value="them-split-equally" checked={split === 'them-split-equally'} onChange={handleRadio} />
-                  Paid by them, split equally
-                </label>
-              </div>
-              <div className="radio-option">
-                <label>
-                  <input id="me-owed" name="expense-split" type="radio" value="me-owed" checked={split === 'me-owed'} onChange={handleRadio} />
-                  I am owed full amount
-                </label>
-              </div>
-              <div className="radio-option">
-                <label>
-                  <input id="them-owe" name="expense-split" type="radio" value="them-owe" checked={split === 'them-owe'} onChange={handleRadio} />
-                  They are owed full amount
+                  <input id="them-split-equally" name="expense-split" type="radio" value="FULL_AMOUNT" checked={split === 'FULL_AMOUNT'} onChange={(e) => setSplit(e.target.value)} />
+                  Owed full amount
                 </label>
               </div>
             </div>

@@ -1,22 +1,15 @@
-export const balanceCalc = (expenses) => {
+export const balanceCalc = (expenses, userId) => {
   let totalBalance = 0;
   let balanceOwed = 0;
   let balanceOwe = 0;
   expenses.map((expense) => {
-    const amount = Number(expense.amount);
-    const halfSplit = amount/2;
-    if(expense.split === 'me-split-equally') {
-      totalBalance += halfSplit;
-      balanceOwed += halfSplit;
-    } else if (expense.split === 'them-split-equally') {
-      totalBalance -= halfSplit;
-      balanceOwe += halfSplit;
-    } else if (expense.split === 'me-owed') {
-      totalBalance += amount;
-      balanceOwed += amount;
-    } else if (expense.split === 'them-owed') {
-      totalBalance -= amount;
-      balanceOwe += amount;
+    const details = expense.user1.id === userId ? expense.user1 : expense.user2;
+    if (details.type === 'OWED') {
+      totalBalance += details.amount;
+      balanceOwed += details.amount;
+    } else if (details.type === 'OWE') {
+      totalBalance -= details.amount;
+      balanceOwe += details.amount;
     }
   });
   return {
