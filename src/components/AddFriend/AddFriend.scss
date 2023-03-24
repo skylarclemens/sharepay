@@ -1,0 +1,92 @@
+@use '../../utilities/colors' as v;
+
+.add-friend-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: white;
+  height: 100%;
+  width: 100%;
+}
+
+.add-friend-header {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  background: v.$green-gradient;
+  color: white;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 500;
+  padding: 0 20px;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 20px 20px 10px 20px;
+  .search-input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid v.$dark-gray;
+    border-radius: 0.5rem;
+  }
+}
+
+.suggested-users {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid v.$accent-gray;
+
+  .add-user {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid v.$green;
+  }
+  
+  .add-user-plus {
+    &::before, &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: v.$green;
+    }
+    &::after {
+      width: 2px;
+      margin: 10px auto;
+    }
+    &::before {
+      height: 2px;
+      margin: auto 10px;
+    }
+  }
+  
+  .checkmark {
+    position: relative;
+    display: inline-block;
+    transform: rotate(45deg);
+    height: 16px;
+    width: 9px;
+    bottom: 1px;
+    border-bottom: 2px solid v.$green;
+    border-right: 2px solid v.$green;
+  }
+
+  .hide { 
+    display: none;
+  }
+}

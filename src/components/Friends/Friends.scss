@@ -1,0 +1,31 @@
+@use '../../utilities/colors' as v;
+
+.add-friends-button {
+  margin: 1rem 0 1rem 20px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 20px;
+  border-bottom: 2px solid v.$accent-gray;
+
+  .user-name {
+    font-weight: 500;
+    padding-bottom: 0.25rem;
+  }
+  .user-email {
+    font-family: 'Rubik', sans-serif;
+    font-size: 0.875rem;
+    color: v.$washed-gray;
+  }
+  .pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: v.$washed-gray;
+    border: 2px solid v.$washed-gray;
+    border-radius: 1rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
