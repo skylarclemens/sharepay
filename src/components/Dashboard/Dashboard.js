@@ -1,11 +1,16 @@
 import './Dashboard.scss';
 import { useSelector } from 'react-redux';
-import { balanceCalc } from '../../helpers/balance';
+//import { balanceCalc } from '../../helpers/balance';
 
 const Dashboard = () => {
   const user = useSelector(state => state.user);
   const expenses = useSelector(state => state.expenses);
-  const balances = user ? balanceCalc(expenses, user.id) : null;
+  //const balances = user ? balanceCalc(expenses, user.id) : null;
+  const balances = {
+    total: 0,
+    owed: 0,
+    owe: 0
+  }
 
   return (
     <>
@@ -37,7 +42,7 @@ const Dashboard = () => {
           </div>
           <div className="summary">
             <h2 className="heading">Summary</h2>
-            {expenses.map((expense) => {
+            {/*expenses.map((expense) => {
               const details = expense.user1.id === user.id ? expense.user1 : expense.user2;
               return (
                 <div key={expense.id} className="summary-expense">
@@ -50,7 +55,7 @@ const Dashboard = () => {
                   </div>
                 </div>
               );
-            })}
+            })*/}
           </div>
         </>
       ) : null }

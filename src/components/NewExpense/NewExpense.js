@@ -1,35 +1,67 @@
 import './NewExpense.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addExpense } from '../../slices/expenseSlice';
+import Select from 'react-select';
+import { supabase } from '../../supabaseClient';
 
 const NewExpense = ({ setExpenseOpen }) => {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
+  const [splitWith, setSplitWith] = useState('');
   const [paidBy, setPaidBy] = useState('');
   const [split, setSplit] = useState('');
+  const [options, setOptions] = useState([]);
   const user = useSelector(state => state.user);
+  const friends = useSelector(state => state.friends);
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const friendOptions = friends.map((friend) => {
+      const friendId = friend.user_id_2.id;
+      const friendName = friend.user_id_2.name;
+      return (
+        {
+          value: friendId,
+          label: friendName
+        }
+      )
+    });
+    setOptions(friendOptions);
+  }, [])
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const [user1Details, user2Details] = transaction(amount, paidBy, split);
-
     const newExpense = {
-      id: window.crypto.randomUUID(),
+      payer_id: paidBy,
       description: description,
-      amount: amount,
-      user1: {
-        id: user.id,
-        ...user1Details
-      },
-      user2: {
-        id: 0,
-        ...user2Details
-      }
+      amount: amount
     }
+
+    let expenseData;
+
+    try {
+      const { data, error } = await supabase
+        .from('expense')
+        .insert(newExpense)
+        .select();
+      expenseData = data;
+      console.log(expenseData);
+    } catch (error) {
+      console.error(error);
+    }
+    
     dispatch(addExpense(newExpense));
+
+    /*const newDebt = {
+      amount: amount,
+      creditor_id: paidBy,
+      debtor_id: '',
+      expense_id: ''
+    }*/
+
+
     setExpenseOpen(false);
   }
 
@@ -66,18 +98,22 @@ const NewExpense = ({ setExpenseOpen }) => {
             <label className="input-label" htmlFor="amount">Amount</label>
             <input id="amount" name="amount" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
           </div>
+          <div className="expense-input">
+            <span className="input-label">Split between</span>
+            <Select options={options} onChange={(opt) => setSplitWith(opt.value)}/>
+          </div>
           <fieldset>
             <legend className="input-label">Paid By</legend>
             <div className="expense-radio">
               <div className="radio-option">
                 <label>
-                  <input id="me-split-equally" name="paid-by" type="radio" value="ME" checked={paidBy === 'ME'} onChange={(e) => setPaidBy(e.target.value)} />
+                  <input id="me-split-equally" name="paid-by" type="radio" value={user.id} checked={paidBy === user.id} onChange={(e) => setPaidBy(e.target.value)} />
                   Me
                 </label>
               </div>
               <div className="radio-option">
                 <label>
-                  <input id="them-split-equally" name="paid-by" type="radio" value="THEM" checked={paidBy === 'THEM'} onChange={(e) => setPaidBy(e.target.value)} />
+                  <input id="them-split-equally" name="paid-by" type="radio" value={splitWith} checked={paidBy === splitWith} onChange={(e) => setPaidBy(e.target.value)} />
                   Them
                 </label>
               </div>
