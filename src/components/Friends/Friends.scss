@@ -28,4 +28,58 @@
     border-radius: 1rem;
     padding: 0.25rem 0.5rem;
   }
+
+  .request-buttons {
+    display: flex;
+    gap: 0.25rem;
+  }
+  .add-user {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid v.$green;
+  }
+  .checkmark {
+    position: relative;
+    display: inline-block;
+    transform: rotate(45deg);
+    height: 16px;
+    width: 9px;
+    bottom: 1px;
+    border-bottom: 2px solid v.$green;
+    border-right: 2px solid v.$green;
+  }
+  .ignore-button {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid v.$washed-gray;
+    transform: rotate(45deg);
+  }
+  .ignore-user {
+    &::before, &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: v.$washed-gray;
+    }
+    &::after {
+      width: 2px;
+      margin: 10px auto;
+    }
+    &::before {
+      height: 2px;
+      margin: auto 10px;
+    }
+  }
 }

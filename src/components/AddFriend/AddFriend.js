@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import { useSelector } from 'react-redux';
 
-const AddFriend = ({ setAddFriendOpen, setNumRequests, numRequests }) => {
+const AddFriend = ({ setAddFriendOpen }) => {
   const [value, setValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const user = useSelector(state => state.user);
@@ -17,11 +17,12 @@ const AddFriend = ({ setAddFriendOpen, setNumRequests, numRequests }) => {
   useEffect(() => {
     const handleSearch = async () => {
       try {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('users')
           .select()
           .neq('id', user.id)
           .or(`email.ilike.%${value}%,name.ilike.%${value}%`);
+        if (error) throw error;
         setSuggestions(data);
       } catch (error) {
         console.error(error);
@@ -49,13 +50,11 @@ const AddFriend = ({ setAddFriendOpen, setNumRequests, numRequests }) => {
           user_receive: userReceiveId,
           status: 'SENT'
         });
-
-        setRequestSent({
-          id: userReceiveId,
-          sent: true
-        });
-
-        setNumRequests(numRequests + 1);
+      if (error) throw error;
+      setRequestSent({
+        id: userReceiveId,
+        sent: true
+      });
     } catch (error) {
       console.error(error);
     }

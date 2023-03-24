@@ -6,57 +6,166 @@ import { supabase } from '../../supabaseClient';
 
 const Friends = () => {
   const [addFriendOpen, setAddFriendOpen] = useState(false);
-  const [numRequests, setNumRequests] = useState(0);
   const [requests, setRequests] = useState([]);
+  const [friends, setFriends] = useState([]);
   const user = useSelector(state => state.user);
 
   useEffect(() => {
-    const getRequests = async () => {
+    getFriends();
+    getRequests();
+  }, []);
+
+  const getFriends = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('user_friend')
+        .select(`
+          user_id_2 (
+            id,
+            name,
+            email
+          )
+        `)
+        .eq('user_id_1', user.id);
+      if (error) throw error;
+      setFriends(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const getRequests = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('friend_request')
+        .select(`
+          id,
+          status,
+          user_send (
+            id,
+            name,
+            email
+          ),
+          user_receive (
+            id,
+            name,
+            email
+          )
+        `)
+        .or(`user_send.eq.${user.id},user_receive.eq.${user.id}`);
+      if (error) throw error;
+      setRequests(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleRequestChoice = async (choice, request) => {
+    if (choice === 'ACCEPTED') {
       try {
-        const { data, error } = await supabase
+        const { error } = await supabase
           .from('friend_request')
-          .select(`
-            status,
-            user_receive (
-              id,
-              name,
-              email
-            )
-          `)
-          .eq('user_send', user.id);
-        console.log(data);
-        setRequests(data);
+          .delete()
+          .eq('id', request.id);
+        if(error) throw error;
+        addFriend(request.user_send.id, request.user_receive.id);
+        addFriend(request.user_receive.id, request.user_send.id);
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (choice === 'IGNORED') {
+      try {
+        const { error } = await supabase
+          .from('friend_request')
+          .update({
+            status: 'IGNORED',
+            status_change: new Date().toISOString()
+          })
+          .eq('id', request.id);
+        if (error) throw error;
       } catch (error) {
         console.error(error);
       }
     }
+  }
 
-    getRequests();
-  }, [numRequests]);
+  const addFriend = async (user1, user2) => {
+    try {
+      const { error } = await supabase
+        .from('user_friend')
+        .insert({
+          user_id_1: user1,
+          user_id_2: user2
+        });
+      if (error) throw error;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div className="friends-container">
       <h2 className="heading">Requests</h2>
       <div className="requests-container">
-        {requests.length > 0 ?
+        {user && requests.length > 0 ?
           (requests.map((req) => {
-            return (
-              <div key={req.user_receive.id} className="user">
-                <div className="user-info">
-                  <div className="user-name">{req.user_receive.name}</div>
-                  <div className="user-email">{req.user_receive.email}</div>
+            if(req.user_receive.id === user.id) {
+              return (
+                <div key={req.user_send.id} className="user">
+                  <div className="user-info">
+                    <div className="user-name">{req.user_send.name}</div>
+                    <div className="user-email">{req.user_send.email}</div>
+                  </div>
+                  <div className="request-buttons">
+                    <button type="button" className="add-user" onClick={() => handleRequestChoice('ACCEPTED', req)}>
+                      <div className="checkmark"></div>
+                    </button>
+                    <button type="button" className="ignore-button" onClick={() => handleRequestChoice('IGNORED', req)}>
+                      <div className="ignore-user"></div>
+                    </button>
+                  </div>
                 </div>
-                {req.status === 'SENT' ?
-                  <div className="pill">PENDING</div>
-                  : null
-                }
+              )
+            } else {
+              return;
+            }
+          })) : null}
+      </div>
+      <h2 className="heading">Friends</h2>
+      {user && friends.length > 0 ?
+          (friends.map((friend) => {
+            const currentFriend = friend.user_id_2;
+            return (
+              <div key={currentFriend.id} className="user">
+                <div className="user-info">
+                  <div className="user-name">{currentFriend.name}</div>
+                  <div className="user-email">{currentFriend.email}</div>
+                </div>
               </div>
             )
           })) : null}
-      </div>
+      {user && requests.length > 0 ?
+          (requests.map((req) => {
+            if(req.user_send.id === user.id) {
+              return (
+                <div key={req.user_receive.id} className="user">
+                  <div className="user-info">
+                    <div className="user-name">{req.user_receive.name}</div>
+                    <div className="user-email">{req.user_receive.email}</div>
+                  </div>
+                  {req.status === 'SENT' ?
+                    <div className="pill">PENDING</div>
+                    : null
+                  }
+                </div>
+              )
+            } else {
+              return;
+            }
+          })) : null}
       <button type="button" className="button add-friends-button" onClick={() => setAddFriendOpen(true)}>Add friend</button>
       {addFriendOpen ?
-        <AddFriend setAddFriendOpen={setAddFriendOpen} setNumRequests={setNumRequests} numRequests={numRequests} />
+        <AddFriend setAddFriendOpen={setAddFriendOpen} />
         : null
       }
     </div>
