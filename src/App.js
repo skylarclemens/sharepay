@@ -5,12 +5,54 @@ import SignUp from './components/SignUp/SignUp';
 import Header from './components/Header/Header';
 import Friends from './components/Friends/Friends';
 import Nav from './components/Nav/Nav';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NewExpense from './components/NewExpense/NewExpense';
 import { Routes, Route } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { supabase } from './supabaseClient';
+import { removeUser } from './slices/userSlice';
+import { initExpenses } from './slices/expenseSlice';
+import { initDebt } from './slices/debtSlice';
 
 const App = () => {
   const [expenseOpen, setExpenseOpen] = useState(false);
+  const user = useSelector(state => state.user);
+  const expenses = useSelector(state => state.expenses);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const currentUserSession = async () => {
+      const { error } = await supabase.auth.getUser();
+
+      if(error) {
+        console.error(error);
+        dispatch(removeUser());
+        return;
+      }
+    }
+    currentUserSession();
+  }, []);
+
+  useEffect(() => {
+    const getUserExpenses = async () => {
+      const { data, error } = await supabase
+        .from('expense')
+        .select()
+        .eq('payer_id', user.id);
+      dispatch(initExpenses(data));
+    }
+    const getUserDebt = async () => {
+      const { data, error } = await supabase
+        .from('debt')
+        .select()
+        .or(`creditor_id.eq.${user.id},debtor_id.eq.${user.id}`);
+      dispatch(initDebt(data));
+    }
+    if (user) {
+      getUserExpenses();
+      getUserDebt();
+    } 
+  }, [user])
 
   return (
     <>

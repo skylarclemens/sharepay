@@ -10,6 +10,7 @@ const NewExpense = ({ setExpenseOpen }) => {
   const [amount, setAmount] = useState('');
   const [splitWith, setSplitWith] = useState('');
   const [paidBy, setPaidBy] = useState('');
+  const [paying, setPaying] = useState('');
   const [split, setSplit] = useState('');
   const [options, setOptions] = useState([]);
   const user = useSelector(state => state.user);
@@ -33,34 +34,43 @@ const NewExpense = ({ setExpenseOpen }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let expenseData;
     const newExpense = {
       payer_id: paidBy,
       description: description,
       amount: amount
     }
 
-    let expenseData;
-
     try {
       const { data, error } = await supabase
         .from('expense')
         .insert(newExpense)
         .select();
-      expenseData = data;
-      console.log(expenseData);
+      expenseData = data[0];
+      if (error) throw error;
+      dispatch(addExpense(expenseData));
     } catch (error) {
       console.error(error);
     }
-    
-    dispatch(addExpense(newExpense));
 
-    /*const newDebt = {
-      amount: amount,
+    const newDebt = {
       creditor_id: paidBy,
-      debtor_id: '',
-      expense_id: ''
-    }*/
+      debitor_id: 
+      description: description,
+      amount: amount
+    }
 
+    try {
+      const { data, error } = supabase
+        .from('debt')
+        .insert(newDebt)
+        .select();
+      if (error) throw error;
+    } catch (error) {
+      console.error(error);
+    }
+
+    
 
     setExpenseOpen(false);
   }
