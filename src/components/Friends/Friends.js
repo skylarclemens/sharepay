@@ -1,40 +1,18 @@
 import './Friends.scss';
 import AddFriend from '../AddFriend/AddFriend';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
-import { initializeFriends } from '../../slices/friendSlice';
 
 const Friends = () => {
   const [addFriendOpen, setAddFriendOpen] = useState(false);
   const [requests, setRequests] = useState([]);
   const friends = useSelector(state => state.friends);
   const user = useSelector(state => state.user);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    setFriends();
     getRequests();
   }, []);
-
-  const setFriends = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('user_friend')
-        .select(`
-          user_id_2 (
-            id,
-            name,
-            email
-          )
-        `)
-        .eq('user_id_1', user.id);
-      if (error) throw error;
-      dispatch(initializeFriends(data));
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   const getRequests = async () => {
     try {

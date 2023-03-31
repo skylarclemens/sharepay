@@ -2,6 +2,7 @@ import './NewExpense.scss';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addExpense } from '../../slices/expenseSlice';
+import { addDebt } from '../../slices/debtSlice';
 import Select from 'react-select';
 import { supabase } from '../../supabaseClient';
 
@@ -10,7 +11,6 @@ const NewExpense = ({ setExpenseOpen }) => {
   const [amount, setAmount] = useState('');
   const [splitWith, setSplitWith] = useState('');
   const [paidBy, setPaidBy] = useState('');
-  const [paying, setPaying] = useState('');
   const [split, setSplit] = useState('');
   const [options, setOptions] = useState([]);
   const user = useSelector(state => state.user);
@@ -53,43 +53,26 @@ const NewExpense = ({ setExpenseOpen }) => {
       console.error(error);
     }
 
+    const debtor = paidBy === user.id ? splitWith : user.id;
     const newDebt = {
       creditor_id: paidBy,
-      debitor_id: 
-      description: description,
-      amount: amount
+      debtor_id: debtor,
+      amount: amount,
+      expense_id: expenseData.id
     }
 
     try {
-      const { data, error } = supabase
+      const { data, error } = await supabase
         .from('debt')
         .insert(newDebt)
         .select();
       if (error) throw error;
+      dispatch(addDebt(data[0]));
     } catch (error) {
       console.error(error);
     }
 
-    
-
     setExpenseOpen(false);
-  }
-
-  const transaction = (amount, paidBy, split) => {
-    let user1Type = paidBy === 'ME' ? 'OWED' : 'OWE';
-    let user2Type = paidBy === 'ME' ? 'OWE' : 'OWED';
-    const payAmount = split === 'EQUALLY' ? amount/2 : amount;
-
-    return [
-      {
-        amount: payAmount,
-        type: user1Type
-      },
-      {
-        amount: payAmount,
-        type: user2Type
-      }
-    ]
   }
 
   return (

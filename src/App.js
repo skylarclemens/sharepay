@@ -13,6 +13,7 @@ import { supabase } from './supabaseClient';
 import { removeUser } from './slices/userSlice';
 import { initExpenses } from './slices/expenseSlice';
 import { initDebt } from './slices/debtSlice';
+import { initFriends } from './slices/friendSlice';
 
 const App = () => {
   const [expenseOpen, setExpenseOpen] = useState(false);
@@ -48,9 +49,23 @@ const App = () => {
         .or(`creditor_id.eq.${user.id},debtor_id.eq.${user.id}`);
       dispatch(initDebt(data));
     }
+    const getUserFriends = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('user_friend')
+          .select('user_id_2(*)')
+          .eq('user_id_1', user.id);
+        if (error) throw error;
+        console.log(data);
+        dispatch(initFriends(data));
+      } catch (error) {
+        console.error(error);
+      }
+    }
     if (user) {
       getUserExpenses();
       getUserDebt();
+      getUserFriends();
     } 
   }, [user])
 
