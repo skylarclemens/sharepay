@@ -12,7 +12,11 @@ export const expenseSlice = createSlice({
   initialState,
   reducers: {
     addExpense: (state, action) => {
-      state.data = [...state.data, action.payload]
+      const newData = [...state.data, action.payload];
+      return {
+        ...state,
+        data: newData
+      }
     }
   },
   extraReducers(builder) {
@@ -20,8 +24,11 @@ export const expenseSlice = createSlice({
       state.status = 'loading'
     })
     .addCase(fetchExpenses.fulfilled, (state, action) => {
-      state.status = 'succeeded'
-      state.data = [...state.data, action.payload]
+      return {
+        ...state,
+        data: action.payload,
+        status: 'succeeded'
+      }
     })
     .addCase(fetchExpenses.rejected, (state, action) => {
       state.status = 'failed'
@@ -38,5 +45,5 @@ export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async (u
     .from('debt')
     .select('expense_id(*)')
     .or(`creditor_id.eq.${userId},debtor_id.eq.${userId}`);
-  return data;
+  return data.map(obj => obj.expense_id);
 });

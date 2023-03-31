@@ -12,7 +12,11 @@ export const debtSlice = createSlice({
   initialState,
   reducers: {
     addDebt: (state, action) => {
-      state.data = [...state.data, action.payload]
+      const newData = [...state.data, action.payload];
+      return {
+        ...state,
+        data: newData
+      }
     }
   },
   extraReducers(builder) {
@@ -20,8 +24,11 @@ export const debtSlice = createSlice({
       state.status = 'loading'
     })
     .addCase(fetchDebts.fulfilled, (state, action) => {
-      state.status = 'succeeded'
-      state.data = [...state.data, action.payload]
+      return {
+        ...state,
+        data: action.payload,
+        status: 'succeeded'
+      }
     })
     .addCase(fetchDebts.rejected, (state, action) => {
       state.status = 'failed'

@@ -1,23 +1,49 @@
 import './Dashboard.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { balanceCalc } from '../../helpers/balance';
 import { useEffect } from 'react';
+import { fetchExpenses } from '../../slices/expenseSlice';
+import { fetchDebts } from '../../slices/debtSlice';
+import { fetchFriends } from '../../slices/friendSlice';
 
 const Dashboard = () => {
   const user = useSelector(state => state.user);
   const expenses = useSelector(state => state.expenses);
   const friends = useSelector(state => state.friends);
   const debts = useSelector(state => state.debts);
-  let balances = user ? balanceCalc(debts, user.id) : {total: 0, owed: 0, owe: 0};
+  const expensesStatus = useSelector(state => state.expenses.status);
+  const debtsStatus = useSelector(state => state.debts.status);
+  const dispatch = useDispatch();
+
+  const dataLoaded = user && debts.status === 'succeeded' && friends.status === 'succeeded' && expenses.status === 'succeeded';
+
+  let balances = dataLoaded ? balanceCalc(debts.data, user.id) : {total: 0, owed: 0, owe: 0};
 
   useEffect(() => {
-    balances = user ? balanceCalc(debts, user.id) : null;
-    console.log('balances');
+    balances = dataLoaded ? balanceCalc(debts.data, user.id) : null;
   }, []);
+
+  useEffect(() => {
+    if (debtsStatus === 'idle') {
+      dispatch(fetchDebts(user.id));
+    }
+  }, [debts.status, dispatch]);
+
+  useEffect(() => {
+    if (expensesStatus === 'idle') {
+      dispatch(fetchExpenses(user.id));
+    }
+  }, [expensesStatus, dispatch]);
+
+  useEffect(() => {
+    if (friends.status === 'idle') {
+      dispatch(fetchFriends(user.id));
+    }
+  }, [friends.status, dispatch]);
 
   return (
     <>
-      {user ? (
+      {dataLoaded ? (
         <>
           <div className="dashboard">
             <h2 className="heading">Dashboard</h2>
@@ -45,7 +71,7 @@ const Dashboard = () => {
           </div>
           <div className="summary">
             <h2 className="heading">Summary</h2>
-            {debts.map((debt) => {
+            {debts.data.map((debt) => {
               let debtType, friendId = '';
               if (debt.creditor_id === user.id) {
                 debtType = 'OWED';
@@ -54,10 +80,7 @@ const Dashboard = () => {
                 debtType = 'OWE';
                 friendId = debt.creditor_id;
               }
-              console.log(debt.expense_id);
-              const currentExpense = expenses.find(expense => expense.id === debt.expense_id);
-              const currentFriend = friends.find(friend => friend.id === friendId);
-              console.log(currentExpense, currentFriend);
+              const currentExpense = expenses.data.find(expense => expense.id === debt.expense_id);
               return (
                 <div key={debt.expense_id} className="summary-expense">
                   <div className="desc">
@@ -72,7 +95,7 @@ const Dashboard = () => {
             })}
           </div>
         </>
-      ) : null }
+          ) : null }
     </>
   )
 }

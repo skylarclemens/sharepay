@@ -11,11 +11,12 @@ export const friendSlice = createSlice({
   name: 'friends',
   initialState,
   reducers: {
-    initFriends: (state, action) => {
-      state.data = [...state.data, action.payload]
-    },
     addFriend: (state, action) => {
-      return [...state, action.payload];
+      const newData = [...state.data, action.payload];
+      return {
+        ...state,
+        data: newData
+      }
     }
   },
   extraReducers(builder) {
@@ -23,8 +24,11 @@ export const friendSlice = createSlice({
       state.status = 'loading'
     })
     .addCase(fetchFriends.fulfilled, (state, action) => {
-      state.status = 'succeeded'
-      state.data = [...state.data, action.payload]
+      return {
+        ...state,
+        data: action.payload,
+        status: 'succeeded'
+      }
     })
     .addCase(fetchFriends.rejected, (state, action) => {
       state.status = 'failed'
@@ -41,5 +45,5 @@ export const fetchFriends = createAsyncThunk('friends/fetchFriends', async (user
     .from('user_friend')
     .select('user_id_2(*)')
     .eq('user_id_1', userId);
-  return data;
+  return data.map(obj => obj.user_id_2);
 });

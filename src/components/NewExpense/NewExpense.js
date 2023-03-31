@@ -14,13 +14,13 @@ const NewExpense = ({ setExpenseOpen }) => {
   const [split, setSplit] = useState('');
   const [options, setOptions] = useState([]);
   const user = useSelector(state => state.user);
-  const friends = useSelector(state => state.friends);
+  const friends = useSelector(state => state.friends.data);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const friendOptions = friends.map((friend) => {
-      const friendId = friend.user_id_2.id;
-      const friendName = friend.user_id_2.name;
+      const friendId = friend.id;
+      const friendName = friend.name;
       return (
         {
           value: friendId,
