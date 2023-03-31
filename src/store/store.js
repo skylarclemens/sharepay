@@ -10,7 +10,7 @@ export const store = configureStore({
   reducer: {
     user: userReducer,
     expenses: expenseReducer,
-    debt: debtReducer,
+    debts: debtReducer,
     friends: friendReducer
   },
   preloadedState

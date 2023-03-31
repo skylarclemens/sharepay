@@ -53,11 +53,12 @@ const NewExpense = ({ setExpenseOpen }) => {
       console.error(error);
     }
 
+    const debtAmount = split === 'EQUALLY' ? amount/2 : amount;
     const debtor = paidBy === user.id ? splitWith : user.id;
     const newDebt = {
       creditor_id: paidBy,
       debtor_id: debtor,
-      amount: amount,
+      amount: debtAmount,
       expense_id: expenseData.id
     }
 
@@ -67,6 +68,7 @@ const NewExpense = ({ setExpenseOpen }) => {
         .insert(newDebt)
         .select();
       if (error) throw error;
+
       dispatch(addDebt(data[0]));
     } catch (error) {
       console.error(error);

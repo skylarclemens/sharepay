@@ -11,14 +11,16 @@ import { Routes, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from './supabaseClient';
 import { removeUser } from './slices/userSlice';
-import { initExpenses } from './slices/expenseSlice';
-import { initDebt } from './slices/debtSlice';
-import { initFriends } from './slices/friendSlice';
+import { fetchExpenses } from './slices/expenseSlice';
+import { fetchDebts } from './slices/debtSlice';
+import { fetchFriends } from './slices/friendSlice';
 
 const App = () => {
   const [expenseOpen, setExpenseOpen] = useState(false);
   const user = useSelector(state => state.user);
-  const expenses = useSelector(state => state.expenses);
+  const expensesStatus = useSelector(state => state.expenses.status);
+  const debtsStatus = useSelector(state => state.debts.status);
+  const friendsStatus = useSelector(state => state.friends.status);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,39 +37,22 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    const getUserExpenses = async () => {
-      const { data, error } = await supabase
-        .from('expense')
-        .select()
-        .eq('payer_id', user.id);
-      dispatch(initExpenses(data));
+    if (debtsStatus === 'idle') {
+      dispatch(fetchDebts(user.id));
     }
-    const getUserDebt = async () => {
-      const { data, error } = await supabase
-        .from('debt')
-        .select()
-        .or(`creditor_id.eq.${user.id},debtor_id.eq.${user.id}`);
-      dispatch(initDebt(data));
+  }, [debtsStatus, dispatch]);
+
+  useEffect(() => {
+    if (expensesStatus === 'idle') {
+      dispatch(fetchExpenses(user.id));
     }
-    const getUserFriends = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('user_friend')
-          .select('user_id_2(*)')
-          .eq('user_id_1', user.id);
-        if (error) throw error;
-        console.log(data);
-        dispatch(initFriends(data));
-      } catch (error) {
-        console.error(error);
-      }
+  }, [expensesStatus, dispatch])
+
+  useEffect(() => {
+    if (friendsStatus === 'idle') {
+      dispatch(fetchExpenses(user.id));
     }
-    if (user) {
-      getUserExpenses();
-      getUserDebt();
-      getUserFriends();
-    } 
-  }, [user])
+  }, [friendsStatus, dispatch]);
 
   return (
     <>

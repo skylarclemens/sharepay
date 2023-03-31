@@ -1,17 +1,42 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { supabase } from "../supabaseClient";
+
+const initialState = {
+  data: [],
+  status: 'idle',
+  error: null
+}
 
 export const debtSlice = createSlice({
-  name: 'debt',
-  initialState: [],
+  name: 'debts',
+  initialState,
   reducers: {
-    initDebt: (state, action) => {
-      return action.payload;
-    },
     addDebt: (state, action) => {
-      return [...state, action.payload];
+      state.data = [...state.data, action.payload]
     }
+  },
+  extraReducers(builder) {
+    builder.addCase(fetchDebts.pending, (state, action) => {
+      state.status = 'loading'
+    })
+    .addCase(fetchDebts.fulfilled, (state, action) => {
+      state.status = 'succeeded'
+      state.data = [...state.data, action.payload]
+    })
+    .addCase(fetchDebts.rejected, (state, action) => {
+      state.status = 'failed'
+      state.error = action.error.message
+    })
   }
 });
 
-export const { initDebt, addDebt } = debtSlice.actions;
+export const { addDebt } = debtSlice.actions;
 export default debtSlice.reducer;
+
+export const fetchDebts = createAsyncThunk('debts/fetchDebts', async (userId) => {
+  const { data } = await supabase
+    .from('debt')
+    .select()
+    .or(`creditor_id.eq.${userId},debtor_id.eq.${userId}`);
+  return data;
+});

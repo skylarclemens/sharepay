@@ -1,16 +1,19 @@
 import './Dashboard.scss';
 import { useSelector } from 'react-redux';
-//import { balanceCalc } from '../../helpers/balance';
+import { balanceCalc } from '../../helpers/balance';
+import { useEffect } from 'react';
 
 const Dashboard = () => {
   const user = useSelector(state => state.user);
   const expenses = useSelector(state => state.expenses);
-  //const balances = user ? balanceCalc(expenses, user.id) : null;
-  const balances = {
-    total: 0,
-    owed: 0,
-    owe: 0
-  }
+  const friends = useSelector(state => state.friends);
+  const debts = useSelector(state => state.debts);
+  let balances = user ? balanceCalc(debts, user.id) : {total: 0, owed: 0, owe: 0};
+
+  useEffect(() => {
+    balances = user ? balanceCalc(debts, user.id) : null;
+    console.log('balances');
+  }, []);
 
   return (
     <>
@@ -42,20 +45,31 @@ const Dashboard = () => {
           </div>
           <div className="summary">
             <h2 className="heading">Summary</h2>
-            {/*expenses.map((expense) => {
-              const details = expense.user1.id === user.id ? expense.user1 : expense.user2;
+            {debts.map((debt) => {
+              let debtType, friendId = '';
+              if (debt.creditor_id === user.id) {
+                debtType = 'OWED';
+                friendId = debt.debtor_id;
+              } else {
+                debtType = 'OWE';
+                friendId = debt.creditor_id;
+              }
+              console.log(debt.expense_id);
+              const currentExpense = expenses.find(expense => expense.id === debt.expense_id);
+              const currentFriend = friends.find(friend => friend.id === friendId);
+              console.log(currentExpense, currentFriend);
               return (
-                <div key={expense.id} className="summary-expense">
+                <div key={debt.expense_id} className="summary-expense">
                   <div className="desc">
-                    {expense.description}
+                    {currentExpense.description}
                   </div>
                   <div className="transaction">
-                    <div className="expense-type">{details.type}</div>
-                    <div className={`expense-amount ${details.type === 'OWE' ? 'expense-amount--owe' : ''}`}>${details.amount.toFixed(2)}</div>
+                    <div className="expense-type">{debtType}</div>
+                    <div className={`expense-amount ${debtType === 'OWE' ? 'expense-amount--owe' : ''}`}>${debt.amount.toFixed(2)}</div>
                   </div>
                 </div>
               );
-            })*/}
+            })}
           </div>
         </>
       ) : null }
