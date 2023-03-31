@@ -45,3 +45,15 @@
     margin: auto 16px;
   }
 }
+
+.nav-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  .nav-buttons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 45%;
+  }
+}

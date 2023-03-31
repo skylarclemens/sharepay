@@ -7,32 +7,12 @@ import { supabase } from '../../supabaseClient';
 const Friends = () => {
   const [addFriendOpen, setAddFriendOpen] = useState(false);
   const [requests, setRequests] = useState([]);
-  const [friends, setFriends] = useState([]);
+  const friends = useSelector(state => state.friends.data);
   const user = useSelector(state => state.user);
 
   useEffect(() => {
-    getFriends();
     getRequests();
   }, []);
-
-  const getFriends = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('user_friend')
-        .select(`
-          user_id_2 (
-            id,
-            name,
-            email
-          )
-        `)
-        .eq('user_id_1', user.id);
-      if (error) throw error;
-      setFriends(data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   const getRequests = async () => {
     try {
@@ -134,12 +114,11 @@ const Friends = () => {
       <h2 className="heading">Friends</h2>
       {user && friends.length > 0 ?
           (friends.map((friend) => {
-            const currentFriend = friend.user_id_2;
             return (
-              <div key={currentFriend.id} className="user">
+              <div key={friend.id} className="user">
                 <div className="user-info">
-                  <div className="user-name">{currentFriend.name}</div>
-                  <div className="user-email">{currentFriend.email}</div>
+                  <div className="user-name">{friend.name}</div>
+                  <div className="user-email">{friend.email}</div>
                 </div>
               </div>
             )

@@ -7,11 +7,11 @@ const initialState = {
   error: null
 }
 
-export const expenseSlice = createSlice({
-  name: 'expenses',
+export const debtSlice = createSlice({
+  name: 'debts',
   initialState,
   reducers: {
-    addExpense: (state, action) => {
+    addDebt: (state, action) => {
       const newData = [...state.data, action.payload];
       return {
         ...state,
@@ -20,30 +20,30 @@ export const expenseSlice = createSlice({
     }
   },
   extraReducers(builder) {
-    builder.addCase(fetchExpenses.pending, (state, action) => {
+    builder.addCase(fetchDebts.pending, (state, action) => {
       state.status = 'loading'
     })
-    .addCase(fetchExpenses.fulfilled, (state, action) => {
+    .addCase(fetchDebts.fulfilled, (state, action) => {
       return {
         ...state,
         data: action.payload,
         status: 'succeeded'
       }
     })
-    .addCase(fetchExpenses.rejected, (state, action) => {
+    .addCase(fetchDebts.rejected, (state, action) => {
       state.status = 'failed'
       state.error = action.error.message
     })
   }
 });
 
-export const { initExpenses, addExpense } = expenseSlice.actions;
-export default expenseSlice.reducer;
+export const { addDebt } = debtSlice.actions;
+export default debtSlice.reducer;
 
-export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async (userId) => {
+export const fetchDebts = createAsyncThunk('debts/fetchDebts', async (userId) => {
   const { data } = await supabase
     .from('debt')
-    .select('expense_id(*)')
+    .select()
     .or(`creditor_id.eq.${userId},debtor_id.eq.${userId}`);
-  return data.map(obj => obj.expense_id);
+  return data;
 });
