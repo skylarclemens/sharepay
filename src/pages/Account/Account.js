@@ -9,7 +9,7 @@ import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 const Account = () => {
   const user = useSelector(state => state.user);
   const account = useSelector(state => state.account);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [avatarUrl, setAvatarUrl] = useState(null);
