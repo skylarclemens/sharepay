@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from '../slices/userSlice';
+import accountReducer from "../slices/accountSlice";
 import expenseReducer from '../slices/expenseSlice';
 import friendReducer from '../slices/friendSlice';
 import debtReducer from '../slices/debtSlice';
@@ -8,6 +9,7 @@ const preloadedState = localStorage.getItem("localState") ? JSON.parse(localStor
 
 const combinedReducer = combineReducers({
   user: userReducer,
+  account: accountReducer,
   expenses: expenseReducer,
   debts: debtReducer,
   friends: friendReducer

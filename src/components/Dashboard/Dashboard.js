@@ -27,7 +27,7 @@ const Dashboard = () => {
     if (debtsStatus === 'idle') {
       dispatch(fetchDebts(user.id));
     }
-  }, [debts.status, dispatch]);
+  }, [debtsStatus, dispatch]);
 
   useEffect(() => {
     if (expensesStatus === 'idle') {
