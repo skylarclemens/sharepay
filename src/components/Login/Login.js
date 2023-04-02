@@ -1,13 +1,11 @@
 import './Login.scss';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
 import { setUser } from '../../slices/userSlice';
 
 const Login = () => {
-  const user = useSelector(state => state.user);
-  
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

@@ -1,7 +1,7 @@
 import './Dashboard.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { balanceCalc } from '../../helpers/balance';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchExpenses } from '../../slices/expenseSlice';
 import { fetchDebts } from '../../slices/debtSlice';
 import { fetchFriends } from '../../slices/friendSlice';
@@ -15,33 +15,32 @@ const Dashboard = () => {
   const debts = useSelector(state => state.debts);
   const expensesStatus = useSelector(state => state.expenses.status);
   const debtsStatus = useSelector(state => state.debts.status);
+  const [balances, setBalances] = useState({total: 0, owed: 0, owe: 0});
   const dispatch = useDispatch();
 
   const dataLoaded = user && debts.status === 'succeeded' && friends.status === 'succeeded' && expenses.status === 'succeeded';
 
-  let balances = dataLoaded ? balanceCalc(debts.data, user.id) : {total: 0, owed: 0, owe: 0};
-
   useEffect(() => {
-    balances = dataLoaded ? balanceCalc(debts.data, user.id) : null;
-  }, []);
+    dataLoaded && setBalances(balanceCalc(debts.data, user.id));
+  }, [dataLoaded, debts.data, user.id]);
 
   useEffect(() => {
     if (debtsStatus === 'idle') {
       dispatch(fetchDebts(user.id));
     }
-  }, [debtsStatus, dispatch]);
+  }, [debtsStatus, user, dispatch]);
 
   useEffect(() => {
     if (expensesStatus === 'idle') {
       dispatch(fetchExpenses(user.id));
     }
-  }, [expensesStatus, dispatch]);
+  }, [expensesStatus, user, dispatch]);
 
   useEffect(() => {
     if (friends.status === 'idle') {
       dispatch(fetchFriends(user.id));
     }
-  }, [friends.status, dispatch]);
+  }, [friends.status, user, dispatch]);
 
   return (
     <>

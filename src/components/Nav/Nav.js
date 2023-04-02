@@ -11,18 +11,18 @@ const Nav = ({setExpenseOpen}) => {
       <div className="nav-buttons-container">
         <div className="nav-buttons nav-buttons-left">
           <Link to="/">
-            <img src={homeImg} />
+            <img src={homeImg} alt="Home icon"/>
           </Link>
           <Link to="/friends">
-            <img src={groupImg} />
+            <img src={groupImg} alt="Friends icon"/>
           </Link>
         </div>
         <div className="nav-buttons nav-buttons-right">
           <Link to="/">
-            <img src={graphImg} />
+            <img src={graphImg} alt="Graph icon"/>
           </Link>
           <Link to="/account">
-            <img src={profileImg} />
+            <img src={profileImg} alt="Account icon"/>
           </Link>
         </div>
       </div>

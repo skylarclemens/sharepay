@@ -13,7 +13,7 @@ const Home = () => {
     if (user && accountStatus === 'idle') {
       dispatch(fetchAccount(user.id));
     }
-  }, [accountStatus, dispatch]);
+  }, [accountStatus, user, dispatch]);
 
   return (
     <>
