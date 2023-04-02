@@ -96,7 +96,7 @@ const Friends = () => {
               return (
                 <div key={req.user_send.id} className="user">
                   <div className="user-info">
-                    <Avatar url={req.user_send.avatar_url} size={60} />
+                    <Avatar url={req.user_send.avatar_url} />
                     <div className="user-info-text">
                       <div className="user-name">{req.user_send.name}</div>
                       <div className="user-email">{req.user_send.email}</div>
@@ -137,8 +137,11 @@ const Friends = () => {
               return (
                 <div key={req.user_receive.id} className="user">
                   <div className="user-info">
-                    <div className="user-name">{req.user_receive.name}</div>
-                    <div className="user-email">{req.user_receive.email}</div>
+                    <Avatar url={req.user_send.avatar_url} />
+                    <div className='user-info-text'>
+                      <div className="user-name">{req.user_receive.name}</div>
+                      <div className="user-email">{req.user_receive.email}</div>
+                    </div>
                   </div>
                   {req.status === 'SENT' ?
                     <div className="pill">PENDING</div>
