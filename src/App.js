@@ -1,9 +1,10 @@
 import './App.scss';
-import Home from './components/Home/Home';
+import Home from './pages/Home/Home';
 import Login from './components/Login/Login';
 import SignUp from './components/SignUp/SignUp';
 import Header from './components/Header/Header';
 import Friends from './components/Friends/Friends';
+import Account from './pages/Account/Account';
 import Nav from './components/Nav/Nav';
 import { useEffect, useState } from 'react';
 import NewExpense from './components/NewExpense/NewExpense';
@@ -35,8 +36,9 @@ const App = () => {
       <Header />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/account' element={<Account />} />
         <Route path='/friends' element={<Friends />} />
       </Routes>
       <Nav setExpenseOpen={setExpenseOpen} />
