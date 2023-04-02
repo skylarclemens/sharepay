@@ -11,6 +11,12 @@
   padding: 1rem 20px;
   border-bottom: 2px solid v.$accent-gray;
 
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
   .user-name {
     font-weight: 500;
     padding-bottom: 0.25rem;

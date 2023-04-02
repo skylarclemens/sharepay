@@ -1,0 +1,23 @@
+@use '../../../utilities/colors' as v;
+
+.avatar-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  input::-webkit-file-upload-button {
+    border-radius: 1rem;
+    padding: 6px 10px;
+    background: #FFFFFF;
+    color: v.$green;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border: 2px solid v.$green;
+  }
+}
+
+.img-input {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

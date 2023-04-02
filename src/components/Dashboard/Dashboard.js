@@ -5,9 +5,11 @@ import { useEffect } from 'react';
 import { fetchExpenses } from '../../slices/expenseSlice';
 import { fetchDebts } from '../../slices/debtSlice';
 import { fetchFriends } from '../../slices/friendSlice';
+import Avatar from '../Avatar/Avatar';
 
 const Dashboard = () => {
   const user = useSelector(state => state.user);
+  const account = useSelector(state => state.account);
   const expenses = useSelector(state => state.expenses);
   const friends = useSelector(state => state.friends);
   const debts = useSelector(state => state.debts);
@@ -81,8 +83,13 @@ const Dashboard = () => {
                 friendId = debt.creditor_id;
               }
               const currentExpense = expenses.data.find(expense => expense.id === debt.expense_id);
+              const currentFriend = friends.data.find(friend => friend.id === friendId);
               return (
                 <div key={debt.expense_id} className="summary-expense">
+                  <div className="expense-avatars">
+                    <Avatar url={account.data.avatar_url} size={40} />
+                    <Avatar url={currentFriend.avatar_url} size={40} />
+                  </div>
                   <div className="desc">
                     {currentExpense.description}
                   </div>

@@ -3,6 +3,7 @@ import AddFriend from '../AddFriend/AddFriend';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
+import Avatar from '../Avatar/Avatar';
 
 const Friends = () => {
   const [addFriendOpen, setAddFriendOpen] = useState(false);
@@ -24,12 +25,14 @@ const Friends = () => {
           user_send (
             id,
             name,
-            email
+            email,
+            avatar_url
           ),
           user_receive (
             id,
             name,
-            email
+            email,
+            avatar_url
           )
         `)
         .or(`user_send.eq.${user.id},user_receive.eq.${user.id}`);
@@ -93,8 +96,11 @@ const Friends = () => {
               return (
                 <div key={req.user_send.id} className="user">
                   <div className="user-info">
-                    <div className="user-name">{req.user_send.name}</div>
-                    <div className="user-email">{req.user_send.email}</div>
+                    <Avatar url={req.user_send.avatar_url} size={60} />
+                    <div className="user-info-text">
+                      <div className="user-name">{req.user_send.name}</div>
+                      <div className="user-email">{req.user_send.email}</div>
+                    </div>
                   </div>
                   <div className="request-buttons">
                     <button type="button" className="add-user" onClick={() => handleRequestChoice('ACCEPTED', req)}>
@@ -117,8 +123,11 @@ const Friends = () => {
             return (
               <div key={friend.id} className="user">
                 <div className="user-info">
-                  <div className="user-name">{friend.name}</div>
-                  <div className="user-email">{friend.email}</div>
+                  <Avatar url={friend.avatar_url} />
+                  <div className='user-info-text'>
+                    <div className="user-name">{friend.name}</div>
+                    <div className="user-email">{friend.email}</div>
+                  </div>
                 </div>
               </div>
             )

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { removeUser } from '../../slices/userSlice';
 import Avatar from '../../components/Avatar/Avatar';
+import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 
 const Account = () => {
   const user = useSelector(state => state.user);
@@ -17,7 +18,7 @@ const Account = () => {
   useEffect(() => {
     setEmail(account.data.email);
     setName(account.data.name);
-    setAvatarUrl(account.data.account_url);
+    setAvatarUrl(account.data.avatar_url);
   }, [user])
 
   const dispatch = useDispatch();
@@ -28,8 +29,8 @@ const Account = () => {
     setLoading(true);
     
     const accountUpdates = {
-      id: user.id,
-      email: user.email,
+      id: account.data.id,
+      email,
       name,
       avatar_url: avatarUrl,
       updated_at: new Date()
@@ -62,7 +63,7 @@ const Account = () => {
       { user ? (
         <>
         <form className="account-form" onSubmit={updateAccount}>
-          <Avatar
+          <AvatarUpload
             url={avatarUrl}
             onUpload={(e, url) => {
               setAvatarUrl(url);
