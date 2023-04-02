@@ -29,7 +29,7 @@ const NewExpense = ({ setExpenseOpen }) => {
       )
     });
     setOptions(friendOptions);
-  }, [])
+  }, [friends]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

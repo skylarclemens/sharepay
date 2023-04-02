@@ -6,9 +6,6 @@ import { Link } from 'react-router-dom';
 const Header = () => {
   const user = useSelector(state => state.user);
 
-  
-  
-
   return (
     <div className="header-container">
       <Link to="/">

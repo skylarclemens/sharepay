@@ -1,4 +1,3 @@
-import './Avatar.scss';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import blankAvatar from '../../images/Blank_avatar.svg';

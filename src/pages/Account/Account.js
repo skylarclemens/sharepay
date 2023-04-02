@@ -4,7 +4,6 @@ import { supabase } from '../../supabaseClient';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { removeUser } from '../../slices/userSlice';
-import Avatar from '../../components/Avatar/Avatar';
 import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 
 const Account = () => {
@@ -19,7 +18,7 @@ const Account = () => {
     setEmail(account.data.email);
     setName(account.data.name);
     setAvatarUrl(account.data.avatar_url);
-  }, [user])
+  }, [account])
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,9 +35,10 @@ const Account = () => {
       updated_at: new Date()
     }
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
       .from('users')
-      .upsert(accountUpdates)
+      .upsert(accountUpdates);
+      if ( error ) throw error;
     } catch (error) {
       console.error(error);
     }
@@ -78,7 +78,9 @@ const Account = () => {
             <label className="input-label" htmlFor="name">Name</label>
             <input id="name" name="name" type="text" value={name || ''} onChange={(e) => setName(e.target.value)} />
           </div>
-          <button className="button" type="submit" alt="Update account expense" title="Update account">Update</button>
+          <button className="button" type="submit" alt="Update account expense" title="Update account">
+            { loading ? 'Saving...' : 'Update' }
+          </button>
         </form>
         <button type="button" className="button button--white" onClick={handleLogOut}>Log Out</button>
         </>

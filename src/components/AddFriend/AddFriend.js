@@ -39,7 +39,7 @@ const AddFriend = ({ setAddFriendOpen }) => {
       setSuggestions([]);
       return;
     }
-  }, [value]);
+  }, [value, user]);
 
   const sendFriendRequest = async (userReceiveId) => {
     try {

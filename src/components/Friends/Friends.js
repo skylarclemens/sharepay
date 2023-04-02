@@ -12,36 +12,36 @@ const Friends = () => {
   const user = useSelector(state => state.user);
 
   useEffect(() => {
-    getRequests();
-  }, []);
-
-  const getRequests = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('friend_request')
-        .select(`
-          id,
-          status,
-          user_send (
+    const getRequests = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('friend_request')
+          .select(`
             id,
-            name,
-            email,
-            avatar_url
-          ),
-          user_receive (
-            id,
-            name,
-            email,
-            avatar_url
-          )
-        `)
-        .or(`user_send.eq.${user.id},user_receive.eq.${user.id}`);
-      if (error) throw error;
-      setRequests(data);
-    } catch (error) {
-      console.error(error);
+            status,
+            user_send (
+              id,
+              name,
+              email,
+              avatar_url
+            ),
+            user_receive (
+              id,
+              name,
+              email,
+              avatar_url
+            )
+          `)
+          .or(`user_send.eq.${user.id},user_receive.eq.${user.id}`);
+        if (error) throw error;
+        setRequests(data);
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }
+
+    getRequests();
+  }, [user]);
 
   const handleRequestChoice = async (choice, request) => {
     if (choice === 'ACCEPTED') {
@@ -112,9 +112,8 @@ const Friends = () => {
                   </div>
                 </div>
               )
-            } else {
-              return;
             }
+            return null;
           })) : null}
       </div>
       <h2 className="heading">Friends</h2>
@@ -147,9 +146,8 @@ const Friends = () => {
                   }
                 </div>
               )
-            } else {
-              return;
             }
+            return null;
           })) : null}
       <button type="button" className="button add-friends-button" onClick={() => setAddFriendOpen(true)}>Add friend</button>
       {addFriendOpen ?
