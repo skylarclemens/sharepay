@@ -2,7 +2,7 @@ export const balanceCalc = (debts, userId) => {
   let totalBalance = 0;
   let balanceOwed = 0;
   let balanceOwe = 0;
-  debts.map((debt) => {
+  debts.forEach((debt) => {
     const amount = debt.amount;
     if (debt.creditor_id === userId) {
       totalBalance += amount;
