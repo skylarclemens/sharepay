@@ -17,7 +17,7 @@ const Home = () => {
 
   return (
     <>
-      {user ? <Dashboard /> : null}
+      <Dashboard />
     </>
   )
 }
