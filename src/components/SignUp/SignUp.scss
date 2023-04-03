@@ -1,13 +1,45 @@
-.sign-up-form {
+@use '../../utilities/colors' as v;
+
+.sign-up {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  padding: 1.25rem;
 
-  input {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
+  .success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.875rem;
+    border: 1px solid v.$green;
+    border-radius: 8px;
+    background: #f2f4f1;
+    font-size: 0.875rem;
+  }
+
+  h1 {
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+    margin-bottom: 0.25rem;
+    background: linear-gradient(90deg, #729B94 0%, #729B79 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+.sign-up-form {
+  width: 100%;
+  padding: 100px 20px 16px 20px;
+
+  .button {
+    margin-top: 1rem;
+    width: 154px;
+    align-self: center;
   }
 }
