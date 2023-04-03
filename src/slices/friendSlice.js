@@ -12,10 +12,9 @@ export const friendSlice = createSlice({
   initialState,
   reducers: {
     addFriend: (state, action) => {
-      const newData = [...state.data, action.payload];
       return {
         ...state,
-        data: newData
+        data: action.payload
       }
     }
   },
@@ -40,10 +39,9 @@ export const friendSlice = createSlice({
 export const { initFriends, addFriend } = friendSlice.actions;
 export default friendSlice.reducer;
 
-export const fetchFriends = createAsyncThunk('friends/fetchFriends', async (userId) => {
+export const fetchFriends = createAsyncThunk('friends/fetchFriends', async () => {
   const { data } = await supabase
     .from('user_friend')
-    .select('user_id_2(*)')
-    .eq('user_id_1', userId);
+    .select('user_id_2(*)');
   return data.map(obj => obj.user_id_2);
 });

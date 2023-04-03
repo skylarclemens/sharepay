@@ -12,10 +12,9 @@ export const expenseSlice = createSlice({
   initialState,
   reducers: {
     addExpense: (state, action) => {
-      const newData = [...state.data, action.payload];
       return {
         ...state,
-        data: newData
+        data: action.payload
       }
     }
   },

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { removeUser } from '../../slices/userSlice';
 import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
+import { setAccountData } from '../../slices/accountSlice';
 
 const Account = () => {
   const user = useSelector(state => state.user);
@@ -35,10 +36,12 @@ const Account = () => {
       updated_at: new Date()
     }
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
       .from('users')
-      .upsert(accountUpdates);
+      .upsert(accountUpdates)
+      .select();
       if ( error ) throw error;
+      dispatch(setAccountData(data[0]));
     } catch (error) {
       console.error(error);
     }
@@ -65,9 +68,8 @@ const Account = () => {
         <form className="account-form" onSubmit={updateAccount}>
           <AvatarUpload
             url={avatarUrl}
-            onUpload={(e, url) => {
+            onUpload={(url) => {
               setAvatarUrl(url);
-              updateAccount(e);
             }}
           />
           <div className="account-input">

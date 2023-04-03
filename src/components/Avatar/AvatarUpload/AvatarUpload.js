@@ -26,7 +26,7 @@ const AvatarUpload = ({ url, onUpload }) => {
         .upload(filePath, file);
       if (error) throw error;
       
-      onUpload(e, filePath);
+      onUpload(filePath);
     } catch (error) {
       console.error(error);
     }

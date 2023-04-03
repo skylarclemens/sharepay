@@ -2,6 +2,7 @@ import './AddFriend.scss';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import { useSelector } from 'react-redux';
+import Avatar from '../Avatar/Avatar';
 
 const AddFriend = ({ setAddFriendOpen }) => {
   const [value, setValue] = useState('');
@@ -76,8 +77,11 @@ const AddFriend = ({ setAddFriendOpen }) => {
             return (
               <div key={suggestedUser.id} className="user">
                 <div className="user-info">
-                  <div className="user-name">{suggestedUser.name}</div>
-                  <div className="user-email">{suggestedUser.email}</div>
+                  <Avatar url={suggestedUser.avatar_url} />
+                  <div className="user-info-text">
+                    <div className="user-name">{suggestedUser.name}</div>
+                    <div className="user-email">{suggestedUser.email}</div>
+                  </div>
                 </div>
                 <button type="button" className="add-user" onClick={() => sendFriendRequest(suggestedUser.id)}>
                   <div className={`add-user-plus ${sentStatus ? 'hide' : ''}`}></div>

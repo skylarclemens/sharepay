@@ -12,10 +12,9 @@ export const debtSlice = createSlice({
   initialState,
   reducers: {
     addDebt: (state, action) => {
-      const newData = [...state.data, action.payload];
       return {
         ...state,
-        data: newData
+        data: action.payload
       }
     }
   },

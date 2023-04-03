@@ -12,10 +12,9 @@ export const accountSlice = createSlice({
   initialState,
   reducers: {
     setAccountData: (state, action) => {
-      const newData = [...state.data, action.payload];
       return {
         ...state,
-        data: newData
+        data: action.payload
       }
     },
     removeAccount: (state, action) => {
