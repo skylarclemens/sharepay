@@ -4,7 +4,7 @@ import { supabase } from '../../supabaseClient';
 
 const SignUp = () => {
   const [loading, setLoading] = useState(false);
-
+  const [signedUp, setSignedUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -24,6 +24,7 @@ const SignUp = () => {
         }
       });
       if (error) throw error;
+      setSignedUp(true);
     } catch (error) {
       console.error(error);
     } finally {
@@ -33,13 +34,28 @@ const SignUp = () => {
 
   return (
     <div className="sign-up">
-      <form className="sign-up-form" onSubmit={handleSignUp}>
-        <input type="email" value={email} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-        <input type="text" value={fullName} placeholder="Name" onChange={(e) => setFullName(e.target.value)} />
-        <button className="button" type="submit">Sign Up</button>
+      <form className="sign-up-form form-container" onSubmit={handleSignUp}>
+        <h1>Sign up</h1>
+        <div className="input-container">
+          <label className="input-label" htmlFor="email">Email</label>
+          <input className="text-input" type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        </div>
+        <div className="input-container">
+        <label className="input-label" htmlFor="password">Password</label>
+          <input className="text-input" type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </div>
+        <div className="input-container">
+          <label className="input-label" htmlFor="name">Name</label>
+          <input className="text-input" type="text" id="name" name="name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+        </div>
+        <button className="button button--medium button--border-none button--box-shadow" type="submit">{loading ? 'Signing up...' : 'Sign up'}</button>
       </form>
-      <div>{loading ? 'Signing up...' : null}</div>
+      {signedUp && (
+        <div className="success">
+          <div style={{'font-family': 'Rubik', 'font-weight':'500'}}>Signed up!</div>
+          <div>Check your email to confirm your account.</div>
+        </div>
+      )}
     </div>
   )
 }
