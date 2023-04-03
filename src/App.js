@@ -9,7 +9,7 @@ import Welcome from './pages/Welcome/Welcome';
 import Nav from './components/Nav/Nav';
 import { useEffect, useState } from 'react';
 import NewExpense from './components/NewExpense/NewExpense';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from './supabaseClient';
 import { removeUser } from './slices/userSlice';
@@ -18,7 +18,6 @@ const App = () => {
   const [expenseOpen, setExpenseOpen] = useState(false);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
-  const location = useLocation();
 
   useEffect(() => {
     const currentUserSession = async () => {
