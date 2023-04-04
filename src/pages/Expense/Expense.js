@@ -4,29 +4,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
 import { removeExpense } from '../../slices/expenseSlice';
 import { removeDebtByExpense } from '../../slices/debtSlice';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
+import deleteImg from '../../images/Delete.svg';
 
 const Expense = () => {
-  const expenses = useSelector(state => state.expenses);
-  const debts = useSelector(state => state.debts);
-  const friends = useSelector(state => state.friends);
-  const user = useSelector(state => state.user);
+  const expenses = useSelector(state => state.expenses.data);
+  const debts = useSelector(state => state.debts.data);
+  const friends = useSelector(state => state.friends.data);
   const account = useSelector(state => state.account.data);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   let { id } = useParams();
-  const expense = expenses.data.find(expense => expense.id === id);
-  const debt = debts.data.find(debt => debt.expense_id === id);
-  let debtType;
-  let friendId;
-  if (debt.creditor_id === user.id) {
-    debtType = 'OWED';
-    friendId = debt.debtor_id;
+  const expense = expenses.find(expense => expense.id === id);
+  const debt = debts.find(debt => debt.expense_id === id);
+  let debtType = 'OWES';
+  let userCreditor;
+  let userDebtor;
+
+  if (debt.creditor_id === account.id) {
+    userCreditor = account;
+    userDebtor = friends.find(friend => friend.id === debt.debtor_id);
   } else {
-    debtType = 'OWE';
-    friendId = debt.creditor_id;
+    userCreditor = friends.find(friend => friend.id === debt.creditor_id);
+    userDebtor = account;
   }
-  const friend = friends.data.find(friend => friend.id === friendId);
 
   const handleDelete = () => {
     try {
@@ -39,22 +42,40 @@ const Expense = () => {
       dispatch(removeDebtByExpense(id));
     } catch (error) {
       console.error(error);
+    } finally {
+      navigate(-1);
     }
   }
+
+  const headerImg = <img src={deleteImg} alt="Delete button" />;
+
   return (
     <div className="expense-container">
-      <Header type="title" title="Details" />
+      <Header type="title" title="Details" titleRight={headerImg} titleFunction={handleDelete} />
       <div className="expense-page-container">
-        <h1>{expense && expense.description}</h1>
-        <div className="friend-transaction">
-          <div className="expense-type">{debtType}</div>
-          <div className="user-avatars">
-            <Avatar url={friend.avatar_url}/>
-            <span>{friend.name}</span>
-          </div>
-          <div className={`expense-amount ${debtType === 'OWE' ? 'expense-amount--owe' : ''}`}>${debt.amount.toFixed(2)}</div>
+        <div className="expense-desc">
+          <h1>{expense && expense.description}</h1>
+          <span className="expense-amount expense-amount--details">${expense.amount.toFixed(2)}</span>
+          <span className="created-date medium-gray">Created on {new Date(expense.created_at).toLocaleDateString("en-US", {month: 'long', day:'numeric', year: 'numeric'})}</span>
         </div>
-        <button className="button button--red-gradient" onClick={handleDelete}>Delete</button>
+        <div className="user-transaction">
+          <div className="details-paid">
+            <div className="user-details">
+              <Avatar url={userCreditor.avatar_url}/>
+              <span>{userCreditor.name}</span>
+            </div>
+            <span className="expense-type">PAID</span>
+            <span className="expense-amount">${expense.amount.toFixed(2)}</span>
+          </div>
+          <div className="debtor-transaction">
+            <div className="user-details">
+              <Avatar url={userDebtor.avatar_url}/>
+              <span>{userDebtor.name}</span>
+            </div>
+            <div className="expense-type">{debtType}</div>
+            <div className="expense-amount expense-amount--owe">${debt.amount.toFixed(2)}</div>
+          </div>
+        </div>
       </div>
     </div>
   )

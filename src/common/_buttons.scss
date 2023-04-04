@@ -1,4 +1,4 @@
-@use './colors' as v;
+@use '../utilities/colors' as v;
 
 // Buttons
 .button {
@@ -44,4 +44,9 @@
   &.button--box-shadow {
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
   }
+}
+
+.button--icon {
+  background: none;
+  border: none;
 }

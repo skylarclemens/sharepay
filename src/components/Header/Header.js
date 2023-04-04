@@ -3,7 +3,7 @@ import logo from '../../images/logo.png';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Header = ({ type, title, titleRight }) => {
+const Header = ({ type, title, titleRight, titleFunction }) => {
   const user = useSelector(state => state.user);
   const navigate = useNavigate();
 
@@ -25,7 +25,13 @@ const Header = ({ type, title, titleRight }) => {
         <div className="title-header header">
           <button type="button" className="back-arrow" title="Back button" alt="Back button" onClick={() => navigate(-1)}></button>
           <span className="header-text">{title}</span>
-          {titleRight || null}
+          {titleRight ? (
+            <div className="title-right">
+              <button type="button" className="button--icon" onClick={titleFunction}>
+                {titleRight}
+              </button>
+            </div>
+          ) : null}
         </div>
       )}
     </>
