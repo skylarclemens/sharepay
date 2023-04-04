@@ -23,17 +23,17 @@ const Expense = () => {
   let userCreditor;
   let userDebtor;
 
-  if (debt.creditor_id === account.id) {
+  if (debt?.creditor_id === account.id) {
     userCreditor = account;
-    userDebtor = friends.find(friend => friend.id === debt.debtor_id);
+    userDebtor = friends.find(friend => friend.id === debt?.debtor_id) || null;
   } else {
-    userCreditor = friends.find(friend => friend.id === debt.creditor_id);
+    userCreditor = friends.find(friend => friend.id === debt?.creditor_id) || null;
     userDebtor = account;
   }
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     try {
-      const { error } = supabase
+      const { error } = await supabase
         .from('expense')
         .delete()
         .eq('id', id);
@@ -50,34 +50,38 @@ const Expense = () => {
   const headerImg = <img src={deleteImg} alt="Delete button" />;
 
   return (
-    <div className="expense-container">
-      <Header type="title" title="Details" titleRight={headerImg} titleFunction={handleDelete} />
-      <div className="expense-page-container">
-        <div className="expense-desc">
-          <h1>{expense && expense.description}</h1>
-          <span className="expense-amount expense-amount--details">${expense.amount.toFixed(2)}</span>
-          <span className="created-date medium-gray">Created on {new Date(expense.created_at).toLocaleDateString("en-US", {month: 'long', day:'numeric', year: 'numeric'})}</span>
-        </div>
-        <div className="user-transaction">
-          <div className="details-paid">
-            <div className="user-details">
-              <Avatar url={userCreditor.avatar_url}/>
-              <span>{userCreditor.name}</span>
-            </div>
-            <span className="expense-type">PAID</span>
-            <span className="expense-amount">${expense.amount.toFixed(2)}</span>
+    <>
+    {expense && 
+      <div className="expense-container">
+        <Header type="title" title="Details" titleRight={headerImg} titleFunction={handleDelete} />
+        <div className="expense-page-container">
+          <div className="expense-desc">
+            <h1>{expense && expense.description}</h1>
+            <span className="expense-amount expense-amount--details">${expense.amount.toFixed(2)}</span>
+            <span className="created-date medium-gray">Created on {new Date(expense.created_at).toLocaleDateString("en-US", {month: 'long', day:'numeric', year: 'numeric'})}</span>
           </div>
-          <div className="debtor-transaction">
-            <div className="user-details">
-              <Avatar url={userDebtor.avatar_url}/>
-              <span>{userDebtor.name}</span>
+          <div className="user-transaction">
+            <div className="details-paid">
+              <div className="user-details">
+                <Avatar url={userCreditor.avatar_url}/>
+                <span>{userCreditor.name}</span>
+              </div>
+              <span className="expense-type">PAID</span>
+              <span className="expense-amount">${expense.amount.toFixed(2)}</span>
             </div>
-            <div className="expense-type">{debtType}</div>
-            <div className="expense-amount expense-amount--owe">${debt.amount.toFixed(2)}</div>
+            <div className="debtor-transaction">
+              <div className="user-details">
+                <Avatar url={userDebtor.avatar_url}/>
+                <span>{userDebtor.name}</span>
+              </div>
+              <div className="expense-type">{debtType}</div>
+              <div className="expense-amount expense-amount--owe">${debt.amount.toFixed(2)}</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    }
+    </>
   )
 }
 
