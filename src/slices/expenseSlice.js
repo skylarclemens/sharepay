@@ -17,6 +17,14 @@ export const expenseSlice = createSlice({
         ...state,
         data: newData
       }
+    },
+    removeExpense: (state, action) => {
+      const id = action.payload;
+      const newData = state.data.filter(expense => expense.id !== id)
+      return {
+        ...state,
+        data: newData
+      }
     }
   },
   extraReducers(builder) {
@@ -37,7 +45,7 @@ export const expenseSlice = createSlice({
   }
 });
 
-export const { initExpenses, addExpense } = expenseSlice.actions;
+export const { addExpense, removeExpense } = expenseSlice.actions;
 export default expenseSlice.reducer;
 
 export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async (userId) => {

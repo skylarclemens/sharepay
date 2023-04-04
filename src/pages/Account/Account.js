@@ -54,10 +54,11 @@ const Account = () => {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       dispatch(removeUser());
+      localStorage.clear();
     } catch (error) {
       console.error(error);
     } finally {
-      navigate('/login');
+      navigate('/');
     }
   }
 

@@ -6,16 +6,16 @@ import Header from './components/Header/Header';
 import Friends from './components/Friends/Friends';
 import Account from './pages/Account/Account';
 import Welcome from './pages/Welcome/Welcome';
-import Nav from './components/Nav/Nav';
-import { useEffect, useState } from 'react';
+import Expense from './pages/Expense/Expense';
 import NewExpense from './components/NewExpense/NewExpense';
+import Nav from './components/Nav/Nav';
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from './supabaseClient';
 import { removeUser } from './slices/userSlice';
 
 const App = () => {
-  const [expenseOpen, setExpenseOpen] = useState(false);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
 
@@ -34,17 +34,17 @@ const App = () => {
 
   return (
     <>
-      { user && <Header /> }
+      { user && <Header type="main" /> }
       <Routes>
         <Route path='/' element={ user ? <Home /> : <Welcome />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/login' element={<Login />} />
         <Route path='/account' element={<Account />} />
         <Route path='/friends' element={<Friends />} />
+        <Route path='/expense/:id' element={<Expense />} />
+        <Route path='/new-expense' element={<NewExpense />} />
       </Routes>
-      { user && <Nav setExpenseOpen={setExpenseOpen} /> }
-      {expenseOpen ?
-        <NewExpense setExpenseOpen={setExpenseOpen} /> : null}
+      { user && <Nav /> }
     </>
   );
 }

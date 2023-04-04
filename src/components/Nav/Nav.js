@@ -5,7 +5,7 @@ import graphImg from '../../images/Graph.svg';
 import profileImg from '../../images/Profile.svg';
 import { Link } from 'react-router-dom';
 
-const Nav = ({setExpenseOpen}) => {
+const Nav = () => {
   return (
     <div className="nav-container">
       <div className="nav-buttons-container">
@@ -26,7 +26,9 @@ const Nav = ({setExpenseOpen}) => {
           </Link>
         </div>
       </div>
-      <button type="button" className="add-button" onClick={() => setExpenseOpen(true)}><div className="add-plus"></div></button>
+      <Link className="add-button" to="/new-expense">
+        <div className="add-plus"></div>
+      </Link>
     </div>
   )
 }
