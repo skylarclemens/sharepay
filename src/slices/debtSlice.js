@@ -17,6 +17,22 @@ export const debtSlice = createSlice({
         ...state,
         data: newData
       }
+    },
+    removeDebtById: (state, action) => {
+      const id = action.payload;
+      const newData = state.data.filter(debt => debt.id !== id)
+      return {
+        ...state,
+        data: newData
+      }
+    },
+    removeDebtByExpense: (state, action) => {
+      const id = action.payload;
+      const newData = state.data.filter(debt => debt.expense_id !== id)
+      return {
+        ...state,
+        data: newData
+      }
     }
   },
   extraReducers(builder) {
@@ -37,7 +53,7 @@ export const debtSlice = createSlice({
   }
 });
 
-export const { addDebt } = debtSlice.actions;
+export const { addDebt, removeDebtById, removeDebtByExpense } = debtSlice.actions;
 export default debtSlice.reducer;
 
 export const fetchDebts = createAsyncThunk('debts/fetchDebts', async (userId) => {

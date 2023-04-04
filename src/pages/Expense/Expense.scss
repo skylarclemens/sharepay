@@ -1,0 +1,84 @@
+@use '../../utilities/colors' as v;
+
+.expense-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 20px;
+
+  .expense-desc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: v.$light-gray;
+    box-shadow: 0px 2px 0px v.$accent-gray;
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 400;
+  }
+
+  .expense-type {
+    color: v.$dark-gray;
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  .expense-amount {
+    color: v.$green;
+    font-weight: 600;
+
+    &.expense-amount--details {
+      font-size: 1.5rem;
+    }
+  }
+  .expense-amount--owe {
+    color: v.$red;
+  }
+
+  .user-transaction {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .debtor-transaction {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .medium-gray {
+    color: v.$dark-gray;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+  }
+
+  .created-date {
+    padding-top: 0.5rem;
+  }
+  
+  .user-details {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: v.$light-gray;
+    border-radius: 1rem;
+    padding: 0.25rem 0.5rem;
+    box-shadow: 0px 2px 0px v.$accent-gray;
+  }
+
+  .details-paid {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .avatar {
+    border: 2px solid #FFFFFF;
+  }
+}

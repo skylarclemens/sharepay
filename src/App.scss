@@ -44,6 +44,7 @@ button {
 	cursor: pointer;
 }
 
-@import './utilities/avatars';
-@import './utilities/buttons';
-@import './utilities/form';
+@import './common/avatars';
+@import './common/buttons';
+@import './common/form';
+@import './common/details';

@@ -102,24 +102,41 @@ h2 {
   .desc {
     flex: 1 1 auto;
   }
-  .transaction {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-    .expense-type {
-      color: v.$washed-gray;
-      font-weight: 500;
-      font-size: 0.75rem;
-    }
-    .expense-amount {
-      color: v.$green;
-      font-weight: 600;
-    }
-    .expense-amount--owe {
-      color: v.$red;
+  .arrow {
+    border: solid v.$accent-gray;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 4px;
+
+    &.arrow--right {
+      transform: rotate(-45deg);
+      -webkit-transform: rotate(-45deg);
     }
   }
+}
+
+.transaction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  .expense-type {
+    color: v.$washed-gray;
+    font-weight: 500;
+    font-size: 0.75rem;
+  }
+  .expense-amount {
+    color: v.$green;
+    font-weight: 600;
+  }
+  .expense-amount--owe {
+    color: v.$red;
+  }
+}
+
+.expense-link {
+  text-decoration: none;
+  color: inherit;
 }
 
 .summary {

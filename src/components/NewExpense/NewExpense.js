@@ -4,9 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addExpense } from '../../slices/expenseSlice';
 import { addDebt } from '../../slices/debtSlice';
 import Select from 'react-select';
+import Header from '../Header/Header';
 import { supabase } from '../../supabaseClient';
+import { useNavigate } from 'react-router-dom';
 
-const NewExpense = ({ setExpenseOpen }) => {
+const NewExpense = () => {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [splitWith, setSplitWith] = useState('');
@@ -16,6 +18,7 @@ const NewExpense = ({ setExpenseOpen }) => {
   const user = useSelector(state => state.user);
   const friends = useSelector(state => state.friends.data);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const friendOptions = friends.map((friend) => {
@@ -74,15 +77,12 @@ const NewExpense = ({ setExpenseOpen }) => {
       console.error(error);
     }
 
-    setExpenseOpen(false);
+    navigate(-1);
   }
 
   return (
     <div className="expense-container">
-      <div className="expense-header">
-        <button type="button" className="back-arrow" title="Back button" alt="Back button" onClick={() => setExpenseOpen(false)}></button>
-        <span className="header-text">Add expense</span>
-      </div>
+      <Header type="title" title="Add expense" />
       <div className="expense-info">
         <form className="expense-form" onSubmit={handleSubmit}>
           <div className="expense-input">

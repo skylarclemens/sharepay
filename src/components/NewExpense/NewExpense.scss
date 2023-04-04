@@ -8,32 +8,6 @@
   width: 100%;
 }
 
-.expense-header {
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: repeat(3, 1fr);
-  justify-items: center;
-  align-items: center;
-  height: 50px;
-  width: 100%;
-  background: v.$green-gradient;
-  color: white;
-  font-family: 'Rubik', sans-serif;
-  font-weight: 500;
-  padding: 0 20px;
-}
-
-.back-arrow {
-  border: none;
-  border-top: 2px solid #FFFFFF;
-  border-left: 2px solid #FFFFFF;
-  height: 14px;
-  width: 14px;
-  transform: rotate(-45deg);
-  background: none;
-  justify-self: flex-start;
-}
-
 .expense-info {
   margin: 20px 20px;
 }

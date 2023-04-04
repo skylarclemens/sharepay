@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { fetchExpenses } from '../../slices/expenseSlice';
 import { fetchDebts } from '../../slices/debtSlice';
 import { fetchFriends } from '../../slices/friendSlice';
+import { Link } from 'react-router-dom';
 import Avatar from '../Avatar/Avatar';
 
 const Dashboard = () => {
@@ -84,19 +85,22 @@ const Dashboard = () => {
               const currentExpense = expenses.data.find(expense => expense.id === debt.expense_id);
               const currentFriend = friends.data.find(friend => friend.id === friendId);
               return (
-                <div key={debt.expense_id} className="summary-expense">
-                  <div className="expense-avatars">
-                    <Avatar url={account.data.avatar_url} size={40} />
-                    <Avatar url={currentFriend.avatar_url} size={40} />
+                <Link className="expense-link" key={debt.expense_id} to={`/expense/${debt.expense_id}`}>
+                  <div className="summary-expense">
+                      <div className="expense-avatars">
+                        <Avatar url={account.data.avatar_url} size={40} />
+                        <Avatar url={currentFriend.avatar_url} size={40} />
+                      </div>
+                      <div className="desc">
+                        {currentExpense.description}
+                      </div>
+                      <div className="transaction">
+                        <div className="expense-type">{debtType}</div>
+                        <div className={`expense-amount ${debtType === 'OWE' ? 'expense-amount--owe' : ''}`}>${debt.amount.toFixed(2)}</div>
+                      </div>
+                      <div className="arrow arrow--right"></div>
                   </div>
-                  <div className="desc">
-                    {currentExpense.description}
-                  </div>
-                  <div className="transaction">
-                    <div className="expense-type">{debtType}</div>
-                    <div className={`expense-amount ${debtType === 'OWE' ? 'expense-amount--owe' : ''}`}>${debt.amount.toFixed(2)}</div>
-                  </div>
-                </div>
+                </Link>
               );
             })}
           </div>
