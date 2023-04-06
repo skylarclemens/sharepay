@@ -2,8 +2,8 @@ import './AddFriend.scss';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import { useSelector } from 'react-redux';
-import Avatar from '../Avatar/Avatar';
-import Header from '../Header/Header';
+import Avatar from '../../components/Avatar/Avatar';
+import Header from '../../components/Header/Header';
 
 const AddFriend = () => {
   const [value, setValue] = useState('');

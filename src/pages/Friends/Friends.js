@@ -2,7 +2,7 @@ import './Friends.scss';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
-import Avatar from '../Avatar/Avatar';
+import Avatar from '../../components/Avatar/Avatar';
 import { Link } from 'react-router-dom';
 
 const Friends = () => {
