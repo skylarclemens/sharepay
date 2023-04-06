@@ -7,9 +7,7 @@ import Avatar from '../../components/Avatar/Avatar';
 import Transactions from '../../components/Transactions/Transactions';
 
 const FriendDetails = () => {
-  const account = useSelector(state => state.account.data);
   const friends = useSelector(state => state.friends.data);
-  const expenses = useSelector(state => state.expenses.data);
   const [sharedExpenses, setSharedExpenses] = useState([]);
   const [loading, setLoading] = useState(false);
   let { id } = useParams();

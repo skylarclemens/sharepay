@@ -9,7 +9,6 @@ import Transactions from '../Transactions/Transactions';
 
 const Dashboard = () => {
   const user = useSelector(state => state.user);
-  const account = useSelector(state => state.account);
   const expenses = useSelector(state => state.expenses);
   const friends = useSelector(state => state.friends);
   const debts = useSelector(state => state.debts);
