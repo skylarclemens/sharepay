@@ -35,16 +35,7 @@
   color: white;
   font-family: 'Rubik', sans-serif;
   font-weight: 500;
-  .back-arrow {
-    display: inline-block;
-    border: solid #FFFFFF;
-    border-width: 0 0 2px 2px;
-    padding: 6px;
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    background: none;
-    justify-self: flex-start;
-  }
+
   .title-right {
     justify-self: flex-end;
   }

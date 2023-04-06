@@ -51,7 +51,6 @@ export default expenseSlice.reducer;
 export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async (userId) => {
   const { data } = await supabase
     .from('debt')
-    .select('expense_id(*)')
-    .or(`creditor_id.eq.${userId},debtor_id.eq.${userId}`);
+    .select('expense_id(*)');
   return data.map(obj => obj.expense_id);
 });

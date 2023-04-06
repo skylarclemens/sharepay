@@ -1,0 +1,38 @@
+@use '../../utilities/colors' as v;
+
+.friend-container {
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 400;
+  }
+
+  .loading-data {
+    display: inline-block;
+    margin: 20px;
+  }
+
+  .medium-gray {
+    color: v.$dark-gray;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+  }
+}
+
+.friend-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 20px;
+  background: v.$light-gray;
+  box-shadow: 0px 2px 0px v.$accent-gray;
+  padding: 1rem;
+  border-radius: 1rem;
+
+  .friend-info-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
