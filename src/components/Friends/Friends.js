@@ -1,12 +1,11 @@
 import './Friends.scss';
-import AddFriend from '../AddFriend/AddFriend';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
 import Avatar from '../Avatar/Avatar';
+import { Link } from 'react-router-dom';
 
 const Friends = () => {
-  const [addFriendOpen, setAddFriendOpen] = useState(false);
   const [requests, setRequests] = useState([]);
   const friends = useSelector(state => state.friends.data);
   const user = useSelector(state => state.user);
@@ -87,77 +86,75 @@ const Friends = () => {
   }
 
   return (
-    <div className="friends-container">
-      <h2 className="heading">Requests</h2>
-      <div className="requests-container">
-        {user && requests.length > 0 ?
-          (requests.map((req) => {
-            if(req.user_receive.id === user.id) {
-              return (
-                <div key={req.user_send.id} className="user">
-                  <div className="user-info">
-                    <Avatar url={req.user_send.avatar_url} />
-                    <div className="user-info-text">
-                      <div className="user-name">{req.user_send.name}</div>
-                      <div className="user-email">{req.user_send.email}</div>
+    <>
+      <div className="friends-container">
+        <h2 className="heading">Requests</h2>
+        <div className="requests-container">
+          {user && requests.length > 0 ?
+            (requests.map((req) => {
+              if(req.user_receive.id === user.id) {
+                return (
+                  <div key={req.user_send.id} className="user">
+                    <div className="user-info">
+                      <Avatar url={req.user_send.avatar_url} />
+                      <div className="user-info-text">
+                        <div className="user-name">{req.user_send.name}</div>
+                        <div className="user-email">{req.user_send.email}</div>
+                      </div>
+                    </div>
+                    <div className="request-buttons">
+                      <button type="button" className="add-user" onClick={() => handleRequestChoice('ACCEPTED', req)}>
+                        <div className="checkmark"></div>
+                      </button>
+                      <button type="button" className="ignore-button" onClick={() => handleRequestChoice('IGNORED', req)}>
+                        <div className="ignore-user"></div>
+                      </button>
                     </div>
                   </div>
-                  <div className="request-buttons">
-                    <button type="button" className="add-user" onClick={() => handleRequestChoice('ACCEPTED', req)}>
-                      <div className="checkmark"></div>
-                    </button>
-                    <button type="button" className="ignore-button" onClick={() => handleRequestChoice('IGNORED', req)}>
-                      <div className="ignore-user"></div>
-                    </button>
-                  </div>
-                </div>
-              )
-            }
-            return null;
-          })) : null}
-      </div>
-      <h2 className="heading">Friends</h2>
-      {user && friends.length > 0 ?
-          (friends.map((friend) => {
-            return (
-              <div key={friend.id} className="user">
-                <div className="user-info">
-                  <Avatar url={friend.avatar_url} />
-                  <div className='user-info-text'>
-                    <div className="user-name">{friend.name}</div>
-                    <div className="user-email">{friend.email}</div>
-                  </div>
-                </div>
-              </div>
-            )
-          })) : null}
-      {user && requests.length > 0 ?
-          (requests.map((req) => {
-            if(req.user_send.id === user.id) {
+                )
+              }
+              return null;
+            })) : null}
+        </div>
+        <h2 className="heading">Friends</h2>
+        {user && friends.length > 0 ?
+            (friends.map((friend) => {
               return (
-                <div key={req.user_receive.id} className="user">
+                <div key={friend.id} className="user">
                   <div className="user-info">
-                    <Avatar url={req.user_send.avatar_url} />
+                    <Avatar url={friend.avatar_url} />
                     <div className='user-info-text'>
-                      <div className="user-name">{req.user_receive.name}</div>
-                      <div className="user-email">{req.user_receive.email}</div>
+                      <div className="user-name">{friend.name}</div>
+                      <div className="user-email">{friend.email}</div>
                     </div>
                   </div>
-                  {req.status === 'SENT' ?
-                    <div className="pill">PENDING</div>
-                    : null
-                  }
                 </div>
               )
-            }
-            return null;
-          })) : null}
-      <button type="button" className="button add-friends-button" onClick={() => setAddFriendOpen(true)}>Add friend</button>
-      {addFriendOpen ?
-        <AddFriend setAddFriendOpen={setAddFriendOpen} />
-        : null
-      }
-    </div>
+            })) : null}
+        {user && requests.length > 0 ?
+            (requests.map((req) => {
+              if(req.user_send.id === user.id) {
+                return (
+                  <div key={req.user_receive.id} className="user">
+                    <div className="user-info">
+                      <Avatar url={req.user_send.avatar_url} />
+                      <div className='user-info-text'>
+                        <div className="user-name">{req.user_receive.name}</div>
+                        <div className="user-email">{req.user_receive.email}</div>
+                      </div>
+                    </div>
+                    {req.status === 'SENT' ?
+                      <div className="pill">PENDING</div>
+                      : null
+                    }
+                  </div>
+                )
+              }
+              return null;
+            })) : null}
+      </div>
+      <Link className="button add-friends-button" to="/add-friend">Add friend</Link>
+    </>
   )
 }
 
