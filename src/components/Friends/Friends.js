@@ -120,7 +120,7 @@ const Friends = () => {
         {user && friends.length > 0 ?
             (friends.map((friend) => {
               return (
-                <div key={friend.id} className="user">
+                <Link key={friend.id} className="user" to={`/friend/${friend.id}`}>
                   <div className="user-info">
                     <Avatar url={friend.avatar_url} />
                     <div className='user-info-text'>
@@ -128,7 +128,8 @@ const Friends = () => {
                       <div className="user-email">{friend.email}</div>
                     </div>
                   </div>
-                </div>
+                  <div className="arrow arrow--right"></div>
+                </Link>
               )
             })) : null}
         {user && requests.length > 0 ?

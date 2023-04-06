@@ -5,8 +5,7 @@ import { useEffect, useState } from 'react';
 import { fetchExpenses } from '../../slices/expenseSlice';
 import { fetchDebts } from '../../slices/debtSlice';
 import { fetchFriends } from '../../slices/friendSlice';
-import { Link } from 'react-router-dom';
-import Avatar from '../Avatar/Avatar';
+import Transactions from '../Transactions/Transactions';
 
 const Dashboard = () => {
   const user = useSelector(state => state.user);
@@ -34,7 +33,7 @@ const Dashboard = () => {
       {dataLoaded ? (
         <>
           <div className="dashboard">
-            <h2 className="heading">Dashboard</h2>
+            <h2 className="heading">Summary</h2>
             <div className="dashboard-container">
               <div className="greeting">
                 Hello, <span className="greeting-name">{user.user_metadata.name}</span>!
@@ -57,38 +56,9 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div className="summary">
-            <h2 className="heading">Summary</h2>
-            {debts.data.map((debt) => {
-              let debtType, friendId = '';
-              if (debt.creditor_id === user.id) {
-                debtType = 'OWED';
-                friendId = debt.debtor_id;
-              } else {
-                debtType = 'OWE';
-                friendId = debt.creditor_id;
-              }
-              const currentExpense = expenses.data.find(expense => expense.id === debt.expense_id);
-              const currentFriend = friends.data.find(friend => friend.id === friendId);
-              return (
-                <Link className="expense-link" key={debt.expense_id} to={`/expense/${debt.expense_id}`}>
-                  <div className="summary-expense">
-                      <div className="expense-avatars">
-                        <Avatar url={account.data.avatar_url} size={40} />
-                        <Avatar url={currentFriend.avatar_url} size={40} />
-                      </div>
-                      <div className="desc">
-                        {currentExpense.description}
-                      </div>
-                      <div className="transaction">
-                        <div className="expense-type">{debtType}</div>
-                        <div className={`expense-amount ${debtType === 'OWE' ? 'expense-amount--owe' : ''}`}>${debt.amount.toFixed(2)}</div>
-                      </div>
-                      <div className="arrow arrow--right"></div>
-                  </div>
-                </Link>
-              );
-            })}
+          <div className="transactions-container">
+            <h2 className="heading">Transactions</h2>
+            <Transactions debts={debts.data} />
           </div>
         </>
           ) : null }
