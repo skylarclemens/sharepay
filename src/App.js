@@ -5,6 +5,7 @@ import SignUp from './components/SignUp/SignUp';
 import Header from './components/Header/Header';
 import Friends from './components/Friends/Friends';
 import AddFriend from './components/AddFriend/AddFriend';
+import FriendDetails from './pages/FriendDetails/FriendDetails';
 import Account from './pages/Account/Account';
 import Welcome from './pages/Welcome/Welcome';
 import Expense from './pages/Expense/Expense';
@@ -41,9 +42,10 @@ const App = () => {
         <Route path='/login' element={<Login />} />
         <Route path='/account' element={<Account />} />
         <Route path='/friends' element={<Friends />} />
+        <Route path='/add-friend' element={<AddFriend />} />
+        <Route path="/friend/:id" element={<FriendDetails />} />
         <Route path='/expense/:id' element={<Expense />} />
         <Route path='/new-expense' element={<NewExpense />} />
-        <Route path='/add-friend' element={<AddFriend />} />
       </Routes>
       { user && <Nav /> }
     </>
