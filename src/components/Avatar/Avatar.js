@@ -15,11 +15,9 @@ const Avatar = ({ url, size }) => {
       const { data, error } = await supabase
         .storage
         .from('avatars')
-        .download(urlPath);
+        .getPublicUrl(urlPath);
       if (error) throw error;
-
-      const imgUrl = URL.createObjectURL(data);
-      setAvatarUrl(imgUrl);
+      setAvatarUrl(data.publicUrl);
     } catch (error) {
       console.error(error);
     }

@@ -4,6 +4,7 @@ import Login from './components/Login/Login';
 import SignUp from './components/SignUp/SignUp';
 import Header from './components/Header/Header';
 import Friends from './components/Friends/Friends';
+import AddFriend from './components/AddFriend/AddFriend';
 import Account from './pages/Account/Account';
 import Welcome from './pages/Welcome/Welcome';
 import Expense from './pages/Expense/Expense';
@@ -24,7 +25,6 @@ const App = () => {
       const { error } = await supabase.auth.getUser();
 
       if(error) {
-        console.error(error);
         dispatch(removeUser());
         return;
       }
@@ -43,6 +43,7 @@ const App = () => {
         <Route path='/friends' element={<Friends />} />
         <Route path='/expense/:id' element={<Expense />} />
         <Route path='/new-expense' element={<NewExpense />} />
+        <Route path='/add-friend' element={<AddFriend />} />
       </Routes>
       { user && <Nav /> }
     </>

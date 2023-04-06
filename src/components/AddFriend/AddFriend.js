@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import { useSelector } from 'react-redux';
 import Avatar from '../Avatar/Avatar';
+import Header from '../Header/Header';
 
-const AddFriend = ({ setAddFriendOpen }) => {
+const AddFriend = () => {
   const [value, setValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const user = useSelector(state => state.user);
@@ -63,10 +64,7 @@ const AddFriend = ({ setAddFriendOpen }) => {
 
   return (
     <div className="add-friend-container">
-      <div className="add-friend-header">
-        <button type="button" className="back-arrow" title="Back button" alt="Back button" onClick={() => setAddFriendOpen(false)}></button>
-        <span className="header-text">Add friend</span>
-      </div>
+      <Header type="title" title="Add friend" />
       <div className="search-container">
         <h1>Add friend</h1>
         <input className="search-input" type="text" value={value} placeholder="Search" onChange={(e) => setValue(e.target.value)} />
