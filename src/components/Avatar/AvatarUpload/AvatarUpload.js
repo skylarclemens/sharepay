@@ -26,8 +26,7 @@ const AvatarUpload = ({ url, onUpload }) => {
         .storage
         .from('avatars')
         .upload(`${user?.id}/${filePath}`, file, {
-          cacheControl: '604800',
-          upsert: true
+          cacheControl: '604800'
         });
       if (error) throw error;   
       onUpload(data.path);

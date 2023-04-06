@@ -11,7 +11,6 @@ const Avatar = ({ url, size }) => {
   }, [url]);
   
   const downloadAvatar = async (urlPath) => {
-    console.log(url);
     try {
       const { data, error } = await supabase
         .storage

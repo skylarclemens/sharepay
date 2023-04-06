@@ -24,7 +24,6 @@ const App = () => {
       const { error } = await supabase.auth.getUser();
 
       if(error) {
-        console.error(error);
         dispatch(removeUser());
         return;
       }

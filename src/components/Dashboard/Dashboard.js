@@ -14,8 +14,6 @@ const Dashboard = () => {
   const expenses = useSelector(state => state.expenses);
   const friends = useSelector(state => state.friends);
   const debts = useSelector(state => state.debts);
-  const expensesStatus = useSelector(state => state.expenses.status);
-  const debtsStatus = useSelector(state => state.debts.status);
   const [balances, setBalances] = useState({total: 0, owed: 0, owe: 0});
   const dispatch = useDispatch();
 
@@ -26,22 +24,10 @@ const Dashboard = () => {
   }, [dataLoaded, debts.data, user.id]);
 
   useEffect(() => {
-    if (debtsStatus === 'idle') {
-      dispatch(fetchDebts(user.id));
-    }
-  }, [debtsStatus, user, dispatch]);
-
-  useEffect(() => {
-    if (expensesStatus === 'idle') {
-      dispatch(fetchExpenses(user.id));
-    }
-  }, [expensesStatus, user, dispatch]);
-
-  useEffect(() => {
-    if (friends.status === 'idle') {
-      dispatch(fetchFriends(user.id));
-    }
-  }, [friends.status, user, dispatch]);
+    dispatch(fetchDebts(user.id));
+    dispatch(fetchExpenses(user.id));
+    dispatch(fetchFriends(user.id));
+  }, [user, dispatch]);
 
   return (
     <>
