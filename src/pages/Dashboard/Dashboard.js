@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { fetchExpenses } from '../../slices/expenseSlice';
 import { fetchDebts } from '../../slices/debtSlice';
 import { fetchFriends } from '../../slices/friendSlice';
-import Transactions from '../Transactions/Transactions';
+import Transactions from '../../components/Transactions/Transactions';
 
 const Dashboard = () => {
   const user = useSelector(state => state.user);

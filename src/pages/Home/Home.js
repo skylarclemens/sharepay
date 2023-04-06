@@ -1,7 +1,7 @@
 import './Home.scss';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Dashboard from '../../components/Dashboard/Dashboard';
+import Dashboard from '../Dashboard/Dashboard';
 import { fetchAccount } from '../../slices/accountSlice';
 
 const Home = () => {

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addExpense } from '../../slices/expenseSlice';
 import { addDebt } from '../../slices/debtSlice';
 import Select from 'react-select';
-import Header from '../Header/Header';
+import Header from '../../components/Header/Header';
 import { supabase } from '../../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 
