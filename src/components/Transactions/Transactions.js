@@ -26,8 +26,8 @@ const Transactions = ({ debts, friend }) => {
           <Link className="expense-link" key={debt.expense_id} to={`/expense/${debt.expense_id}`}>
             <div className="transaction-expense">
                 <div className="expense-avatars">
-                  <Avatar url={userCreditor.avatar_url} size={40} />
-                  <Avatar url={userDebtor.avatar_url} size={40} />
+                  <Avatar url={userCreditor?.avatar_url} size={40} />
+                  <Avatar url={userDebtor?.avatar_url} size={40} />
                 </div>
                 <div className="desc">
                   {currentExpense.description}
