@@ -3,4 +3,8 @@
   height: 45px;
   width: 45px;
   border-radius: 50%;
+
+  &.white-border {
+    border: 2px solid #FFFFFF;
+  }
 }

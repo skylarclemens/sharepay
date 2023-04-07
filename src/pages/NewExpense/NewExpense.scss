@@ -16,9 +16,10 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
   .input-label {
     font-family: 'Rubik', sans-serif;
-    color: v.$washed-gray;
+    color: v.$dark-gray;
     font-weight: 500;
     font-size: 0.875rem;
     text-transform: uppercase;
@@ -27,17 +28,74 @@
   .expense-input {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.75rem;
 
-    input {
+    .text-field-input {
       width: 100%;
       font-size: 1rem;
       padding: 0.5rem;
+      border: 1px solid v.$dark-gray;
+      box-shadow: 0px 2px 0px v.$accent-gray;
+      border-radius: 0.25rem;
+      height: 38px;
+    }
+
+    .field-error {
+      border: 2px solid v.$red;
+    }
+  }
+
+  .field-error-text {
+    display: inline-block;
+    align-self: flex-start;
+    border: 1px solid v.$red;
+    background: rgba(220, 85, 55, 0.05);
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+
+    &.split-field {
+      margin-top: 0.5rem;
+    }
+    &.form-validation {
+      align-self: center;
     }
   }
 
   .radio-option {
     margin-top: 0.5rem;
+  }
+
+  .expense-radio.radio-paid-by {
+    display: flex;
+    gap: 0.625rem;
+
+    input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+  }
+
+  
+
+  .user-detail-select {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 0.5rem 0 0.125rem;
+    gap: 0.5rem;
+    background: v.$light-gray;
+    border: 2px solid v.$light-gray;
+    box-shadow: 0px 2px 0px v.$accent-gray;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    cursor: pointer;
+
+    &.selected {
+      border: 2px solid #6C91C2;
+      box-shadow: 0px 2px 0px rgba(75, 129, 198, 0.5);
+    }
   }
 
   .button {

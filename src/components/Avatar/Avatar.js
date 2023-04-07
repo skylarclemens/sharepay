@@ -3,11 +3,15 @@ import { supabase } from '../../supabaseClient';
 import blankAvatar from '../../images/Blank_avatar.svg';
 
 
-const Avatar = ({ url, size }) => {
+const Avatar = ({ url, size, classes }) => {
   const [avatarUrl, setAvatarUrl] = useState(null);
 
   useEffect(() => {
-    if (url) downloadAvatar(url);
+    if (url) {
+      downloadAvatar(url);
+    } else {
+      setAvatarUrl(null);
+    }
   }, [url]);
   
   const downloadAvatar = async (urlPath) => {
@@ -26,9 +30,9 @@ const Avatar = ({ url, size }) => {
   return (
     <>
       <img
-        src={avatarUrl ? avatarUrl : blankAvatar}
+        src={avatarUrl ?? blankAvatar}
         alt={avatarUrl ? 'Blank Avatar Icon' : 'User Avatar'}
-        className="avatar"
+        className={`avatar ${classes}`}
         style={{
           height: size,
           width: size
