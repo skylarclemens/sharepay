@@ -47,7 +47,7 @@ button {
 }
 .container {
 	padding-top: calc(46px + env(safe-area-inset-top));
-	padding-bottom: 46px;
+	padding-bottom: calc(46px + env(safe-area-inset-bottom));
 }
 
 @import './common/avatars';
