@@ -24,6 +24,8 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	height: 100vh;
+	width: 100vw;
 }
 ol, ul {
 	list-style: none;
@@ -42,6 +44,10 @@ table {
 }
 button {
 	cursor: pointer;
+}
+.container {
+	padding-top: calc(46px + env(safe-area-inset-top));
+	padding-bottom: 46px;
 }
 
 @import './common/avatars';
