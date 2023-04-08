@@ -8,7 +8,7 @@ const Header = ({ type, title, titleRight, titleFunction }) => {
   const navigate = useNavigate();
 
   return (
-    <>
+    <div className="header-container">
       {type === 'main' && ( 
         <div className="main-header header">
           <Link to="/">
@@ -34,7 +34,7 @@ const Header = ({ type, title, titleRight, titleFunction }) => {
           ) : null}
         </div>
       )}
-    </>
+    </div>
   )
 }
 

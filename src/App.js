@@ -36,17 +36,19 @@ const App = () => {
   return (
     <>
       { user && <Header type="main" /> }
-      <Routes>
-        <Route path='/' element={ user ? <Home /> : <Welcome />} />
-        <Route path='/signup' element={<SignUp />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/account' element={<Account />} />
-        <Route path='/friends' element={<Friends />} />
-        <Route path='/add-friend' element={<AddFriend />} />
-        <Route path="/friend/:id" element={<FriendDetails />} />
-        <Route path='/expense/:id' element={<Expense />} />
-        <Route path='/new-expense' element={<NewExpense />} />
-      </Routes>
+      <div className="container">
+        <Routes>
+          <Route path='/' element={ user ? <Home /> : <Welcome />} />
+          <Route path='/signup' element={<SignUp />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/account' element={<Account />} />
+          <Route path='/friends' element={<Friends />} />
+          <Route path='/add-friend' element={<AddFriend />} />
+          <Route path="/friend/:id" element={<FriendDetails />} />
+          <Route path='/expense/:id' element={<Expense />} />
+          <Route path='/new-expense' element={<NewExpense />} />
+        </Routes>
+      </div>
       { user && <Nav /> }
     </>
   );

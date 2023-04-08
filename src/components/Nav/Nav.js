@@ -10,18 +10,18 @@ const Nav = () => {
     <div className="nav-container">
       <div className="nav-buttons-container">
         <div className="nav-buttons nav-buttons-left">
-          <Link to="/">
+          <Link className="nav-button" to="/">
             <img src={homeImg} alt="Home icon"/>
           </Link>
-          <Link to="/friends">
+          <Link className="nav-button" to="/friends">
             <img src={groupImg} alt="Friends icon"/>
           </Link>
         </div>
         <div className="nav-buttons nav-buttons-right">
-          <Link to="/">
+          <Link className="nav-button" to="/">
             <img src={graphImg} alt="Graph icon"/>
           </Link>
-          <Link to="/account">
+          <Link className="nav-button" to="/account">
             <img src={profileImg} alt="Account icon"/>
           </Link>
         </div>

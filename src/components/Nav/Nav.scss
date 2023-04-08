@@ -2,12 +2,32 @@
 
 .nav-container {
   position: fixed;
+  bottom: 0;
   width: 100%;
   background: v.$light-gray;
   display: flex;
-  bottom: 0;
-  height: 48px;
   border-top: 2px solid v.$accent-gray;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.nav-buttons-container {
+  height: 46px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  .nav-buttons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 45%;
+  }
+  .nav-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+    padding: 8px 0;
+  }
 }
 
 .add-button {
@@ -15,7 +35,7 @@
   margin: 0 auto;
   left: 0;
   right: 0;
-  bottom: 8px;
+  bottom: calc(0.5rem + env(safe-area-inset-bottom));
   height: 54px;
   width: 54px;
   display: flex;
@@ -43,17 +63,5 @@
   &::before {
     height: 3px;
     margin: auto 16px;
-  }
-}
-
-.nav-buttons-container {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  .nav-buttons {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 45%;
   }
 }
