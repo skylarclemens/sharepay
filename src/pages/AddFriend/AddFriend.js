@@ -8,11 +8,11 @@ import Header from '../../components/Header/Header';
 const AddFriend = () => {
   const [value, setValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const user = useSelector(state => state.user);
   const [requestSent, setRequestSent] = useState({
     id: '',
     sent: false
   });
+  const user = useSelector(state => state.user);
 
   const inputTimer = 1000;
 

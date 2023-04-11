@@ -1,20 +1,5 @@
 @use '../../utilities/colors' as v;
 
-.add-friend-header {
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: repeat(3, 1fr);
-  justify-items: center;
-  align-items: center;
-  height: 50px;
-  width: 100%;
-  background: v.$green-gradient;
-  color: white;
-  font-family: 'Rubik', sans-serif;
-  font-weight: 500;
-  padding: 0 20px;
-}
-
 .search-container {
   display: flex;
   flex-direction: column;

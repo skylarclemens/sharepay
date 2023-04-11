@@ -53,7 +53,7 @@ const Expense = () => {
     <>
     {expense && 
       <div className="expense-container">
-        <Header type="title" title="Details" titleRight={headerImg} titleFunction={handleDelete} />
+        <Header type="title" title="Details" headerRight={headerImg} headerFn={handleDelete} />
         <div className="expense-page-container">
           <div className="expense-desc">
             <h1>{expense && expense.description}</h1>
