@@ -28,13 +28,7 @@
     flex-direction: column;
     gap: 0.75rem;
 
-    .text-field-input {
-      width: 100%;
-      font-size: 1rem;
-      padding: 0.5rem;
-      border: 1px solid v.$dark-gray;
-      box-shadow: 0px 2px 0px v.$accent-gray;
-      border-radius: 0.25rem;
+    .text-input {
       height: 38px;
     }
 
