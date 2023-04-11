@@ -1,14 +1,5 @@
 @use '../../utilities/colors' as v;
 
-.add-friend-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: white;
-  height: 100%;
-  width: 100%;
-}
-
 .add-friend-header {
   display: grid;
   grid-auto-flow: column;
@@ -28,14 +19,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin: 20px 20px 10px 20px;
-  .search-input {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid v.$dark-gray;
-    border-radius: 0.5rem;
-  }
+  margin: 20px;
 }
 
 .suggested-users {
