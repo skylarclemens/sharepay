@@ -40,7 +40,7 @@ const Dashboard = () => {
               <div className="balance">
                 <div className="balance-block balance-block--total">
                   <h3>TOTAL BALANCE</h3>
-                  <span>${balances.total.toFixed(2) || 0.00}</span>
+                  <span className={balances.total < 0 ? 'total--owe' : ''}>${balances.total.toFixed(2) || 0.00}</span>
                 </div>
                 <div className="secondary-balance">
                   <div className="balance-block balance-block--green">
