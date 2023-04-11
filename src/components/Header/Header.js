@@ -23,7 +23,9 @@ const Header = ({ type, title, titleRight, titleFunction }) => {
       )}
       {type === 'title' && (
         <div className="title-header header">
-          <button type="button" className="back-arrow" title="Back button" alt="Back button" onClick={() => navigate(-1)}></button>
+          <button type="button"className="arrow-container--back-arrow" title="Back button" alt="Back button" onClick={() => navigate(-1)}>
+            <div className="arrow arrow--left arrow--back-arrow"></div>
+          </button>
           <span className="header-text">{title}</span>
           {titleRight ? (
             <div className="title-right">

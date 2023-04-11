@@ -75,11 +75,11 @@ const Account = () => {
           />
           <div className="account-input">
             <label className="input-label" htmlFor="email">Email</label>
-            <input id="email" name="email" type="text" value={email || ''} disabled />
+            <input className="text-input" id="email" name="email" type="text" value={email || ''} disabled />
           </div>
           <div className="account-input">
             <label className="input-label" htmlFor="name">Name</label>
-            <input id="name" name="name" type="text" value={name || ''} onChange={(e) => setName(e.target.value)} />
+            <input className="text-input" id="name" name="name" type="text" value={name || ''} onChange={(e) => setName(e.target.value)} />
           </div>
           <button className="button" type="submit" alt="Update account expense" title="Update account">
             { loading ? 'Saving...' : 'Update' }

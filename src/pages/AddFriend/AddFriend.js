@@ -66,8 +66,7 @@ const AddFriend = () => {
     <div className="add-friend-container">
       <Header type="title" title="Add friend" />
       <div className="search-container">
-        <h1>Add friend</h1>
-        <input className="search-input" type="text" value={value} placeholder="Search" onChange={(e) => setValue(e.target.value)} />
+        <input className="text-input" type="text" value={value} placeholder="Search" onChange={(e) => setValue(e.target.value)} />
       </div>
       <div className="suggested-users">
           {suggestions && suggestions.map((suggestedUser) => {

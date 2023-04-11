@@ -27,6 +27,10 @@
     width: 100%;
     margin: 0 auto;
     padding: 8px 0;
+
+    &.selected img {
+      filter: brightness(0.7);
+    }
   }
 }
 

@@ -10,25 +10,11 @@
   gap: 1.5rem;
   margin-bottom: 3rem;
 
-  .input-label {
-    font-family: 'Rubik', sans-serif;
-    color: v.$washed-gray;
-    font-weight: 500;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-  }
-
   .account-input {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     flex-grow: 1;
-
-    input {
-      width: 100%;
-      font-size: 1rem;
-      padding: 0.5rem;
-    }
   }
 
   button {

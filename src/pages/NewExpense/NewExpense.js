@@ -129,12 +129,12 @@ const NewExpense = () => {
         <form className="expense-form" onSubmit={handleSubmit}>
           <div className="expense-input">
             <label className="input-label" htmlFor="description">Description</label>
-            <input id="description" name="description" type="text" className={`text-field-input ${fieldErrors.description && 'field-error'}`} value={description} onFocus={() => setFieldErrors({...fieldErrors, description: null})} onChange={(e) => setDescription(e.target.value)} />
+            <input id="description" name="description" type="text" className={`text-input ${fieldErrors.description && 'field-error'}`} value={description} onFocus={() => setFieldErrors({...fieldErrors, description: null})} onChange={(e) => setDescription(e.target.value)} />
             {fieldErrors.description && <span className="field-error-text">{fieldErrors.description}</span>}
           </div>
           <div className="expense-input">
             <label className="input-label" htmlFor="amount">Amount</label>
-            <input id="amount" name="amount" type="number" className={`text-field-input ${fieldErrors.amount && 'field-error'}`} value={amount} onFocus={() => setFieldErrors({...fieldErrors, amount: null})} onChange={(e) => setAmount(e.target.value)} />
+            <input id="amount" name="amount" type="number" className={`text-input ${fieldErrors.amount && 'field-error'}`} value={amount} onFocus={() => setFieldErrors({...fieldErrors, amount: null})} onChange={(e) => setAmount(e.target.value)} />
             {fieldErrors.amount && <span className="field-error-text">{fieldErrors.amount}</span>}
           </div>
           <div className="expense-input">
