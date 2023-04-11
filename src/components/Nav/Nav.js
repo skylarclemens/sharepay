@@ -7,7 +7,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 const Nav = () => {
   const location = useLocation();
-  const selectedPath = (linkPath) => location.pathname === linkPath && 'selected';
+  const selectedPath = linkPath => location.pathname === linkPath && 'selected';
 
   return (
     <div className="nav-container">
@@ -21,7 +21,9 @@ const Nav = () => {
           </Link>
         </div>
         <div className="nav-buttons nav-buttons-right">
-          <div className="nav-button"></div>
+          <div className="nav-button">
+            <img src={graphImg} alt="Graph icon"/>
+          </div>
           <Link className={`nav-button ${selectedPath("/account")}`} to="/account">
             <img src={profileImg} alt="Account icon"/>
           </Link>
