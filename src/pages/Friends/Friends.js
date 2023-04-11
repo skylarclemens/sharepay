@@ -2,8 +2,10 @@ import './Friends.scss';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
-import Avatar from '../../components/Avatar/Avatar';
 import { Link } from 'react-router-dom';
+import Avatar from '../../components/Avatar/Avatar';
+import Header from '../../components/Header/Header';
+import addFriendImg from '../../images/Add_friend.svg';
 
 const Friends = () => {
   const [requests, setRequests] = useState([]);
@@ -87,6 +89,11 @@ const Friends = () => {
 
   return (
     <>
+      <Header type="main" headerRight={
+        <Link to="/add-friend">
+          <img src={addFriendImg} alt="Add Friend Icon" />
+        </Link>
+      }/>
       <div className="friends-container">
         <h2 className="heading">Requests</h2>
         <div className="requests-container">
@@ -154,7 +161,6 @@ const Friends = () => {
               return null;
             })) : null}
       </div>
-      <Link className="button add-friends-button" to="/add-friend">Add friend</Link>
     </>
   )
 }
