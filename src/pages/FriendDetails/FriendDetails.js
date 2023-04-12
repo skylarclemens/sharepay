@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import Avatar from '../../components/Avatar/Avatar';
 import Transactions from '../../components/Transactions/Transactions';
+import Header from '../../components/Header/Header';
+import PayUp from '../PayUp/PayUp';
 import { balanceCalc } from '../../helpers/balance';
 
 const FriendDetails = () => {
@@ -13,6 +15,7 @@ const FriendDetails = () => {
   const [sharedExpenses, setSharedExpenses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [balances, setBalances] = useState({total: 0, owed: 0, owe: 0});
+  const [openPayUp, setOpenPayUp] = useState(false);
   let { id } = useParams();
 
   const friend = friends.find(friend => friend.id === id);
@@ -41,8 +44,13 @@ const FriendDetails = () => {
     setBalances(balanceCalc(sharedExpenses, user.id));
   }, [sharedExpenses, user]);
 
+  const handleOpenPayUp = () => {
+    setOpenPayUp(true);
+  }
+
   return (
-    <>
+    <div className="friend-pay-container">
+      <Header type="title" title="Friend details" />
       {friend &&
         <div className="friend-container">
           <div className="friend-info-container">
@@ -59,7 +67,8 @@ const FriendDetails = () => {
             </div>
           </div>
           <div className="pay-up-button">
-            <button type="button" className="button" title="Pay up">Pay up</button>
+            {/* <Link className="button" to={`/pay-up/${friend.id}`}>Pay up</Link> */}
+            <button type="button" className="button" title="Pay up" onClick={handleOpenPayUp}>Pay up</button>
           </div>
           <div className="shared-expenses">
             <h2 className="heading">Shared expenses</h2>
@@ -71,7 +80,8 @@ const FriendDetails = () => {
           </div>
         </div>
       }
-    </>
+      <PayUp open={openPayUp}/>
+    </div>
   )
 }
 

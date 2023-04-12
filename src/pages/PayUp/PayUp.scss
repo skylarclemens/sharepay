@@ -1,0 +1,11 @@
+@use '../../utilities/colors' as v;
+
+.pay-up-container {
+  position: absolute;
+  z-index: 11;
+  top: 0;
+  left: 0;
+  min-height: 100vh;
+  width: 100vw;
+  background: v.$light-gray;
+}

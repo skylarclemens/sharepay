@@ -1,5 +1,9 @@
 @use '../../utilities/colors' as v;
 
+.friend-pay-container {
+  position: relative;
+}
+
 .friend-container {
   overflow: auto;
   background: v.$light-gray;
@@ -22,6 +26,8 @@
     margin-bottom: 1rem;
     .button {
       width: 50%;
+      text-align: center;
+      text-decoration: none;
     }
   }
 }
@@ -58,5 +64,11 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+}
+
+.shared-expenses {
+  .heading {
+    border-top: none;
   }
 }
