@@ -6,7 +6,7 @@ import { supabase } from '../../supabaseClient';
 import Avatar from '../../components/Avatar/Avatar';
 import Transactions from '../../components/Transactions/Transactions';
 import Header from '../../components/Header/Header';
-import PayUp from '../PayUp/PayUp';
+import PayUp from '../../components/PayUp/PayUp';
 import { balanceCalc } from '../../helpers/balance';
 
 const FriendDetails = () => {
@@ -49,7 +49,8 @@ const FriendDetails = () => {
   }
 
   return (
-    <div className="friend-pay-container">
+    <div className={`friend-pay-container ${openPayUp ? 'modal-open' : ''}`}>
+      <div className={openPayUp ? 'modal-overlay' : ''}></div>
       <Header type="title" title="Friend details" />
       {friend &&
         <div className="friend-container">
@@ -61,9 +62,9 @@ const FriendDetails = () => {
                 <span className="medium-gray">{friend?.email}</span>
               </div>
             </div>
-            <div className="balance-block balance-block--total">
+            <div className="balance balance-block balance-block--total">
               <h3>TOTAL BALANCE</h3>
-              <span className={balances.total < 0 ? 'total--owe' : ''}>${balances.total.toFixed(2) || 0.00}</span>
+              <span className={`total ${balances.total < 0 ? 'total--owe' : ''}`}>${balances.total.toFixed(2) || 0.00}</span>
             </div>
           </div>
           <div className="pay-up-button">
@@ -80,7 +81,7 @@ const FriendDetails = () => {
           </div>
         </div>
       }
-      <PayUp open={openPayUp}/>
+      <PayUp setOpenPayUp={setOpenPayUp} openPayUp={openPayUp} friend={friend} sharedExpenses={sharedExpenses} balances={balances} />
     </div>
   )
 }

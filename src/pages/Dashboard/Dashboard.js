@@ -42,16 +42,16 @@ const Dashboard = () => {
               <div className="balance">
                 <div className="balance-block balance-block--total">
                   <h3>TOTAL BALANCE</h3>
-                  <span className={balances.total < 0 ? 'total--owe' : ''}>${balances.total.toFixed(2) || 0.00}</span>
+                  <span className={`total ${balances?.total < 0 ? 'total--owe' : ''}`}>${balances?.total.toFixed(2) || 0.00}</span>
                 </div>
                 <div className="secondary-balance">
                   <div className="balance-block balance-block--green">
                     <h3>YOU'RE OWED</h3>
-                    <span>${balances.owed.toFixed(2) || 0.00}</span>
+                    <span>${balances?.owed.toFixed(2) || 0.00}</span>
                   </div>
                   <div className="balance-block balance-block--red">
                     <h3>YOU OWE</h3>
-                    <span>${balances.owe.toFixed(2) || 0.00}</span>
+                    <span>${balances?.owe.toFixed(2) || 0.00}</span>
                   </div>
                 </div>
               </div>

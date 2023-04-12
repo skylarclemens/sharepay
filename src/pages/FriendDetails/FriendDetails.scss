@@ -2,6 +2,37 @@
 
 .friend-pay-container {
   position: relative;
+  .modal-overlay {
+    position: absolute;
+    z-index: 11;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+  }
+  &.modal-open {
+    height: 100vh;
+    top: calc(-46px - env(safe-area-inset-top));
+    padding-top: calc(46px + env(safe-area-inset-top));
+    touch-action: none;
+    -webkit-overflow-scrolling: none;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  .balance-block {
+    padding: 0;
+  }
+  .balance-block--total {
+    background: none;
+    border-bottom: none;
+    align-self: center;
+    h3 {
+      color: v.$washed-gray;
+    }
+  }
 }
 
 .friend-container {
@@ -43,17 +74,6 @@
   padding: 1rem;
   margin: 20px;
   margin-bottom: 1rem;
-  .balance-block {
-    padding: 0;
-  }
-  .balance-block--total {
-    background: none;
-    border-bottom: none;
-    align-self: center;
-    h3 {
-      color: v.$washed-gray;
-    }
-  }
 }
 
 .friend-info {
