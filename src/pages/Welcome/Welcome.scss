@@ -1,5 +1,12 @@
 @use '../../utilities/colors' as v;
 
+.container:has(.welcome-container) {
+  height: 100%;
+  width: 100%;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: 0;
+}
+
 .welcome-container {
   position: relative;
   display: flex;
@@ -7,9 +14,10 @@
   align-items: center;
   gap: 1rem;
   padding-top: 110px;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   overflow: hidden;
+  touch-action: none;
 
   .button {
     margin-top: 30px;
