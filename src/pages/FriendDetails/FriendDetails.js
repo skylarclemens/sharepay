@@ -25,9 +25,10 @@ const FriendDetails = () => {
       setLoading(true);
       try {
         const { data, error } = await supabase
-        .from('debt')
-        .select()
-        .or(`creditor_id.eq.${friend.id},debtor_id.eq.${friend.id}`);
+          .from('debt')
+          .select()
+          .or(`creditor_id.eq.${friend.id},debtor_id.eq.${friend.id}`)
+          .neq('paid', true);
         if (error) throw error;
         setSharedExpenses(data);
       } catch (error) {
@@ -63,7 +64,7 @@ const FriendDetails = () => {
               </div>
             </div>
             <div className="balance balance-block balance-block--total">
-              <h3>TOTAL BALANCE</h3>
+              <h3>BALANCE</h3>
               <span className={`total ${balances.total < 0 ? 'total--owe' : ''}`}>${balances.total.toFixed(2) || 0.00}</span>
             </div>
           </div>

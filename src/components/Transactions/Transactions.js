@@ -12,7 +12,7 @@ const Transactions = ({ debts, friend }) => {
     <div className="transactions">
       {debts.map((debt) => {
         let debtType, userCreditor, userDebtor = '';
-        if (debt.creditor_id === account.id) {
+        if (debt?.creditor_id === account?.id) {
           debtType = 'OWED';
           userCreditor = account;
           userDebtor = friend || friends.find(friend => friend.id === debt.debtor_id);
@@ -21,8 +21,8 @@ const Transactions = ({ debts, friend }) => {
           userCreditor = friend || friends.find(friend => friend.id === debt.creditor_id);
           userDebtor = account;
         }
-        const currentExpense = expenses.find(expense => expense.id === debt.expense_id);
-        return (
+        const currentExpense = expenses.find(expense => expense?.id === debt.expense_id);
+        return currentExpense ? (
           <Link className="expense-link" key={debt.expense_id} to={`/expense/${debt.expense_id}`}>
             <div className="transaction-expense">
                 <div className="expense-avatars">
@@ -30,7 +30,7 @@ const Transactions = ({ debts, friend }) => {
                   <Avatar url={userDebtor?.avatar_url} size={40} />
                 </div>
                 <div className="desc">
-                  {currentExpense.description}
+                  {currentExpense?.description}
                 </div>
                 <div className="transaction">
                   <div className="expense-type">{debtType}</div>
@@ -39,7 +39,7 @@ const Transactions = ({ debts, friend }) => {
                 <div className="arrow arrow--right"></div>
             </div>
           </Link>
-        );
+        ) : null;
       })}
     </div>
   )
