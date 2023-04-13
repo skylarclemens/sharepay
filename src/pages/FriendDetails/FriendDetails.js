@@ -12,7 +12,7 @@ import { balanceCalc } from '../../helpers/balance';
 const FriendDetails = () => {
   const user = useSelector(state => state.user);
   const friends = useSelector(state => state.friends.data);
-  const [sharedExpenses, setSharedExpenses] = useState([]);
+  const [sharedDebts, setSharedDebts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [balances, setBalances] = useState({total: 0, owed: 0, owe: 0});
   const [openPayUp, setOpenPayUp] = useState(false);
@@ -21,7 +21,7 @@ const FriendDetails = () => {
   const friend = friends.find(friend => friend.id === id);
 
   useEffect(() => {
-    const getSharedExpenses = async () => {
+    const getSharedDebts = async () => {
       setLoading(true);
       try {
         const { data, error } = await supabase
@@ -30,7 +30,7 @@ const FriendDetails = () => {
           .or(`creditor_id.eq.${friend.id},debtor_id.eq.${friend.id}`)
           .neq('paid', true);
         if (error) throw error;
-        setSharedExpenses(data);
+        setSharedDebts(data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -38,12 +38,12 @@ const FriendDetails = () => {
       }
     }
 
-    getSharedExpenses();
+    getSharedDebts();
   }, [friend]);
 
   useEffect(() => {
-    setBalances(balanceCalc(sharedExpenses, user.id));
-  }, [sharedExpenses, user]);
+    setBalances(balanceCalc(sharedDebts, user.id));
+  }, [sharedDebts, user]);
 
   const handleOpenPayUp = () => {
     setOpenPayUp(true);
@@ -77,12 +77,12 @@ const FriendDetails = () => {
             {loading ? (
                 <span className="loading-data medium-gray">Loading...</span>
             ) : (
-              <Transactions debts={sharedExpenses} friend={friend} />
+              <Transactions debts={sharedDebts} friend={friend} />
             )}
           </div>
         </div>
       }
-      <PayUp setOpenPayUp={setOpenPayUp} openPayUp={openPayUp} friend={friend} sharedExpenses={sharedExpenses} balances={balances} />
+      <PayUp setOpenPayUp={setOpenPayUp} openPayUp={openPayUp} friend={friend} sharedDebts={sharedDebts} balances={balances} />
     </div>
   )
 }

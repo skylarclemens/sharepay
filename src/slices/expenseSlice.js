@@ -63,6 +63,6 @@ export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async (u
   const { data } = await supabase
     .from('debt')
     .select('expense!inner(*)')
-    .neq('expense.settled', true);
+    .neq('expense.paid', true);
   return data.map(obj => obj.expense);
 });
