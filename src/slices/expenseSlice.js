@@ -3,6 +3,11 @@ import { supabase } from "../supabaseClient";
 
 const initialState = {
   data: [],
+  balances: {
+    total: 0,
+    owed: 0,
+    owe: 0
+  },
   status: 'idle',
   error: null
 }
@@ -25,6 +30,12 @@ export const expenseSlice = createSlice({
         ...state,
         data: newData
       }
+    },
+    setBalances: (state, action) => {
+      return {
+        ...state,
+        balances: action.payload
+      }
     }
   },
   extraReducers(builder) {
@@ -45,12 +56,13 @@ export const expenseSlice = createSlice({
   }
 });
 
-export const { addExpense, removeExpense } = expenseSlice.actions;
+export const { addExpense, removeExpense, setBalances } = expenseSlice.actions;
 export default expenseSlice.reducer;
 
 export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async (userId) => {
   const { data } = await supabase
     .from('debt')
-    .select('expense_id(*)');
-  return data.map(obj => obj.expense_id);
+    .select('expense!inner(*)')
+    .neq('expense.paid', true);
+  return data.map(obj => obj.expense);
 });
