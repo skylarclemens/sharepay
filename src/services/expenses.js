@@ -8,4 +8,20 @@ const getAll = async () => {
     return data;
 }
 
-export default { getAll };
+const getExpenseById = async (id) => {
+  const { data } = await supabase
+    .from('expense')
+    .select()
+    .eq('id', id);
+    return data;
+}
+
+const getPaidExpenses = async (id) => {
+  const { data } = await supabase
+    .from('expense')
+    .select()
+    .eq('paid', true);
+    return data;
+}
+
+export default { getAll, getExpenseById, getPaidExpenses };
