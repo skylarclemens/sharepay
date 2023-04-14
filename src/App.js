@@ -9,6 +9,7 @@ import Account from './pages/Account/Account';
 import Welcome from './pages/Welcome/Welcome';
 import Expense from './pages/Expense/Expense';
 import NewExpense from './pages/NewExpense/NewExpense';
+import Recent from './pages/Recent/Recent';
 import Header from './components/Header/Header';
 import Nav from './components/Nav/Nav';
 import { useEffect } from 'react';
@@ -42,6 +43,7 @@ const App = () => {
           <Route path='/signup' element={<SignUp />} />
           <Route path='/login' element={<Login />} />
           <Route path='/account' element={<Account />} />
+          <Route path='/recent' element={<Recent />} />
           <Route path='/friends' element={<Friends />} />
           <Route path='/add-friend' element={<AddFriend />} />
           <Route path="/friend/:id" element={<FriendDetails />} />

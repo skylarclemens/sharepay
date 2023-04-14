@@ -21,9 +21,9 @@ const Nav = () => {
           </Link>
         </div>
         <div className="nav-buttons nav-buttons-right">
-          <div className="nav-button">
+          <Link className={`nav-button ${selectedPath("/recent")}`} to="/recent">
             <img src={graphImg} alt="Graph icon"/>
-          </div>
+          </Link>
           <Link className={`nav-button ${selectedPath("/account")}`} to="/account">
             <img src={profileImg} alt="Account icon"/>
           </Link>
