@@ -1,8 +1,6 @@
 import './Recent.scss';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
-import Avatar from '../../components/Avatar/Avatar';
-import { useSelector } from 'react-redux';
 import Transactions from '../../components/Transactions/Transactions';
 
 const Recent = () => {

@@ -5,8 +5,12 @@ const Transactions = ({ debts, friend, paid }) => {
   return (
     <div className="transactions">
       {debts.map((debt) => {
-        if(!paid && debt.paid) return;
-        return <Transaction key={debt.id} debt={debt} paid={paid} friend={friend} />
+        const hideDebt = !paid && debt.paid;
+        return (
+          !hideDebt && (
+            <Transaction key={debt.id} debt={debt} paid={paid} friend={friend} />
+          )
+        )
       })}
     </div>
   )
