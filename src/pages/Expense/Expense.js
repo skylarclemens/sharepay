@@ -59,6 +59,9 @@ const Expense = () => {
             <h1>{expense && expense.description}</h1>
             <span className="expense-amount expense-amount--details">${expense.amount.toFixed(2)}</span>
             <span className="created-date medium-gray">Created on {new Date(expense.created_at).toLocaleDateString("en-US", {month: 'long', day:'numeric', year: 'numeric'})}</span>
+            {expense.paid && <div className="paid-up">
+              PAID UP
+            </div>}
           </div>
           <div className="user-transaction">
             <div className="details-paid">

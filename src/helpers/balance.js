@@ -3,6 +3,7 @@ export const balanceCalc = (debts, userId) => {
   let balanceOwed = 0;
   let balanceOwe = 0;
   debts.forEach((debt) => {
+    if (debt.paid) return;
     const amount = debt.amount;
     if (debt.creditor_id === userId) {
       totalBalance += amount;

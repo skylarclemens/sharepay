@@ -59,7 +59,7 @@ const Dashboard = () => {
           </div>
           <div className="transactions-container">
             <h2 className="heading">Transactions</h2>
-            <Transactions debts={debts.data} />
+            <Transactions debts={debts.data} paid={false} />
           </div>
         </>
           ) : null }

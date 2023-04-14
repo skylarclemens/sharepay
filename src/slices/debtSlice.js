@@ -59,7 +59,6 @@ export default debtSlice.reducer;
 export const fetchDebts = createAsyncThunk('debts/fetchDebts', async () => {
   const { data } = await supabase
     .from('debt')
-    .select()
-    .neq('paid', true);
+    .select();
   return data;
 });
