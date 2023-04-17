@@ -1,9 +1,8 @@
 import './NewExpense.scss';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addExpense } from '../../slices/expenseSlice';
 import { addDebt } from '../../slices/debtSlice';
-import Select from 'react-select';
 import Header from '../../components/Header/Header';
 import Avatar from '../../components/Avatar/Avatar';
 import TextInput from '../../components/Input/TextInput/TextInput';
@@ -21,25 +20,10 @@ const NewExpense = () => {
   const [splitWith, setSplitWith] = useState('');
   const [paidBy, setPaidBy] = useState(user.id);
   const [split, setSplit] = useState('');
-  const [options, setOptions] = useState([]);
   const [friendSelected, setFriendSelected] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const friendOptions = friends.map((friend) => {
-      const friendId = friend.id;
-      const friendName = friend.name;
-      return (
-        {
-          value: friendId,
-          label: friendName
-        }
-      )
-    });
-    setOptions(friendOptions);
-  }, [friends]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -118,11 +102,6 @@ const NewExpense = () => {
     errors.formValid = formValid;
     setFieldErrors(errors);
     return formValid;
-  } 
-
-  const handleFriendSelect = (value) => {
-    const friendSplit = friends.find(friend => friend.id === value);
-    setFriendSelected(friendSplit);
   }
 
   const handleAmount = (value) => {
@@ -136,18 +115,28 @@ const NewExpense = () => {
         <form className="expense-form" onSubmit={handleSubmit}>
           <AmountInput name="amount" label="Amount" placeholder="0.00" fieldError={fieldErrors.amount} value={amount} onFocus={() => setFieldErrors({...fieldErrors, amount: null})} onChange={(e) => handleAmount(e.target.value)} />
           <div className="input-container">
-            <TextInput name="description" label="Description" value={description} placeholder="What's it for?" fieldError={fieldErrors.description} onFocus={() => setFieldErrors({...fieldErrors, description: null})} onChange={(e) => setDescription(e.target.value)} />
-            <div className="expense-input">
-              <span className="input-label">Split between</span>
-              <Select options={options} onFocus={() => setFieldErrors({...fieldErrors, splitWith: null})} onChange={(opt) => {
-                setSplitWith(opt.value)
-                handleFriendSelect(opt.value)
-              }}/>
+            <TextInput className="expense-input" name="description" label="Description" value={description} placeholder="What's it for?" fieldError={fieldErrors.description} onFocus={() => setFieldErrors({...fieldErrors, description: null})} onChange={(e) => setDescription(e.target.value)} />
+            <div className="split-with-container">
+              <span className="input-label">Split with</span>
+              <div className="split-with">
+                {friends.map(friend => {
+                  return (
+                    <div key={friend.id} className={`split-with-friend ${splitWith === friend.id ? 'selected' : ''}`} onClick={() => {
+                      setSplitWith(friend.id);
+                      setFriendSelected(friend);
+                      setFieldErrors({...fieldErrors, splitWith: null})
+                    }}>
+                      <Avatar url={friend.avatar_url} size={45} classes="white-border" />
+                      {friend.name}
+                    </div>  
+                  )
+                })}
+              </div>
               {fieldErrors.splitWith && <span className="field-error-text">{fieldErrors.splitWith}</span>}
             </div>
             {friendSelected && (
               <>
-                <fieldset>
+                <fieldset className="expense-input">
                   <legend className="input-label">Paid By</legend>
                   <div className="expense-radio radio-paid-by">
                     <div className="user-select-option">
@@ -190,25 +179,8 @@ const NewExpense = () => {
                   ]}
                   onFocus={() => setFieldErrors({...fieldErrors, split: null})}
                   onChange={(e) => setSplit(e.target.value)}
+                  className="expense-input"
                 />
-                {/* <fieldset>
-                  <legend className="input-label">Split</legend>
-                  <div className="expense-radio">
-                    <div className="radio-option">
-                      <label>
-                        <input id="split-equally" name="expense-split" type="radio" value="EQUALLY" checked={split === 'EQUALLY'} onFocus={() => setFieldErrors({...fieldErrors, split: null})} onChange={(e) => setSplit(e.target.value)} />
-                        Split equally
-                      </label>
-                    </div>
-                    <div className="radio-option">
-                      <label>
-                        <input id="them-split-equally" name="expense-split" type="radio" value="FULL_AMOUNT" checked={split === 'FULL_AMOUNT'} onFocus={() => setFieldErrors({...fieldErrors, split: null})} onChange={(e) => setSplit(e.target.value)} />
-                        Owed full amount
-                      </label>
-                    </div>
-                    {fieldErrors.split && <span className="field-error-text split-field">{fieldErrors.split}</span>}
-                  </div>
-                </fieldset> */}
               </>
             )}
             <button className="button" type="submit" alt="Create expense" title="Create expense">Create</button>

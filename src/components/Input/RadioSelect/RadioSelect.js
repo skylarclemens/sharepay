@@ -1,8 +1,8 @@
 import './RadioSelect.scss';
 
-const RadioSelect = ({ label, name, options, onFocus, onChange, fieldError }) => {
+const RadioSelect = ({ label, name, options, onFocus, onChange, fieldError, className }) => {
   return (
-    <fieldset>
+    <fieldset className={className}>
       <legend className="input-label">{label}</legend>
       <div className="radio-select">
         {options.map(option => {
