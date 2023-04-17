@@ -8,6 +8,7 @@ import Header from '../../components/Header/Header';
 import Avatar from '../../components/Avatar/Avatar';
 import TextInput from '../../components/Input/TextInput/TextInput';
 import AmountInput from '../../components/Input/AmountInput/AmountInput';
+import RadioSelect from '../../components/Input/RadioSelect/RadioSelect';
 import { supabase } from '../../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 
@@ -149,7 +150,7 @@ const NewExpense = () => {
                 <fieldset>
                   <legend className="input-label">Paid By</legend>
                   <div className="expense-radio radio-paid-by">
-                    <div className="radio-option">
+                    <div className="user-select-option">
                       <div className={`user-detail-select ${paidBy === user.id ? 'selected' : ''}`} onClick={() => {
                         setPaidBy(user.id)
                         setFieldErrors({...fieldErrors, paidBy: null})
@@ -158,7 +159,7 @@ const NewExpense = () => {
                         Me
                       </div>
                     </div>
-                    <div className="radio-option">
+                    <div className="user-select-option">
                       <div className={`user-detail-select ${paidBy === friendSelected.id ? 'selected' : ''}`} onClick={() => {
                         setPaidBy(friendSelected.id)
                         setFieldErrors({...fieldErrors, paidBy: null})
@@ -170,7 +171,27 @@ const NewExpense = () => {
                     {fieldErrors.paidBy && <span className="field-error-text">{fieldErrors.paidBy}</span>}
                   </div>
                 </fieldset>
-                <fieldset>
+                <RadioSelect
+                  label="Split"
+                  name="expense-split"
+                  options={[
+                    {
+                      id: 'split-equally',
+                      value: 'EQUALLY',
+                      checked: split === 'EQUALLY',
+                      content: 'Split equally'
+                    },
+                    {
+                      id: 'full-amount',
+                      value: 'FULL_AMOUNT',
+                      checked: split === 'FULL_AMOUNT',
+                      content: 'Owed full amount'
+                    }
+                  ]}
+                  onFocus={() => setFieldErrors({...fieldErrors, split: null})}
+                  onChange={(e) => setSplit(e.target.value)}
+                />
+                {/* <fieldset>
                   <legend className="input-label">Split</legend>
                   <div className="expense-radio">
                     <div className="radio-option">
@@ -187,7 +208,7 @@ const NewExpense = () => {
                     </div>
                     {fieldErrors.split && <span className="field-error-text split-field">{fieldErrors.split}</span>}
                   </div>
-                </fieldset>
+                </fieldset> */}
               </>
             )}
             <button className="button" type="submit" alt="Create expense" title="Create expense">Create</button>

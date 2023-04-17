@@ -1,0 +1,29 @@
+@use '../../../utilities/colors' as v;
+
+.radio-select {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  .radio-option-input {
+    position: fixed;
+    opacity: 0;
+    height: 0;
+    width: 0;
+    margin: 0;
+  }
+  .radio-option-select {
+    display: block;
+    background: v.$light-gray;
+    border: 2px solid v.$light-gray;
+    padding: 0.5rem 0.875rem;
+    box-shadow: 0px 2px 0px v.$accent-gray;
+    border-radius: 1.75rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+
+    &.selected {
+      border: 2px solid #6C91C2;
+      box-shadow: 0px 2px 0px rgba(75, 129, 198, 0.5);
+    }
+  }
+}
