@@ -56,7 +56,7 @@
   font-family: 'Rubik', sans-serif;
   font-size: 40px;
   font-weight: 500;
-  background: linear-gradient(87.89deg, #729B94 -1.86%, #729B79 101.94%);
+  background: linear-gradient(87.89deg, #729B94 -1.86%,  v.$layout-green 101.94%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -70,7 +70,7 @@
 
 .login-bottom-link {
   font-weight: 600;
-  color: #729B79;
+  color: v.$layout-green;
 }
 
 .bottom-logo {
