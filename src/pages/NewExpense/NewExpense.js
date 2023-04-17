@@ -133,7 +133,7 @@ const NewExpense = () => {
     <div className="expense-container">
       <Header type="title" title="Add expense" />
         <form className="expense-form" onSubmit={handleSubmit}>
-          <AmountInput name="amount" label="Amount" placeholder="0" fieldError={fieldErrors.amount} value={amount} onFocus={() => setFieldErrors({...fieldErrors, amount: null})} onChange={(e) => handleAmount(e.target.value)} />
+          <AmountInput name="amount" label="Amount" placeholder="0.00" fieldError={fieldErrors.amount} value={amount} onFocus={() => setFieldErrors({...fieldErrors, amount: null})} onChange={(e) => handleAmount(e.target.value)} />
           <div className="input-container">
             <TextInput name="description" label="Description" value={description} placeholder="What's it for?" fieldError={fieldErrors.description} onFocus={() => setFieldErrors({...fieldErrors, description: null})} onChange={(e) => setDescription(e.target.value)} />
             <div className="expense-input">
