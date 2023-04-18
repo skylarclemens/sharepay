@@ -12,14 +12,6 @@
 }
 
 .expense-form {
-  .input-label {
-    font-family: 'Rubik', sans-serif;
-    color: v.$dark-gray;
-    font-weight: 500;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-  }
-
   .expense-input {
     display: flex;
     flex-direction: column;
@@ -36,19 +28,6 @@
     gap: 1.5rem;
     margin: 80px 0;
     padding-top: 1.5rem;
-  }
-
-  .field-error-text {
-    display: inline-block;
-    align-self: flex-start;
-    border: 1px solid v.$red;
-    background: rgba(220, 85, 55, 0.05);
-    border-radius: 0.25rem;
-    padding: 0.5rem;
-
-    &.form-validation {
-      align-self: center;
-    }
   }
 
   .split-with-container {
@@ -71,37 +50,9 @@
     }
   }
 
-  .split-with-friend {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.75rem;
-    background: #FFFFFF;
-    padding: 0.375rem;
-    border: 2px solid transparent;
-    border-radius: 1rem;
-    box-shadow: 0px 2px 0px v.$accent-gray;
-  }
-
-  .user-select-option {
-    margin-top: 0.5rem;
-  }
-
-  .expense-radio.radio-paid-by {
+  .expense-radio.paid-by {
     display: flex;
     gap: 1rem;
-
-    input {
-      position: fixed;
-      visibility: none;
-      opacity: 0;
-      height: 0;
-      width: 0;
-      margin: 0;
-      appearance: none;
-      -webkit-appearance: none;
-    }
   }
 
   .user-detail-select {

@@ -141,7 +141,7 @@ const NewExpense = () => {
                 <fieldset>
                   <div className="expense-input">
                     <legend className="input-label">Paid By</legend>
-                    <div className="expense-radio radio-paid-by">
+                    <div className="expense-radio paid-by">
                       <UserButton
                       user={account}
                         name="Me"

@@ -44,7 +44,11 @@
   color: white;
   font-family: 'Rubik', sans-serif;
   font-weight: 500;
-  padding: 0 20px 0 0;
+  padding: 0;
+
+  &.header-right {
+    padding: 0 20px 0 0;
+  }
 
   .title-right {
     justify-self: flex-end;
