@@ -37,3 +37,17 @@
     color: #aaaaaa;
   }
 }
+
+.field-error-text {
+  display: inline-block;
+  align-self: flex-start;
+  border: 1px solid v.$red;
+  background: rgba(220, 85, 55, 0.05);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  margin: 0 auto;
+
+  &.form-validation {
+    align-self: center;
+  }
+}

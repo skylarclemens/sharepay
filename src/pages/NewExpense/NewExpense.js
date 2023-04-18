@@ -115,6 +115,7 @@ const NewExpense = () => {
         <form className="expense-form" onSubmit={handleSubmit}>
           <AmountInput name="amount" label="Amount" placeholder="0.00" fieldError={fieldErrors.amount} value={amount} onFocus={() => setFieldErrors({...fieldErrors, amount: null})} onChange={(e) => handleAmount(e.target.value)} />
           <div className="expense-input-container">
+            {fieldErrors.amount && <span className="field-error-text">{fieldErrors.amount}</span>}
             <TextInput className="expense-input" name="description" label="Description" value={description} placeholder="What's it for?" fieldError={fieldErrors.description} onFocus={() => setFieldErrors({...fieldErrors, description: null})} onChange={(e) => setDescription(e.target.value)} />
             <div className="split-with-container">
               <span className="input-label">Split with</span>
@@ -141,7 +142,7 @@ const NewExpense = () => {
                 <fieldset>
                   <div className="expense-input">
                     <legend className="input-label">Paid By</legend>
-                    <div className="expense-radio radio-paid-by">
+                    <div className="expense-radio paid-by">
                       <UserButton
                       user={account}
                         name="Me"
