@@ -4,10 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addExpense } from '../../slices/expenseSlice';
 import { addDebt } from '../../slices/debtSlice';
 import Header from '../../components/Header/Header';
-import Avatar from '../../components/Avatar/Avatar';
 import TextInput from '../../components/Input/TextInput/TextInput';
 import AmountInput from '../../components/Input/AmountInput/AmountInput';
 import RadioSelect from '../../components/Input/RadioSelect/RadioSelect';
+import UserButton from '../../components/User/UserButton/UserButton';
 import { supabase } from '../../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 
@@ -114,21 +114,23 @@ const NewExpense = () => {
       <Header type="title" title="Add expense" />
         <form className="expense-form" onSubmit={handleSubmit}>
           <AmountInput name="amount" label="Amount" placeholder="0.00" fieldError={fieldErrors.amount} value={amount} onFocus={() => setFieldErrors({...fieldErrors, amount: null})} onChange={(e) => handleAmount(e.target.value)} />
-          <div className="input-container">
+          <div className="expense-input-container">
             <TextInput className="expense-input" name="description" label="Description" value={description} placeholder="What's it for?" fieldError={fieldErrors.description} onFocus={() => setFieldErrors({...fieldErrors, description: null})} onChange={(e) => setDescription(e.target.value)} />
             <div className="split-with-container">
               <span className="input-label">Split with</span>
               <div className="split-with">
                 {friends.map(friend => {
                   return (
-                    <div key={friend.id} className={`split-with-friend ${splitWith === friend.id ? 'selected' : ''}`} onClick={() => {
-                      setSplitWith(friend.id);
-                      setFriendSelected(friend);
-                      setFieldErrors({...fieldErrors, splitWith: null})
-                    }}>
-                      <Avatar url={friend.avatar_url} size={45} classes="white-border" />
-                      {friend.name}
-                    </div>  
+                    <UserButton key={friend.id}
+                      variant="white"
+                      user={friend}
+                      selected={splitWith === friend.id}
+                      onClick={() => {
+                        setSplitWith(friend.id);
+                        setFriendSelected(friend);
+                        setFieldErrors({...fieldErrors, splitWith: null})
+                      }}
+                    />
                   )
                 })}
               </div>
@@ -136,28 +138,29 @@ const NewExpense = () => {
             </div>
             {friendSelected && (
               <>
-                <fieldset className="expense-input">
-                  <legend className="input-label">Paid By</legend>
-                  <div className="expense-radio radio-paid-by">
-                    <div className="user-select-option">
-                      <div className={`user-detail-select ${paidBy === user.id ? 'selected' : ''}`} onClick={() => {
-                        setPaidBy(user.id)
-                        setFieldErrors({...fieldErrors, paidBy: null})
-                      }}>
-                        <Avatar url={account?.avatar_url} size={34} classes="white-border"/>
-                        Me
-                      </div>
+                <fieldset>
+                  <div className="expense-input">
+                    <legend className="input-label">Paid By</legend>
+                    <div className="expense-radio radio-paid-by">
+                      <UserButton
+                      user={account}
+                        name="Me"
+                        selected={paidBy === user.id}
+                        onClick={() => {
+                          setPaidBy(user.id)
+                          setFieldErrors({...fieldErrors, paidBy: null})
+                        }}
+                      />
+                      <UserButton
+                        user={friendSelected}
+                        selected={paidBy === friendSelected.id}
+                        onClick={() => {
+                          setPaidBy(friendSelected.id)
+                          setFieldErrors({...fieldErrors, paidBy: null})
+                        }}
+                      />
+                      {fieldErrors.paidBy && <span className="field-error-text">{fieldErrors.paidBy}</span>}
                     </div>
-                    <div className="user-select-option">
-                      <div className={`user-detail-select ${paidBy === friendSelected.id ? 'selected' : ''}`} onClick={() => {
-                        setPaidBy(friendSelected.id)
-                        setFieldErrors({...fieldErrors, paidBy: null})
-                      }}>
-                        <Avatar url={friendSelected?.avatar_url} size={34} classes="white-border"/>
-                        {friendSelected.name}
-                      </div>
-                    </div>
-                    {fieldErrors.paidBy && <span className="field-error-text">{fieldErrors.paidBy}</span>}
                   </div>
                 </fieldset>
                 <RadioSelect
@@ -181,9 +184,9 @@ const NewExpense = () => {
                   onChange={(e) => setSplit(e.target.value)}
                   className="expense-input"
                 />
+                <button className="button" type="submit" alt="Create expense" title="Create expense">Create</button>
               </>
             )}
-            <button className="button" type="submit" alt="Create expense" title="Create expense">Create</button>
             {fieldErrors.formValid === false && <span className="field-error-text .form-validation">Please fix the errors to submit expense.</span>}
           </div>
         </form>
