@@ -11,6 +11,7 @@ const Friends = () => {
   const [requests, setRequests] = useState([]);
   const friends = useSelector(state => state.friends.data);
   const user = useSelector(state => state.user);
+  const groups = useSelector(state => state.groups.data);
 
   useEffect(() => {
     const getRequests = async () => {
@@ -162,8 +163,18 @@ const Friends = () => {
               }
               return null;
             })) : null}
+        
         <div className="groups-container">
           <h2 className="heading">Groups</h2>
+          {groups.length > 0 ? (
+            groups.map(group => {
+              return (
+                <div className="group">
+                  <span>{group.group_name}</span>
+                </div>
+              )
+            })
+          ) : null}
           <Link className="button button--link" to="/new-group">Create a group</Link>
         </div>
       </div>

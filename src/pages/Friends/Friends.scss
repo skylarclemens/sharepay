@@ -95,10 +95,11 @@
 }
 
 .groups-container {
-  .heading {
-    margin-bottom: 1rem;
-  }
   .button {
-    margin: 0 20px;
+    margin: 20px;
+  }
+  .group {
+    padding: 1rem 20px;
+    border-bottom: 2px solid v.$accent-gray;
   }
 }
