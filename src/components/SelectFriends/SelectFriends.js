@@ -1,11 +1,11 @@
-import './AddFriend.scss';
+import './SelectFriends.scss';
 import { useEffect, useState } from 'react';
-import { supabase } from '../../supabaseClient';
 import { useSelector } from 'react-redux';
-import Avatar from '../../components/Avatar/Avatar';
-import Header from '../../components/Header/Header';
+import Header from '../Header/Header';
+import Avatar from '../Avatar/Avatar';
+import { supabase } from '../../supabaseClient';
 
-const AddFriend = ({ selectFriends = false, handleAddUser }) => {
+const SelectFriends = ({ newFriends = false, handleAddUser }) => {
   const [value, setValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [requestSent, setRequestSent] = useState({
@@ -13,21 +13,27 @@ const AddFriend = ({ selectFriends = false, handleAddUser }) => {
     sent: false
   });
   const user = useSelector(state => state.user);
+  const friends = useSelector(state => state.friends.data);
 
   const inputTimer = 1000;
 
   useEffect(() => {
     const handleSearch = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('users')
-          .select()
-          .neq('id', user.id)
-          .or(`email.ilike.%${value}%,name.ilike.%${value}%`);
-        if (error) throw error;
-        setSuggestions(data);
-      } catch (error) {
-        console.error(error);
+      if (newFriends) {
+        try {
+          const { data, error } = await supabase
+            .from('users')
+            .select()
+            .neq('id', user.id)
+            .or(`email.ilike.%${value}%,name.ilike.%${value}%`);
+          if (error) throw error;
+          setSuggestions(data);
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        const suggestedFriends = friends.filter(friend => friend.name.toLowerCase().includes(value.toLowerCase()) || friend.email.toLowerCase().includes(value.toLowerCase()));
+        setSuggestions(suggestedFriends);
       }
     };
 
@@ -41,29 +47,18 @@ const AddFriend = ({ selectFriends = false, handleAddUser }) => {
       setSuggestions([]);
       return;
     }
-  }, [value, user]);
+  }, [value, user, friends, newFriends]);
 
-  const sendFriendRequest = async (userReceiveId) => {
-    try {
-      const { error } = await supabase
-        .from('friend_request')
-        .insert({
-          user_send: user.id,
-          user_receive: userReceiveId,
-          status: 'SENT'
-        });
-      if (error) throw error;
-      setRequestSent({
-        id: userReceiveId,
-        sent: true
-      });
-    } catch (error) {
-      console.error(error);
-    }
+  const handleAdd = (friend) => {
+    setRequestSent({
+      id: friend.id,
+      sent: true
+    });
+    handleAddUser(friend);
   }
 
   return (
-    <div className={`add-friend-container ${selectFriends && 'select-friends'}`}>
+    <div className={`add-friend-container ${!newFriends && 'select-friends'}`}>
       <Header type="title" title="Add friend" />
       <div className="search-container">
         <input className="text-input" type="text" value={value} placeholder="Search" onChange={(e) => setValue(e.target.value)} />
@@ -80,7 +75,7 @@ const AddFriend = ({ selectFriends = false, handleAddUser }) => {
                     <div className="user-email">{suggestedUser.email}</div>
                   </div>
                 </div>
-                <button type="button" className="add-user" onClick={() => sendFriendRequest(suggestedUser.id)}>
+                <button type="button" className="add-user" onClick={() => handleAdd(suggestedUser)}>
                   <div className={`add-user-plus ${sentStatus ? 'hide' : ''}`}></div>
                   <div className={`checkmark ${sentStatus ? '' : 'hide'}`}></div>
                 </button>
@@ -92,4 +87,4 @@ const AddFriend = ({ selectFriends = false, handleAddUser }) => {
   )
 }
 
-export default AddFriend;
+export default SelectFriends;

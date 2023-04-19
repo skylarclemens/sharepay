@@ -93,3 +93,13 @@
     }
   }
 }
+
+.groups-container {
+  .button {
+    margin: 20px;
+  }
+  .group {
+    padding: 1rem 20px;
+    border-bottom: 2px solid v.$accent-gray;
+  }
+}

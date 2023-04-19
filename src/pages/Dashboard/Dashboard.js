@@ -6,16 +6,19 @@ import { fetchExpenses, setBalances } from '../../slices/expenseSlice';
 import { fetchDebts } from '../../slices/debtSlice';
 import { fetchFriends } from '../../slices/friendSlice';
 import Transactions from '../../components/Transactions/Transactions';
+import { fetchGroups } from '../../slices/groupSlice';
 
 const Dashboard = () => {
   const user = useSelector(state => state.user);
   const expenses = useSelector(state => state.expenses);
   const friends = useSelector(state => state.friends);
   const debts = useSelector(state => state.debts);
+  const groups = useSelector(state => state.groups);
   const balances = useSelector(state => state.expenses.balances);
+
   const dispatch = useDispatch();
 
-  const dataLoaded = user && debts.status === 'succeeded' && friends.status === 'succeeded' && expenses.status === 'succeeded';
+  const dataLoaded = user && debts.status === 'succeeded' && friends.status === 'succeeded' && expenses.status === 'succeeded' && groups.status === 'succeeded';
 
   useEffect(() => {
     if (dataLoaded) {
@@ -27,6 +30,7 @@ const Dashboard = () => {
     dispatch(fetchDebts(user.id));
     dispatch(fetchExpenses(user.id));
     dispatch(fetchFriends(user.id));
+    dispatch(fetchGroups(user.id));
   }, [user, dispatch]);
 
   return (
