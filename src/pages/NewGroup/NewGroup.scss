@@ -1,8 +1,57 @@
+@use '../../utilities/colors' as v;
+
 .new-group-container {
   .group-form {
     display: flex;
     flex-direction: column;
-    margin: 20px;
     gap: 1.5rem;
+    margin-top: 20px;
+  }
+
+  .group-spacing {
+    margin: 0 20px;
+  }
+
+  .group-members {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: v.$light-gray;
+    padding: 0.875rem 20px;
+    border-top: 1px solid v.$accent-gray;
+    border-bottom: 2px solid v.$accent-gray;
+  }
+
+
+  .friend-add-button {
+    position: relative;
+    height: 54px;
+    width: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #FFFFFF;
+    border-radius: 50%;
+    border-bottom: 2px solid v.$accent-gray;
+
+    .friend-add-plus {
+      &::before, &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: v.$washed-gray;
+      }
+      &::after {
+        width: 2px;
+        margin: 16px auto;
+      }
+      &::before {
+        height: 2px;
+        margin: auto 16px;
+      }
+    }
   }
 }
