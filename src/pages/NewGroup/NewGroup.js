@@ -18,8 +18,8 @@ const NewGroup = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+    inputRef?.current?.click();
+  }, [inputRef]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

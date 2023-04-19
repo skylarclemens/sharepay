@@ -169,7 +169,7 @@ const Friends = () => {
           {groups.length > 0 ? (
             groups.map(group => {
               return (
-                <div className="group">
+                <div key={group.id} className="group">
                   <span>{group.group_name}</span>
                 </div>
               )
