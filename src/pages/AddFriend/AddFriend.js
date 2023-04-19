@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
 
-const AddFriend = () => {
+const AddFriend = ({ selectFriends = false, handleAddUser }) => {
   const [value, setValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [requestSent, setRequestSent] = useState({
@@ -63,7 +63,7 @@ const AddFriend = () => {
   }
 
   return (
-    <div className="add-friend-container">
+    <div className={`add-friend-container ${selectFriends && 'select-friends'}`}>
       <Header type="title" title="Add friend" />
       <div className="search-container">
         <input className="text-input" type="text" value={value} placeholder="Search" onChange={(e) => setValue(e.target.value)} />
