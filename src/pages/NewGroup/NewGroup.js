@@ -3,27 +3,36 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../../components/Header/Header';
 import TextInput from '../../components/Input/TextInput/TextInput';
+import Modal from '../../components/Modal/Modal';
+import SelectFriends from '../../components/SelectFriends/SelectFriends';
 
 const NewGroup = () => {
   const account = useSelector(state => state.account.data);
   const friends = useSelector(state => state.friends.data);
   const [groupName, setGroupName] = useState('');
   const [groupMembers, setGroupMembers] = useState([]);
+  const [openSelectFriends, setOpenSelectFriends] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
   }
 
   return (
-    <div className="new-group-container">
-      <Header type="title" title="Create group" />
-      <form className="group-form input-container" onSubmit={handleSubmit}>
-        <TextInput name="name" label="Group name" value={groupName} onChange={(e) => setGroupName(e.target.value)} />
-        <div className="add-friends">
-          <span className="input-label">Add friends to group</span>
-        </div>
-      </form>
-    </div>
+    <>
+      <div className="new-group-container">
+        <Header type="title" title="Create group" />
+        <form className="group-form group-input-container" onSubmit={handleSubmit}>
+          <TextInput name="name" label="Group name" value={groupName} onChange={(e) => setGroupName(e.target.value)} />
+          <div className="add-friends input-container">
+            <span className="input-label">Add friends to group</span>
+            <button className="button" onClick={() => setOpenSelectFriends(true)}>Add friend</button>
+          </div>
+        </form>
+      </div>
+      <Modal open={openSelectFriends} handleClose={(e) => setOpenSelectFriends(false)}>
+        <SelectFriends />
+      </Modal>
+    </>
   )
 }
 
