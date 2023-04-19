@@ -1,20 +1,63 @@
 import './NewGroup.scss';
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import TextInput from '../../components/Input/TextInput/TextInput';
 import Modal from '../../components/Modal/Modal';
 import SelectFriends from '../../components/SelectFriends/SelectFriends';
 import UserButton from '../../components/User/UserButton/UserButton';
+import { supabase } from '../../supabaseClient';
 
 const NewGroup = () => {
   const account = useSelector(state => state.account.data);
   const [groupName, setGroupName] = useState('');
   const [groupMembers, setGroupMembers] = useState([{...account}]);
   const [openSelectFriends, setOpenSelectFriends] = useState(false);
+  const inputRef = useRef(null);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    let groupData;
+    const newGroup = {
+      group_name: groupName
+    }
+
+    try {
+      const { data, error } = await supabase 
+        .from('group')
+        .insert(newGroup)
+        .select();
+      if (error) throw error;
+      groupData = data[0];
+    } catch (error) {
+      console.error(error);
+    }
+
+    const newMembers = groupMembers.map(member => {
+      return {
+        user_id: member.id,
+        group_id: groupData.id
+      }
+    })
+
+    try {
+      const { error } = await supabase
+        .from('user_group')
+        .insert(newMembers)
+        .select();
+      if (error) throw error;
+    } catch (error) {
+      console.error(error);
+    }
+
+    navigate(-1);
   }
 
   const handleAddUser = (friend) => {
@@ -27,7 +70,7 @@ const NewGroup = () => {
       <div className="new-group-container">
         <Header type="title" title="Create group" />
         <form className="group-form" onSubmit={handleSubmit}>
-          <TextInput className="group-spacing" name="name" label="Group name" value={groupName} onChange={(e) => setGroupName(e.target.value)} />
+          <TextInput className="group-spacing" name="name" label="Group name" value={groupName} ref={inputRef} onChange={(e) => setGroupName(e.target.value)} />
           <div className="add-friends input-container">
             <span className="input-label group-spacing">Group members</span>
             <div className="group-members">
@@ -40,9 +83,10 @@ const NewGroup = () => {
                   />
                 )
               })}
-              <button className="friend-add-button button--icon" onClick={() => setOpenSelectFriends(true)}><div className="friend-add-plus"></div></button>
+              <button type="button" className="friend-add-button button--icon" onClick={() => setOpenSelectFriends(true)}><div className="friend-add-plus"></div></button>
             </div>
           </div>
+          <button type="submit" alt="Create group" title="Create group" className="button group-spacing">Create</button>
         </form>
       </div>
       <Modal open={openSelectFriends}>
