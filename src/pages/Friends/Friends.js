@@ -95,10 +95,11 @@ const Friends = () => {
         </Link>
       }/>
       <div className="friends-container">
-        <h2 className="heading">Requests</h2>
-        <div className="requests-container">
-          {user && requests.length > 0 ?
-            (requests.map((req) => {
+        {user && requests.length > 0 ?
+        <>
+          <h2 className="heading">Requests</h2>
+          <div className="requests-container">
+            {requests.map((req) => {
               if(req.user_receive.id === user.id) {
                 return (
                   <div key={req.user_send.id} className="user">
@@ -121,8 +122,9 @@ const Friends = () => {
                 )
               }
               return null;
-            })) : null}
-        </div>
+            })}
+          </div>
+        </> : null}
         <h2 className="heading">Friends</h2>
         {user && friends.length > 0 ?
             (friends.map((friend) => {
@@ -160,6 +162,10 @@ const Friends = () => {
               }
               return null;
             })) : null}
+        <div className="groups-container">
+          <h2 className="heading">Groups</h2>
+          <Link className="button button--link" to="/new-group">Create a group</Link>
+        </div>
       </div>
     </>
   )
