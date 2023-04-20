@@ -127,7 +127,7 @@ const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
                 <><span className="friend-name">{friend.name}</span> paid you</>
               )}
             </div>
-            <span className="total">${Math.abs(balances.total.toFixed(2)) || 0.00}</span>
+            <span className="total">${Math.abs(balances.total).toFixed(2) || 0.00}</span>
           </div>
           <button type="button" className="button" title="Pay up" onClick={handlePayButton}>
             Paid up

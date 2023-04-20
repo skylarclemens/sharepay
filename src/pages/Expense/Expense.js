@@ -53,12 +53,14 @@ const Expense = () => {
     <>
     {expense && 
       <div className="expense-container">
-        <Header type="title" title="Details" headerRight={headerImg} headerFn={handleDelete} />
+        <Header type="title" title="Expense details" headerRight={headerImg} headerFn={handleDelete} />
         <div className="expense-page-container">
-          <div className="expense-desc">
-            <h1>{expense && expense.description}</h1>
-            <span className="expense-amount expense-amount--details">${expense.amount.toFixed(2)}</span>
-            <span className="created-date medium-gray">Created on {new Date(expense.created_at).toLocaleDateString("en-US", {month: 'long', day:'numeric', year: 'numeric'})}</span>
+          <div className="page-info-container">
+            <div className="page-info">
+              <h1 className="page-title">{expense?.description}</h1>
+            </div>
+            <span className="total-amount">${expense.amount.toFixed(2)}</span>
+            <span className="created-date">Created on {new Date(expense.created_at).toLocaleDateString("en-US", {month: 'long', day:'numeric', year: 'numeric'})}</span>
             {expense.paid && <div className="paid-up">
               PAID UP
             </div>}
@@ -66,7 +68,7 @@ const Expense = () => {
           <div className="user-transaction">
             <div className="details-paid">
               <div className="user-details">
-                <Avatar url={userCreditor.avatar_url}/>
+                <Avatar classes="white-border" url={userCreditor.avatar_url} size={40} />
                 <span>{userCreditor.name}</span>
               </div>
               <span className="expense-type">PAID</span>
@@ -74,7 +76,7 @@ const Expense = () => {
             </div>
             <div className="debtor-transaction">
               <div className="user-details">
-                <Avatar url={userDebtor.avatar_url}/>
+                <Avatar classes="white-border" url={userDebtor.avatar_url} size={40} />
                 <span>{userDebtor.name}</span>
               </div>
               <div className="expense-type">{debtType}</div>
