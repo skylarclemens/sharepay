@@ -3,6 +3,7 @@
 .header-container {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   height: calc(46px + env(safe-area-inset-top));
   background: v.$layout-green;

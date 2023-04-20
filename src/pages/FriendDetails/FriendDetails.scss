@@ -2,6 +2,7 @@
 
 .friend-pay-container {
   position: relative;
+  background: v.$light-gray;
   .modal-overlay {
     position: absolute;
     z-index: 11;
@@ -25,7 +26,6 @@
 
 .friend-container {
   overflow: auto;
-  background: v.$light-gray;
   h1 {
     font-size: 1.5rem;
     font-weight: 400;
@@ -39,6 +39,9 @@
       text-align: center;
       text-decoration: none;
       box-shadow: 0px 2px 0px #507155;
+      &:active {
+        box-shadow: inset 0px 2px 0px #507155;
+      }
     }
   }
 }
@@ -56,6 +59,7 @@
   padding: 0.5rem 1.5rem 1.25rem 1.5rem;
   margin-bottom: 1rem;
   top: -1px;
+  touch-action: none;
 
   .balance-block {
     padding: 0;
