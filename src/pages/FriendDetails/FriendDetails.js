@@ -54,18 +54,18 @@ const FriendDetails = () => {
     <div className={`friend-pay-container ${openPayUp ? 'modal-open' : ''}`}>
       <div className={openPayUp ? 'modal-overlay' : ''}></div>
       <Header type="title" title="Friend details" />
-      <div className="page-info-container">
-        <div className="page-info">
-          <Avatar classes="white-border" url={friend?.avatar_url} size={50}/>
-          <h1 className="page-title">{friend?.name}</h1>
-        </div>
-        <div className="balance-block">
-          <h3 className="balance-text">TOTAL BALANCE</h3>
-          <span className="total-amount">{formatMoney(balances.total)}</span>
-        </div>
-      </div>
       {friend &&
         <div className="friend-container">
+          <div className="page-info-container">
+            <div className="page-info">
+              <Avatar classes="white-border" url={friend?.avatar_url} size={50}/>
+              <h1 className="page-title">{friend?.name}</h1>
+            </div>
+            <div className="balance-block">
+              <h3 className="balance-text">TOTAL BALANCE</h3>
+              <span className="total-amount">{formatMoney(balances.total)}</span>
+            </div>
+          </div>
           {!(balances.total === 0) &&
           <div className="pay-up-button">
             <button type="button" className="button button--border-none" title="Pay up" onClick={handleOpenPayUp}>Pay up</button>
