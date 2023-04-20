@@ -8,6 +8,7 @@ import Transactions from '../../components/Transactions/Transactions';
 import Header from '../../components/Header/Header';
 import PayUp from '../../components/PayUp/PayUp';
 import { balanceCalc } from '../../helpers/balance';
+import { formatMoney } from '../../helpers/money';
 
 const FriendDetails = () => {
   const user = useSelector(state => state.user);
@@ -55,30 +56,29 @@ const FriendDetails = () => {
       <Header type="title" title="Friend details" />
       {friend &&
         <div className="friend-container">
-          <div className="friend-info-container">
-            <div className="friend-info">
-              <Avatar url={friend?.avatar_url} size={60} />
-              <div className="friend-info-text">
-                <h1>{friend?.name}</h1>
-                <span className="medium-gray">{friend?.email}</span>
-              </div>
+          <div className="page-info-container">
+            <div className="page-info">
+              <Avatar classes="white-border" url={friend?.avatar_url} size={50}/>
+              <h1 className="page-title">{friend?.name}</h1>
             </div>
-            <div className="balance balance-block balance-block--total">
-              <h3>BALANCE</h3>
-              <span className={`total ${balances.total < 0 ? 'total--owe' : ''}`}>${balances.total.toFixed(2) || 0.00}</span>
+            <div className="balance-block">
+              <h3 className="balance-text">TOTAL BALANCE</h3>
+              <span className="total-amount">{formatMoney(balances.total)}</span>
             </div>
           </div>
+          {!balances.total === 0 &&
           <div className="pay-up-button">
-            {/* <Link className="button" to={`/pay-up/${friend.id}`}>Pay up</Link> */}
-            <button type="button" className="button" title="Pay up" onClick={handleOpenPayUp}>Pay up</button>
-          </div>
+            <button type="button" className="button button--border-none" title="Pay up" onClick={handleOpenPayUp}>Pay up</button>
+          </div>}
           <div className="shared-expenses">
             <h2 className="heading">Shared expenses</h2>
             {loading ? (
-                <span className="loading-data medium-gray">Loading...</span>
+                <div className="medium-gray">Loading...</div>
             ) : (
               <Transactions debts={sharedDebts} friend={friend} />
             )}
+            {balances.total === 0 &&
+            <div className="medium-gray">No transactions available</div>}
           </div>
         </div>
       }
