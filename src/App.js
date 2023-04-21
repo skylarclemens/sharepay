@@ -10,6 +10,7 @@ import Welcome from './pages/Welcome/Welcome';
 import Expense from './pages/Expense/Expense';
 import NewExpense from './pages/NewExpense/NewExpense';
 import NewGroup from './pages/NewGroup/NewGroup';
+import Group from './pages/Group/Group';
 import Recent from './pages/Recent/Recent';
 import Header from './components/Header/Header';
 import Nav from './components/Nav/Nav';
@@ -47,6 +48,7 @@ const App = () => {
           <Route path='/recent' element={<Recent />} />
           <Route path='/friends' element={<Friends />} />
           <Route path='/add-friend' element={<AddFriend />} />
+          <Route path='/group/:id' element={<Group />} />
           <Route path='/new-group' element={<NewGroup />} />
           <Route path="/friend/:id" element={<FriendDetails />} />
           <Route path='/expense/:id' element={<Expense />} />

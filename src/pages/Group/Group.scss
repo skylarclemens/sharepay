@@ -1,0 +1,65 @@
+@use '../../utilities/colors' as v;
+
+.group-container {
+  background: v.$light-gray;
+
+  .heading {
+    border-top: none;
+  }
+  .shared-expenses {
+    background: #FFFFFF;
+    padding: 1rem 20px;
+  }
+  .medium-gray {
+    padding: 0;
+  }
+}
+
+.expense-card {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  background: v.$light-gray;
+  border-radius: 0.5rem;
+  box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
+  padding-right: 1rem;
+  text-decoration: inherit;
+  color: inherit;
+
+  .expense-date {
+    display: flex;
+    flex-direction: column;
+    width: 48px;
+    padding: 0.5rem 0.625rem;
+    text-align: center;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    background: #618467;
+    border-radius: 0.5rem 0 0 0.5rem;
+    color: #FFFFFF;
+    text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.15);
+    .month {
+      text-transform: uppercase;
+    }
+    .day {
+      font-weight: 600;
+    }
+  }
+
+  .expense-description {
+    font-size: 0.875rem;
+  }
+
+  .expense-amount {
+    font-weight: 600;
+    color: #686868;
+    flex: 1;
+    text-align: right;
+  }
+
+  .arrow {
+    border: solid v.$washed-gray;
+    border-width: 0 2px 2px 0;
+  }
+
+}

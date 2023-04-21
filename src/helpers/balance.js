@@ -20,3 +20,12 @@ export const balanceCalc = (debts, userId) => {
     owe: balanceOwe
   }
 }
+
+export const groupBalanceCalc = (expenses) => {
+  let totalBalance = 0;
+  expenses.forEach((expense) => {
+    if (expense.paid) return;
+    totalBalance += expense.amount;
+  })
+  return totalBalance;
+}
