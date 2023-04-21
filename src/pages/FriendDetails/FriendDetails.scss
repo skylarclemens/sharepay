@@ -35,12 +35,35 @@
     justify-content: center;
     margin-bottom: 1rem;
     .button {
+      position: relative;
       width: 50%;
       text-align: center;
       text-decoration: none;
-      box-shadow: 0px 2px 0px #507155;
+      box-shadow: 0px 4px 0px #507155, 0px 6px 6px rgba(0, 0, 0, 0.33);
+      padding: 0.75rem;
+      border-radius: 1.5rem;
       &:active {
-        box-shadow: inset 0px 2px 0px #507155;
+        animation: button-click 0.25s linear 0s forwards;
+      }
+      @keyframes button-click {
+        0% {
+          top: 1px;
+          box-shadow: 0px 2px 0px #507155, 0px 6px 6px rgba(0, 0, 0, 0.33);
+        }
+        25% {
+          top: 2px;
+          box-shadow: 0px 1px 0px #507155, 0px 3px 3px rgba(0, 0, 0, 0.33);
+        }
+        50% {
+          box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.33);
+        }
+        75% {
+          box-shadow: 0px 0px 0px;
+        }
+        100% {
+          top: 3px;
+          box-shadow: inset 0px 2px 0px rgba(0, 0, 0, 0.25);
+        }
       }
     }
   }
@@ -54,12 +77,11 @@
   gap: 1.25rem;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.132) 100%), #729B79;
   color: #FFFFFF;
-  box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.25);
-  border-radius: 0 0 1rem 1rem;
+  box-shadow: 0px 3px 0px rgba(114, 155, 121, 0.33);
+  border-radius: 0 0 0.5rem 0.5rem;
   padding: 0.5rem 1.5rem 1.25rem 1.5rem;
   margin-bottom: 1rem;
   top: -1px;
-  touch-action: none;
 
   .balance-block {
     padding: 0;
