@@ -169,9 +169,10 @@ const Friends = () => {
           {groups.length > 0 ? (
             groups.map(group => {
               return (
-                <div key={group.id} className="group">
+                <Link to={`/group/${group.id}`} key={group.id} className="group">
                   <span>{group.group_name}</span>
-                </div>
+                  <div className="arrow arrow--right"></div>
+                </Link>
               )
             })
           ) : null}

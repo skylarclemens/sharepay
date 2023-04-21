@@ -99,7 +99,12 @@
     margin: 20px;
   }
   .group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 1rem 20px;
     border-bottom: 2px solid v.$accent-gray;
+    text-decoration: none;
+    color: inherit;
   }
 }
