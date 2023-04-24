@@ -1,15 +1,5 @@
 @use '../../utilities/colors' as v;
 
-.heading {
-  height: 32px;
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  background-color: v.$light-gray;
-  border-top: 1px solid v.$accent-gray;
-  border-bottom: 2px solid v.$accent-gray;
-}
-
 h2 {
   font-family: 'Rubik', sans-serif;
   font-weight: 500;

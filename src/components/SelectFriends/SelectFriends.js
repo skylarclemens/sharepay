@@ -5,15 +5,17 @@ import Header from '../Header/Header';
 import Avatar from '../Avatar/Avatar';
 import { supabase } from '../../supabaseClient';
 
-const SelectFriends = ({ newFriends = false, showGroups = false, handleAddUser }) => {
+const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) => {
   const [value, setValue] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
+  const [friendSuggestions, setFriendSuggestions] = useState([]);
+  const [groupSuggestions, setGroupSuggestions] = useState([]);
   const [requestSent, setRequestSent] = useState({
     id: '',
     sent: false,
   });
   const user = useSelector(state => state.user);
   const friends = useSelector(state => state.friends.data);
+  const groups = useSelector(state => state.groups.data);
 
   const inputTimer = 1000;
 
@@ -27,7 +29,7 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAddUser }
             .neq('id', user.id)
             .or(`email.ilike.%${value}%,name.ilike.%${value}%`);
           if (error) throw error;
-          setSuggestions(data);
+          setFriendSuggestions(data);
         } catch (error) {
           console.error(error);
         }
@@ -37,7 +39,15 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAddUser }
             friend.name.toLowerCase().includes(value.toLowerCase()) ||
             friend.email.toLowerCase().includes(value.toLowerCase())
         );
-        setSuggestions(suggestedFriends);
+        if (showGroups) {
+          const suggestedGroups = groups.filter(
+            group => 
+              group.group_name.toLowerCase().includes(value.toLowerCase())
+          );
+          setGroupSuggestions(suggestedGroups);
+        }
+        setFriendSuggestions(suggestedFriends);
+
       }
     };
 
@@ -48,17 +58,22 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAddUser }
 
       return () => clearTimeout(debouncer);
     } else {
-      setSuggestions([]);
+      setFriendSuggestions([]);
+      setGroupSuggestions([]);
       return;
     }
-  }, [value, user, friends, newFriends]);
+  }, [value, user, friends, newFriends, groups, showGroups]);
 
-  const handleAdd = friend => {
+  const handleAddFriend = suggested => {
     setRequestSent({
-      id: friend.id,
+      id: suggested.id,
       sent: true,
     });
-    handleAddUser(friend);
+    handleAdd(suggested);
+  };
+
+  const handleAddGroup = suggested => {
+    handleAdd(suggested);
   };
 
   return (
@@ -74,25 +89,47 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAddUser }
         />
       </div>
       <div className="suggested-users">
-        {suggestions &&
-          suggestions.map(suggestedUser => {
-            const sentStatus =
-              requestSent.id === suggestedUser.id && requestSent.sent
-                ? true
-                : false;
+        {groupSuggestions.length > 0 && <span className="heading">Groups</span>}
+        {groupSuggestions.length > 0 && (
+          groupSuggestions.map(suggested => {
             return (
-              <div key={suggestedUser.id} className="user">
+              <div key={suggested.id} className="user">
                 <div className="user-info">
-                  <Avatar url={suggestedUser.avatar_url} />
                   <div className="user-info-text">
-                    <div className="user-name">{suggestedUser.name}</div>
-                    <div className="user-email">{suggestedUser.email}</div>
+                    <div className="user-name">{suggested.group_name}</div>
                   </div>
                 </div>
                 <button
                   type="button"
                   className="add-user"
-                  onClick={() => handleAdd(suggestedUser)}
+                  onClick={() => handleAddGroup(suggested)}
+                >
+                  <div className="add-user-plus"></div>
+                </button>
+              </div> 
+            );
+          })
+        )}
+        {friendSuggestions.length > 0 && <span className="heading">Friends</span>}
+        {friendSuggestions.length > 0 &&
+          friendSuggestions.map(suggested => {
+            const sentStatus =
+              requestSent.id === suggested.id && requestSent.sent
+                ? true
+                : false;
+            return (
+              <div key={suggested.id} className="user">
+                <div className="user-info">
+                  <Avatar url={suggested.avatar_url} />
+                  <div className="user-info-text">
+                    <div className="user-name">{suggested.name}</div>
+                    <div className="user-email">{suggested.email}</div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className="add-user"
+                  onClick={() => handleAddFriend(suggested)}
                 >
                   <div
                     className={`add-user-plus ${sentStatus ? 'hide' : ''}`}

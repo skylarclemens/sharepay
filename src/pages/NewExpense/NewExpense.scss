@@ -49,6 +49,24 @@
       border-top: 1px solid v.$accent-gray;
       border-bottom: 2px solid v.$accent-gray;
     }
+
+    .group-selected {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0.875rem;
+      background: #ffffff;
+      border-radius: 0.5rem;
+      border-bottom: 2px solid v.$accent-gray;
+      border-left: 3px solid v.$accent-blue;
+
+      .remove-group {
+        color: v.$dark-gray;
+        font-family: 'Rubik', sans-serif;
+        font-weight: 400;
+        padding: 0.25rem;
+      }
+    }
   }
 
   .expense-radio.paid-by {

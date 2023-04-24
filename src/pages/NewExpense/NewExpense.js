@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addExpense } from '../../slices/expenseSlice';
 import { addDebt } from '../../slices/debtSlice';
+import { getAllGroupsUsers } from '../../services/groups';
 import Header from '../../components/Header/Header';
 import TextInput from '../../components/Input/TextInput/TextInput';
 import AmountInput from '../../components/Input/AmountInput/AmountInput';
@@ -19,6 +20,7 @@ const NewExpense = () => {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [splitWith, setSplitWith] = useState([{ ...account }]);
+  const [splitWithGroup, setSplitWithGroup] = useState(null);
   const [paidBy, setPaidBy] = useState(user.id);
   const [split, setSplit] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
@@ -32,11 +34,14 @@ const NewExpense = () => {
 
     if (!handleValidation()) return;
 
+    const groupId = splitWithGroup?.id || null;
+
     let expenseData;
     const newExpense = {
       payer_id: paidBy,
       description: description,
       amount: amount,
+      group_id: groupId
     };
 
     try {
@@ -58,7 +63,8 @@ const NewExpense = () => {
         creditor_id: paidBy,
         debtor_id: friend.id,
         amount: debtAmount,
-        expense_id: expenseData.id
+        expense_id: expenseData.id,
+        group_id: groupId
       }
     });
 
@@ -112,10 +118,21 @@ const NewExpense = () => {
     if (validInput) setAmount(value);
   };
 
-  const handleAddUser = friend => {
-    setSplitWith([...splitWith, friend]);
+  const handleAdd = selected => {
+    if (selected?.group_name) {
+      setSplitWithGroup(selected);
+      const groupsUsers = getAllGroupsUsers(selected.id);
+      groupsUsers.then(res => setSplitWith(res));
+    } else {
+      setSplitWith([...splitWith, selected]);
+    }
     setOpenSelectFriends(false);
   };
+
+  const removeGroupSplit = () => {
+    setSplitWithGroup(null);
+    setSplitWith([{ ...account }]);
+  }
 
   return (
     <>
@@ -150,23 +167,31 @@ const NewExpense = () => {
             <div className="split-with-container">
               <span className="input-label">Split between</span>
               <div className="split-with">
-                {splitWith.map(member => {
-                  return (
-                    <UserButton
-                      key={member.id}
-                      user={member}
-                      name={member.name}
-                      variant="white"
-                    />
-                  );
+                {!splitWithGroup && 
+                    splitWith.map(member => {
+                    return (
+                      <UserButton
+                        key={member.id}
+                        user={member}
+                        name={member.name}
+                        variant="white"
+                      />
+                    );
                 })}
-                <button
+                {!splitWithGroup && <button
                   type="button"
                   className="friend-add-button button--icon"
                   onClick={() => setOpenSelectFriends(true)}
-                >
-                  <div className="friend-add-plus"></div>
-                </button>
+                  >
+                    <div className="friend-add-plus"></div>
+                  </button>
+                }
+                {splitWithGroup && 
+                  <div className="group-selected">
+                    <div className="group-name">{splitWithGroup.group_name}</div>
+                    <button type="button" className="remove-group button--icon" onClick={removeGroupSplit}>x</button>
+                  </div>
+                }
               </div>
               {fieldErrors.splitWith && (
                 <span className="field-error-text">{fieldErrors.splitWith}</span>
@@ -240,7 +265,7 @@ const NewExpense = () => {
         </form>
       </div>
       <Modal open={openSelectFriends}>
-        <SelectFriends handleAddUser={handleAddUser} />
+        <SelectFriends handleAdd={handleAdd} showGroups={true} />
       </Modal>
     </>
   );
