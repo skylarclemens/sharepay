@@ -14,7 +14,6 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAddUser }
   });
   const user = useSelector(state => state.user);
   const friends = useSelector(state => state.friends.data);
-  const groups = useSelector(state => state.groups.data);
 
   const inputTimer = 1000;
 

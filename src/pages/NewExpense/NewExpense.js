@@ -16,13 +16,11 @@ import { useNavigate } from 'react-router-dom';
 const NewExpense = () => {
   const user = useSelector(state => state.user);
   const account = useSelector(state => state.account.data);
-  const friends = useSelector(state => state.friends.data);
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [splitWith, setSplitWith] = useState([{ ...account }]);
   const [paidBy, setPaidBy] = useState(user.id);
   const [split, setSplit] = useState('');
-  const [friendSelected, setFriendSelected] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({});
   const [openSelectFriends, setOpenSelectFriends] = useState(false);
   const dispatch = useDispatch();
@@ -53,14 +51,16 @@ const NewExpense = () => {
       console.error(error);
     }
 
-    const debtAmount = split === 'EQUALLY' ? amount / 2 : amount;
-    const debtor = paidBy === user.id ? splitWith : user.id;
-    const newDebt = {
-      creditor_id: paidBy,
-      debtor_id: debtor,
-      amount: debtAmount,
-      expense_id: expenseData.id,
-    };
+    const numDebts = splitWith.length;
+    const debtAmount = split === 'EQUALLY' ? amount / numDebts : amount / (numDebts - 1);
+    const newDebt = splitWith.filter(friend => !(friend.id === paidBy)).map(friend => {
+      return {
+        creditor_id: paidBy,
+        debtor_id: friend.id,
+        amount: debtAmount,
+        expense_id: expenseData.id
+      }
+    });
 
     try {
       const { data, error } = await supabase
@@ -148,7 +148,7 @@ const NewExpense = () => {
               onChange={e => setDescription(e.target.value)}
             />
             <div className="split-with-container">
-              <span className="input-label">Split with</span>
+              <span className="input-label">Split between</span>
               <div className="split-with">
                 {splitWith.map(member => {
                   return (
