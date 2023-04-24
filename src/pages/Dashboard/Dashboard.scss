@@ -19,15 +19,15 @@ h2 {
 }
 
 .details-container {
-  padding: 16px 20px;
+  position: relative;
+  padding: 0 1.5rem 4.5rem 1.5rem;
   margin-bottom: 62px;
   background: linear-gradient(
       180deg,
-      rgba(0, 0, 0, 0) 19.46%,
-      rgba(0, 0, 0, 0.429) 100%
+      rgba(0, 0, 0, 0) 12%,
+      rgba(0, 0, 0, 0.4) 100%
     ),
-    #507155;
-  height: 172px;
+    v.$layout-green;
 }
 
 .dashboard {
@@ -35,10 +35,6 @@ h2 {
 }
 
 .balance {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
   h3 {
     font-family: 'Rubik', sans-serif;
     font-size: 0.875rem;
@@ -47,7 +43,13 @@ h2 {
 }
 
 .secondary-balance {
-  position: relative;
+  position: absolute;
+  width: 100%;
+  max-width: 354px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  bottom: -34px;
   z-index: 2;
   display: flex;
   min-height: 76px;
@@ -55,7 +57,7 @@ h2 {
   color: #ffffff;
   filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.15));
 
-  span {
+  .secondary-amount {
     font-size: 1.25rem;
     font-weight: 700;
     letter-spacing: 0.02rem;
@@ -71,6 +73,7 @@ h2 {
   &::before {
     position: absolute;
     top: 0;
+    left: 0;
     border-radius: 0.5rem;
     content: '';
     box-shadow: inset 0px -3px 0px rgba(0, 0, 0, 0.25);
@@ -86,7 +89,6 @@ h2 {
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.875rem 0;
 
   h3 {
     color: rgba(255, 255, 255, 0.8);
@@ -113,7 +115,7 @@ h2 {
 
 .transactions-container {
   background: #ffffff;
-  padding: 1.5rem 1.25rem;
+  padding: 1.5rem 0;
   border-radius: 1rem 1rem 0px 0px;
   .main-heading {
     font-family: 'Rubik', sans-serif;
@@ -121,6 +123,6 @@ h2 {
     font-size: 1.25rem;
     color: v.$dark-green;
     text-transform: none;
-    padding-bottom: 0.5rem;
+    padding: 0 1.25rem 0.5rem 1.25rem;
   }
 }
