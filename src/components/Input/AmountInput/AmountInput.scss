@@ -3,7 +3,7 @@
 .amount-input-container {
   position: fixed;
   top: calc(46px + env(safe-area-inset-top));
-  z-index: 12;
+  z-index: 10;
   width: 100%;
   max-width: 100%;
   overflow: hidden;

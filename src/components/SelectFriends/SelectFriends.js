@@ -5,7 +5,7 @@ import Header from '../Header/Header';
 import Avatar from '../Avatar/Avatar';
 import { supabase } from '../../supabaseClient';
 
-const SelectFriends = ({ newFriends = false, handleAddUser }) => {
+const SelectFriends = ({ newFriends = false, showGroups = false, handleAddUser }) => {
   const [value, setValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [requestSent, setRequestSent] = useState({
@@ -14,6 +14,7 @@ const SelectFriends = ({ newFriends = false, handleAddUser }) => {
   });
   const user = useSelector(state => state.user);
   const friends = useSelector(state => state.friends.data);
+  const groups = useSelector(state => state.groups.data);
 
   const inputTimer = 1000;
 
