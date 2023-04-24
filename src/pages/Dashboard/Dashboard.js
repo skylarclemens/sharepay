@@ -18,7 +18,12 @@ const Dashboard = () => {
 
   const dispatch = useDispatch();
 
-  const dataLoaded = user && debts.status === 'succeeded' && friends.status === 'succeeded' && expenses.status === 'succeeded' && groups.status === 'succeeded';
+  const dataLoaded =
+    user &&
+    debts.status === 'succeeded' &&
+    friends.status === 'succeeded' &&
+    expenses.status === 'succeeded' &&
+    groups.status === 'succeeded';
 
   useEffect(() => {
     if (dataLoaded) {
@@ -41,21 +46,29 @@ const Dashboard = () => {
             <h2 className="heading">Summary</h2>
             <div className="dashboard-container">
               <div className="greeting">
-                Hello, <span className="greeting-name">{user.user_metadata.name}</span>!
+                Hello,{' '}
+                <span className="greeting-name">{user.user_metadata.name}</span>
+                !
               </div>
               <div className="balance">
                 <div className="balance-block balance-block--total">
                   <h3>TOTAL BALANCE</h3>
-                  <span className={`total ${balances?.total < 0 ? 'total--owe' : ''}`}>${balances?.total.toFixed(2) || 0.00}</span>
+                  <span
+                    className={`total ${
+                      balances?.total < 0 ? 'total--owe' : ''
+                    }`}
+                  >
+                    ${balances?.total.toFixed(2) || 0.0}
+                  </span>
                 </div>
                 <div className="secondary-balance">
                   <div className="balance-block balance-block--green">
                     <h3>YOU'RE OWED</h3>
-                    <span>${balances?.owed.toFixed(2) || 0.00}</span>
+                    <span>${balances?.owed.toFixed(2) || 0.0}</span>
                   </div>
                   <div className="balance-block balance-block--red">
                     <h3>YOU OWE</h3>
-                    <span>${balances?.owe.toFixed(2) || 0.00}</span>
+                    <span>${balances?.owe.toFixed(2) || 0.0}</span>
                   </div>
                 </div>
               </div>
@@ -66,9 +79,9 @@ const Dashboard = () => {
             <Transactions debts={debts.data} paid={false} />
           </div>
         </>
-          ) : null }
+      ) : null}
     </>
-  )
-}
+  );
+};
 
 export default Dashboard;

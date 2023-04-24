@@ -75,8 +75,13 @@
   flex-direction: column;
   align-items: center;
   gap: 1.25rem;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.132) 100%), #729B79;
-  color: #FFFFFF;
+  background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.132) 100%
+    ),
+    #729b79;
+  color: #ffffff;
   box-shadow: 0px 3px 0px rgba(114, 155, 121, 0.33);
   border-radius: 0 0 0.5rem 0.5rem;
   padding: 0.5rem 1.5rem 1.25rem 1.5rem;
@@ -118,7 +123,7 @@
 }
 
 .shared-expenses {
-  background: #FFFFFF;
+  background: #ffffff;
   .heading {
     border-top: none;
   }

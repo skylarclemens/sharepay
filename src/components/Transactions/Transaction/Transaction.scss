@@ -5,8 +5,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  padding: .875rem 1rem;
-  background: #FFFFFF;
+  padding: 0.875rem 1rem;
+  background: #ffffff;
   border-bottom: 1px solid v.$accent-gray;
   .desc {
     flex: 1 1 auto;
@@ -55,7 +55,7 @@
   align-items: center;
   .avatar {
     margin-left: -1rem;
-    border: 2px solid #FFFFFF;
+    border: 2px solid #ffffff;
   }
   .avatar:first-of-type {
     margin: 0;

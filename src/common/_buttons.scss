@@ -20,14 +20,14 @@
   &.button--transparent {
     background: none;
   }
-  
+
   &.button--small {
     padding: 6px 10px;
     font-size: 0.875rem;
   }
 
   &.button--white {
-    background: #FFFFFF;
+    background: #ffffff;
     color: v.$green;
     border: 2px solid v.$green;
   }

@@ -12,12 +12,12 @@ const Recent = () => {
         .from('debt')
         .select('*')
         .eq('paid', true);
-      if(error) {
+      if (error) {
         console.error(error);
         return;
       }
       setPaidDebts(data);
-    }
+    };
 
     getPaidDebts();
   }, []);
@@ -27,7 +27,7 @@ const Recent = () => {
       <h2 className="heading">Recent</h2>
       {paidDebts && <Transactions debts={paidDebts} paid={true} />}
     </div>
-  )
-}
+  );
+};
 
 export default Recent;

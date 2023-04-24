@@ -10,7 +10,7 @@ const AddFriend = ({ selectFriends = false, handleAddUser }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [requestSent, setRequestSent] = useState({
     id: '',
-    sent: false
+    sent: false,
   });
   const user = useSelector(state => state.user);
 
@@ -43,34 +43,44 @@ const AddFriend = ({ selectFriends = false, handleAddUser }) => {
     }
   }, [value, user]);
 
-  const sendFriendRequest = async (userReceiveId) => {
+  const sendFriendRequest = async userReceiveId => {
     try {
-      const { error } = await supabase
-        .from('friend_request')
-        .insert({
-          user_send: user.id,
-          user_receive: userReceiveId,
-          status: 'SENT'
-        });
+      const { error } = await supabase.from('friend_request').insert({
+        user_send: user.id,
+        user_receive: userReceiveId,
+        status: 'SENT',
+      });
       if (error) throw error;
       setRequestSent({
         id: userReceiveId,
-        sent: true
+        sent: true,
       });
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
-    <div className={`add-friend-container ${selectFriends && 'select-friends'}`}>
+    <div
+      className={`add-friend-container ${selectFriends && 'select-friends'}`}
+    >
       <Header type="title" title="Add friend" />
       <div className="search-container">
-        <input className="text-input" type="text" value={value} placeholder="Search" onChange={(e) => setValue(e.target.value)} />
+        <input
+          className="text-input"
+          type="text"
+          value={value}
+          placeholder="Search"
+          onChange={e => setValue(e.target.value)}
+        />
       </div>
       <div className="suggested-users">
-          {suggestions && suggestions.map((suggestedUser) => {
-            const sentStatus = requestSent.id === suggestedUser.id && requestSent.sent ? true : false;
+        {suggestions &&
+          suggestions.map(suggestedUser => {
+            const sentStatus =
+              requestSent.id === suggestedUser.id && requestSent.sent
+                ? true
+                : false;
             return (
               <div key={suggestedUser.id} className="user">
                 <div className="user-info">
@@ -80,16 +90,24 @@ const AddFriend = ({ selectFriends = false, handleAddUser }) => {
                     <div className="user-email">{suggestedUser.email}</div>
                   </div>
                 </div>
-                <button type="button" className="add-user" onClick={() => sendFriendRequest(suggestedUser.id)}>
-                  <div className={`add-user-plus ${sentStatus ? 'hide' : ''}`}></div>
-                  <div className={`checkmark ${sentStatus ? '' : 'hide'}`}></div>
+                <button
+                  type="button"
+                  className="add-user"
+                  onClick={() => sendFriendRequest(suggestedUser.id)}
+                >
+                  <div
+                    className={`add-user-plus ${sentStatus ? 'hide' : ''}`}
+                  ></div>
+                  <div
+                    className={`checkmark ${sentStatus ? '' : 'hide'}`}
+                  ></div>
                 </button>
               </div>
-            )
+            );
           })}
-        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default AddFriend;

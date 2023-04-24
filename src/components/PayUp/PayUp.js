@@ -12,8 +12,16 @@ const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
   const [userCreditor, setUserCreditor] = useState(friend);
   const [payType, setPayType] = useState('OWE');
 
-  const currentExpenses = openPayUp ? expenses.filter(expense => sharedDebts.find(shared => shared.expense_id === expense.id)) : [];
-  const currentDebts = openPayUp ? debts.filter(debt => sharedDebts.find(shared => shared.expense_id === debt.expense_id)) : [];
+  const currentExpenses = openPayUp
+    ? expenses.filter(expense =>
+        sharedDebts.find(shared => shared.expense_id === expense.id)
+      )
+    : [];
+  const currentDebts = openPayUp
+    ? debts.filter(debt =>
+        sharedDebts.find(shared => shared.expense_id === debt.expense_id)
+      )
+    : [];
 
   useEffect(() => {
     if (balances.total > 0) {
@@ -25,75 +33,70 @@ const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
       setUserCreditor(friend);
       setUserDebtor(account);
     }
-  }, [balances, account, friend])
-  
+  }, [balances, account, friend]);
 
   const markExpensePaid = (expense, debts) => {
-    const unpaidDebts = debts.filter(debt => debt.expense_id === expense.id && !debt.paid);
+    const unpaidDebts = debts.filter(
+      debt => debt.expense_id === expense.id && !debt.paid
+    );
     if (unpaidDebts.length === 0) {
       return {
         ...expense,
-        paid: true
-      }
+        paid: true,
+      };
     } else {
       return expense;
     }
-  }
+  };
 
   const handlePayButton = async () => {
     const updatedDebts = currentDebts.map(debt => {
       return {
         ...debt,
-        paid: true
-      }
+        paid: true,
+      };
     });
 
     const updatedExpenses = currentExpenses.map(expense => {
       return markExpensePaid(expense, updatedDebts);
     });
-    
+
     try {
-      const { error } = await supabase
-        .from('debt')
-        .upsert(updatedDebts);
+      const { error } = await supabase.from('debt').upsert(updatedDebts);
       if (error) throw error;
     } catch (error) {
       console.error(error);
     }
 
     try {
-      const { error } = await supabase
-        .from('expense')
-        .upsert(updatedExpenses);
+      const { error } = await supabase.from('expense').upsert(updatedExpenses);
       if (error) throw error;
     } catch (error) {
       console.error(error);
     }
 
-    const insertDebtPaid = async (paidUpId) => {
+    const insertDebtPaid = async paidUpId => {
       const paidDebt = updatedDebts.map(debt => {
         return {
           debt_id: debt.id,
-          paid_id: paidUpId
-        }
+          paid_id: paidUpId,
+        };
       });
 
       try {
-        const { error } = await supabase
-          .from('debt_paid')
-          .insert(paidDebt);
+        const { error } = await supabase.from('debt_paid').insert(paidDebt);
         if (error) throw error;
       } catch (error) {
         console.error(error);
       }
-    }
+    };
 
     try {
       const { data, error } = await supabase
         .from('paid_up')
         .insert({
           creditor_id: userCreditor.id,
-          debtor_id: userDebtor.id
+          debtor_id: userDebtor.id,
         })
         .select();
       insertDebtPaid(data[0].id);
@@ -103,13 +106,11 @@ const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
     }
 
     setOpenPayUp(false);
-  }
+  };
 
   const handlePayCancel = () => {
     setOpenPayUp(false);
-  }
-
-  
+  };
 
   return (
     openPayUp && (
@@ -122,23 +123,39 @@ const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
           <div className="balance-block balance-block--total">
             <div>
               {payType === 'OWE' ? (
-                <>Pay <span className="friend-name">{friend.name}</span></>
+                <>
+                  Pay <span className="friend-name">{friend.name}</span>
+                </>
               ) : (
-                <><span className="friend-name">{friend.name}</span> paid you</>
+                <>
+                  <span className="friend-name">{friend.name}</span> paid you
+                </>
               )}
             </div>
-            <span className="total">${Math.abs(balances.total).toFixed(2) || 0.00}</span>
+            <span className="total">
+              ${Math.abs(balances.total).toFixed(2) || 0.0}
+            </span>
           </div>
-          <button type="button" className="button" title="Pay up" onClick={handlePayButton}>
+          <button
+            type="button"
+            className="button"
+            title="Pay up"
+            onClick={handlePayButton}
+          >
             Paid up
           </button>
-          <button type="button" className="button button--white button--small" title="Cancel" onClick={handlePayCancel}>
+          <button
+            type="button"
+            className="button button--white button--small"
+            title="Cancel"
+            onClick={handlePayCancel}
+          >
             Cancel
           </button>
         </div>
       </div>
     )
-  )
-}
+  );
+};
 
 export default PayUp;

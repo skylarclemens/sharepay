@@ -19,35 +19,35 @@ const Account = () => {
     setEmail(account.data.email);
     setName(account.data.name);
     setAvatarUrl(account.data.avatar_url);
-  }, [account])
+  }, [account]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const updateAccount = async (e) => {
+  const updateAccount = async e => {
     e.preventDefault();
     setLoading(true);
-    
+
     const accountUpdates = {
       id: account.data.id,
       email,
       name,
       avatar_url: avatarUrl,
-      updated_at: new Date()
-    }
+      updated_at: new Date(),
+    };
     try {
       const { data, error } = await supabase
-      .from('users')
-      .upsert(accountUpdates)
-      .select();
-      if ( error ) throw error;
+        .from('users')
+        .upsert(accountUpdates)
+        .select();
+      if (error) throw error;
       dispatch(setAccountData(data[0]));
     } catch (error) {
       console.error(error);
     }
 
     setLoading(false);
-  }
+  };
 
   const handleLogOut = async () => {
     try {
@@ -60,36 +60,65 @@ const Account = () => {
     } finally {
       navigate('/');
     }
-  }
+  };
 
   return (
     <div className="account-container">
-      { user ? (
+      {user ? (
         <>
-        <form className="account-form" onSubmit={updateAccount}>
-          <AvatarUpload
-            url={avatarUrl}
-            onUpload={(url) => {
-              setAvatarUrl(url);
-            }}
-          />
-          <div className="account-input">
-            <label className="input-label" htmlFor="email">Email</label>
-            <input className="text-input" id="email" name="email" type="text" value={email || ''} disabled />
-          </div>
-          <div className="account-input">
-            <label className="input-label" htmlFor="name">Name</label>
-            <input className="text-input" id="name" name="name" type="text" value={name || ''} onChange={(e) => setName(e.target.value)} />
-          </div>
-          <button className="button" type="submit" alt="Update account expense" title="Update account">
-            { loading ? 'Saving...' : 'Update' }
+          <form className="account-form" onSubmit={updateAccount}>
+            <AvatarUpload
+              url={avatarUrl}
+              onUpload={url => {
+                setAvatarUrl(url);
+              }}
+            />
+            <div className="account-input">
+              <label className="input-label" htmlFor="email">
+                Email
+              </label>
+              <input
+                className="text-input"
+                id="email"
+                name="email"
+                type="text"
+                value={email || ''}
+                disabled
+              />
+            </div>
+            <div className="account-input">
+              <label className="input-label" htmlFor="name">
+                Name
+              </label>
+              <input
+                className="text-input"
+                id="name"
+                name="name"
+                type="text"
+                value={name || ''}
+                onChange={e => setName(e.target.value)}
+              />
+            </div>
+            <button
+              className="button"
+              type="submit"
+              alt="Update account expense"
+              title="Update account"
+            >
+              {loading ? 'Saving...' : 'Update'}
+            </button>
+          </form>
+          <button
+            type="button"
+            className="button button--white"
+            onClick={handleLogOut}
+          >
+            Log Out
           </button>
-        </form>
-        <button type="button" className="button button--white" onClick={handleLogOut}>Log Out</button>
         </>
       ) : null}
     </div>
-  )
-}
+  );
+};
 
 export default Account;

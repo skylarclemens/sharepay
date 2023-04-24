@@ -9,9 +9,9 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
 
-  const handleSignUp = async (e) => {
+  const handleSignUp = async e => {
     e.preventDefault();
-    
+
     try {
       setLoading(true);
       const { error } = await supabase.auth.signUp({
@@ -19,9 +19,9 @@ const SignUp = () => {
         password: password,
         options: {
           data: {
-            name: fullName
-          }
-        }
+            name: fullName,
+          },
+        },
       });
       if (error) throw error;
       setSignedUp(true);
@@ -30,34 +30,68 @@ const SignUp = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="sign-up">
       <form className="sign-up-form form-container" onSubmit={handleSignUp}>
         <h1>Sign up</h1>
         <div className="input-container">
-          <label className="input-label" htmlFor="email">Email</label>
-          <input className="text-input" type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <label className="input-label" htmlFor="email">
+            Email
+          </label>
+          <input
+            className="text-input"
+            type="email"
+            id="email"
+            name="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
         </div>
         <div className="input-container">
-        <label className="input-label" htmlFor="password">Password</label>
-          <input className="text-input" type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <label className="input-label" htmlFor="password">
+            Password
+          </label>
+          <input
+            className="text-input"
+            type="password"
+            id="password"
+            name="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
         </div>
         <div className="input-container">
-          <label className="input-label" htmlFor="name">Name</label>
-          <input className="text-input" type="text" id="name" name="name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+          <label className="input-label" htmlFor="name">
+            Name
+          </label>
+          <input
+            className="text-input"
+            type="text"
+            id="name"
+            name="name"
+            value={fullName}
+            onChange={e => setFullName(e.target.value)}
+          />
         </div>
-        <button className="button button--medium button--border-none button--box-shadow" type="submit">{loading ? 'Signing up...' : 'Sign up'}</button>
+        <button
+          className="button button--medium button--border-none button--box-shadow"
+          type="submit"
+        >
+          {loading ? 'Signing up...' : 'Sign up'}
+        </button>
       </form>
       {signedUp && (
         <div className="success">
-          <div style={{'font-family': 'Rubik', 'font-weight':'500'}}>Signed up!</div>
+          <div style={{ 'font-family': 'Rubik', 'font-weight': '500' }}>
+            Signed up!
+          </div>
           <div>Check your email to confirm your account.</div>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default SignUp;

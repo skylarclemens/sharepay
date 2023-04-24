@@ -7,7 +7,7 @@
     border-top: none;
   }
   .shared-expenses {
-    background: #FFFFFF;
+    background: #ffffff;
     padding: 1rem 20px;
   }
   .medium-gray {
@@ -36,7 +36,7 @@
     line-height: 1.25rem;
     background: #618467;
     border-radius: 0.5rem 0 0 0.5rem;
-    color: #FFFFFF;
+    color: #ffffff;
     text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.15);
     .month {
       text-transform: uppercase;
@@ -61,5 +61,4 @@
     border: solid v.$washed-gray;
     border-width: 0 2px 2px 0;
   }
-
 }

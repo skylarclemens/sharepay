@@ -46,7 +46,7 @@ h2 {
   display: flex;
   gap: 0.5rem;
   align-content: stretch;
-  
+
   h3 {
     color: rgba(255, 255, 255, 0.8);
   }
@@ -66,7 +66,7 @@ h2 {
   border-radius: 0.5rem;
   align-items: center;
   gap: 0.25rem;
-  
+
   padding: 0.875rem 0;
   &.balance-block--green {
     background: v.$green-gradient;
@@ -94,4 +94,4 @@ h2 {
   .total--owe {
     color: v.$red;
   }
- }
+}

@@ -5,12 +5,17 @@ const Modal = ({ handleClose, open = false, children }) => {
     open && (
       <div className="modal">
         <div className="modal-content">
-          <button className={`button modal-close ${!handleClose && 'hide-close'}`} onClick={handleClose}>x</button>
+          <button
+            className={`button modal-close ${!handleClose && 'hide-close'}`}
+            onClick={handleClose}
+          >
+            x
+          </button>
           {children}
         </div>
       </div>
     )
-  )
-}
+  );
+};
 
 export default Modal;
