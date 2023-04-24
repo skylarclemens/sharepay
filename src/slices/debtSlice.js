@@ -1,11 +1,11 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { supabase } from "../supabaseClient";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { supabase } from '../supabaseClient';
 
 const initialState = {
   data: [],
   status: 'idle',
-  error: null
-}
+  error: null,
+};
 
 export const debtSlice = createSlice({
   name: 'debts',
@@ -15,50 +15,50 @@ export const debtSlice = createSlice({
       const newData = [...state.data, action.payload];
       return {
         ...state,
-        data: newData
-      }
+        data: newData,
+      };
     },
     removeDebtById: (state, action) => {
       const id = action.payload;
-      const newData = state.data.filter(debt => debt.id !== id)
+      const newData = state.data.filter(debt => debt.id !== id);
       return {
         ...state,
-        data: newData
-      }
+        data: newData,
+      };
     },
     removeDebtByExpense: (state, action) => {
       const id = action.payload;
-      const newData = state.data.filter(debt => debt.expense_id !== id)
+      const newData = state.data.filter(debt => debt.expense_id !== id);
       return {
         ...state,
-        data: newData
-      }
-    }
+        data: newData,
+      };
+    },
   },
   extraReducers(builder) {
-    builder.addCase(fetchDebts.pending, (state, action) => {
-      state.status = 'loading'
-    })
-    .addCase(fetchDebts.fulfilled, (state, action) => {
-      return {
-        ...state,
-        data: action.payload,
-        status: 'succeeded'
-      }
-    })
-    .addCase(fetchDebts.rejected, (state, action) => {
-      state.status = 'failed'
-      state.error = action.error.message
-    })
-  }
+    builder
+      .addCase(fetchDebts.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchDebts.fulfilled, (state, action) => {
+        return {
+          ...state,
+          data: action.payload,
+          status: 'succeeded',
+        };
+      })
+      .addCase(fetchDebts.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      });
+  },
 });
 
-export const { addDebt, removeDebtById, removeDebtByExpense } = debtSlice.actions;
+export const { addDebt, removeDebtById, removeDebtByExpense } =
+  debtSlice.actions;
 export default debtSlice.reducer;
 
 export const fetchDebts = createAsyncThunk('debts/fetchDebts', async () => {
-  const { data } = await supabase
-    .from('debt')
-    .select();
+  const { data } = await supabase.from('debt').select();
   return data;
 });

@@ -9,22 +9,39 @@ const Header = ({ type, title, headerRight, headerFn, headerFnLeft }) => {
 
   return (
     <div className="header-container">
-      {type === 'main' && ( 
+      {type === 'main' && (
         <div className="main-header header">
           <Link to="/">
-            <img src={logo} className="header-logo" alt="Dollar sign Sharepay logo" />
+            <img
+              src={logo}
+              className="header-logo"
+              alt="Dollar sign Sharepay logo"
+            />
           </Link>
           <div className="header-right">
-            {user ? null : 
-              <Link className="button button--transparent button--small" to="/login">Log In</Link>
-            }
+            {user ? null : (
+              <Link
+                className="button button--transparent button--small"
+                to="/login"
+              >
+                Log In
+              </Link>
+            )}
             {headerRight}
           </div>
         </div>
       )}
       {type === 'title' && (
-        <div className={`title-header header ${headerRight ? 'header-right' : ''}`}>
-          <button type="button"className="arrow-container--back-arrow" title="Back button" alt="Back button" onClick={headerFnLeft || (() => navigate(-1))}>
+        <div
+          className={`title-header header ${headerRight ? 'header-right' : ''}`}
+        >
+          <button
+            type="button"
+            className="arrow-container--back-arrow"
+            title="Back button"
+            alt="Back button"
+            onClick={headerFnLeft || (() => navigate(-1))}
+          >
             <div className="arrow arrow--left arrow--back-arrow arrow--white"></div>
           </button>
           <span className="header-text">{title}</span>
@@ -38,7 +55,7 @@ const Header = ({ type, title, headerRight, headerFn, headerFnLeft }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default Header;

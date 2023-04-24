@@ -13,19 +13,28 @@ const Nav = () => {
     <div className="nav-container">
       <div className="nav-buttons-container">
         <div className="nav-buttons nav-buttons-left">
-          <Link className={`nav-button ${selectedPath("/")}`} to="/">
-            <img src={homeImg} alt="Home icon"/>
+          <Link className={`nav-button ${selectedPath('/')}`} to="/">
+            <img src={homeImg} alt="Home icon" />
           </Link>
-          <Link className={`nav-button ${selectedPath("/friends")}`} to="/friends">
-            <img src={groupImg} alt="Friends icon"/>
+          <Link
+            className={`nav-button ${selectedPath('/friends')}`}
+            to="/friends"
+          >
+            <img src={groupImg} alt="Friends icon" />
           </Link>
         </div>
         <div className="nav-buttons nav-buttons-right">
-          <Link className={`nav-button ${selectedPath("/recent")}`} to="/recent">
-            <img src={graphImg} alt="Graph icon"/>
+          <Link
+            className={`nav-button ${selectedPath('/recent')}`}
+            to="/recent"
+          >
+            <img src={graphImg} alt="Graph icon" />
           </Link>
-          <Link className={`nav-button ${selectedPath("/account")}`} to="/account">
-            <img src={profileImg} alt="Account icon"/>
+          <Link
+            className={`nav-button ${selectedPath('/account')}`}
+            to="/account"
+          >
+            <img src={profileImg} alt="Account icon" />
           </Link>
         </div>
       </div>
@@ -33,7 +42,7 @@ const Nav = () => {
         <div className="add-plus"></div>
       </Link>
     </div>
-  )
-}
+  );
+};
 
 export default Nav;

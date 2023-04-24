@@ -1,12 +1,14 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import userReducer from '../slices/userSlice';
-import accountReducer from "../slices/accountSlice";
+import accountReducer from '../slices/accountSlice';
 import expenseReducer from '../slices/expenseSlice';
 import friendReducer from '../slices/friendSlice';
 import debtReducer from '../slices/debtSlice';
 import groupReducer from '../slices/groupSlice';
 
-const preloadedState = localStorage.getItem("localState") ? JSON.parse(localStorage.getItem("localState")) : {};
+const preloadedState = localStorage.getItem('localState')
+  ? JSON.parse(localStorage.getItem('localState'))
+  : {};
 
 const combinedReducer = combineReducers({
   user: userReducer,
@@ -14,11 +16,11 @@ const combinedReducer = combineReducers({
   expenses: expenseReducer,
   debts: debtReducer,
   friends: friendReducer,
-  groups: groupReducer
+  groups: groupReducer,
 });
 
 const rootReducer = (state, action) => {
-  if(action.type === 'user/removeUser') {
+  if (action.type === 'user/removeUser') {
     state = undefined;
   }
   return combinedReducer(state, action);
@@ -26,9 +28,9 @@ const rootReducer = (state, action) => {
 
 export const store = configureStore({
   reducer: rootReducer,
-  preloadedState
+  preloadedState,
 });
 
 store.subscribe(() => {
-  localStorage.setItem("localState", JSON.stringify(store.getState()));
+  localStorage.setItem('localState', JSON.stringify(store.getState()));
 });

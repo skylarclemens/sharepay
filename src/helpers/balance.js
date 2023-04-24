@@ -2,7 +2,7 @@ export const balanceCalc = (debts, userId) => {
   let totalBalance = 0;
   let balanceOwed = 0;
   let balanceOwe = 0;
-  debts.forEach((debt) => {
+  debts.forEach(debt => {
     if (debt.paid) return;
     const amount = debt.amount;
     if (debt.creditor_id === userId) {
@@ -12,20 +12,20 @@ export const balanceCalc = (debts, userId) => {
       totalBalance -= amount;
       balanceOwe += amount;
     }
-  })
+  });
 
   return {
     total: totalBalance,
     owed: balanceOwed,
-    owe: balanceOwe
-  }
-}
+    owe: balanceOwe,
+  };
+};
 
-export const groupBalanceCalc = (expenses) => {
+export const groupBalanceCalc = expenses => {
   let totalBalance = 0;
-  expenses.forEach((expense) => {
+  expenses.forEach(expense => {
     if (expense.paid) return;
     totalBalance += expense.amount;
-  })
+  });
   return totalBalance;
-}
+};

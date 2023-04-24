@@ -26,13 +26,13 @@ const Group = () => {
           .select()
           .eq('group_id', group.id);
         if (error) throw error;
-        setGroupExpenses(data)
+        setGroupExpenses(data);
       } catch (error) {
         console.error(error);
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     getGroupExpenses();
   }, [group]);
@@ -41,22 +41,25 @@ const Group = () => {
     setGroupBalance(groupBalanceCalc(groupExpenses));
   }, [groupExpenses]);
 
-  const formattedDate = (expenseDate) => {
-    const date = new Date(expenseDate).toLocaleDateString("en-US", {
-      month: 'short', day: 'numeric'
-    }).split(' ');
+  const formattedDate = expenseDate => {
+    const date = new Date(expenseDate)
+      .toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+      })
+      .split(' ');
     return (
       <>
         <div className="month">{date[0]}</div>
         <div className="day">{date[1]}</div>
       </>
-    )
-  }
+    );
+  };
 
   return (
     <div className="group-container">
       <Header type="title" title="Group details" />
-      {group &&
+      {group && (
         <>
           <div className="page-info-container">
             <div className="page-info">
@@ -64,17 +67,23 @@ const Group = () => {
             </div>
             <div className="balance-block">
               <h3 className="balance-text">GROUP BALANCE</h3>
-              <span className="total-amount">{formatMoney(groupBalance, false)}</span>
+              <span className="total-amount">
+                {formatMoney(groupBalance, false)}
+              </span>
             </div>
           </div>
           <h2 className="heading">Group expenses</h2>
           <div className="shared-expenses">
             {loading ? (
-                <div className="medium-gray">Loading...</div>
+              <div className="medium-gray">Loading...</div>
             ) : (
               groupExpenses.map(expense => {
                 return (
-                  <Link to={`/expense/${expense.id}`} key={expense.id} className="expense-card">
+                  <Link
+                    to={`/expense/${expense.id}`}
+                    key={expense.id}
+                    className="expense-card"
+                  >
                     <div className="expense-date">
                       {formattedDate(expense?.created_at)}
                     </div>
@@ -86,16 +95,17 @@ const Group = () => {
                     </div>
                     <div className="arrow arrow--right"></div>
                   </Link>
-                )
+                );
               })
             )}
-            {!loading && groupBalance === 0 &&
-            <div className="medium-gray">No group expenses available</div>}
+            {!loading && groupBalance === 0 && (
+              <div className="medium-gray">No group expenses available</div>
+            )}
           </div>
         </>
-      }
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default Group;

@@ -19,7 +19,7 @@ const Home = () => {
     <>
       <Dashboard />
     </>
-  )
-}
+  );
+};
 
 export default Home;

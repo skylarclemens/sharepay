@@ -28,36 +28,36 @@ const App = () => {
     const currentUserSession = async () => {
       const { error } = await supabase.auth.getUser();
 
-      if(error) {
+      if (error) {
         dispatch(removeUser());
         return;
       }
-    }
+    };
     currentUserSession();
   }, [dispatch]);
 
   return (
     <>
-      { user && <Header type="main" /> }
+      {user && <Header type="main" />}
       <div className="container">
         <Routes>
-          <Route path='/' element={ user ? <Home /> : <Welcome />} />
-          <Route path='/signup' element={<SignUp />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/account' element={<Account />} />
-          <Route path='/recent' element={<Recent />} />
-          <Route path='/friends' element={<Friends />} />
-          <Route path='/add-friend' element={<AddFriend />} />
-          <Route path='/group/:id' element={<Group />} />
-          <Route path='/new-group' element={<NewGroup />} />
+          <Route path="/" element={user ? <Home /> : <Welcome />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/recent" element={<Recent />} />
+          <Route path="/friends" element={<Friends />} />
+          <Route path="/add-friend" element={<AddFriend />} />
+          <Route path="/group/:id" element={<Group />} />
+          <Route path="/new-group" element={<NewGroup />} />
           <Route path="/friend/:id" element={<FriendDetails />} />
-          <Route path='/expense/:id' element={<Expense />} />
-          <Route path='/new-expense' element={<NewExpense />} />
+          <Route path="/expense/:id" element={<Expense />} />
+          <Route path="/new-expense" element={<NewExpense />} />
         </Routes>
       </div>
-      { user && <Nav /> }
+      {user && <Nav />}
     </>
   );
-}
+};
 
 export default App;

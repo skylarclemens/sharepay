@@ -10,7 +10,7 @@ const SelectFriends = ({ newFriends = false, handleAddUser }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [requestSent, setRequestSent] = useState({
     id: '',
-    sent: false
+    sent: false,
   });
   const user = useSelector(state => state.user);
   const friends = useSelector(state => state.friends.data);
@@ -32,7 +32,11 @@ const SelectFriends = ({ newFriends = false, handleAddUser }) => {
           console.error(error);
         }
       } else {
-        const suggestedFriends = friends.filter(friend => friend.name.toLowerCase().includes(value.toLowerCase()) || friend.email.toLowerCase().includes(value.toLowerCase()));
+        const suggestedFriends = friends.filter(
+          friend =>
+            friend.name.toLowerCase().includes(value.toLowerCase()) ||
+            friend.email.toLowerCase().includes(value.toLowerCase())
+        );
         setSuggestions(suggestedFriends);
       }
     };
@@ -49,23 +53,33 @@ const SelectFriends = ({ newFriends = false, handleAddUser }) => {
     }
   }, [value, user, friends, newFriends]);
 
-  const handleAdd = (friend) => {
+  const handleAdd = friend => {
     setRequestSent({
       id: friend.id,
-      sent: true
+      sent: true,
     });
     handleAddUser(friend);
-  }
+  };
 
   return (
     <div className={`add-friend-container ${!newFriends && 'select-friends'}`}>
       <Header type="title" title="Add friend" />
       <div className="search-container">
-        <input className="text-input" type="text" value={value} placeholder="Search" onChange={(e) => setValue(e.target.value)} />
+        <input
+          className="text-input"
+          type="text"
+          value={value}
+          placeholder="Search"
+          onChange={e => setValue(e.target.value)}
+        />
       </div>
       <div className="suggested-users">
-          {suggestions && suggestions.map((suggestedUser) => {
-            const sentStatus = requestSent.id === suggestedUser.id && requestSent.sent ? true : false;
+        {suggestions &&
+          suggestions.map(suggestedUser => {
+            const sentStatus =
+              requestSent.id === suggestedUser.id && requestSent.sent
+                ? true
+                : false;
             return (
               <div key={suggestedUser.id} className="user">
                 <div className="user-info">
@@ -75,16 +89,24 @@ const SelectFriends = ({ newFriends = false, handleAddUser }) => {
                     <div className="user-email">{suggestedUser.email}</div>
                   </div>
                 </div>
-                <button type="button" className="add-user" onClick={() => handleAdd(suggestedUser)}>
-                  <div className={`add-user-plus ${sentStatus ? 'hide' : ''}`}></div>
-                  <div className={`checkmark ${sentStatus ? '' : 'hide'}`}></div>
+                <button
+                  type="button"
+                  className="add-user"
+                  onClick={() => handleAdd(suggestedUser)}
+                >
+                  <div
+                    className={`add-user-plus ${sentStatus ? 'hide' : ''}`}
+                  ></div>
+                  <div
+                    className={`checkmark ${sentStatus ? '' : 'hide'}`}
+                  ></div>
                 </button>
               </div>
-            )
+            );
           })}
-        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default SelectFriends;
