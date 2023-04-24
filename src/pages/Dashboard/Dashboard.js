@@ -7,6 +7,7 @@ import { fetchDebts } from '../../slices/debtSlice';
 import { fetchFriends } from '../../slices/friendSlice';
 import Transactions from '../../components/Transactions/Transactions';
 import { fetchGroups } from '../../slices/groupSlice';
+import { formatMoney } from '../../helpers/money';
 
 const Dashboard = () => {
   const user = useSelector(state => state.user);
@@ -41,44 +42,34 @@ const Dashboard = () => {
   return (
     <>
       {dataLoaded ? (
-        <>
-          <div className="dashboard">
-            <h2 className="heading">Summary</h2>
-            <div className="dashboard-container">
-              <div className="greeting">
-                Hello,{' '}
-                <span className="greeting-name">{user.user_metadata.name}</span>
-                !
+        <div className="dashboard">
+          <div className="details-container">
+            <div className="balance">
+              <div className="balance-block balance-block--total">
+                <h3>YOUR BALANCE</h3>
+                <span
+                  className="total"
+                >
+                  {formatMoney(balances?.total)}
+                </span>
               </div>
-              <div className="balance">
-                <div className="balance-block balance-block--total">
-                  <h3>TOTAL BALANCE</h3>
-                  <span
-                    className={`total ${
-                      balances?.total < 0 ? 'total--owe' : ''
-                    }`}
-                  >
-                    ${balances?.total.toFixed(2) || 0.0}
-                  </span>
+              <div className="secondary-balance">
+                <div className="balance-block balance-block--green">
+                  <h3>YOU'RE OWED</h3>
+                  <span className="secondary-amount">${balances?.owed.toFixed(2) || 0.0}</span>
                 </div>
-                <div className="secondary-balance">
-                  <div className="balance-block balance-block--green">
-                    <h3>YOU'RE OWED</h3>
-                    <span>${balances?.owed.toFixed(2) || 0.0}</span>
-                  </div>
-                  <div className="balance-block balance-block--red">
-                    <h3>YOU OWE</h3>
-                    <span>${balances?.owe.toFixed(2) || 0.0}</span>
-                  </div>
+                <div className="balance-block balance-block--red">
+                  <h3>YOU OWE</h3>
+                  <span className="secondary-amount">${balances?.owe.toFixed(2) || 0.0}</span>
                 </div>
               </div>
             </div>
           </div>
           <div className="transactions-container">
-            <h2 className="heading">Transactions</h2>
+            <h2 className="main-heading">Recent Transactions</h2>
             <Transactions debts={debts.data} paid={false} />
           </div>
-        </>
+        </div>
       ) : null}
     </>
   );
