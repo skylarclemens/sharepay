@@ -51,60 +51,62 @@ const FriendDetails = () => {
   };
 
   return (
-    <div className={`friend-pay-container ${openPayUp ? 'modal-open' : ''}`}>
-      <div className={openPayUp ? 'modal-overlay' : ''}></div>
+    <>
       <Header type="title" title="Friend details" />
-      {friend && (
-        <div className="friend-container">
-          <div className="page-info-container">
-            <div className="page-info">
-              <Avatar
-                classes="white-border"
-                url={friend?.avatar_url}
-                size={50}
-              />
-              <h1 className="page-title">{friend?.name}</h1>
+      <div className={`friend-pay-container ${openPayUp ? 'modal-open' : ''}`}>
+        <div className={openPayUp ? 'modal-overlay' : ''}></div>
+        {friend && (
+          <div className="friend-container">
+            <div className="page-info-container">
+              <div className="page-info">
+                <Avatar
+                  classes="white-border"
+                  url={friend?.avatar_url}
+                  size={50}
+                />
+                <h1 className="page-title">{friend?.name}</h1>
+              </div>
+              <div className="balance-block">
+                <h3 className="balance-text">TOTAL BALANCE</h3>
+                <span className="total-amount">
+                  {formatMoney(balances.total)}
+                </span>
+              </div>
             </div>
-            <div className="balance-block">
-              <h3 className="balance-text">TOTAL BALANCE</h3>
-              <span className="total-amount">
-                {formatMoney(balances.total)}
-              </span>
+            {!(balances.total === 0) && (
+              <div className="pay-up-button">
+                <button
+                  type="button"
+                  className="button button--border-none"
+                  title="Pay up"
+                  onClick={handleOpenPayUp}
+                >
+                  Pay up
+                </button>
+              </div>
+            )}
+            <div className="shared-expenses">
+              <h2 className="heading">Shared expenses</h2>
+              {loading ? (
+                <div className="medium-gray">Loading...</div>
+              ) : (
+                <Transactions debts={sharedDebts} friend={friend} />
+              )}
+              {balances.total === 0 && (
+                <div className="medium-gray">No transactions available</div>
+              )}
             </div>
           </div>
-          {!(balances.total === 0) && (
-            <div className="pay-up-button">
-              <button
-                type="button"
-                className="button button--border-none"
-                title="Pay up"
-                onClick={handleOpenPayUp}
-              >
-                Pay up
-              </button>
-            </div>
-          )}
-          <div className="shared-expenses">
-            <h2 className="heading">Shared expenses</h2>
-            {loading ? (
-              <div className="medium-gray">Loading...</div>
-            ) : (
-              <Transactions debts={sharedDebts} friend={friend} />
-            )}
-            {balances.total === 0 && (
-              <div className="medium-gray">No transactions available</div>
-            )}
-          </div>
-        </div>
-      )}
-      <PayUp
-        setOpenPayUp={setOpenPayUp}
-        openPayUp={openPayUp}
-        friend={friend}
-        sharedDebts={sharedDebts}
-        balances={balances}
-      />
-    </div>
+        )}
+        <PayUp
+          setOpenPayUp={setOpenPayUp}
+          openPayUp={openPayUp}
+          friend={friend}
+          sharedDebts={sharedDebts}
+          balances={balances}
+        />
+      </div>
+    </>
   );
 };
 

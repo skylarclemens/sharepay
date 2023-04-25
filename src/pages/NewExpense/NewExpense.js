@@ -136,8 +136,8 @@ const NewExpense = () => {
 
   return (
     <>
+      <Header type="title" title="Add expense" />
       <div className="expense-container">
-        <Header type="title" title="Add expense" />
         <form className="expense-form" onSubmit={handleSubmit}>
           <AmountInput
             name="amount"
@@ -180,10 +180,10 @@ const NewExpense = () => {
                 })}
                 {!splitWithGroup && <button
                   type="button"
-                  className="friend-add-button button--icon"
+                  className="button--form-add button--icon"
                   onClick={() => setOpenSelectFriends(true)}
                   >
-                    <div className="friend-add-plus"></div>
+                    <div className="add-plus"></div>
                   </button>
                 }
                 {splitWithGroup && 
