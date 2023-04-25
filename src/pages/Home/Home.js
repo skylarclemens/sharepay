@@ -39,7 +39,9 @@ const Home = () => {
           <Dashboard />
         </MainLayout>
       ) : (
-        <Welcome />
+        <EmptyLayout>
+          <Welcome />
+        </EmptyLayout>
       )}
     </>
   );

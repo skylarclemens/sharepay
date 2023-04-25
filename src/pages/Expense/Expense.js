@@ -49,14 +49,14 @@ const Expense = () => {
 
   return (
     <>
+      <Header
+              type="title"
+              title="Expense details"
+              headerRight={headerImg}
+              headerFn={handleDelete}
+            />
       {expense && (
         <div className="expense-container">
-          <Header
-            type="title"
-            title="Expense details"
-            headerRight={headerImg}
-            headerFn={handleDelete}
-          />
           <div className="expense-page-container">
             <div className="page-info-container">
               <div className="page-info">

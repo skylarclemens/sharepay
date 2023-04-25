@@ -3,14 +3,9 @@ import logo from '../../images/logo.png';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Header = ({ type = 'main', title, headerLeft, headerFnLeft, headerRight, headerFnRight }) => {
+const Header = ({ type = 'main', title, headerLeft, headerLeftFn, headerRight, headerRightFn }) => {
   const user = useSelector(state => state.user);
   const navigate = useNavigate();
-  let headerLeftContent;
-
-  if(headerLeft === 'back') {
-    headerLeftContent = <div className="arrow arrow--left arrow--back-arrow arrow--white"></div>;
-  }
 
   if (type === "main") {
     return (
@@ -46,7 +41,7 @@ const Header = ({ type = 'main', title, headerLeft, headerFnLeft, headerRight, h
             className="arrow-container--back-arrow"
             title="Back button"
             alt="Back button"
-            onClick={headerFnLeft || (() => navigate(-1))}
+            onClick={headerLeftFn || (() => navigate(-1))}
           >
             {headerLeft ? headerLeft : (
               <div className="arrow arrow--left arrow--back-arrow arrow--white"></div> 
@@ -55,7 +50,7 @@ const Header = ({ type = 'main', title, headerLeft, headerFnLeft, headerRight, h
           <span>{title}</span>
           {headerRight ? (
             <div className="title-right">
-              <button type="button" className="button--icon" onClick={headerFnRight}>
+              <button type="button" className="button--icon" onClick={headerRightFn}>
                 {headerRight}
               </button>
             </div>

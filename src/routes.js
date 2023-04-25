@@ -12,9 +12,10 @@ import NewGroup from './pages/NewGroup/NewGroup';
 import Group from './pages/Group/Group';
 import Recent from './pages/Recent/Recent';
 import MainLayout from './layouts/MainLayout/MainLayout';
+import DetailsLayout from './layouts/DetailsLayout/DetailsLayout';
+import FormLayout from './layouts/FormLayout/FormLayout';
 import EmptyLayout from './layouts/EmptyLayout/EmptyLayout';
 import App from './App';
-import SecondaryLayout from './layouts/SecondaryLayout/SecondaryLayout';
 
 const RoutesContainer = () => {
   return (
@@ -27,12 +28,14 @@ const RoutesContainer = () => {
             <Route path="recent" element={<Recent />} />
             <Route path="friends" element={<Friends />} />
           </Route>
-          <Route element={<SecondaryLayout />}>
+          <Route element={<DetailsLayout />}>
             <Route path="expense/:id" element={<Expense />} />
-            <Route path="new-expense" element={<NewExpense />} />
             <Route path="friend/:id" element={<FriendDetails />} />
-            <Route path="add-friend" element={<AddFriend />} />
             <Route path="group/:id" element={<Group />} />
+          </Route>
+          <Route element={<FormLayout />}>
+            <Route path="new-expense" element={<NewExpense />} />
+            <Route path="add-friend" element={<AddFriend />} />
             <Route path="new-group" element={<NewGroup />} />
           </Route>
           <Route element={<EmptyLayout />}>

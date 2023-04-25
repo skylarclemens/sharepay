@@ -1,11 +1,11 @@
 import { Outlet } from 'react-router-dom';
 
-const EmptyLayout = ({ children }) => {
+const FormLayout = ({ children }) => {
   return (
-    <div className="empty-layout">
+    <div className="form layout">
       { children ? children : <Outlet /> }
     </div>
   )
 }
 
-export default EmptyLayout;
+export default FormLayout;
