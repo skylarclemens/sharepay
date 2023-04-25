@@ -1,3 +1,21 @@
+@use '../utilities/colors' as v;
+
 h1 {
   font-size: 1.5rem;
+}
+
+.heading {
+  height: 32px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  background-color: v.$light-gray;
+  border-top: 1px solid v.$accent-gray;
+  border-bottom: 2px solid v.$accent-gray;
+  text-transform: uppercase;
+  font-family: 'Rubik', sans-serif;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+  color: v.$dark-gray;
+  font-weight: 500;
 }

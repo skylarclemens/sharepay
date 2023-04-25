@@ -21,37 +21,37 @@
     border-top: 1px solid v.$accent-gray;
     border-bottom: 2px solid v.$accent-gray;
   }
+}
 
-  .friend-add-button {
-    position: relative;
-    height: 54px;
-    width: 54px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #ffffff;
-    border-radius: 50%;
-    border-bottom: 2px solid v.$accent-gray;
+.friend-add-button {
+  position: relative;
+  height: 54px;
+  width: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 50%;
+  border-bottom: 2px solid v.$accent-gray;
 
-    .friend-add-plus {
-      &::before,
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background: v.$washed-gray;
-      }
-      &::after {
-        width: 2px;
-        margin: 16px auto;
-      }
-      &::before {
-        height: 2px;
-        margin: auto 16px;
-      }
+  .friend-add-plus {
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: v.$washed-gray;
+    }
+    &::after {
+      width: 2px;
+      margin: 16px auto;
+    }
+    &::before {
+      height: 2px;
+      margin: auto 16px;
     }
   }
 }

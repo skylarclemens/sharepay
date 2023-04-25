@@ -111,7 +111,7 @@ const NewGroup = () => {
         </form>
       </div>
       <Modal open={openSelectFriends}>
-        <SelectFriends handleAddUser={handleAddUser} />
+        <SelectFriends handleAdd={handleAddUser} />
       </Modal>
     </>
   );
