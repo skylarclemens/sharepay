@@ -32,22 +32,37 @@ const Header = ({ type = 'main', title, headerLeft, headerLeftFn, headerRight, h
         </div>
       </div>
     )
-  } else if (type === 'title') {
+  } else if (type === 'main-title') {
+    return (
+      <div className="header-container">
+        <div className="main-header header">
+          <span className="title">{title}</span>
+          {headerRight ? (
+            <div className="title-right">
+              <button type="button" className="button--icon" onClick={headerRightFn}>
+                {headerRight}
+              </button>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    )
+  }
+   else if (type === 'title') {
     return (
       <div className="header-container">
         <div className="title-header header">
-          <button
+          {headerLeft ? headerLeft : (
+            <button
             type="button"
             className="arrow-container--back-arrow"
             title="Back button"
             alt="Back button"
-            onClick={headerLeftFn || (() => navigate(-1))}
-          >
-            {headerLeft ? headerLeft : (
-              <div className="arrow arrow--left arrow--back-arrow arrow--white"></div> 
-            )}
-          </button>
-          <span>{title}</span>
+            onClick={headerLeftFn || (() => navigate(-1))}>
+              <div className="arrow arrow--left arrow--back-arrow arrow--white"></div>
+            </button>
+          )}
+          <span className="title">{title}</span>
           {headerRight ? (
             <div className="title-right">
               <button type="button" className="button--icon" onClick={headerRightFn}>

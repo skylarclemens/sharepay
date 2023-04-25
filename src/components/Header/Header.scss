@@ -18,6 +18,12 @@
   padding: 0 20px;
 }
 
+.title {
+  color: white;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 500;
+}
+
 .main-header {
   display: flex;
   justify-content: space-between;
@@ -26,6 +32,11 @@
   a {
     text-decoration: none;
     max-height: 32px;
+  }
+
+  .title {
+    font-size: 1.25rem;
+    //font-weight: 400;
   }
 }
 
@@ -41,9 +52,6 @@
   justify-items: center;
   align-items: center;
   width: 100%;
-  color: white;
-  font-family: 'Rubik', sans-serif;
-  font-weight: 500;
   padding: 0;
 
   .title-right {
