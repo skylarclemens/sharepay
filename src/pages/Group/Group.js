@@ -57,54 +57,56 @@ const Group = () => {
   };
 
   return (
-    <div className="group-container">
+    <>
       <Header type="title" title="Group details" />
-      {group && (
-        <>
-          <div className="page-info-container">
-            <div className="page-info">
-              <h1 className="page-title">{group?.group_name}</h1>
+      <div className="group-container">
+        {group && (
+          <>
+            <div className="page-info-container">
+              <div className="page-info">
+                <h1 className="page-title">{group?.group_name}</h1>
+              </div>
+              <div className="balance-block">
+                <h3 className="balance-text">GROUP BALANCE</h3>
+                <span className="total-amount">
+                  {formatMoney(groupBalance, false)}
+                </span>
+              </div>
             </div>
-            <div className="balance-block">
-              <h3 className="balance-text">GROUP BALANCE</h3>
-              <span className="total-amount">
-                {formatMoney(groupBalance, false)}
-              </span>
+            <h2 className="heading">Group expenses</h2>
+            <div className="shared-expenses">
+              {loading ? (
+                <div className="medium-gray">Loading...</div>
+              ) : (
+                groupExpenses.map(expense => {
+                  return (
+                    <Link
+                      to={`/expense/${expense.id}`}
+                      key={expense.id}
+                      className="expense-card"
+                    >
+                      <div className="expense-date">
+                        {formattedDate(expense?.created_at)}
+                      </div>
+                      <div className="expense-description">
+                        {expense?.description}
+                      </div>
+                      <div className="expense-amount">
+                        {formatMoney(expense?.amount, false)}
+                      </div>
+                      <div className="arrow arrow--right"></div>
+                    </Link>
+                  );
+                })
+              )}
+              {!loading && groupBalance === 0 && (
+                <div className="medium-gray">No group expenses available</div>
+              )}
             </div>
-          </div>
-          <h2 className="heading">Group expenses</h2>
-          <div className="shared-expenses">
-            {loading ? (
-              <div className="medium-gray">Loading...</div>
-            ) : (
-              groupExpenses.map(expense => {
-                return (
-                  <Link
-                    to={`/expense/${expense.id}`}
-                    key={expense.id}
-                    className="expense-card"
-                  >
-                    <div className="expense-date">
-                      {formattedDate(expense?.created_at)}
-                    </div>
-                    <div className="expense-description">
-                      {expense?.description}
-                    </div>
-                    <div className="expense-amount">
-                      {formatMoney(expense?.amount, false)}
-                    </div>
-                    <div className="arrow arrow--right"></div>
-                  </Link>
-                );
-              })
-            )}
-            {!loading && groupBalance === 0 && (
-              <div className="medium-gray">No group expenses available</div>
-            )}
-          </div>
-        </>
-      )}
-    </div>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

@@ -53,7 +53,7 @@ const Expense = () => {
               type="title"
               title="Expense details"
               headerRight={headerImg}
-              headerFn={handleDelete}
+              headerRightFn={handleDelete}
             />
       {expense && (
         <div className="expense-container">

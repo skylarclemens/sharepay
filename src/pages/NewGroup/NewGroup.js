@@ -67,8 +67,8 @@ const NewGroup = () => {
 
   return (
     <>
+      <Header type="title" title="Create group" />
       <div className="new-group-container">
-        <Header type="title" title="Create group" />
         <form className="group-form" onSubmit={handleSubmit}>
           <TextInput
             className="group-spacing"
@@ -93,10 +93,10 @@ const NewGroup = () => {
               })}
               <button
                 type="button"
-                className="friend-add-button button--icon"
+                className="button--form-add button--icon"
                 onClick={() => setOpenSelectFriends(true)}
               >
-                <div className="friend-add-plus"></div>
+                <div className="add-plus"></div>
               </button>
             </div>
           </div>

@@ -61,52 +61,54 @@ const AddFriend = ({ selectFriends = false, handleAddUser }) => {
   };
 
   return (
-    <div
-      className={`add-friend-container ${selectFriends && 'select-friends'}`}
-    >
+    <>
       <Header type="title" title="Add friend" />
-      <div className="search-container">
-        <input
-          className="text-input"
-          type="text"
-          value={value}
-          placeholder="Search"
-          onChange={e => setValue(e.target.value)}
-        />
-      </div>
-      <div className="suggested-users">
-        {suggestions &&
-          suggestions.map(suggestedUser => {
-            const sentStatus =
-              requestSent.id === suggestedUser.id && requestSent.sent
-                ? true
-                : false;
-            return (
-              <div key={suggestedUser.id} className="user">
-                <div className="user-info">
-                  <Avatar url={suggestedUser.avatar_url} />
-                  <div className="user-info-text">
-                    <div className="user-name">{suggestedUser.name}</div>
-                    <div className="user-email">{suggestedUser.email}</div>
+      <div
+        className={`add-friend-container ${selectFriends && 'select-friends'}`}
+      >
+        <div className="search-container">
+          <input
+            className="text-input"
+            type="text"
+            value={value}
+            placeholder="Search"
+            onChange={e => setValue(e.target.value)}
+          />
+        </div>
+        <div className="suggested-users">
+          {suggestions &&
+            suggestions.map(suggestedUser => {
+              const sentStatus =
+                requestSent.id === suggestedUser.id && requestSent.sent
+                  ? true
+                  : false;
+              return (
+                <div key={suggestedUser.id} className="user">
+                  <div className="user-info">
+                    <Avatar url={suggestedUser.avatar_url} />
+                    <div className="user-info-text">
+                      <div className="user-name">{suggestedUser.name}</div>
+                      <div className="user-email">{suggestedUser.email}</div>
+                    </div>
                   </div>
+                  <button
+                    type="button"
+                    className="add-user"
+                    onClick={() => sendFriendRequest(suggestedUser.id)}
+                  >
+                    <div
+                      className={`add-user-plus ${sentStatus ? 'hide' : ''}`}
+                    ></div>
+                    <div
+                      className={`checkmark ${sentStatus ? '' : 'hide'}`}
+                    ></div>
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="add-user"
-                  onClick={() => sendFriendRequest(suggestedUser.id)}
-                >
-                  <div
-                    className={`add-user-plus ${sentStatus ? 'hide' : ''}`}
-                  ></div>
-                  <div
-                    className={`checkmark ${sentStatus ? '' : 'hide'}`}
-                  ></div>
-                </button>
-              </div>
-            );
-          })}
+              );
+            })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
