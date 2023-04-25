@@ -3,13 +3,18 @@ import logo from '../../images/logo.png';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Header = ({ type, title, headerRight, headerFn, headerFnLeft }) => {
+const Header = ({ type = 'main', title, headerLeft, headerFnLeft, headerRight, headerFnRight }) => {
   const user = useSelector(state => state.user);
   const navigate = useNavigate();
+  let headerLeftContent;
 
-  return (
-    <div className="header-container">
-      {type === 'main' && (
+  if(headerLeft === 'back') {
+    headerLeftContent = <div className="arrow arrow--left arrow--back-arrow arrow--white"></div>;
+  }
+
+  if (type === "main") {
+    return (
+      <div className="header-container">
         <div className="main-header header">
           <Link to="/">
             <img
@@ -30,11 +35,12 @@ const Header = ({ type, title, headerRight, headerFn, headerFnLeft }) => {
             {headerRight}
           </div>
         </div>
-      )}
-      {type === 'title' && (
-        <div
-          className={`title-header header ${headerRight ? 'header-right' : ''}`}
-        >
+      </div>
+    )
+  } else if (type === 'title') {
+    return (
+      <div className="header-container">
+        <div className="title-header header">
           <button
             type="button"
             className="arrow-container--back-arrow"
@@ -42,20 +48,22 @@ const Header = ({ type, title, headerRight, headerFn, headerFnLeft }) => {
             alt="Back button"
             onClick={headerFnLeft || (() => navigate(-1))}
           >
-            <div className="arrow arrow--left arrow--back-arrow arrow--white"></div>
+            {headerLeft ? headerLeft : (
+              <div className="arrow arrow--left arrow--back-arrow arrow--white"></div> 
+            )}
           </button>
-          <span className="header-text">{title}</span>
+          <span>{title}</span>
           {headerRight ? (
             <div className="title-right">
-              <button type="button" className="button--icon" onClick={headerFn}>
+              <button type="button" className="button--icon" onClick={headerFnRight}>
                 {headerRight}
               </button>
             </div>
           ) : null}
         </div>
-      )}
-    </div>
-  );
+      </div>
+    )
+  }
 };
 
 export default Header;
