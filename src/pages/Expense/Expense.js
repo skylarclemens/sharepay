@@ -2,7 +2,7 @@ import './Expense.scss';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
-import { removeExpense } from '../../slices/expenseSlice';
+import { removeExpense, selectExpenseById } from '../../slices/expenseSlice';
 import { removeDebtByExpense } from '../../slices/debtSlice';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
@@ -10,15 +10,13 @@ import Header from '../../components/Header/Header';
 import deleteImg from '../../images/Delete.svg';
 
 const Expense = () => {
-  const expenses = useSelector(state => state.expenses.data);
-  const debts = useSelector(state => state.debts.data);
   const friends = useSelector(state => state.friends.data);
   const account = useSelector(state => state.account.data);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let { id } = useParams();
-  const expense = expenses.find(expense => expense.id === id);
-  const debt = debts.find(debt => debt.expense_id === id);
+  const expense = useSelector(state => selectExpenseById(state, id));
+  const debt = useSelector(state => state.debts.data.find(debt => debt.expense_id === id));
   let debtType = 'OWES';
   let userCreditor;
   let userDebtor;

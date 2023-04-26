@@ -28,13 +28,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (dataLoaded) {
-      dispatch(setBalances(balanceCalc(debts.data, user.id)));
+      dispatch(setBalances(balanceCalc(debts?.data, user?.id)));
     }
   }, [dataLoaded, debts.data, user.id, dispatch]);
 
   useEffect(() => {
     dispatch(fetchDebts(user.id));
-    dispatch(fetchExpenses(user.id));
+    dispatch(fetchExpenses());
     dispatch(fetchFriends(user.id));
     dispatch(fetchGroups(user.id));
   }, [user, dispatch]);
@@ -67,7 +67,7 @@ const Dashboard = () => {
           </div>
           <div className="transactions-container">
             <h2 className="main-heading">Recent Transactions</h2>
-            <Transactions debts={debts.data} paid={false} />
+            <Transactions debts={debts?.data} paid={false} />
           </div>
         </div>
       ) : null}

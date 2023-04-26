@@ -16,13 +16,6 @@ export const expenseSlice = createSlice({
   name: 'expenses',
   initialState,
   reducers: {
-    addExpense: (state, action) => {
-      const newData = [...state.data, action.payload];
-      return {
-        ...state,
-        data: newData,
-      };
-    },
     removeExpense: (state, action) => {
       const id = action.payload;
       const newData = state.data.filter(expense => expense.id !== id);
@@ -48,22 +41,47 @@ export const expenseSlice = createSlice({
           ...state,
           data: action.payload,
           status: 'succeeded',
+          error: null
         };
       })
       .addCase(fetchExpenses.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       });
+    builder
+      .addCase(addExpense.fulfilled, (state, action) => {
+        const newData = [...state.data, ...action.payload];
+        return {
+          ...state,
+          data: newData
+        }
+      })
   },
 });
 
-export const { addExpense, removeExpense, setBalances } = expenseSlice.actions;
+export const { removeExpense, setBalances } = expenseSlice.actions;
 export default expenseSlice.reducer;
+
+export const selectAllExpenses = state => state.expenses.data;
+
+export const selectExpenseById = (state, expenseId) => state.expenses.data.find(expense => expense.id === expenseId);
 
 export const fetchExpenses = createAsyncThunk(
   'expenses/fetchExpenses',
-  async userId => {
-    const { data } = await supabase.from('debt').select('expense!inner(*)');
-    return data.map(obj => obj.expense);
+  async () => {
+    const { data } = await supabase
+      .rpc("get_user_expenses");
+    return data;
   }
 );
+
+export const addExpense = createAsyncThunk(
+  'expenses/addExpense',
+  async (newExpense) => {
+    const { data } = await supabase
+      .from('expense')
+      .insert(newExpense)
+      .select();
+    return data;
+  }
+)

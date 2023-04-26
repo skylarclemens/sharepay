@@ -11,13 +11,6 @@ export const debtSlice = createSlice({
   name: 'debts',
   initialState,
   reducers: {
-    addDebt: (state, action) => {
-      const newData = [...state.data, action.payload];
-      return {
-        ...state,
-        data: newData,
-      };
-    },
     removeDebtById: (state, action) => {
       const id = action.payload;
       const newData = state.data.filter(debt => debt.id !== id);
@@ -51,14 +44,36 @@ export const debtSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       });
+    builder
+      .addCase(addDebt.fulfilled, (state, action) => {
+        const newData = [...state.data, ...action.payload];
+        return {
+          ...state,
+          data: newData
+        }
+      })
   },
 });
 
-export const { addDebt, removeDebtById, removeDebtByExpense } =
-  debtSlice.actions;
+export const { removeDebtById, removeDebtByExpense } = debtSlice.actions;
 export default debtSlice.reducer;
+
+export const selectAllDebts = state => state.friends.data;
+
+export const selectFriendById = (state, friendId) => state.friends.data.find(friend => friend.id === friendId);
 
 export const fetchDebts = createAsyncThunk('debts/fetchDebts', async () => {
   const { data } = await supabase.from('debt').select();
   return data;
 });
+
+export const addDebt = createAsyncThunk(
+  'debts/addDebt',
+  async (newDebt) => {
+    const { data } = await supabase
+      .from('debt')
+      .insert(newDebt)
+      .select();
+    return data;
+  }
+);
