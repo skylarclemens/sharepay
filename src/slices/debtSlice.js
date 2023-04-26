@@ -58,9 +58,10 @@ export const debtSlice = createSlice({
 export const { removeDebtById, removeDebtByExpense } = debtSlice.actions;
 export default debtSlice.reducer;
 
-export const selectAllDebts = state => state.friends.data;
-
-export const selectFriendById = (state, friendId) => state.friends.data.find(friend => friend.id === friendId);
+export const selectAllDebts = state => state.debts.data;
+export const selectAllPaidDebts = state => state.debts.data.filter(debt => debt.paid === true);
+export const selectAllUnpaidDebts = state => state.debts.data.filter(debt => debt.paid === false);
+export const selectDebtById = (state, debtId) => state.debts.data.find(debt => debt.id === debtId);
 
 export const fetchDebts = createAsyncThunk('debts/fetchDebts', async () => {
   const { data } = await supabase.from('debt').select();

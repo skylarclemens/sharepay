@@ -42,7 +42,6 @@ export const { initFriends, addFriend } = friendSlice.actions;
 export default friendSlice.reducer;
 
 export const selectAllFriends = state => state.friends.data;
-
 export const selectFriendById = (state, friendId) => state.friends.data.find(friend => friend.id === friendId);
 
 export const fetchFriends = createAsyncThunk(

@@ -63,7 +63,6 @@ export const { removeExpense, setBalances } = expenseSlice.actions;
 export default expenseSlice.reducer;
 
 export const selectAllExpenses = state => state.expenses.data;
-
 export const selectExpenseById = (state, expenseId) => state.expenses.data.find(expense => expense.id === expenseId);
 
 export const fetchExpenses = createAsyncThunk(

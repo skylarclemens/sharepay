@@ -1,26 +1,12 @@
 import './Recent.scss';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
 import Transactions from '../../components/Transactions/Transactions';
+import { selectAllPaidDebts } from '../../slices/debtSlice';
 
 const Recent = () => {
-  const [paidDebts, setPaidDebts] = useState([]);
-
-  useEffect(() => {
-    const getPaidDebts = async () => {
-      const { data, error } = await supabase
-        .from('debt')
-        .select('*')
-        .eq('paid', true);
-      if (error) {
-        console.error(error);
-        return;
-      }
-      setPaidDebts(data);
-    };
-
-    getPaidDebts();
-  }, []);
+  const paidDebts = useSelector(state => selectAllPaidDebts(state));
 
   return (
     <div className="recent">

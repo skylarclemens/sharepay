@@ -33,11 +33,28 @@ const Dashboard = () => {
   }, [dataLoaded, debts.data, user.id, dispatch]);
 
   useEffect(() => {
-    dispatch(fetchDebts(user.id));
-    dispatch(fetchExpenses());
-    dispatch(fetchFriends(user.id));
-    dispatch(fetchGroups(user.id));
-  }, [user, dispatch]);
+    if(expenses.status === 'idle') {
+      dispatch(fetchExpenses());
+    }
+  }, [expenses, dispatch]);
+
+  useEffect(() => {
+    if(friends.status === 'idle') {
+      dispatch(fetchFriends());
+    }
+  }, [friends, dispatch]);
+
+  useEffect(() => {
+    if(debts.status === 'idle') {
+      dispatch(fetchDebts());
+    }
+  }, [debts, dispatch]);
+
+  useEffect(() => {
+    if(groups.status === 'idle') {
+      dispatch(fetchGroups(user.id));
+    }
+  }, [user, groups, dispatch]);
 
   return (
     <>
