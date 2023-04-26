@@ -2,8 +2,8 @@ import './Dashboard.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { balanceCalc } from '../../helpers/balance';
 import { useEffect } from 'react';
-import { fetchExpenses, setBalances } from '../../slices/expenseSlice';
-import { fetchDebts } from '../../slices/debtSlice';
+import { fetchExpenses, setBalances, getExpenseStatus } from '../../slices/expenseSlice';
+import { fetchDebts, selectAllDebts, getDebtStatus } from '../../slices/debtSlice';
 import { fetchFriends } from '../../slices/friendSlice';
 import Transactions from '../../components/Transactions/Transactions';
 import { fetchGroups } from '../../slices/groupSlice';
@@ -11,9 +11,10 @@ import { formatMoney } from '../../helpers/money';
 
 const Dashboard = () => {
   const user = useSelector(state => state.user);
-  const expenses = useSelector(state => state.expenses);
+  const expensesStatus = useSelector(getExpenseStatus);
   const friends = useSelector(state => state.friends);
-  const debts = useSelector(state => state.debts);
+  const debtsStatus = useSelector(getDebtStatus);
+  const debts = useSelector(selectAllDebts);
   const groups = useSelector(state => state.groups);
   const balances = useSelector(state => state.expenses.balances);
 
@@ -21,22 +22,22 @@ const Dashboard = () => {
 
   const dataLoaded =
     user &&
-    debts.status === 'succeeded' &&
+    debtsStatus === 'succeeded' &&
     friends.status === 'succeeded' &&
-    expenses.status === 'succeeded' &&
+    expensesStatus === 'succeeded' &&
     groups.status === 'succeeded';
 
   useEffect(() => {
     if (dataLoaded) {
-      dispatch(setBalances(balanceCalc(debts?.data, user?.id)));
+      dispatch(setBalances(balanceCalc(debts, user?.id)));
     }
-  }, [dataLoaded, debts.data, user.id, dispatch]);
+  }, [dataLoaded, debts, user.id, dispatch]);
 
   useEffect(() => {
-    if(expenses.status === 'idle') {
+    if(expensesStatus === 'idle') {
       dispatch(fetchExpenses());
     }
-  }, [expenses, dispatch]);
+  }, [expensesStatus, dispatch]);
 
   useEffect(() => {
     if(friends.status === 'idle') {
@@ -45,10 +46,10 @@ const Dashboard = () => {
   }, [friends, dispatch]);
 
   useEffect(() => {
-    if(debts.status === 'idle') {
+    if(debtsStatus === 'idle') {
       dispatch(fetchDebts());
     }
-  }, [debts, dispatch]);
+  }, [debtsStatus, dispatch]);
 
   useEffect(() => {
     if(groups.status === 'idle') {
@@ -84,7 +85,7 @@ const Dashboard = () => {
           </div>
           <div className="transactions-container">
             <h2 className="main-heading">Recent Transactions</h2>
-            <Transactions debts={debts?.data} paid={false} />
+            <Transactions debts={debts} paid={false} />
           </div>
         </div>
       ) : null}

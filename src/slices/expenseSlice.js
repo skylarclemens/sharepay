@@ -1,8 +1,11 @@
-import { createAsyncThunk, createSlice, createSelector } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { supabase } from '../supabaseClient';
 
-const initialState = {
-  data: [],
+const expenseAdapter = createEntityAdapter({
+  sortComparer: (a, b) => b.created_at.localeCompare(a.created_at)
+});
+
+const initialState = expenseAdapter.getInitialState({
   balances: {
     total: 0,
     owed: 0,
@@ -10,20 +13,12 @@ const initialState = {
   },
   status: 'idle',
   error: null,
-};
+});
 
 export const expenseSlice = createSlice({
   name: 'expenses',
   initialState,
   reducers: {
-    removeExpense: (state, action) => {
-      const id = action.payload;
-      const newData = state.data.filter(expense => expense.id !== id);
-      return {
-        ...state,
-        data: newData,
-      };
-    },
     setBalances: (state, action) => {
       return {
         ...state,
@@ -37,12 +32,9 @@ export const expenseSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(fetchExpenses.fulfilled, (state, action) => {
-        return {
-          ...state,
-          data: action.payload,
-          status: 'succeeded',
-          error: null
-        };
+        expenseAdapter.upsertMany(state, action.payload);
+        state.status = 'succeeded';
+        state.error = null;
       })
       .addCase(fetchExpenses.rejected, (state, action) => {
         state.status = 'failed';
@@ -50,23 +42,29 @@ export const expenseSlice = createSlice({
       });
     builder
       .addCase(addExpense.fulfilled, (state, action) => {
-        const newData = [...state.data, ...action.payload];
-        return {
-          ...state,
-          data: newData
+        console.log(action.payload);
+        expenseAdapter.addOne(state, ...action.payload);
+      })
+    builder
+      .addCase(removeExpense.fulfilled, (state, action) => {
+        const existingExpense = state.entities[action.payload];
+        if(existingExpense) {
+          expenseAdapter.removeOne(existingExpense);
         }
       })
   },
 });
 
-export const { removeExpense, setBalances } = expenseSlice.actions;
+export const { setBalances } = expenseSlice.actions;
 export default expenseSlice.reducer;
 
-export const selectAllExpenses = state => state.expenses.data;
-export const selectExpenseById = createSelector(
-  [selectAllExpenses, (state, expenseId) => expenseId],
-  (expenses, expenseId) => expenses.filter(expense => expense.id === expenseId)
-);
+export const {
+  selectAll: selectAllExpenses,
+  selectById: selectExpenseById,
+  selectIds: selectExpenseIds
+} = expenseAdapter.getSelectors(state => state.expenses);
+
+export const getExpenseStatus = state => state.expenses.status;
 
 export const fetchExpenses = createAsyncThunk(
   'expenses/fetchExpenses',
@@ -85,5 +83,16 @@ export const addExpense = createAsyncThunk(
       .insert(newExpense)
       .select();
     return data;
+  }
+)
+
+export const removeExpense = createAsyncThunk(
+  'expenses/removeExpense',
+  async (expenseId) => {
+    await supabase
+      .from('expense')
+      .delete()
+      .eq('id', expenseId);
+    return expenseId;
   }
 )
