@@ -1,7 +1,5 @@
 import './Recent.scss';
-import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { supabase } from '../../supabaseClient';
 import Transactions from '../../components/Transactions/Transactions';
 import { selectAllPaidDebts } from '../../slices/debtSlice';
 

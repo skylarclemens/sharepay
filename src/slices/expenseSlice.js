@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, createSelector } from '@reduxjs/toolkit';
 import { supabase } from '../supabaseClient';
 
 const initialState = {
@@ -63,7 +63,10 @@ export const { removeExpense, setBalances } = expenseSlice.actions;
 export default expenseSlice.reducer;
 
 export const selectAllExpenses = state => state.expenses.data;
-export const selectExpenseById = (state, expenseId) => state.expenses.data.find(expense => expense.id === expenseId);
+export const selectExpenseById = createSelector(
+  [selectAllExpenses, (state, expenseId) => expenseId],
+  (expenses, expenseId) => expenses.filter(expense => expense.id === expenseId)
+);
 
 export const fetchExpenses = createAsyncThunk(
   'expenses/fetchExpenses',
