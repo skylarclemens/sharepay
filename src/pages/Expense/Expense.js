@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
 import { removeExpense, selectExpenseById } from '../../slices/expenseSlice';
-import { removeDebtByExpense, selectDebtByExpenseId } from '../../slices/debtSlice';
+import { removeDebtByExpense, selectDebtsByExpenseId } from '../../slices/debtSlice';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
@@ -16,7 +16,7 @@ const Expense = () => {
   const navigate = useNavigate();
   let { id } = useParams();
   const expense = useSelector(state => selectExpenseById(state, id));
-  const debts = useSelector(state => selectDebtByExpenseId(state, id));
+  const debts = useSelector(state => selectDebtsByExpenseId(state, id));
   let userCreditor = useSelector(state => selectFriendById(state, expense.payer_id));
 
   if (expense.payer_id === account.id) {

@@ -41,7 +41,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if(friends.status === 'idle') {
-      dispatch(fetchFriends());
+      dispatch(fetchFriends(user.id));
     }
   }, [friends, dispatch]);
 

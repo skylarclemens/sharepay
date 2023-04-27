@@ -21,7 +21,7 @@ export const debtSlice = createSlice({
       }
     },
     removeDebtByExpense: (state, action) => {
-      const existingDebt = selectDebtByExpenseId(action.payload);
+      const existingDebt = selectDebtsByExpenseId(action.payload);
       if(existingDebt) {
         debtAdapter.removeMany(existingDebt);
       }
@@ -62,7 +62,7 @@ export const selectAllUnpaidDebts = createSelector(
   [selectAllDebts],
   debts => debts.filter(debt => debt.paid === false)
 );
-export const selectDebtByExpenseId = createSelector(
+export const selectDebtsByExpenseId = createSelector(
   [selectAllDebts, (state, expenseId) => expenseId],
   (debts, expenseId) => debts.filter(debt => debt.expense_id === expenseId)
 );

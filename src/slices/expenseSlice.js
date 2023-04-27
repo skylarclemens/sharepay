@@ -42,7 +42,6 @@ export const expenseSlice = createSlice({
       });
     builder
       .addCase(addExpense.fulfilled, (state, action) => {
-        console.log(action.payload);
         expenseAdapter.addOne(state, ...action.payload);
       })
     builder
