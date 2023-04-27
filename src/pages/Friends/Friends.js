@@ -1,92 +1,52 @@
 import './Friends.scss';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { supabase } from '../../supabaseClient';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
 import addFriendImg from '../../images/Add_friend.svg';
+import { addFriend, selectAllFriends } from '../../slices/friendSlice';
+import { fetchFriendRequests, selectAllFriendRequests, updateRequestStatus } from '../../slices/friendRequestSlice';
 
 const Friends = () => {
-  const [requests, setRequests] = useState([]);
-  const friends = useSelector(state => state.friends.data);
+  const friends = useSelector(selectAllFriends);
+  const requests = useSelector(selectAllFriendRequests);
   const user = useSelector(state => state.user);
   const groups = useSelector(state => state.groups.data);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const getRequests = async () => {
+    const getFriendRequests = async () => {
       try {
-        const { data, error } = await supabase
-          .from('friend_request')
-          .select(
-            `
-            id,
-            status,
-            user_send (
-              id,
-              name,
-              email,
-              avatar_url
-            ),
-            user_receive (
-              id,
-              name,
-              email,
-              avatar_url
-            )
-          `
-          )
-          .or(`user_send.eq.${user.id},user_receive.eq.${user.id}`);
-        if (error) throw error;
-        setRequests(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getRequests();
-  }, [user]);
-
-  const handleRequestChoice = async (choice, request) => {
-    if (choice === 'ACCEPTED') {
-      try {
-        const { error } = await supabase
-          .from('friend_request')
-          .delete()
-          .eq('id', request.id);
-        if (error) throw error;
-        addFriend(request.user_send.id, request.user_receive.id);
-        addFriend(request.user_receive.id, request.user_send.id);
-      } catch (error) {
-        console.error(error);
-      }
-    } else if (choice === 'IGNORED') {
-      try {
-        const { error } = await supabase
-          .from('friend_request')
-          .update({
-            status: 'IGNORED',
-            status_change: new Date().toISOString(),
-          })
-          .eq('id', request.id);
-        if (error) throw error;
-      } catch (error) {
-        console.error(error);
+        await dispatch(fetchFriendRequests(user.id)).unwrap();
+      } catch (rejectedValueOrSerializedError) {
+        console.error(rejectedValueOrSerializedError);
       }
     }
-  };
+    getFriendRequests();    
+  }, [user, dispatch]);
 
-  const addFriend = async (user1, user2) => {
+  const handleRequestAccepted = async (req) => {
     try {
-      const { error } = await supabase.from('user_friend').insert({
-        user_id_1: user1,
-        user_id_2: user2,
-      });
-      if (error) throw error;
-    } catch (error) {
-      console.error(error);
+      await dispatch(updateRequestStatus({ status: 1, userId: req.user_id, friendId: user.id })).unwrap();
+    } catch (rejectedValueOrSerializedError) {
+      console.error(rejectedValueOrSerializedError);
     }
-  };
+
+    try {
+      await dispatch(addFriend({ user: req.friend_id, friend: req.user_id })).unwrap();
+    } catch (rejectedValueOrSerializedError) {
+      console.error(rejectedValueOrSerializedError);
+    }
+  }
+
+  const handleRequestIgnored = async (req) => {
+    try {
+      await dispatch(updateRequestStatus({ status: 2, userId: req.user_id, friendId: user.id })).unwrap();
+    } catch (rejectedValueOrSerializedError) {
+      console.error(rejectedValueOrSerializedError);
+    }
+  }
 
   return (
     <>
@@ -104,38 +64,35 @@ const Friends = () => {
             <h2 className="heading">Requests</h2>
             <div className="requests-container">
               {requests.map(req => {
-                if (req.user_receive.id === user.id) {
-                  return (
-                    <div key={req.user_send.id} className="user">
-                      <div className="user-info">
-                        <Avatar url={req.user_send.avatar_url} />
-                        <div className="user-info-text">
-                          <div className="user-name">{req.user_send.name}</div>
-                          <div className="user-email">
-                            {req.user_send.email}
-                          </div>
+                return (
+                  req.status === 0 ? (
+                  <div key={req.id} className="user">
+                    <div className="user-info">
+                      <Avatar url={req.from.avatar_url} />
+                      <div className="user-info-text">
+                        <div className="user-name">{req.from.name}</div>
+                        <div className="user-email">
+                          {req.from.email}
                         </div>
                       </div>
-                      <div className="request-buttons">
-                        <button
-                          type="button"
-                          className="add-user"
-                          onClick={() => handleRequestChoice('ACCEPTED', req)}
-                        >
-                          <div className="checkmark"></div>
-                        </button>
-                        <button
-                          type="button"
-                          className="ignore-button"
-                          onClick={() => handleRequestChoice('IGNORED', req)}
-                        >
-                          <div className="ignore-user"></div>
-                        </button>
-                      </div>
                     </div>
-                  );
-                }
-                return null;
+                    <div className="request-buttons">
+                      <button
+                        type="button"
+                        className="add-user"
+                        onClick={() => handleRequestAccepted(req)}
+                      >
+                        <div className="checkmark"></div>
+                      </button>
+                      <button
+                        type="button"
+                        className="ignore-button"
+                        onClick={() => handleRequestIgnored(req)}
+                      >
+                        <div className="ignore-user"></div>
+                      </button>
+                    </div>
+                  </div>) : null)
               })}
             </div>
           </>
@@ -163,19 +120,19 @@ const Friends = () => {
           : null}
         {user && requests.length > 0
           ? requests.map(req => {
-              if (req.user_send.id === user.id) {
+              if (req.user_id.id === user.id) {
                 return (
-                  <div key={req.user_receive.id} className="user">
+                  <div key={req.friend_id} className="user">
                     <div className="user-info">
-                      <Avatar url={req.user_send.avatar_url} />
+                      <Avatar url={req.friend_id.avatar_url} />
                       <div className="user-info-text">
-                        <div className="user-name">{req.user_receive.name}</div>
+                        <div className="user-name">{req.friend_id.name}</div>
                         <div className="user-email">
-                          {req.user_receive.email}
+                          {req.friend_id.email}
                         </div>
                       </div>
                     </div>
-                    {req.status === 'SENT' ? (
+                    {req.status === 0 ? (
                       <div className="pill">PENDING</div>
                     ) : null}
                   </div>

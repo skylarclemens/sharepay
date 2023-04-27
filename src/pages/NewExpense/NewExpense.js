@@ -11,7 +11,6 @@ import RadioSelect from '../../components/Input/RadioSelect/RadioSelect';
 import UserButton from '../../components/User/UserButton/UserButton';
 import Modal from '../../components/Modal/Modal';
 import SelectFriends from '../../components/SelectFriends/SelectFriends';
-import { supabase } from '../../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 
 const NewExpense = () => {
@@ -45,17 +44,10 @@ const NewExpense = () => {
     };
 
     try {
-      const { data, error } = await supabase
-        .from('expense')
-        .insert(newExpense)
-        .select();
-      expenseData = data[0];
-      if (error) throw error;
-      dispatch(addExpense(expenseData));
-    } catch (error) {
-      console.error(error);
+      [expenseData] = await dispatch(addExpense(newExpense)).unwrap();
+    } catch (rejectedValueOrSerializedError) {
+      console.error(rejectedValueOrSerializedError);
     }
-
     const numDebts = splitWith.length;
     const debtAmount = split === 'EQUALLY' ? amount / numDebts : amount / (numDebts - 1);
     const newDebt = splitWith.filter(friend => !(friend.id === paidBy)).map(friend => {
@@ -69,15 +61,9 @@ const NewExpense = () => {
     });
 
     try {
-      const { data, error } = await supabase
-        .from('debt')
-        .insert(newDebt)
-        .select();
-      if (error) throw error;
-
-      dispatch(addDebt(data[0]));
-    } catch (error) {
-      console.error(error);
+      await dispatch(addDebt(newDebt)).unwrap();
+    } catch (rejectedValueOrSerializedError) {
+      console.error(rejectedValueOrSerializedError);
     }
 
     navigate(-1);

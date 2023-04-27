@@ -3,6 +3,7 @@ import userReducer from '../slices/userSlice';
 import accountReducer from '../slices/accountSlice';
 import expenseReducer from '../slices/expenseSlice';
 import friendReducer from '../slices/friendSlice';
+import friendRequestReducer from '../slices/friendRequestSlice';
 import debtReducer from '../slices/debtSlice';
 import groupReducer from '../slices/groupSlice';
 
@@ -16,6 +17,7 @@ const combinedReducer = combineReducers({
   expenses: expenseReducer,
   debts: debtReducer,
   friends: friendReducer,
+  friendRequests: friendRequestReducer,
   groups: groupReducer,
 });
 

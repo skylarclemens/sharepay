@@ -1,38 +1,30 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { supabase } from '../supabaseClient';
 
-const initialState = {
-  data: [],
+const debtAdapter = createEntityAdapter({
+  sortComparer: (a, b) => b.created_at.localeCompare(a.created_at)
+});
+
+const initialState = debtAdapter.getInitialState({
   status: 'idle',
   error: null,
-};
+});
 
 export const debtSlice = createSlice({
   name: 'debts',
   initialState,
   reducers: {
-    addDebt: (state, action) => {
-      const newData = [...state.data, action.payload];
-      return {
-        ...state,
-        data: newData,
-      };
-    },
     removeDebtById: (state, action) => {
-      const id = action.payload;
-      const newData = state.data.filter(debt => debt.id !== id);
-      return {
-        ...state,
-        data: newData,
-      };
+      const existingDebt = state.entities[action.payload];
+      if (existingDebt) {
+        debtAdapter.removeOne(existingDebt);
+      }
     },
     removeDebtByExpense: (state, action) => {
-      const id = action.payload;
-      const newData = state.data.filter(debt => debt.expense_id !== id);
-      return {
-        ...state,
-        data: newData,
-      };
+      const existingDebt = selectDebtsByExpenseId(action.payload);
+      if(existingDebt) {
+        debtAdapter.removeMany(existingDebt);
+      }
     },
   },
   extraReducers(builder) {
@@ -41,24 +33,53 @@ export const debtSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(fetchDebts.fulfilled, (state, action) => {
-        return {
-          ...state,
-          data: action.payload,
-          status: 'succeeded',
-        };
+        debtAdapter.upsertMany(state, action.payload);
+        state.status = 'succeeded';
+        state.error = null;
       })
       .addCase(fetchDebts.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       });
+    builder
+      .addCase(addDebt.fulfilled, debtAdapter.addMany)
   },
 });
 
-export const { addDebt, removeDebtById, removeDebtByExpense } =
-  debtSlice.actions;
+export const { removeDebtById, removeDebtByExpense } = debtSlice.actions;
 export default debtSlice.reducer;
+
+export const {
+  selectAll: selectAllDebts,
+  selectById: selectDebtById,
+} = debtAdapter.getSelectors(state => state.debts);
+
+export const selectAllPaidDebts = createSelector(
+  [selectAllDebts],
+  debts => debts.filter(debt => debt.paid === true)
+);
+export const selectAllUnpaidDebts = createSelector(
+  [selectAllDebts],
+  debts => debts.filter(debt => debt.paid === false)
+);
+export const selectDebtsByExpenseId = createSelector(
+  [selectAllDebts, (state, expenseId) => expenseId],
+  (debts, expenseId) => debts.filter(debt => debt.expense_id === expenseId)
+);
+export const getDebtStatus = state => state.debts.status;
 
 export const fetchDebts = createAsyncThunk('debts/fetchDebts', async () => {
   const { data } = await supabase.from('debt').select();
   return data;
 });
+
+export const addDebt = createAsyncThunk(
+  'debts/addDebt',
+  async (newDebt) => {
+    const { data } = await supabase
+      .from('debt')
+      .insert(newDebt)
+      .select();
+    return data;
+  }
+);

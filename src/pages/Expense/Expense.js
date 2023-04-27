@@ -2,34 +2,25 @@ import './Expense.scss';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
-import { removeExpense } from '../../slices/expenseSlice';
-import { removeDebtByExpense } from '../../slices/debtSlice';
+import { removeExpense, selectExpenseById } from '../../slices/expenseSlice';
+import { removeDebtByExpense, selectDebtsByExpenseId } from '../../slices/debtSlice';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
 import deleteImg from '../../images/Delete.svg';
+import { selectFriendById } from '../../slices/friendSlice';
 
 const Expense = () => {
-  const expenses = useSelector(state => state.expenses.data);
-  const debts = useSelector(state => state.debts.data);
-  const friends = useSelector(state => state.friends.data);
   const account = useSelector(state => state.account.data);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let { id } = useParams();
-  const expense = expenses.find(expense => expense.id === id);
-  const debt = debts.find(debt => debt.expense_id === id);
-  let debtType = 'OWES';
-  let userCreditor;
-  let userDebtor;
+  const expense = useSelector(state => selectExpenseById(state, id));
+  const debts = useSelector(state => selectDebtsByExpenseId(state, id));
+  let userCreditor = useSelector(state => selectFriendById(state, expense.payer_id));
 
-  if (debt?.creditor_id === account.id) {
+  if (expense.payer_id === account.id) {
     userCreditor = account;
-    userDebtor = friends.find(friend => friend.id === debt?.debtor_id) || null;
-  } else {
-    userCreditor =
-      friends.find(friend => friend.id === debt?.creditor_id) || null;
-    userDebtor = account;
   }
 
   const handleDelete = async () => {
@@ -46,6 +37,29 @@ const Expense = () => {
   };
 
   const headerImg = <img src={deleteImg} alt="Delete button" />;
+
+  const UserDebtor = ({ debt }) => {
+    let debtor = useSelector(state => selectFriendById(state, debt.debtor_id));
+    if (debt.debtor_id === account.id) {
+      debtor = account;
+    }
+    return (
+      <div className="debtor-transaction">
+        <div className="user-details">
+          <Avatar
+            classes="white-border"
+            url={debtor.avatar_url}
+            size={40}
+          />
+          <span>{debtor.name}</span>
+        </div>
+        <div className="expense-type">OWES</div>
+        <div className="expense-amount expense-amount--owe">
+          ${debt.amount.toFixed(2)}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -88,20 +102,9 @@ const Expense = () => {
                   ${expense.amount.toFixed(2)}
                 </span>
               </div>
-              <div className="debtor-transaction">
-                <div className="user-details">
-                  <Avatar
-                    classes="white-border"
-                    url={userDebtor.avatar_url}
-                    size={40}
-                  />
-                  <span>{userDebtor.name}</span>
-                </div>
-                <div className="expense-type">{debtType}</div>
-                <div className="expense-amount expense-amount--owe">
-                  ${debt.amount.toFixed(2)}
-                </div>
-              </div>
+              {debts.map(debt => (
+                <UserDebtor key={debt.debtor_id} debt={debt} />
+              ))}
             </div>
           </div>
         </div>

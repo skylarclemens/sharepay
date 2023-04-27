@@ -2,11 +2,13 @@ import './Transaction.scss';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Avatar from '../../Avatar/Avatar';
+import { selectExpenseById } from '../../../slices/expenseSlice';
+import { selectAllFriends } from '../../../slices/friendSlice';
 
 const Transaction = ({ debt, paid, friend }) => {
   const account = useSelector(state => state.account.data);
-  const expenses = useSelector(state => state.expenses.data);
-  const friends = useSelector(state => state.friends.data);
+  const currentExpense = useSelector(state => selectExpenseById(state, debt.expense_id));
+  const friends = useSelector(selectAllFriends);
 
   let debtType,
     userCreditor,
@@ -21,9 +23,6 @@ const Transaction = ({ debt, paid, friend }) => {
       friend || friends.find(friend => friend.id === debt.creditor_id);
     userDebtor = account;
   }
-  const currentExpense = expenses.find(
-    expense => expense?.id === debt.expense_id
-  );
 
   return (
     currentExpense && (

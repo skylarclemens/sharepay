@@ -84,7 +84,7 @@ const SignUp = () => {
       </form>
       {signedUp && (
         <div className="success">
-          <div style={{ 'font-family': 'Rubik', 'font-weight': '500' }}>
+          <div style={{ 'fontFamily': 'Rubik', 'fontWeight': '500' }}>
             Signed up!
           </div>
           <div>Check your email to confirm your account.</div>

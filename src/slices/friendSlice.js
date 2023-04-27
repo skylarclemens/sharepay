@@ -1,50 +1,64 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { supabase } from '../supabaseClient';
 
-const initialState = {
-  data: [],
+const friendsAdapter = createEntityAdapter();
+
+const initialState = friendsAdapter.getInitialState({
   status: 'idle',
   error: null,
-};
+});
 
 export const friendSlice = createSlice({
   name: 'friends',
   initialState,
-  reducers: {
-    addFriend: (state, action) => {
-      const newData = [...state.data, action.payload];
-      return {
-        ...state,
-        data: newData,
-      };
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(fetchFriends.pending, (state, action) => {
         state.status = 'loading';
       })
       .addCase(fetchFriends.fulfilled, (state, action) => {
-        return {
-          ...state,
-          data: action.payload,
-          status: 'succeeded',
-        };
+        friendsAdapter.upsertMany(state, action.payload);
+        state.status = 'succeeded';
       })
       .addCase(fetchFriends.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       });
+    builder
+      .addCase(addFriend.fulfilled, (state, action) => {
+        friendsAdapter.addOne(state, ...action.payload);
+      });
   },
 });
 
-export const { initFriends, addFriend } = friendSlice.actions;
 export default friendSlice.reducer;
+
+export const {
+  selectAll: selectAllFriends,
+  selectById: selectFriendById
+} = friendsAdapter.getSelectors(state => state.friends);
 
 export const fetchFriends = createAsyncThunk(
   'friends/fetchFriends',
-  async () => {
-    const { data } = await supabase.from('user_friend').select('user_id_2(*)');
-    return data.map(obj => obj.user_id_2);
+  async (userId) => {
+    const { data } = await supabase.from('user_friend')
+    .select('friend_id(*)')
+    .eq('user_id', userId)
+    .eq('status', 1);
+    return data.map(obj => obj.friend_id);
   }
 );
+
+export const addFriend = createAsyncThunk(
+  'friends/addFriend',
+  async ({ user, friend }) => {
+    const { data } = await supabase.from('user_friend').insert({
+      user_id: user,
+      friend_id: friend,
+      status: 1,
+      status_change: new Date().toISOString()
+    }).select('friend_id(*)');
+    return data.map(obj => obj.friend_id);
+  }
+)
