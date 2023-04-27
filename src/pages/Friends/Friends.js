@@ -1,7 +1,6 @@
 import './Friends.scss';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { supabase } from '../../supabaseClient';
 import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
@@ -25,7 +24,7 @@ const Friends = () => {
       }
     }
     getFriendRequests();    
-  }, [user]);
+  }, [user, dispatch]);
 
   const handleRequestAccepted = async (req) => {
     try {
