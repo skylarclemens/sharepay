@@ -9,7 +9,7 @@ import PayUp from '../../components/PayUp/PayUp';
 import { selectFriendById } from '../../slices/friendSlice';
 import { balanceCalc } from '../../helpers/balance';
 import { formatMoney } from '../../helpers/money';
-import { selectSharedDebts } from '../../slices/debtSlice';
+import { selectSharedDebtsByFriendId } from '../../slices/debtSlice';
 
 const FriendDetails = () => {
   const user = useSelector(state => state.user);
@@ -18,7 +18,7 @@ const FriendDetails = () => {
   let { id } = useParams();
 
   const friend = useSelector(state => selectFriendById(state, id));
-  const sharedDebts = useSelector(state => selectSharedDebts(state, id));
+  const sharedDebts = useSelector(state => selectSharedDebtsByFriendId(state, id));
 
   useEffect(() => {
     setBalances(balanceCalc(sharedDebts, user.id));

@@ -42,7 +42,11 @@ export const debtSlice = createSlice({
         state.error = action.error.message;
       });
     builder
-      .addCase(addDebt.fulfilled, debtAdapter.addMany)
+      .addCase(addDebt.fulfilled, debtAdapter.addMany);
+    builder
+      .addCase(updateDebt.fulfilled, (state, action) => {
+        debtAdapter.upsertMany(state, action.payload);
+      });
   },
 });
 
@@ -66,8 +70,8 @@ export const selectDebtsByExpenseId = createSelector(
   [selectAllDebts, (state, expenseId) => expenseId],
   (debts, expenseId) => debts.filter(debt => debt.expense_id === expenseId)
 );
-export const selectSharedDebts = createSelector(
-  [selectAllDebts, (state, friendId) => friendId],
+export const selectSharedDebtsByFriendId = createSelector(
+  [selectAllUnpaidDebts, (state, friendId) => friendId],
   (debts, friendId) => debts.filter(debt => (debt.creditor_id === friendId || debt.debtor_id === friendId))
 );
 export const getDebtStatus = state => state.debts.status;
@@ -87,3 +91,14 @@ export const addDebt = createAsyncThunk(
     return data;
   }
 );
+
+export const updateDebt = createAsyncThunk(
+  'debts/updateDebt',
+  async (updatedDebt) => {
+    const { data } = await supabase
+      .from('debt')
+      .upsert(updatedDebt)
+      .select();
+    return data;
+  }
+)

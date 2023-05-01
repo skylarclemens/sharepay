@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, createEntityAdapter, createSelector } from '@reduxjs/toolkit';
 import { supabase } from '../supabaseClient';
 
 const expenseAdapter = createEntityAdapter({
@@ -43,14 +43,18 @@ export const expenseSlice = createSlice({
     builder
       .addCase(addExpense.fulfilled, (state, action) => {
         expenseAdapter.addOne(state, ...action.payload);
-      })
+      });
     builder
       .addCase(removeExpense.fulfilled, (state, action) => {
         const existingExpense = state.entities[action.payload];
         if(existingExpense) {
           expenseAdapter.removeOne(existingExpense);
         }
-      })
+      });
+    builder
+      .addCase(updateExpense.fulfilled, (state, action) => {
+        expenseAdapter.updateMany(state, action.payload);
+      });
   },
 });
 
@@ -62,6 +66,12 @@ export const {
   selectById: selectExpenseById,
   selectIds: selectExpenseIds
 } = expenseAdapter.getSelectors(state => state.expenses);
+export const selectSharedExpensesByDebts = createSelector(
+  [selectAllExpenses, (state, sharedDebts) => sharedDebts],
+  (expenses, sharedDebts) => expenses.filter(expense =>
+    sharedDebts.find(shared => shared.expense_id === expense.id)
+  )
+);
 
 export const getExpenseStatus = state => state.expenses.status;
 
@@ -80,6 +90,17 @@ export const addExpense = createAsyncThunk(
     const { data } = await supabase
       .from('expense')
       .insert(newExpense)
+      .select();
+    return data;
+  }
+)
+
+export const updateExpense = createAsyncThunk(
+  'expenses/updateExpense',
+  async (updatedExpense) => {
+    const { data } = await supabase
+      .from('expense')
+      .upsert(updatedExpense)
       .select();
     return data;
   }
