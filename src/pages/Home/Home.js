@@ -5,8 +5,6 @@ import Dashboard from '../Dashboard/Dashboard';
 import { fetchAccount } from '../../slices/accountSlice';
 import MainLayout from '../../layouts/MainLayout/MainLayout';
 import EmptyLayout from '../../layouts/EmptyLayout/EmptyLayout';
-import { supabase } from '../../supabaseClient';
-import { removeUser } from '../../slices/userSlice';
 import Welcome from '../Welcome/Welcome';
 
 const Home = () => {
@@ -14,7 +12,7 @@ const Home = () => {
   const account = useSelector(state => state.account);
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  /*useEffect(() => {
     const currentUserSession = async () => {
       const { error } = await supabase.auth.getUser();
 
@@ -24,7 +22,7 @@ const Home = () => {
       }
     };
     currentUserSession();
-  }, [dispatch]);
+  }, [dispatch]);*/
 
   useEffect(() => {
     if (user && account.status === 'idle') {

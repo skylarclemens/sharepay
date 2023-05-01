@@ -3,7 +3,8 @@ import Transaction from './Transaction/Transaction';
 
 const Transactions = ({ debts, friend, paid }) => {
   return (
-    <div className="transactions">
+    null
+    /*<div className="transactions">
       {debts.map(debt => {
         const hideDebt = !paid && debt.paid;
         return (
@@ -17,7 +18,7 @@ const Transactions = ({ debts, friend, paid }) => {
           )
         );
       })}
-    </div>
+    </div>*/
   );
 };
 

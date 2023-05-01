@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
-import { setUser } from '../../slices/userSlice';
+import { setCredentials } from '../../slices/authSlice';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -21,8 +21,10 @@ const Login = () => {
         email: email,
         password: password,
       });
+      
+      console.log(data);
 
-      dispatch(setUser(data.user));
+      dispatch(setCredentials(data));
 
       if (error) throw error;
     } catch (error) {

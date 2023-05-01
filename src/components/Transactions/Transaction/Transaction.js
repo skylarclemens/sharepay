@@ -2,12 +2,14 @@ import './Transaction.scss';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Avatar from '../../Avatar/Avatar';
-import { selectExpenseById } from '../../../slices/expenseSlice';
 import { selectAllFriends } from '../../../slices/friendSlice';
+import { useGetExpenseQuery } from '../../../api/apiSlice';
 
 const Transaction = ({ debt, paid, friend }) => {
+  const {
+    data: currentExpense
+  } = useGetExpenseQuery(debt.expense_id);
   const account = useSelector(state => state.account.data);
-  const currentExpense = useSelector(state => selectExpenseById(state, debt.expense_id));
   const friends = useSelector(selectAllFriends);
 
   let debtType,
