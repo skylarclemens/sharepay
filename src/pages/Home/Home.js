@@ -8,7 +8,7 @@ import EmptyLayout from '../../layouts/EmptyLayout/EmptyLayout';
 import Welcome from '../Welcome/Welcome';
 
 const Home = () => {
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.auth.user);
   const account = useSelector(state => state.account);
   const dispatch = useDispatch();
 

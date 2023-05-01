@@ -14,7 +14,7 @@ import SelectFriends from '../../components/SelectFriends/SelectFriends';
 import { useNavigate } from 'react-router-dom';
 
 const NewExpense = () => {
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.auth.user);
   const account = useSelector(state => state.account.data);
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');

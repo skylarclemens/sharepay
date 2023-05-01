@@ -8,7 +8,7 @@ import { setAccountData } from '../../slices/accountSlice';
 import { resetAuth } from '../../slices/authSlice';
 
 const Account = () => {
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.auth.user);
   const account = useSelector(state => state.account);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');

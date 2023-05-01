@@ -18,7 +18,7 @@ const Dashboard = () => {
     isError,
     error
   } = useGetDebtsQuery();
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.auth.user);
   const friends = useSelector(state => state.friends);
   const groups = useSelector(state => state.groups);
   const balances = useSelector(state => state.expenses.balances);

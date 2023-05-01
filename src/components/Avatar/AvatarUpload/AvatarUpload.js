@@ -6,7 +6,7 @@ import Avatar from '../Avatar';
 import { useSelector } from 'react-redux';
 
 const AvatarUpload = ({ url, onUpload }) => {
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.auth.user);
   const [uploading, setUploading] = useState(false);
 
   const uploadAvatar = async e => {

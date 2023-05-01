@@ -13,7 +13,7 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) =>
     id: '',
     sent: false,
   });
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.auth.user);
   const friends = useSelector(state => state.friends.data);
   const groups = useSelector(state => state.groups.data);
 

@@ -16,7 +16,7 @@ export const authSlice = createSlice({
       }
     },
     resetAuth: () => {
-      return null;
+      return initialState;
     },
   },
 });

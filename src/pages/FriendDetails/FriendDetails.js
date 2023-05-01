@@ -12,7 +12,7 @@ import { formatMoney } from '../../helpers/money';
 import { selectSharedDebtsByFriendId } from '../../slices/debtSlice';
 
 const FriendDetails = () => {
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.auth.user);
   const [balances, setBalances] = useState({ total: 0, owed: 0, owe: 0 });
   const [openPayUp, setOpenPayUp] = useState(false);
   let { id } = useParams();

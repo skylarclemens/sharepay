@@ -12,14 +12,14 @@ const Friends = () => {
   const friends = useSelector(selectAllFriends);
   const requests = useSelector(selectAllFriendRequests);
   const requestsStatus = useSelector(getRequestsStatus);
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.auth.user);
   const groups = useSelector(state => state.groups.data);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const getFriendRequests = async () => {
       try {
-        await dispatch(fetchFriendRequests(user.id)).unwrap();
+        await dispatch(fetchFriendRequests(user?.id)).unwrap();
       } catch (rejectedValueOrSerializedError) {
         console.error(rejectedValueOrSerializedError);
       }
