@@ -8,7 +8,7 @@ import EmptyLayout from '../../layouts/EmptyLayout/EmptyLayout';
 import Welcome from '../Welcome/Welcome';
 
 const Home = () => {
-  const user = useSelector(state => state.auth.user);
+  const auth = useSelector(state => state.auth);
   const account = useSelector(state => state.account);
   const dispatch = useDispatch();
 
@@ -25,14 +25,14 @@ const Home = () => {
   }, [dispatch]);*/
 
   useEffect(() => {
-    if (user && account.status === 'idle') {
-      dispatch(fetchAccount(user?.id));
+    if (auth.user && account.status === 'idle') {
+      dispatch(fetchAccount(auth.user?.id));
     }
-  }, [user, account, dispatch]);
+  }, [auth.user, account, dispatch]);
 
   return (
     <>
-      {user ? (
+      {auth.session ? (
         <MainLayout>
           <Dashboard />
         </MainLayout>

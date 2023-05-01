@@ -18,7 +18,6 @@ const App = () => {
           user: session.user
         }));
       } else {
-        console.log('here');
         dispatch(resetAuth());
       }
     })

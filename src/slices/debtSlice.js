@@ -1,5 +1,30 @@
 import { createAsyncThunk, createSelector, createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { supabase } from '../supabaseClient';
+import { apiSlice } from '../api/apiSlice';
+
+export const extendedApiSlice = apiSlice.injectEndpoints({
+  endpoints: builder => ({
+    getExpenses: builder.query({
+      queryFn: async () => {
+        const { data, error } = await supabase
+          .rpc("get_user_expenses");
+        return { data, error };
+      }
+    }),
+    getExpense: builder.query({
+      queryFn: async (expenseId) => {
+        const { data, error } = await supabase
+          .from('expense')
+          .select()
+          .eq('id', expenseId)
+          .single();
+        return { data, error };
+      }
+    })
+  })
+})
+
+export const { useGetExpensesQuery, useGetExpenseQuery } = extendedApiSlice;
 
 const debtAdapter = createEntityAdapter({
   sortComparer: (a, b) => b.created_at.localeCompare(a.created_at)

@@ -5,22 +5,6 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fakeBaseQuery(),
   endpoints: builder => ({
-    getExpenses: builder.query({
-      queryFn: async () => {
-        const { data, error } = await supabase
-          .rpc("get_user_expenses");
-        return { data, error };
-      }
-    }),
-    getExpense: builder.query({
-      queryFn: async (expenseId) => {
-        const { data, error } = await supabase
-          .from('expense')
-          .select()
-          .eq('id', expenseId);
-        return { data, error };
-      }
-    }),
     getDebts: builder.query({
       queryFn: async () => {
         const { data, error } = await supabase.from('debt').select();
@@ -30,4 +14,4 @@ export const apiSlice = createApi({
   })
 })
 
-export const { useGetExpensesQuery, useGetExpenseQuery, useGetDebtsQuery } = apiSlice;
+export const { useGetDebtsQuery } = apiSlice;

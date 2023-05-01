@@ -27,14 +27,15 @@ const Dashboard = () => {
 
   const dataLoaded =
     user &&
+    isSuccess &&
     friends.status === 'succeeded' &&
     groups.status === 'succeeded';
 
   useEffect(() => {
-    if (isSuccess) {
+    if (dataLoaded) {
       dispatch(setBalances(balanceCalc(debts, user?.id)));
     }
-  }, [isSuccess, debts, user.id, dispatch]);
+  }, [dataLoaded, debts, user.id, dispatch]);
 
   useEffect(() => {
     if(friends.status === 'idle') {

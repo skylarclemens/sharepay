@@ -3,11 +3,12 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Avatar from '../../Avatar/Avatar';
 import { selectAllFriends } from '../../../slices/friendSlice';
-import { useGetExpenseQuery } from '../../../api/apiSlice';
+import { useGetExpenseQuery } from '../../../slices/debtSlice';
 
 const Transaction = ({ debt, paid, friend }) => {
   const {
-    data: currentExpense
+    data: currentExpense,
+    isSuccess
   } = useGetExpenseQuery(debt.expense_id);
   const account = useSelector(state => state.account.data);
   const friends = useSelector(selectAllFriends);
@@ -27,7 +28,7 @@ const Transaction = ({ debt, paid, friend }) => {
   }
 
   return (
-    currentExpense && (
+    isSuccess && (
       <Link
         className="expense-link"
         key={debt.expense_id}
