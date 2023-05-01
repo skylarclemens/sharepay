@@ -2,45 +2,23 @@ import { useSelector } from 'react-redux';
 import './FriendDetails.scss';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { supabase } from '../../supabaseClient';
 import Avatar from '../../components/Avatar/Avatar';
 import Transactions from '../../components/Transactions/Transactions';
 import Header from '../../components/Header/Header';
 import PayUp from '../../components/PayUp/PayUp';
+import { selectFriendById } from '../../slices/friendSlice';
 import { balanceCalc } from '../../helpers/balance';
 import { formatMoney } from '../../helpers/money';
+import { selectSharedDebtsByFriendId } from '../../slices/debtSlice';
 
 const FriendDetails = () => {
   const user = useSelector(state => state.user);
-  const friends = useSelector(state => state.friends.data);
-  const [sharedDebts, setSharedDebts] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [balances, setBalances] = useState({ total: 0, owed: 0, owe: 0 });
   const [openPayUp, setOpenPayUp] = useState(false);
   let { id } = useParams();
 
-  const friend = friends.find(friend => friend.id === id);
-
-  useEffect(() => {
-    const getSharedDebts = async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from('debt')
-          .select()
-          .or(`creditor_id.eq.${friend.id},debtor_id.eq.${friend.id}`)
-          .neq('paid', true);
-        if (error) throw error;
-        setSharedDebts(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getSharedDebts();
-  }, [friend]);
+  const friend = useSelector(state => selectFriendById(state, id));
+  const sharedDebts = useSelector(state => selectSharedDebtsByFriendId(state, id));
 
   useEffect(() => {
     setBalances(balanceCalc(sharedDebts, user.id));
@@ -49,6 +27,13 @@ const FriendDetails = () => {
   const handleOpenPayUp = () => {
     setOpenPayUp(true);
   };
+
+  let displayExpenses = null;
+  if (balances.total !== 0) {
+    displayExpenses = <Transactions debts={sharedDebts} friend={friend} />;
+  } else {
+    displayExpenses = <div className="medium-gray">No transactions available</div>;
+  }
 
   return (
     <>
@@ -87,14 +72,7 @@ const FriendDetails = () => {
             )}
             <div className="shared-expenses">
               <h2 className="heading">Shared expenses</h2>
-              {loading ? (
-                <div className="medium-gray">Loading...</div>
-              ) : (
-                <Transactions debts={sharedDebts} friend={friend} />
-              )}
-              {balances.total === 0 && (
-                <div className="medium-gray">No transactions available</div>
-              )}
+              {displayExpenses}
             </div>
           </div>
         )}

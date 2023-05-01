@@ -1,27 +1,19 @@
 import './PayUp.scss';
 import Avatar from '../Avatar/Avatar';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
+import { selectSharedExpensesByDebts, updateExpense } from '../../slices/expenseSlice';
+import { selectAllDebts, updateDebt } from '../../slices/debtSlice';
 
 const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
   const account = useSelector(state => state.account.data);
-  const expenses = useSelector(state => state.expenses.data);
-  const debts = useSelector(state => state.debts.data);
+  const currentExpenses = useSelector(state => selectSharedExpensesByDebts(state, sharedDebts));
+  const debts = useSelector(selectAllDebts);
   const [userDebtor, setUserDebtor] = useState(account);
   const [userCreditor, setUserCreditor] = useState(friend);
   const [payType, setPayType] = useState('OWE');
-
-  const currentExpenses = openPayUp
-    ? expenses.filter(expense =>
-        sharedDebts.find(shared => shared.expense_id === expense.id)
-      )
-    : [];
-  const currentDebts = openPayUp
-    ? debts.filter(debt =>
-        sharedDebts.find(shared => shared.expense_id === debt.expense_id)
-      )
-    : [];
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (balances.total > 0) {
@@ -35,7 +27,7 @@ const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
     }
   }, [balances, account, friend]);
 
-  const markExpensePaid = (expense, debts) => {
+  const markExpensePaid = (expense) => {
     const unpaidDebts = debts.filter(
       debt => debt.expense_id === expense.id && !debt.paid
     );
@@ -50,7 +42,7 @@ const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
   };
 
   const handlePayButton = async () => {
-    const updatedDebts = currentDebts.map(debt => {
+    const updatedDebts = sharedDebts.map(debt => {
       return {
         ...debt,
         paid: true,
@@ -61,19 +53,8 @@ const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
       return markExpensePaid(expense, updatedDebts);
     });
 
-    try {
-      const { error } = await supabase.from('debt').upsert(updatedDebts);
-      if (error) throw error;
-    } catch (error) {
-      console.error(error);
-    }
-
-    try {
-      const { error } = await supabase.from('expense').upsert(updatedExpenses);
-      if (error) throw error;
-    } catch (error) {
-      console.error(error);
-    }
+    dispatch(updateDebt(updatedDebts));
+    dispatch(updateExpense(updatedExpenses));
 
     const insertDebtPaid = async paidUpId => {
       const paidDebt = updatedDebts.map(debt => {
@@ -105,10 +86,10 @@ const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
       console.error(error);
     }
 
-    setOpenPayUp(false);
+    closePayUp();
   };
 
-  const handlePayCancel = () => {
+  const closePayUp = () => {
     setOpenPayUp(false);
   };
 
@@ -148,7 +129,7 @@ const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
             type="button"
             className="button button--white button--small"
             title="Cancel"
-            onClick={handlePayCancel}
+            onClick={closePayUp}
           >
             Cancel
           </button>

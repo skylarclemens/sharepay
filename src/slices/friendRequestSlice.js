@@ -43,6 +43,7 @@ export default friendRequestSlice.reducer;
 export const {
   selectAll: selectAllFriendRequests,
 } = friendRequestAdapter.getSelectors(state => state.friendRequests);
+export const getRequestsStatus = state => state.friendRequests.status;
 
 export const fetchFriendRequests = createAsyncThunk(
   'friendRequests/fetchRequests',
