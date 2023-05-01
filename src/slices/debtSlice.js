@@ -66,6 +66,10 @@ export const selectDebtsByExpenseId = createSelector(
   [selectAllDebts, (state, expenseId) => expenseId],
   (debts, expenseId) => debts.filter(debt => debt.expense_id === expenseId)
 );
+export const selectSharedDebts = createSelector(
+  [selectAllDebts, (state, friendId) => friendId],
+  (debts, friendId) => debts.filter(debt => (debt.creditor_id === friendId || debt.debtor_id === friendId))
+);
 export const getDebtStatus = state => state.debts.status;
 
 export const fetchDebts = createAsyncThunk('debts/fetchDebts', async () => {
