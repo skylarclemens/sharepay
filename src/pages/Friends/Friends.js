@@ -6,11 +6,12 @@ import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
 import addFriendImg from '../../images/Add_friend.svg';
 import { addFriend, selectAllFriends } from '../../slices/friendSlice';
-import { fetchFriendRequests, selectAllFriendRequests, updateRequestStatus } from '../../slices/friendRequestSlice';
+import { fetchFriendRequests, getRequestsStatus, selectAllFriendRequests, updateRequestStatus } from '../../slices/friendRequestSlice';
 
 const Friends = () => {
   const friends = useSelector(selectAllFriends);
   const requests = useSelector(selectAllFriendRequests);
+  const requestsStatus = useSelector(getRequestsStatus);
   const user = useSelector(state => state.user);
   const groups = useSelector(state => state.groups.data);
   const dispatch = useDispatch();
@@ -23,8 +24,10 @@ const Friends = () => {
         console.error(rejectedValueOrSerializedError);
       }
     }
-    getFriendRequests();    
-  }, [user, dispatch]);
+    if(requestsStatus === 'idle') {
+      getFriendRequests();
+    }
+  }, [user, requestsStatus, dispatch]);
 
   const handleRequestAccepted = async (req) => {
     try {
