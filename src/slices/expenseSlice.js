@@ -1,10 +1,6 @@
-import { createAsyncThunk, createSlice, createEntityAdapter, createSelector } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { supabase } from '../supabaseClient';
 import { supabaseApi } from '../api/supabaseApi';
-
-const expenseAdapter = createEntityAdapter({
-  sortComparer: (a, b) => b.created_at.localeCompare(a.created_at)
-});
 
 export const extendedSupabaseApi = supabaseApi.injectEndpoints({
   endpoints: builder => ({
@@ -28,7 +24,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
           .single();
         return { data, error };
       },
-      providesTags: (result, error, id) => [{ type: 'Expense', id }]
+      providesTags: (result, error, arg) => [{ type: 'Expense', id: arg }]
     }),
     addNewExpense: builder.mutation({
       queryFn: async (newExpense) => {
@@ -60,7 +56,18 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         return { data, error };
       },
       invalidatesTags: ['Expense']
-    })
+    }),
+    removeExpense: builder.mutation({
+      queryFn: async (expenseId) => {
+        const { data, error } = await supabase
+          .from('expense')
+          .delete()
+          .eq('id', expenseId);
+        return { data, error };
+      },
+      invalidateTags: (result, error, arg) => [{ type: 'Expense', id: 'LIST' },
+        { type: 'Debt', id: 'LIST' }]
+    }),
   })
 })
 
@@ -68,7 +75,8 @@ export const { useGetExpensesQuery,
   useGetExpenseQuery,
   useAddNewExpenseMutation,
   useUpdateExpenseMutation,
-  useUpdateExpensesMutation
+  useUpdateExpensesMutation,
+  useRemoveExpenseMutation
 } = extendedSupabaseApi;
 
 export const selectSharedExpensesByDebt = createSelector(
@@ -77,12 +85,6 @@ export const selectSharedExpensesByDebt = createSelector(
     sharedDebts.find(shared => shared.expense_id === expense.id)
   ) ?? []
 )
-
-export const {
-  selectAll: selectAllExpenses,
-  selectById: selectExpenseById,
-  selectIds: selectExpenseIds
-} = expenseAdapter.getSelectors(state => state.expenses);
 
 export const expenseSlice = createSlice({
   name: 'expenses',
@@ -105,45 +107,3 @@ export const expenseSlice = createSlice({
 
 export const { setBalances } = expenseSlice.actions;
 export default expenseSlice.reducer;
-
-export const fetchExpenses = createAsyncThunk(
-  'expenses/fetchExpenses',
-  async () => {
-    const { data } = await supabase
-      .rpc("get_user_expenses");
-    return data;
-  }
-);
-
-export const addExpense = createAsyncThunk(
-  'expenses/addExpense',
-  async (newExpense) => {
-    const { data } = await supabase
-      .from('expense')
-      .insert(newExpense)
-      .select();
-    return data;
-  }
-)
-
-export const updateExpense = createAsyncThunk(
-  'expenses/updateExpense',
-  async (updatedExpense) => {
-    const { data } = await supabase
-      .from('expense')
-      .upsert(updatedExpense)
-      .select();
-    return data;
-  }
-)
-
-export const removeExpense = createAsyncThunk(
-  'expenses/removeExpense',
-  async (expenseId) => {
-    await supabase
-      .from('expense')
-      .delete()
-      .eq('id', expenseId);
-    return expenseId;
-  }
-)

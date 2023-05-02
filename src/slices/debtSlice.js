@@ -41,7 +41,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         return { data, error };
       },
       invalidatesTags: ['Debt']
-    })
+    }),
   })
 });
 

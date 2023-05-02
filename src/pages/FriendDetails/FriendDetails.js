@@ -11,7 +11,6 @@ import { selectFriendById } from '../../slices/friendSlice';
 import { balanceCalc } from '../../helpers/balance';
 import { formatMoney } from '../../helpers/money';
 import { useGetDebtsQuery, selectSharedDebtsByFriendId } from '../../slices/debtSlice';
-import { createSelector } from '@reduxjs/toolkit';
 
 const FriendDetails = () => {
   const user = useSelector(state => state.auth.user);

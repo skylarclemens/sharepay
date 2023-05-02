@@ -64,10 +64,9 @@ const NewExpense = () => {
 
     try {
       await addNewDebt(newDebt).unwrap();
+      navigate(`/expense/${expenseData.id}`);
     } catch (error) {
       console.error(error);
-    } finally {
-      navigate(-1);
     }
   };
 
