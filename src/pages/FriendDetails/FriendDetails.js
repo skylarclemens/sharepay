@@ -9,7 +9,8 @@ import PayUp from '../../components/PayUp/PayUp';
 import { selectFriendById } from '../../slices/friendSlice';
 import { balanceCalc } from '../../helpers/balance';
 import { formatMoney } from '../../helpers/money';
-import { selectSharedDebtsByFriendId } from '../../slices/debtSlice';
+import { useGetDebtsQuery, selectSharedDebtsByFriendId } from '../../slices/debtSlice';
+import { createSelector } from '@reduxjs/toolkit';
 
 const FriendDetails = () => {
   const user = useSelector(state => state.auth.user);
@@ -18,7 +19,13 @@ const FriendDetails = () => {
   let { id } = useParams();
 
   const friend = useSelector(state => selectFriendById(state, id));
-  const sharedDebts = useSelector(state => selectSharedDebtsByFriendId(state, id));
+
+  const { sharedDebts } = useGetDebtsQuery(undefined, {
+    selectFromResult: result => ({
+      ...result,
+      sharedDebts: selectSharedDebtsByFriendId(result, id)
+    })
+  })
 
   useEffect(() => {
     setBalances(balanceCalc(sharedDebts, user.id));

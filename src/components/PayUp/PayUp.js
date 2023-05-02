@@ -4,16 +4,20 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
 import { selectSharedExpensesByDebts, updateExpense } from '../../slices/expenseSlice';
-import { selectAllDebts, updateDebt } from '../../slices/debtSlice';
+import { updateDebt, useGetDebtsQuery } from '../../slices/debtSlice';
 
 const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
   const account = useSelector(state => state.account.data);
   const currentExpenses = useSelector(state => selectSharedExpensesByDebts(state, sharedDebts));
-  const debts = useSelector(selectAllDebts);
   const [userDebtor, setUserDebtor] = useState(account);
   const [userCreditor, setUserCreditor] = useState(friend);
   const [payType, setPayType] = useState('OWE');
   const dispatch = useDispatch();
+
+  const {
+    data: debts,
+    isSuccess
+  } = useGetDebtsQuery();
 
   useEffect(() => {
     if (balances.total > 0) {

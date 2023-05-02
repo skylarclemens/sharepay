@@ -1,14 +1,8 @@
 import { createAsyncThunk, createSelector, createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { supabase } from '../supabaseClient';
-import { apiSlice } from '../api/apiSlice';
+import { supabaseApi } from '../api/supabaseApi';
 
-const debtAdapter = createEntityAdapter({
-  sortComparer: (a, b) => b.created_at.localeCompare(a.created_at)
-});
-
-const initialState = debtAdapter.getInitialState();
-
-export const extendedApiSlice = apiSlice.injectEndpoints({
+export const extendedSupabaseApi = supabaseApi.injectEndpoints({
   endpoints: builder => ({
     getDebts: builder.query({
       queryFn: async () => {
@@ -19,17 +13,19 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
   })
 });
 
-export const { useGetDebtsQuery } = extendedApiSlice;
+export const { useGetDebtsQuery } = extendedSupabaseApi;
 
-export const selectDebtsResult = extendedApiSlice.endpoints.getDebts.select();
+export const selectDebtsResult = extendedSupabaseApi.endpoints.getDebts.select();
 const selectDebtsData = createSelector(
   selectDebtsResult,
   debtsResult => debtsResult.data
 )
+export const selectSharedDebtsByFriendId = createSelector(
+  res => res.data, (data, friendId) => friendId,
+  (data, friendId) => data.filter(debt => (debt.creditor_id === friendId || debt.debtor_id === friendId)) ?? []
+)
 
-export const selectAllDebts = () => null;
-
-export const selectAllPaidDebts = createSelector(
+/*export const selectAllPaidDebts = createSelector(
   [selectAllDebts],
   debts => debts.filter(debt => debt.paid === true)
 );
@@ -44,7 +40,7 @@ export const selectDebtsByExpenseId = createSelector(
 export const selectSharedDebtsByFriendId = createSelector(
   [selectAllUnpaidDebts, (state, friendId) => friendId],
   (debts, friendId) => debts.filter(debt => (debt.creditor_id === friendId || debt.debtor_id === friendId))
-);
+);*/
 
 export const addDebt = createAsyncThunk(
   'debts/addDebt',

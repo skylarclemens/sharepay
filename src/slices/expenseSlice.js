@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, createEntityAdapter, createSelector } from '@reduxjs/toolkit';
 import { supabase } from '../supabaseClient';
-import { apiSlice } from '../api/apiSlice';
+import { supabaseApi } from '../api/supabaseApi';
 
 const expenseAdapter = createEntityAdapter({
   sortComparer: (a, b) => b.created_at.localeCompare(a.created_at)
@@ -8,7 +8,7 @@ const expenseAdapter = createEntityAdapter({
 
 const initialState = expenseAdapter.getInitialState();
 
-export const extendedApiSlice = apiSlice.injectEndpoints({
+export const extendedSupabaseApi = supabaseApi.injectEndpoints({
   endpoints: builder => ({
     getExpenses: builder.query({
       queryFn: async () => {
@@ -33,7 +33,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
   })
 })
 
-export const { useGetExpensesQuery, useGetExpenseQuery } = extendedApiSlice;
+export const { useGetExpensesQuery, useGetExpenseQuery } = extendedSupabaseApi;
 
 export const {
   selectAll: selectAllExpenses,

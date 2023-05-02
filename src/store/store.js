@@ -5,7 +5,7 @@ import friendReducer from '../slices/friendSlice';
 import friendRequestReducer from '../slices/friendRequestSlice';
 import groupReducer from '../slices/groupSlice';
 import expenseReducer from '../slices/expenseSlice';
-import { apiSlice } from '../api/apiSlice';
+import { supabaseApi } from '../api/supabaseApi';
 
 const combinedReducer = combineReducers({
   auth: authReducer,
@@ -14,12 +14,12 @@ const combinedReducer = combineReducers({
   friends: friendReducer,
   friendRequests: friendRequestReducer,
   groups: groupReducer,
-  [apiSlice.reducerPath]: apiSlice.reducer
+  [supabaseApi.reducerPath]: supabaseApi.reducer
 });
 
 const rootReducer = (state, action) => combinedReducer(state, action);
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiSlice.middleware)
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(supabaseApi.middleware)
 });

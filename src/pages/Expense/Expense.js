@@ -21,7 +21,7 @@ const Expense = () => {
     data: expense,
     isSuccess
   } = useGetExpenseQuery(id);
-  //const debts = useSelector(state => selectDebtsByExpenseId(state, id));
+
   let userCreditor = useSelector(state => selectFriendById(state, expense.payer_id));
 
   if (expense.payer_id === account.id) {
@@ -36,7 +36,7 @@ const Expense = () => {
     )
   }, []);
 
-  const{ debts } = useGetDebtsQuery(undefined, {
+  const { debts } = useGetDebtsQuery(undefined, {
     selectFromResult: result => ({
       ...result,
       debts: selectDebtsByExpenseId(result, expense.id)

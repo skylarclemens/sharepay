@@ -1,9 +1,10 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { supabase } from '../supabaseClient';
 
-export const apiSlice = createApi({
+export const supabaseApi = createApi({
   reducerPath: 'api',
   baseQuery: fakeBaseQuery(),
+  tagTypes: ["Expenses"],
   endpoints: builder => ({
     
   })
