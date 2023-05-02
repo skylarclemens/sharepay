@@ -1,8 +1,8 @@
 import './NewExpense.scss';
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { addExpense } from '../../slices/expenseSlice';
-import { addDebt } from '../../slices/debtSlice';
+import { useSelector } from 'react-redux';
+import { useAddNewExpenseMutation } from '../../slices/expenseSlice';
+import { useAddNewDebtMutation } from '../../slices/debtSlice';
 import { getAllGroupsUsers } from '../../services/groups';
 import Header from '../../components/Header/Header';
 import TextInput from '../../components/Input/TextInput/TextInput';
@@ -24,14 +24,16 @@ const NewExpense = () => {
   const [split, setSplit] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
   const [openSelectFriends, setOpenSelectFriends] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [addNewExpense, { isExpenseLoading }] = useAddNewExpenseMutation();
+  const [addNewDebt, { isDebtLoading }] = useAddNewDebtMutation();
 
   const handleSubmit = async e => {
     e.preventDefault();
     setFieldErrors({ ...fieldErrors, formValid: true });
 
-    if (!handleValidation()) return;
+    if (!handleValidation() || isExpenseLoading || isDebtLoading) return;
 
     const groupId = splitWithGroup?.id || null;
 
@@ -44,9 +46,9 @@ const NewExpense = () => {
     };
 
     try {
-      [expenseData] = await dispatch(addExpense(newExpense)).unwrap();
-    } catch (rejectedValueOrSerializedError) {
-      console.error(rejectedValueOrSerializedError);
+      [expenseData] = await addNewExpense(newExpense).unwrap();
+    } catch (error) {
+      console.error(error);
     }
     const numDebts = splitWith.length;
     const debtAmount = split === 'EQUALLY' ? amount / numDebts : amount / (numDebts - 1);
@@ -61,9 +63,9 @@ const NewExpense = () => {
     });
 
     try {
-      await dispatch(addDebt(newDebt)).unwrap();
-    } catch (rejectedValueOrSerializedError) {
-      console.error(rejectedValueOrSerializedError);
+      await addNewDebt(newDebt).unwrap();
+    } catch (error) {
+      console.error(error);
     }
 
     navigate(-1);

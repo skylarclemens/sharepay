@@ -29,11 +29,33 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
           .single();
         return { data, error };
       }
+    }),
+    addNewExpense: builder.mutation({
+      queryFn: async (newExpense) => {
+        const { data, error } = await supabase
+          .from('expense')
+          .insert(newExpense)
+          .select();
+        return { data, error };
+      }
+    }),
+    updateExpense: builder.mutation({
+      queryFn: async (updatedExpense) => {
+        const { data, error } = await supabase
+          .from('expense')
+          .upsert(updatedExpense)
+          .select();
+        return { data, error };
+      }
     })
   })
 })
 
-export const { useGetExpensesQuery, useGetExpenseQuery } = extendedSupabaseApi;
+export const { useGetExpensesQuery,
+  useGetExpenseQuery,
+  useAddNewExpenseMutation,
+  useUpdateExpenseMutation
+} = extendedSupabaseApi;
 
 export const selectSharedExpensesByDebt = createSelector(
   res => res.data, (data, sharedDebts) => sharedDebts,
