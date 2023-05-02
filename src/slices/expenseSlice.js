@@ -35,17 +35,18 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
 
 export const { useGetExpensesQuery, useGetExpenseQuery } = extendedSupabaseApi;
 
+export const selectSharedExpensesByDebt = createSelector(
+  res => res.data, (data, sharedDebts) => sharedDebts,
+  (data, sharedDebts) => data?.filter(expense =>
+    sharedDebts.find(shared => shared.expense_id === expense.id)
+  ) ?? []
+)
+
 export const {
   selectAll: selectAllExpenses,
   selectById: selectExpenseById,
   selectIds: selectExpenseIds
 } = expenseAdapter.getSelectors(state => state.expenses);
-export const selectSharedExpensesByDebts = createSelector(
-  [selectAllExpenses, (state, sharedDebts) => sharedDebts],
-  (expenses, sharedDebts) => expenses.filter(expense =>
-    sharedDebts.find(shared => shared.expense_id === expense.id)
-  )
-);
 
 export const expenseSlice = createSlice({
   name: 'expenses',

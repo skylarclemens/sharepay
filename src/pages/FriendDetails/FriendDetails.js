@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Avatar from '../../components/Avatar/Avatar';
 import Transactions from '../../components/Transactions/Transactions';
 import Header from '../../components/Header/Header';
+import Modal from '../../components/Modal/Modal';
 import PayUp from '../../components/PayUp/PayUp';
 import { selectFriendById } from '../../slices/friendSlice';
 import { balanceCalc } from '../../helpers/balance';
@@ -21,7 +22,7 @@ const FriendDetails = () => {
   const friend = useSelector(state => selectFriendById(state, id));
 
   const { sharedDebts } = useGetDebtsQuery(undefined, {
-    selectFromResult: result => ({
+    selectFromResult: (result) => ({
       ...result,
       sharedDebts: selectSharedDebtsByFriendId(result, id)
     })
@@ -83,14 +84,15 @@ const FriendDetails = () => {
             </div>
           </div>
         )}
+      </div>
+      <Modal open={openPayUp}>
         <PayUp
           setOpenPayUp={setOpenPayUp}
-          openPayUp={openPayUp}
           friend={friend}
           sharedDebts={sharedDebts}
           balances={balances}
         />
-      </div>
+      </Modal>
     </>
   );
 };
