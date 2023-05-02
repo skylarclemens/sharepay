@@ -2,33 +2,53 @@ import './Expense.scss';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
-import { removeExpense, selectExpenseById } from '../../slices/expenseSlice';
-import { removeDebtByExpense, selectDebtsByExpenseId } from '../../slices/debtSlice';
+import { removeExpense, useGetExpenseQuery } from '../../slices/expenseSlice';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
 import deleteImg from '../../images/Delete.svg';
 import { selectFriendById } from '../../slices/friendSlice';
+import { useMemo } from 'react';
+import { createSelector } from '@reduxjs/toolkit';
+import { useGetDebtsQuery } from '../../slices/debtSlice';
 
 const Expense = () => {
   const account = useSelector(state => state.account.data);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let { id } = useParams();
-  const expense = useSelector(state => selectExpenseById(state, id));
-  const debts = useSelector(state => selectDebtsByExpenseId(state, id));
+  const {
+    data: expense,
+    isSuccess
+  } = useGetExpenseQuery(id);
+  //const debts = useSelector(state => selectDebtsByExpenseId(state, id));
   let userCreditor = useSelector(state => selectFriendById(state, expense.payer_id));
 
   if (expense.payer_id === account.id) {
     userCreditor = account;
   }
 
+  const selectDebtsByExpenseId = useMemo(() => {
+    return createSelector(
+      res => res.data,
+      (res, expenseId) => expenseId,
+      (data, expenseId) => data.filter(debt => debt.expense_id === expenseId) ?? []
+    )
+  }, []);
+
+  const{ debts } = useGetDebtsQuery(undefined, {
+    selectFromResult: result => ({
+      ...result,
+      debts: selectDebtsByExpenseId(result, expense.id)
+    })
+  })
+
   const handleDelete = async () => {
     try {
       const { error } = await supabase.from('expense').delete().eq('id', id);
       if (error) throw error;
       dispatch(removeExpense(id));
-      dispatch(removeDebtByExpense(id));
+      //dispatch(removeDebtByExpense(id));
     } catch (error) {
       console.error(error);
     } finally {
@@ -69,7 +89,7 @@ const Expense = () => {
               headerRight={headerImg}
               headerRightFn={handleDelete}
             />
-      {expense && (
+      {isSuccess && (
         <div className="expense-container">
           <div className="expense-page-container">
             <div className="page-info-container">

@@ -8,7 +8,7 @@ import Transactions from '../../components/Transactions/Transactions';
 import { fetchGroups } from '../../slices/groupSlice';
 import { formatMoney } from '../../helpers/money';
 
-import { useGetDebtsQuery } from '../../api/apiSlice';
+import { useGetDebtsQuery } from '../../slices/debtSlice';
 
 const Dashboard = () => {
   const {

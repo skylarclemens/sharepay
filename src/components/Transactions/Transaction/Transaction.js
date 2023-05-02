@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Avatar from '../../Avatar/Avatar';
 import { selectAllFriends } from '../../../slices/friendSlice';
-import { useGetExpenseQuery } from '../../../slices/debtSlice';
+import { useGetExpenseQuery } from '../../../slices/expenseSlice';
 
 const Transaction = ({ debt, paid, friend }) => {
   const {

@@ -12,18 +12,6 @@ const Home = () => {
   const account = useSelector(state => state.account);
   const dispatch = useDispatch();
 
-  /*useEffect(() => {
-    const currentUserSession = async () => {
-      const { error } = await supabase.auth.getUser();
-
-      if (error) {
-        dispatch(removeUser());
-        return;
-      }
-    };
-    currentUserSession();
-  }, [dispatch]);*/
-
   useEffect(() => {
     if (auth.user && account.status === 'idle') {
       dispatch(fetchAccount(auth.user?.id));
