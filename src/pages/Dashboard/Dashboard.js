@@ -13,10 +13,7 @@ import { useGetDebtsQuery } from '../../slices/debtSlice';
 const Dashboard = () => {
   const {
     data: debts,
-    isLoading,
-    isSuccess,
-    isError,
-    error
+    isSuccess
   } = useGetDebtsQuery();
   const user = useSelector(state => state.auth.user);
   const friends = useSelector(state => state.friends);

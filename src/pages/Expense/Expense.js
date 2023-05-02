@@ -2,15 +2,13 @@ import './Expense.scss';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
-import { removeExpense, useGetExpenseQuery } from '../../slices/expenseSlice';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
 import deleteImg from '../../images/Delete.svg';
 import { selectFriendById } from '../../slices/friendSlice';
-import { useMemo } from 'react';
-import { createSelector } from '@reduxjs/toolkit';
-import { useGetDebtsQuery } from '../../slices/debtSlice';
+import { removeExpense, useGetExpenseQuery } from '../../slices/expenseSlice';
+import { useGetDebtsQuery, selectDebtsByExpenseId } from '../../slices/debtSlice';
 
 const Expense = () => {
   const account = useSelector(state => state.account.data);
@@ -28,14 +26,6 @@ const Expense = () => {
     userCreditor = account;
   }
 
-  const selectDebtsByExpenseId = useMemo(() => {
-    return createSelector(
-      res => res.data,
-      (res, expenseId) => expenseId,
-      (data, expenseId) => data.filter(debt => debt.expense_id === expenseId) ?? []
-    )
-  }, []);
-
   const { debts } = useGetDebtsQuery(undefined, {
     selectFromResult: result => ({
       ...result,
@@ -48,7 +38,6 @@ const Expense = () => {
       const { error } = await supabase.from('expense').delete().eq('id', id);
       if (error) throw error;
       dispatch(removeExpense(id));
-      //dispatch(removeDebtByExpense(id));
     } catch (error) {
       console.error(error);
     } finally {

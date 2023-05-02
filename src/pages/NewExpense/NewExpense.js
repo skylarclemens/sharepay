@@ -66,9 +66,9 @@ const NewExpense = () => {
       await addNewDebt(newDebt).unwrap();
     } catch (error) {
       console.error(error);
+    } finally {
+      navigate(-1);
     }
-
-    navigate(-1);
   };
 
   const handleValidation = () => {

@@ -3,8 +3,8 @@ import Avatar from '../Avatar/Avatar';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
-import { selectSharedExpensesByDebt, useGetExpensesQuery, useUpdateExpenseMutation } from '../../slices/expenseSlice';
-import { useUpdateDebtMutation, useGetDebtsQuery } from '../../slices/debtSlice';
+import { selectSharedExpensesByDebt, useGetExpensesQuery, useUpdateExpensesMutation } from '../../slices/expenseSlice';
+import { useUpdateDebtsMutation, useGetDebtsQuery } from '../../slices/debtSlice';
 
 const PayUp = ({ setOpenPayUp, friend, sharedDebts, balances }) => {
   const account = useSelector(state => state.account.data);
@@ -12,8 +12,8 @@ const PayUp = ({ setOpenPayUp, friend, sharedDebts, balances }) => {
   const [userCreditor, setUserCreditor] = useState(friend);
   const [payType, setPayType] = useState('OWE');
 
-  const [updateDebt, { isDebtLoading }] = useUpdateDebtMutation();
-  const [updateExpense, { isExpenseLoading }] = useUpdateExpenseMutation();
+  const [updateDebts] = useUpdateDebtsMutation();
+  const [updateExpenses] = useUpdateExpensesMutation();
 
   const {
     data: debts
@@ -65,13 +65,13 @@ const PayUp = ({ setOpenPayUp, friend, sharedDebts, balances }) => {
     });
 
     try {
-      await updateDebt(updatedDebts).unwrap();
+      await updateDebts(updatedDebts).unwrap();
     } catch (error) {
       console.error(error);
     }
 
     try {
-      await updateExpense(updatedExpenses).unwrap();
+      await updateExpenses(updatedExpenses).unwrap();
     } catch (error) {
       console.error(error);
     }
@@ -104,9 +104,9 @@ const PayUp = ({ setOpenPayUp, friend, sharedDebts, balances }) => {
       if (error) throw error;
     } catch (error) {
       console.error(error);
+    } finally {
+      closePayUp();
     }
-
-    closePayUp();
   };
 
   const closePayUp = () => {

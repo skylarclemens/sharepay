@@ -6,8 +6,6 @@ const expenseAdapter = createEntityAdapter({
   sortComparer: (a, b) => b.created_at.localeCompare(a.created_at)
 });
 
-const initialState = expenseAdapter.getInitialState();
-
 export const extendedSupabaseApi = supabaseApi.injectEndpoints({
   endpoints: builder => ({
     getExpenses: builder.query({
@@ -16,9 +14,10 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
           .rpc("get_user_expenses");
         return { data, error };
       },
-      transformResponse: responseData => {
-        return expenseAdapter.setAll(initialState, responseData);
-      }
+      providesTags: (result = [], error, arg) => [
+        'Expense',
+        ...result.map(({ id }) => ({ type: 'Expense', id }))
+      ]
     }),
     getExpense: builder.query({
       queryFn: async (expenseId) => {
@@ -28,7 +27,8 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
           .eq('id', expenseId)
           .single();
         return { data, error };
-      }
+      },
+      providesTags: (result, error, id) => [{ type: 'Expense', id }]
     }),
     addNewExpense: builder.mutation({
       queryFn: async (newExpense) => {
@@ -37,16 +37,29 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
           .insert(newExpense)
           .select();
         return { data, error };
-      }
+      },
+      invalidatesTags: [{ type: 'Expense', id: 'LIST' }]
     }),
     updateExpense: builder.mutation({
       queryFn: async (updatedExpense) => {
         const { data, error } = await supabase
           .from('expense')
-          .upsert(updatedExpense)
+          .update(updatedExpense)
+          .eq('id', updatedExpense.id)
           .select();
         return { data, error };
-      }
+      },
+      invalidatesTags: (result, error, arg) => [{ type: 'Expense', id: arg.id }]
+    }),
+    updateExpenses: builder.mutation({
+      queryFn: async (updatedExpenses) => {
+        const { data, error } = await supabase
+          .from('expense')
+          .upsert(updatedExpenses)
+          .select();
+        return { data, error };
+      },
+      invalidatesTags: ['Expense']
     })
   })
 })
@@ -54,7 +67,8 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
 export const { useGetExpensesQuery,
   useGetExpenseQuery,
   useAddNewExpenseMutation,
-  useUpdateExpenseMutation
+  useUpdateExpenseMutation,
+  useUpdateExpensesMutation
 } = extendedSupabaseApi;
 
 export const selectSharedExpensesByDebt = createSelector(
