@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import Header from '../Header/Header';
 import Avatar from '../Avatar/Avatar';
 import { supabase } from '../../supabaseClient';
+import { selectAllFriends } from '../../slices/friendSlice';
 
 const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) => {
   const [value, setValue] = useState('');
@@ -14,7 +15,7 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) =>
     sent: false,
   });
   const user = useSelector(state => state.auth.user);
-  const friends = useSelector(state => state.friends.data);
+  const friends = useSelector(selectAllFriends);
   const groups = useSelector(state => state.groups.data);
 
   const inputTimer = 1000;
@@ -38,12 +39,12 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) =>
           friend =>
             friend.name.toLowerCase().includes(value.toLowerCase()) ||
             friend.email.toLowerCase().includes(value.toLowerCase())
-        );
+        ) ?? [];
         if (showGroups) {
           const suggestedGroups = groups.filter(
             group => 
               group.group_name.toLowerCase().includes(value.toLowerCase())
-          );
+          ) ?? [];
           setGroupSuggestions(suggestedGroups);
         }
         setFriendSuggestions(suggestedFriends);
