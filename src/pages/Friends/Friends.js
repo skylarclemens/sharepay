@@ -5,16 +5,20 @@ import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
 import addFriendImg from '../../images/Add_friend.svg';
-import { addFriend, selectAllFriends } from '../../slices/friendSlice';
+import { addFriend, useGetFriendsQuery } from '../../slices/friendSlice';
 import { fetchFriendRequests, getRequestsStatus, selectAllFriendRequests, updateRequestStatus } from '../../slices/friendRequestSlice';
 
 const Friends = () => {
-  const friends = useSelector(selectAllFriends);
   const requests = useSelector(selectAllFriendRequests);
   const requestsStatus = useSelector(getRequestsStatus);
   const user = useSelector(state => state.auth.user);
   const groups = useSelector(state => state.groups.data);
   const dispatch = useDispatch();
+
+  const {
+    data: friends,
+    isSuccess
+  } = useGetFriendsQuery(user?.id);
 
   useEffect(() => {
     const getFriendRequests = async () => {
@@ -101,7 +105,7 @@ const Friends = () => {
           </>
         ) : null}
         <h2 className="heading">Friends</h2>
-        {user && friends.length > 0
+        {user && isSuccess && friends.length > 0
           ? friends.map(friend => {
               return (
                 <Link

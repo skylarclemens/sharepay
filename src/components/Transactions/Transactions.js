@@ -1,7 +1,7 @@
 import './Transactions.scss';
 import Transaction from './Transaction/Transaction';
 
-const Transactions = ({ debts, friend = null, paid }) => {
+const Transactions = ({ debts, paid }) => {
   return (
     <div className="transactions">
       {debts?.map(debt => {
@@ -12,7 +12,6 @@ const Transactions = ({ debts, friend = null, paid }) => {
               key={debt?.id}
               debt={debt}
               paid={paid}
-              friend={friend}
             />
           )
         );

@@ -9,7 +9,10 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         const { data, error } = await supabase.from('debt').select();
         return { data, error };
       },
-      providesTags: ['Debt']
+      providesTags: (result = [], error, arg) => [
+        'Debt',
+        ...result.map(({ id }) => ({ type: 'Debt', id: id }))
+      ]
     }),
     addNewDebt: builder.mutation({
       queryFn: async (newDebt) => {

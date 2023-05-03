@@ -5,7 +5,7 @@ import Avatar from '../../Avatar/Avatar';
 import { useGetFriendQuery } from '../../../slices/friendSlice';
 import { useGetExpenseQuery } from '../../../slices/expenseSlice';
 
-const Transaction = ({ debt, paid, friend }) => {
+const Transaction = ({ debt, paid }) => {
   const {
     data: currentExpense,
     isSuccess
@@ -17,7 +17,7 @@ const Transaction = ({ debt, paid, friend }) => {
     debtType,
     userCreditor,
     userDebtor = '';
-  if (debt?.creditor_id === account?.id) {
+  if (currentExpense?.payer_id === account?.id) {
     debtType = 'OWED';
     friendId = debt?.debtor_id;
   } else {
@@ -31,9 +31,9 @@ const Transaction = ({ debt, paid, friend }) => {
 
   if(debtType === 'OWED') {
     userCreditor = account;
-    userDebtor = friend || currentFriend;
+    userDebtor = currentFriend;
   } else {
-    userCreditor = friend || currentFriend;
+    userCreditor = currentFriend;
     userDebtor = account;
   }
 

@@ -6,15 +6,15 @@ import { fetchAccount } from '../../slices/accountSlice';
 import MainLayout from '../../layouts/MainLayout/MainLayout';
 
 const Home = () => {
-  const { user } = useSelector(state => state.auth);
+  const auth = useSelector(state => state.auth);
   const account = useSelector(state => state.account);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user && account.status === 'idle') {
-      dispatch(fetchAccount(user?.id));
+    if (auth?.session && account?.status === 'idle') {
+      dispatch(fetchAccount(auth?.user?.id));
     }
-  }, [user, account, dispatch]);
+  }, [auth, account, dispatch]);
 
   return (
     <MainLayout>

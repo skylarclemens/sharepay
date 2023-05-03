@@ -7,11 +7,12 @@ const extendedSupabaseApi = supabaseApi.injectEndpoints({
     getFriends: builder.query({
       queryFn: async (userId) => {
         const { data, error } = await supabase
-        .from('user_friend')
-        .select('friend_id(*)')
-        .eq('user_id', userId)
-        .eq('status', 1);
-        return { data, error };
+          .from('user_friend')
+          .select('friend_id(*)')
+          .eq('user_id', userId)
+          .eq('status', 1);
+        const returnData = data.map(obj => obj.friend_id);
+        return { data: returnData, error };
       },
       providesTags: (result = [], error,  arg) => [
         'Friend',

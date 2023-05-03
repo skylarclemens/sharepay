@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import Header from '../Header/Header';
 import Avatar from '../Avatar/Avatar';
 import { supabase } from '../../supabaseClient';
-import { selectAllFriends } from '../../slices/friendSlice';
+import { useGetFriendsQuery } from '../../slices/friendSlice';
 
 const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) => {
   const [value, setValue] = useState('');
@@ -15,7 +15,9 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) =>
     sent: false,
   });
   const user = useSelector(state => state.auth.user);
-  const friends = useSelector(selectAllFriends);
+  const {
+    data: friends
+  } = useGetFriendsQuery(user?.id);
   const groups = useSelector(state => state.groups.data);
 
   const inputTimer = 1000;
