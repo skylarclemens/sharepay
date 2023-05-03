@@ -1,5 +1,43 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { supabase } from '../supabaseClient';
+import { supabaseApi } from '../api/supabaseApi';
+
+const extendedSupabaseApi = supabaseApi.injectEndpoints({
+  endpoints: builder => ({
+    getFriends: builder.query({
+      queryFn: async (userId) => {
+        const { data, error } = await supabase
+        .from('user_friend')
+        .select('friend_id(*)')
+        .eq('user_id', userId)
+        .eq('status', 1);
+        return { data, error };
+      },
+      providesTags: (result = [], error,  arg) => [
+        'Friend',
+        ...result.map(({ id }) => ({ type: 'Friend', id }))
+      ]
+    }),
+    getFriend: builder.query({
+      queryFn: async (friendId) => {
+        const { data, error } = await supabase
+          .from('user_friend')
+          .select('friend_id(*)')
+          .eq('friend_id', friendId)
+          .eq('status', 1)
+          .limit(1)
+          .single();
+        const returnData = Object.values(data)[0];
+        return { data: returnData, error };
+      },
+      provideTags: (result, error, arg) => [{ type: 'Friend', id: arg }]
+    })
+  })
+})
+
+export const { useGetFriendsQuery,
+  useGetFriendQuery
+} = extendedSupabaseApi;
 
 const friendsAdapter = createEntityAdapter();
 

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { balanceCalc } from '../../helpers/balance';
 import { useEffect } from 'react';
 import { setBalances } from '../../slices/expenseSlice';
-import { fetchFriends } from '../../slices/friendSlice';
 import Transactions from '../../components/Transactions/Transactions';
 import { fetchGroups } from '../../slices/groupSlice';
 import { formatMoney } from '../../helpers/money';
@@ -16,7 +15,6 @@ const Dashboard = () => {
     isSuccess
   } = useGetDebtsQuery();
   const user = useSelector(state => state.auth.user);
-  const friends = useSelector(state => state.friends);
   const groups = useSelector(state => state.groups);
   const balances = useSelector(state => state.expenses.balances);
 
@@ -25,7 +23,6 @@ const Dashboard = () => {
   const dataLoaded =
     user &&
     isSuccess &&
-    friends.status === 'succeeded' &&
     groups.status === 'succeeded';
 
   useEffect(() => {
@@ -33,12 +30,6 @@ const Dashboard = () => {
       dispatch(setBalances(balanceCalc(debts, user?.id)));
     }
   }, [dataLoaded, debts, user.id, dispatch]);
-
-  useEffect(() => {
-    if(friends.status === 'idle') {
-      dispatch(fetchFriends(user.id));
-    }
-  }, [user, friends, dispatch]);
 
   useEffect(() => {
     if(groups.status === 'idle') {
