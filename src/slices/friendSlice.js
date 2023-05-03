@@ -15,7 +15,7 @@ const extendedSupabaseApi = supabaseApi.injectEndpoints({
         return { data: returnData, error };
       },
       providesTags: (result = [], error,  arg) => [
-        'Friend',
+        { type: 'Friend', id: 'LIST' },
         ...result.map(({ id }) => ({ type: 'Friend', id }))
       ]
     }),

@@ -11,7 +11,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         return { data, error };
       },
       providesTags: (result = [], error, arg) => [
-        'Expense',
+        { type: 'Expense', id: 'LIST' },
         ...result.map(({ id }) => ({ type: 'Expense', id }))
       ]
     }),
@@ -34,7 +34,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
           .select();
         return { data, error };
       },
-      invalidatesTags: [{ type: 'Expense', id: 'LIST' }]
+      invalidatesTags: [{ type: 'Expense', id: 'LIST' }, { type: 'Debt', id: 'LIST' }]
     }),
     updateExpense: builder.mutation({
       queryFn: async (updatedExpense) => {

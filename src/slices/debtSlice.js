@@ -10,7 +10,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         return { data, error };
       },
       providesTags: (result = [], error, arg) => [
-        'Debt',
+        { type: 'Debt', id: 'LIST' },
         ...result.map(({ id }) => ({ type: 'Debt', id: id }))
       ]
     }),
