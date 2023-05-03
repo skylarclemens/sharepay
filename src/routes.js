@@ -15,14 +15,14 @@ import MainLayout from './layouts/MainLayout/MainLayout';
 import DetailsLayout from './layouts/DetailsLayout/DetailsLayout';
 import FormLayout from './layouts/FormLayout/FormLayout';
 import EmptyLayout from './layouts/EmptyLayout/EmptyLayout';
-import App from './App';
+import AuthRoute from './layouts/AuthRoute/AuthRoute';
 
 const RoutesContainer = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<App />}>
-          <Route index element={<Home />} />
+        <Route index element={<Home />} />
+        <Route element={<AuthRoute />}>
           <Route element={<MainLayout />}>
             <Route path="account" element={<Account />} />
             <Route path="recent" element={<Recent />} />
@@ -38,10 +38,10 @@ const RoutesContainer = () => {
             <Route path="add-friend" element={<AddFriend />} />
             <Route path="new-group" element={<NewGroup />} />
           </Route>
-          <Route element={<EmptyLayout />}>
-            <Route path="signup" element={<SignUp />} />
-            <Route path="login" element={<Login />} />
-          </Route>
+        </Route>
+        <Route element={<EmptyLayout />}>
+          <Route path="signup" element={<SignUp />} />
+          <Route path="login" element={<Login />} />
         </Route>
       </Routes>
     </Router>

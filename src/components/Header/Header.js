@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Header = ({ type = 'main', title, headerLeft, headerLeftFn, headerRight, headerRightFn }) => {
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.auth.user);
   const navigate = useNavigate();
 
   if (type === "main") {

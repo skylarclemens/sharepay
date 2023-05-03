@@ -1,19 +1,30 @@
 import './PayUp.scss';
 import Avatar from '../Avatar/Avatar';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
-import { selectSharedExpensesByDebts, updateExpense } from '../../slices/expenseSlice';
-import { selectAllDebts, updateDebt } from '../../slices/debtSlice';
+import { selectSharedExpensesByDebt, useGetExpensesQuery, useUpdateExpensesMutation } from '../../slices/expenseSlice';
+import { useUpdateDebtsMutation, useGetDebtsQuery } from '../../slices/debtSlice';
 
-const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
+const PayUp = ({ setOpenPayUp, friend, sharedDebts, balances }) => {
   const account = useSelector(state => state.account.data);
-  const currentExpenses = useSelector(state => selectSharedExpensesByDebts(state, sharedDebts));
-  const debts = useSelector(selectAllDebts);
   const [userDebtor, setUserDebtor] = useState(account);
   const [userCreditor, setUserCreditor] = useState(friend);
   const [payType, setPayType] = useState('OWE');
-  const dispatch = useDispatch();
+
+  const [updateDebts] = useUpdateDebtsMutation();
+  const [updateExpenses] = useUpdateExpensesMutation();
+
+  const {
+    data: debts
+  } = useGetDebtsQuery();
+
+  const { currentExpenses } = useGetExpensesQuery(undefined, {
+    selectFromResult: (result) => ({
+      ...result,
+      currentExpenses: selectSharedExpensesByDebt(result, sharedDebts)
+    })
+  })
 
   useEffect(() => {
     if (balances.total > 0) {
@@ -28,9 +39,9 @@ const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
   }, [balances, account, friend]);
 
   const markExpensePaid = (expense) => {
-    const unpaidDebts = debts.filter(
+    const unpaidDebts = debts?.filter(
       debt => debt.expense_id === expense.id && !debt.paid
-    );
+    ) ?? [];
     if (unpaidDebts.length === 0) {
       return {
         ...expense,
@@ -42,22 +53,31 @@ const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
   };
 
   const handlePayButton = async () => {
-    const updatedDebts = sharedDebts.map(debt => {
+    const updatedDebts = sharedDebts?.map(debt => {
       return {
         ...debt,
         paid: true,
       };
     });
 
-    const updatedExpenses = currentExpenses.map(expense => {
+    const updatedExpenses = currentExpenses?.map(expense => {
       return markExpensePaid(expense, updatedDebts);
     });
 
-    dispatch(updateDebt(updatedDebts));
-    dispatch(updateExpense(updatedExpenses));
+    try {
+      await updateDebts(updatedDebts).unwrap();
+    } catch (error) {
+      console.error(error);
+    }
+
+    try {
+      await updateExpenses(updatedExpenses).unwrap();
+    } catch (error) {
+      console.error(error);
+    }
 
     const insertDebtPaid = async paidUpId => {
-      const paidDebt = updatedDebts.map(debt => {
+      const paidDebt = updatedDebts?.map(debt => {
         return {
           debt_id: debt.id,
           paid_id: paidUpId,
@@ -84,9 +104,9 @@ const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
       if (error) throw error;
     } catch (error) {
       console.error(error);
+    } finally {
+      closePayUp();
     }
-
-    closePayUp();
   };
 
   const closePayUp = () => {
@@ -94,48 +114,44 @@ const PayUp = ({ setOpenPayUp, openPayUp, friend, sharedDebts, balances }) => {
   };
 
   return (
-    openPayUp && (
-      <div className="modal-container">
-        <div className="pay-up-container">
-          <div className="expense-avatars">
-            <Avatar url={userDebtor?.avatar_url} size={65} />
-            <Avatar url={userCreditor?.avatar_url} size={65} />
-          </div>
-          <div className="balance-block balance-block--total">
-            <div>
-              {payType === 'OWE' ? (
-                <>
-                  Pay <span className="friend-name">{friend.name}</span>
-                </>
-              ) : (
-                <>
-                  <span className="friend-name">{friend.name}</span> paid you
-                </>
-              )}
-            </div>
-            <span className="total">
-              ${Math.abs(balances.total).toFixed(2) || 0.0}
-            </span>
-          </div>
-          <button
-            type="button"
-            className="button"
-            title="Pay up"
-            onClick={handlePayButton}
-          >
-            Paid up
-          </button>
-          <button
-            type="button"
-            className="button button--white button--small"
-            title="Cancel"
-            onClick={closePayUp}
-          >
-            Cancel
-          </button>
-        </div>
+    <div className="pay-up-container">
+      <div className="expense-avatars">
+        <Avatar url={userDebtor?.avatar_url} size={65} />
+        <Avatar url={userCreditor?.avatar_url} size={65} />
       </div>
-    )
+      <div className="balance-block balance-block--total">
+        <div>
+          {payType === 'OWE' ? (
+            <>
+              Pay <span className="friend-name">{friend.name}</span>
+            </>
+          ) : (
+            <>
+              <span className="friend-name">{friend.name}</span> paid you
+            </>
+          )}
+        </div>
+        <span className="total">
+          ${Math.abs(balances?.total).toFixed(2) || 0.0}
+        </span>
+      </div>
+      <button
+        type="button"
+        className="button"
+        title="Pay up"
+        onClick={handlePayButton}
+      >
+        Paid up
+      </button>
+      <button
+        type="button"
+        className="button button--white button--small"
+        title="Cancel"
+        onClick={closePayUp}
+      >
+        Cancel
+      </button>
+    </div>
   );
 };
 

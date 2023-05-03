@@ -12,7 +12,7 @@ const AddFriend = ({ selectFriends = false, handleAddUser }) => {
     id: '',
     sent: false,
   });
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.auth.user);
 
   const inputTimer = 1000;
 

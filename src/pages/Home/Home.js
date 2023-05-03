@@ -5,36 +5,22 @@ import Dashboard from '../Dashboard/Dashboard';
 import { fetchAccount } from '../../slices/accountSlice';
 import MainLayout from '../../layouts/MainLayout/MainLayout';
 import EmptyLayout from '../../layouts/EmptyLayout/EmptyLayout';
-import { supabase } from '../../supabaseClient';
-import { removeUser } from '../../slices/userSlice';
 import Welcome from '../Welcome/Welcome';
 
 const Home = () => {
-  const user = useSelector(state => state.user);
+  const auth = useSelector(state => state.auth);
   const account = useSelector(state => state.account);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const currentUserSession = async () => {
-      const { error } = await supabase.auth.getUser();
-
-      if (error) {
-        dispatch(removeUser());
-        return;
-      }
-    };
-    currentUserSession();
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (user && account.status === 'idle') {
-      dispatch(fetchAccount(user?.id));
+    if (auth.user && account.status === 'idle') {
+      dispatch(fetchAccount(auth.user?.id));
     }
-  }, [user, account, dispatch]);
+  }, [auth.user, account, dispatch]);
 
   return (
     <>
-      {user ? (
+      {auth.session ? (
         <MainLayout>
           <Dashboard />
         </MainLayout>

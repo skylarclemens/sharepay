@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { removeUser } from '../../slices/userSlice';
 import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 import { setAccountData } from '../../slices/accountSlice';
+import { resetAuth } from '../../slices/authSlice';
 
 const Account = () => {
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.auth.user);
   const account = useSelector(state => state.account);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
@@ -53,7 +53,7 @@ const Account = () => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      dispatch(removeUser());
+      dispatch(resetAuth());
       localStorage.clear();
     } catch (error) {
       console.error(error);

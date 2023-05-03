@@ -2,19 +2,21 @@ import './Dashboard.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { balanceCalc } from '../../helpers/balance';
 import { useEffect } from 'react';
-import { fetchExpenses, setBalances, getExpenseStatus } from '../../slices/expenseSlice';
-import { fetchDebts, selectAllDebts, getDebtStatus } from '../../slices/debtSlice';
+import { setBalances } from '../../slices/expenseSlice';
 import { fetchFriends } from '../../slices/friendSlice';
 import Transactions from '../../components/Transactions/Transactions';
 import { fetchGroups } from '../../slices/groupSlice';
 import { formatMoney } from '../../helpers/money';
 
+import { useGetDebtsQuery } from '../../slices/debtSlice';
+
 const Dashboard = () => {
-  const user = useSelector(state => state.user);
-  const expensesStatus = useSelector(getExpenseStatus);
+  const {
+    data: debts,
+    isSuccess
+  } = useGetDebtsQuery();
+  const user = useSelector(state => state.auth.user);
   const friends = useSelector(state => state.friends);
-  const debtsStatus = useSelector(getDebtStatus);
-  const debts = useSelector(selectAllDebts);
   const groups = useSelector(state => state.groups);
   const balances = useSelector(state => state.expenses.balances);
 
@@ -22,9 +24,8 @@ const Dashboard = () => {
 
   const dataLoaded =
     user &&
-    debtsStatus === 'succeeded' &&
+    isSuccess &&
     friends.status === 'succeeded' &&
-    expensesStatus === 'succeeded' &&
     groups.status === 'succeeded';
 
   useEffect(() => {
@@ -34,22 +35,10 @@ const Dashboard = () => {
   }, [dataLoaded, debts, user.id, dispatch]);
 
   useEffect(() => {
-    if(expensesStatus === 'idle') {
-      dispatch(fetchExpenses());
-    }
-  }, [expensesStatus, dispatch]);
-
-  useEffect(() => {
     if(friends.status === 'idle') {
       dispatch(fetchFriends(user.id));
     }
   }, [user, friends, dispatch]);
-
-  useEffect(() => {
-    if(debtsStatus === 'idle') {
-      dispatch(fetchDebts());
-    }
-  }, [debtsStatus, dispatch]);
 
   useEffect(() => {
     if(groups.status === 'idle') {
