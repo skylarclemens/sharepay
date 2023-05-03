@@ -1,31 +1,47 @@
 import './App.scss';
-import { Outlet } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { supabase } from './supabaseClient';
 import { useDispatch } from 'react-redux';
-import { setCredentials, resetAuth } from './slices/authSlice';
+import { setCredentials } from './slices/authSlice';
+import RoutesContainer from './routes';
 
 const App = () => {
   const dispatch = useDispatch();
 
+  const initializeSession = useCallback(async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (session) {
+      dispatch(setCredentials({
+        session: session,
+        user: session?.user ?? null,
+      }));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    initializeSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        dispatch(setCredentials({
-          session: session,
-          user: session.user
-        }));
-      } else {
-        dispatch(resetAuth());
-      }
-    })
-    
-    return () => subscription.unsubscribe()
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      dispatch(setCredentials({
+        session: session,
+        user: session?.user ?? null,
+      }));
+    });
+    return () => 
+      subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <Outlet />;
+  return (
+    <RoutesContainer />
+  );
 };
 
 export default App;

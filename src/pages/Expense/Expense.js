@@ -37,8 +37,6 @@ const Expense = () => {
   const auth = useSelector(state => state.auth);
   const navigate = useNavigate();
 
-  console.log('auth', auth);
-
   const {
     data: expense,
     isSuccess
@@ -50,8 +48,6 @@ const Expense = () => {
     })
   });
   const [removeExpense] = useRemoveExpenseMutation();
-
-  console.log('isSuccess', isSuccess);
   
   const account = useSelector(state => state.account.data);
   let userCreditor = useSelector(state => selectFriendById(state, expense?.payer_id));
