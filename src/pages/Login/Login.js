@@ -21,11 +21,7 @@ const Login = () => {
         email: email,
         password: password,
       });
-      
-      console.log(data);
-
       dispatch(setCredentials(data));
-
       if (error) throw error;
     } catch (error) {
       console.error(error);

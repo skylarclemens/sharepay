@@ -15,14 +15,14 @@ import MainLayout from './layouts/MainLayout/MainLayout';
 import DetailsLayout from './layouts/DetailsLayout/DetailsLayout';
 import FormLayout from './layouts/FormLayout/FormLayout';
 import EmptyLayout from './layouts/EmptyLayout/EmptyLayout';
-import AuthRoute from './layouts/AuthRoute/AuthRoute';
+import RequireAuth from './layouts/RequireAuth/RequireAuth';
 
 const RoutesContainer = () => {
   return (
     <Router>
       <Routes>
-        <Route index element={<Home />} />
-        <Route element={<AuthRoute />}>
+        <Route element={<RequireAuth />}>
+          <Route index element={<Home />} />
           <Route element={<MainLayout />}>
             <Route path="account" element={<Account />} />
             <Route path="recent" element={<Recent />} />

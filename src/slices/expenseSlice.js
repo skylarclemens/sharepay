@@ -65,8 +65,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
           .eq('id', expenseId);
         return { data, error };
       },
-      invalidateTags: (result, error, arg) => [{ type: 'Expense', id: 'LIST' },
-        { type: 'Debt', id: 'LIST' }]
+      invalidateTags: (result, error, arg) => [{ type: 'Expense', id: arg.id }, { type: 'Debt', id: 'LIST' }]
     }),
   })
 })
