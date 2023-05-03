@@ -56,11 +56,11 @@ export const selectDebtsResult = extendedSupabaseApi.endpoints.getDebts.select()
 
 export const selectSharedDebtsByFriendId = createSelector(
   res => res.data, (data, friendId) => friendId,
-  (data, friendId) => data.filter(debt => (debt.creditor_id === friendId || debt.debtor_id === friendId)) ?? []
+  (data, friendId) => data?.filter(debt => (debt.creditor_id === friendId || debt.debtor_id === friendId)) ?? []
 );
 
 export const selectDebtsByExpenseId = createSelector(
   res => res.data,
   (res, expenseId) => expenseId,
-  (data, expenseId) => data.filter(debt => debt.expense_id === expenseId) ?? []
+  (data, expenseId) => data?.filter(debt => debt.expense_id === expenseId) ?? []
 );

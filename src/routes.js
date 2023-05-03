@@ -15,26 +15,29 @@ import MainLayout from './layouts/MainLayout/MainLayout';
 import DetailsLayout from './layouts/DetailsLayout/DetailsLayout';
 import FormLayout from './layouts/FormLayout/FormLayout';
 import EmptyLayout from './layouts/EmptyLayout/EmptyLayout';
+import AuthRoute from './layouts/AuthRoute/AuthRoute';
 
 const RoutesContainer = () => {
   return (
     <Router>
       <Routes>
         <Route index element={<Home />} />
-        <Route element={<MainLayout />}>
-          <Route path="account" element={<Account />} />
-          <Route path="recent" element={<Recent />} />
-          <Route path="friends" element={<Friends />} />
-        </Route>
-        <Route element={<DetailsLayout />}>
-          <Route path="expense/:id" element={<Expense />} />
-          <Route path="friend/:id" element={<FriendDetails />} />
-          <Route path="group/:id" element={<Group />} />
-        </Route>
-        <Route element={<FormLayout />}>
-          <Route path="new-expense" element={<NewExpense />} />
-          <Route path="add-friend" element={<AddFriend />} />
-          <Route path="new-group" element={<NewGroup />} />
+        <Route element={<AuthRoute />}>
+          <Route element={<MainLayout />}>
+            <Route path="account" element={<Account />} />
+            <Route path="recent" element={<Recent />} />
+            <Route path="friends" element={<Friends />} />
+          </Route>
+          <Route element={<DetailsLayout />}>
+            <Route path="expense/:id" element={<Expense />} />
+            <Route path="friend/:id" element={<FriendDetails />} />
+            <Route path="group/:id" element={<Group />} />
+          </Route>
+          <Route element={<FormLayout />}>
+            <Route path="new-expense" element={<NewExpense />} />
+            <Route path="add-friend" element={<AddFriend />} />
+            <Route path="new-group" element={<NewGroup />} />
+          </Route>
         </Route>
         <Route element={<EmptyLayout />}>
           <Route path="signup" element={<SignUp />} />
