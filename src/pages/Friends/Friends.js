@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
 import addFriendImg from '../../images/Add_friend.svg';
-import { addFriend, useGetFriendsQuery } from '../../slices/friendSlice';
+import { useAddNewFriendMutation, useGetFriendsQuery } from '../../slices/friendSlice';
 import { fetchFriendRequests, getRequestsStatus, selectAllFriendRequests, updateRequestStatus } from '../../slices/friendRequestSlice';
 
 const Friends = () => {
@@ -19,6 +19,7 @@ const Friends = () => {
     data: friends,
     isSuccess
   } = useGetFriendsQuery(user?.id);
+  const [addNewFriend] = useAddNewFriendMutation();
 
   useEffect(() => {
     const getFriendRequests = async () => {
@@ -41,9 +42,9 @@ const Friends = () => {
     }
 
     try {
-      await dispatch(addFriend({ user: req.friend_id, friend: req.user_id })).unwrap();
-    } catch (rejectedValueOrSerializedError) {
-      console.error(rejectedValueOrSerializedError);
+      await addNewFriend({ user: req.friend_id, friend: req.user_id }).unwrap();
+    } catch (error) {
+      console.error(error);
     }
   }
 

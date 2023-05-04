@@ -1,4 +1,3 @@
-import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { supabase } from '../supabaseClient';
 import { supabaseApi } from '../api/supabaseApi';
 
@@ -16,31 +15,44 @@ const extendedSupabaseApi = supabaseApi.injectEndpoints({
       },
       providesTags: (result = [], error,  arg) => [
         { type: 'Friend', id: 'LIST' },
-        ...result.map(({ id }) => ({ type: 'Friend', id }))
+        ...result.map(({ id }) => ({ type: 'Friend', id: id }))
       ]
     }),
     getFriend: builder.query({
       queryFn: async (friendId) => {
         const { data, error } = await supabase
           .from('user_friend')
-          .select('friend_id(*)')
+          .select('friend:friend_id(*)')
           .eq('friend_id', friendId)
           .eq('status', 1)
           .limit(1)
           .single();
-        const returnData = Object.values(data)[0];
+        const { friend: returnData } = data;
         return { data: returnData, error };
       },
       provideTags: (result, error, arg) => [{ type: 'Friend', id: arg }]
-    })
+    }),
+    addNewFriend: builder.mutation({
+      queryFn: async ({ user, friend }) => {
+        const { error } = await supabase.from('user_friend').insert({
+          user_id: user,
+          friend_id: friend,
+          status: 1,
+          status_change: new Date().toISOString()
+        })
+        return { error };
+      },
+      invalidatesTags: [{ type: 'Friend', id: 'LIST' }],
+    }),
   })
 })
 
 export const { useGetFriendsQuery,
-  useGetFriendQuery
+  useGetFriendQuery,
+  useAddNewFriendMutation
 } = extendedSupabaseApi;
 
-const friendsAdapter = createEntityAdapter();
+/*const friendsAdapter = createEntityAdapter();
 
 const initialState = friendsAdapter.getInitialState({
   status: 'idle',
@@ -100,4 +112,4 @@ export const addFriend = createAsyncThunk(
     }).select('friend_id(*)');
     return data.map(obj => obj.friend_id);
   }
-)
+)*/
