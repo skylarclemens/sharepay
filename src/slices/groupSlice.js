@@ -1,53 +1,25 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { supabase } from '../supabaseClient';
+import { supabaseApi } from '../api/supabaseApi';
 
-const initialState = {
-  data: [],
-  status: 'idle',
-  error: null,
-};
+export const extendedSupabaseApi = supabaseApi.injectEndpoints({
+  endpoints: builder => ({
+    getGroups: builder.query({
+      queryFn: async userId => {
+        const { data, error } = await supabase
+          .from('user_group')
+          .select('group!inner(*)')
+          .eq('user_id', userId);
+        const returnData = data.map(obj => obj.group);
+        return { data: returnData, error }
+      },
+      providesTags: (result = [], error,  arg) => [
+        { type: 'Group', id: 'LIST' },
+        ...result.map(({ id }) => ({ type: 'Group', id: id }))
+      ]
+    })
+  })
+})
 
-export const groupSlice = createSlice({
-  name: 'groups',
-  initialState,
-  reducers: {
-    addGroup: (state, action) => {
-      const newData = [...state.data, action.payload];
-      return {
-        ...state,
-        data: newData,
-      };
-    },
-  },
-  extraReducers(builder) {
-    builder
-      .addCase(fetchGroups.pending, (state, action) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchGroups.fulfilled, (state, action) => {
-        return {
-          ...state,
-          data: action.payload,
-          status: 'succeeded',
-        };
-      })
-      .addCase(fetchGroups.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
-      });
-  },
-});
-
-export const { addExpense } = groupSlice.actions;
-export default groupSlice.reducer;
-
-export const fetchGroups = createAsyncThunk(
-  'groups/fetchGroups',
-  async userId => {
-    const { data } = await supabase
-      .from('user_group')
-      .select('group!inner(*)')
-      .eq('user_id', userId);
-    return data.map(obj => obj.group);
-  }
-);
+export const {
+  useGetGroupsQuery
+} = extendedSupabaseApi;

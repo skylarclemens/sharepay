@@ -5,6 +5,7 @@ import Header from '../Header/Header';
 import Avatar from '../Avatar/Avatar';
 import { supabase } from '../../supabaseClient';
 import { useGetFriendsQuery } from '../../slices/friendSlice';
+import { useGetGroupsQuery } from '../../slices/groupSlice';
 
 const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) => {
   const [value, setValue] = useState('');
@@ -18,7 +19,9 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) =>
   const {
     data: friends
   } = useGetFriendsQuery(user?.id);
-  const groups = useSelector(state => state.groups.data);
+  const {
+    data: groups
+  } = useGetGroupsQuery(user?.id);
 
   const inputTimer = 1000;
 

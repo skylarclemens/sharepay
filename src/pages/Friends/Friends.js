@@ -6,22 +6,28 @@ import Header from '../../components/Header/Header';
 import addFriendImg from '../../images/Add_friend.svg';
 import { useGetFriendsQuery, useAddNewFriendMutation } from '../../slices/friendSlice';
 import { useGetFriendRequestsQuery, useUpdateFriendRequestStatusMutation } from '../../slices/friendRequestSlice';
+import { useGetGroupsQuery } from '../../slices/groupSlice';
 
 const Friends = () => {
   const user = useSelector(state => state.auth.user);
-  const groups = useSelector(state => state.groups.data);
-
-  const {
-    data: requests,
-    isSuccess: requestsSuccess
-  } = useGetFriendRequestsQuery(user?.id)
 
   const {
     data: friends,
     isSuccess: friendsSuccess
   } = useGetFriendsQuery(user?.id);
+
   const [addNewFriend] = useAddNewFriendMutation();
   const [updateFriendRequest] = useUpdateFriendRequestStatusMutation();
+
+  const {
+    data: groups,
+    isSuccess: groupsSuccess
+  } = useGetGroupsQuery(user?.id);
+
+  const {
+    data: requests,
+    isSuccess: requestsSuccess
+  } = useGetFriendRequestsQuery(user?.id);
 
   const handleRequestAccepted = async (req) => {
     try {
@@ -117,19 +123,19 @@ const Friends = () => {
           : null}
         {requestsSuccess
           ? requests.map(req => {
-              if (req.user_id.id === user.id) {
+              if (req?.user_id.id === user.id) {
                 return (
-                  <div key={req.friend_id} className="user">
+                  <div key={req?.friend_id} className="user">
                     <div className="user-info">
-                      <Avatar url={req.friend_id.avatar_url} />
+                      <Avatar url={req?.friend_id.avatar_url} />
                       <div className="user-info-text">
-                        <div className="user-name">{req.friend_id.name}</div>
+                        <div className="user-name">{req?.friend_id.name}</div>
                         <div className="user-email">
-                          {req.friend_id.email}
+                          {req?.friend_id.email}
                         </div>
                       </div>
                     </div>
-                    {req.status === 0 ? (
+                    {req?.status === 0 ? (
                       <div className="pill">PENDING</div>
                     ) : null}
                   </div>
@@ -141,15 +147,15 @@ const Friends = () => {
 
         <div className="groups-container">
           <h2 className="heading">Groups</h2>
-          {groups.length > 0
-            ? groups.map(group => {
+          {groupsSuccess
+            ? groups?.map(group => {
                 return (
                   <Link
-                    to={`/group/${group.id}`}
-                    key={group.id}
+                    to={`/group/${group?.id}`}
+                    key={group?.id}
                     className="group"
                   >
-                    <span>{group.group_name}</span>
+                    <span>{group?.group_name}</span>
                     <div className="arrow arrow--right"></div>
                   </Link>
                 );
