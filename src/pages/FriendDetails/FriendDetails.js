@@ -7,7 +7,7 @@ import Transactions from '../../components/Transactions/Transactions';
 import Header from '../../components/Header/Header';
 import Modal from '../../components/Modal/Modal';
 import PayUp from '../../components/PayUp/PayUp';
-import { selectFriendById } from '../../slices/friendSlice';
+import { useGetFriendQuery } from '../../slices/friendSlice';
 import { balanceCalc } from '../../helpers/balance';
 import { formatMoney } from '../../helpers/money';
 import { useGetDebtsQuery, selectSharedDebtsByFriendId } from '../../slices/debtSlice';
@@ -18,7 +18,9 @@ const FriendDetails = () => {
   const [openPayUp, setOpenPayUp] = useState(false);
   let { id } = useParams();
 
-  const friend = useSelector(state => selectFriendById(state, id));
+  const {
+    data: friend
+  } = useGetFriendQuery(id);
 
   const { sharedDebts } = useGetDebtsQuery(undefined, {
     selectFromResult: (result) => ({

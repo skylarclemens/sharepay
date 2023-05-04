@@ -5,13 +5,17 @@ import { useNavigate } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
 import deleteImg from '../../images/Delete.svg';
-import { selectFriendById } from '../../slices/friendSlice';
+import { useGetFriendQuery } from '../../slices/friendSlice';
 import { useGetExpenseQuery, useRemoveExpenseMutation } from '../../slices/expenseSlice';
 import { useGetDebtsQuery, selectDebtsByExpenseId } from '../../slices/debtSlice';
+import { useGetAccountQuery } from '../../slices/accountSlice';
 
 const UserDebtor = ({ debt, account }) => {
-  let debtor = useSelector(state => selectFriendById(state, debt.debtor_id));
-  if (debt.debtor_id === account.id) {
+  const {
+    data: friend
+  } = useGetFriendQuery(debt?.debtor_id);
+  let debtor = friend;
+  if (debt?.debtor_id === account?.id) {
     debtor = account;
   }
   return (
@@ -19,14 +23,14 @@ const UserDebtor = ({ debt, account }) => {
       <div className="user-details">
         <Avatar
           classes="white-border"
-          url={debtor.avatar_url}
+          url={debtor?.avatar_url}
           size={40}
         />
-        <span>{debtor.name}</span>
+        <span>{debtor?.name}</span>
       </div>
       <div className="expense-type">OWES</div>
       <div className="expense-amount expense-amount--owe">
-        ${debt.amount.toFixed(2)}
+        ${debt?.amount.toFixed(2)}
       </div>
     </div>
   )
@@ -49,8 +53,14 @@ const Expense = () => {
   });
   const [removeExpense] = useRemoveExpenseMutation();
   
-  const account = useSelector(state => state.account.data);
-  let userCreditor = useSelector(state => selectFriendById(state, expense?.payer_id));
+  const {
+    data: account
+  } = useGetAccountQuery(auth?.user?.id);
+  
+  const {
+    data: friend
+  } = useGetFriendQuery(expense?.payer_id);
+  let userCreditor = friend;
   if (expense?.payer_id === account?.id) {
     userCreditor = account;
   }
@@ -108,7 +118,7 @@ const Expense = () => {
                 </span>
               </div>
               {debts.map(debt => (
-                <UserDebtor key={debt?.debtor_id} debt={debt} account={account} />
+                <UserDebtor key={debt?.id} debt={debt} account={account} />
               ))}
             </div>
           </div>

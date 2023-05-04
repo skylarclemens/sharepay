@@ -1,53 +1,53 @@
 import './Friends.scss';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
 import addFriendImg from '../../images/Add_friend.svg';
-import { addFriend, selectAllFriends } from '../../slices/friendSlice';
-import { fetchFriendRequests, getRequestsStatus, selectAllFriendRequests, updateRequestStatus } from '../../slices/friendRequestSlice';
+import { useGetFriendsQuery, useAddNewFriendMutation } from '../../slices/friendSlice';
+import { useGetFriendRequestsQuery, useUpdateFriendRequestStatusMutation } from '../../slices/friendRequestSlice';
+import { useGetGroupsQuery } from '../../slices/groupSlice';
 
 const Friends = () => {
-  const friends = useSelector(selectAllFriends);
-  const requests = useSelector(selectAllFriendRequests);
-  const requestsStatus = useSelector(getRequestsStatus);
   const user = useSelector(state => state.auth.user);
-  const groups = useSelector(state => state.groups.data);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const getFriendRequests = async () => {
-      try {
-        await dispatch(fetchFriendRequests(user?.id)).unwrap();
-      } catch (rejectedValueOrSerializedError) {
-        console.error(rejectedValueOrSerializedError);
-      }
-    }
-    if(requestsStatus === 'idle') {
-      getFriendRequests();
-    }
-  }, [user, requestsStatus, dispatch]);
+  const {
+    data: friends,
+    isSuccess: friendsSuccess
+  } = useGetFriendsQuery(user?.id);
+
+  const [addNewFriend] = useAddNewFriendMutation();
+  const [updateFriendRequest] = useUpdateFriendRequestStatusMutation();
+
+  const {
+    data: groups,
+    isSuccess: groupsSuccess
+  } = useGetGroupsQuery(user?.id);
+
+  const {
+    data: requests,
+    isSuccess: requestsSuccess
+  } = useGetFriendRequestsQuery(user?.id);
 
   const handleRequestAccepted = async (req) => {
     try {
-      await dispatch(updateRequestStatus({ status: 1, userId: req.user_id, friendId: user.id })).unwrap();
-    } catch (rejectedValueOrSerializedError) {
-      console.error(rejectedValueOrSerializedError);
+      await updateFriendRequest({ status: 1, userId: req.user_id, friendId: user.id }).unwrap();
+    } catch (error) {
+      console.error(error);
     }
 
     try {
-      await dispatch(addFriend({ user: req.friend_id, friend: req.user_id })).unwrap();
-    } catch (rejectedValueOrSerializedError) {
-      console.error(rejectedValueOrSerializedError);
+      await addNewFriend({ user: req.friend_id, friend: req.user_id }).unwrap();
+    } catch (error) {
+      console.error(error);
     }
   }
 
   const handleRequestIgnored = async (req) => {
     try {
-      await dispatch(updateRequestStatus({ status: 2, userId: req.user_id, friendId: user.id })).unwrap();
-    } catch (rejectedValueOrSerializedError) {
-      console.error(rejectedValueOrSerializedError);
+      await updateFriendRequest({ status: 2, userId: req.user_id, friendId: user.id }).unwrap();
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -62,7 +62,7 @@ const Friends = () => {
         }
       />
       <div className="friends-container">
-        {user && requests.length > 0 ? (
+        {requestsSuccess ? (
           <>
             <h2 className="heading">Requests</h2>
             <div className="requests-container">
@@ -101,7 +101,7 @@ const Friends = () => {
           </>
         ) : null}
         <h2 className="heading">Friends</h2>
-        {user && friends.length > 0
+        {friendsSuccess
           ? friends.map(friend => {
               return (
                 <Link
@@ -121,21 +121,21 @@ const Friends = () => {
               );
             })
           : null}
-        {user && requests.length > 0
+        {requestsSuccess
           ? requests.map(req => {
-              if (req.user_id.id === user.id) {
+              if (req?.user_id.id === user.id) {
                 return (
-                  <div key={req.friend_id} className="user">
+                  <div key={req?.friend_id} className="user">
                     <div className="user-info">
-                      <Avatar url={req.friend_id.avatar_url} />
+                      <Avatar url={req?.friend_id.avatar_url} />
                       <div className="user-info-text">
-                        <div className="user-name">{req.friend_id.name}</div>
+                        <div className="user-name">{req?.friend_id.name}</div>
                         <div className="user-email">
-                          {req.friend_id.email}
+                          {req?.friend_id.email}
                         </div>
                       </div>
                     </div>
-                    {req.status === 0 ? (
+                    {req?.status === 0 ? (
                       <div className="pill">PENDING</div>
                     ) : null}
                   </div>
@@ -147,15 +147,15 @@ const Friends = () => {
 
         <div className="groups-container">
           <h2 className="heading">Groups</h2>
-          {groups.length > 0
-            ? groups.map(group => {
+          {groupsSuccess
+            ? groups?.map(group => {
                 return (
                   <Link
-                    to={`/group/${group.id}`}
-                    key={group.id}
+                    to={`/group/${group?.id}`}
+                    key={group?.id}
                     className="group"
                   >
-                    <span>{group.group_name}</span>
+                    <span>{group?.group_name}</span>
                     <div className="arrow arrow--right"></div>
                   </Link>
                 );

@@ -2,28 +2,42 @@ import './Transaction.scss';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Avatar from '../../Avatar/Avatar';
-import { selectAllFriends } from '../../../slices/friendSlice';
+import { useGetFriendQuery } from '../../../slices/friendSlice';
 import { useGetExpenseQuery } from '../../../slices/expenseSlice';
+import { useGetAccountQuery } from '../../../slices/accountSlice';
 
-const Transaction = ({ debt, paid, friend }) => {
+const Transaction = ({ debt, paid }) => {
+  const user = useSelector(state => state.auth.user);
   const {
     data: currentExpense,
     isSuccess
   } = useGetExpenseQuery(debt.expense_id);
-  const account = useSelector(state => state.account.data);
-  const friends = useSelector(selectAllFriends);
+  
+  const {
+    data: account
+  } = useGetAccountQuery(user?.id);
 
-  let debtType,
+  let friendId,
+    debtType,
     userCreditor,
     userDebtor = '';
-  if (debt?.creditor_id === account?.id) {
+  if (currentExpense?.payer_id === account?.id) {
     debtType = 'OWED';
-    userCreditor = account;
-    userDebtor = friend || friends.find(friend => friend.id === debt.debtor_id);
+    friendId = debt?.debtor_id;
   } else {
     debtType = 'OWE';
-    userCreditor =
-      friend || friends.find(friend => friend.id === debt.creditor_id);
+    friendId = debt?.creditor_id;
+  }
+
+  const {
+    data: currentFriend,
+  } = useGetFriendQuery(friendId);
+
+  if(debtType === 'OWED') {
+    userCreditor = account;
+    userDebtor = currentFriend;
+  } else {
+    userCreditor = currentFriend;
     userDebtor = account;
   }
 
@@ -31,8 +45,7 @@ const Transaction = ({ debt, paid, friend }) => {
     isSuccess && (
       <Link
         className="expense-link"
-        key={debt.expense_id}
-        to={`/expense/${debt.expense_id}`}
+        to={`/expense/${debt?.expense_id}`}
       >
         <div className={`transaction ${
             debtType === 'OWE' ? 'transaction--owe' : ''
@@ -51,7 +64,7 @@ const Transaction = ({ debt, paid, friend }) => {
                     debtType === 'OWE' ? 'expense-amount--owe' : ''
                   }`}
                 >
-                  ${debt.amount.toFixed(2)}
+                  ${debt?.amount.toFixed(2)}
                 </div>
               </div>
               <div className="arrow arrow--right"></div>

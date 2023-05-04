@@ -45,10 +45,10 @@ const AddFriend = ({ selectFriends = false, handleAddUser }) => {
 
   const sendFriendRequest = async userReceiveId => {
     try {
-      const { error } = await supabase.from('friend_request').insert({
-        user_send: user.id,
-        user_receive: userReceiveId,
-        status: 'SENT',
+      const { error } = await supabase.from('user_friend').insert({
+        user_id: user.id,
+        friend_id: userReceiveId,
+        status: 0,
       });
       if (error) throw error;
       setRequestSent({

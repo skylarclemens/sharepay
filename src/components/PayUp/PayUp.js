@@ -5,9 +5,14 @@ import { useSelector } from 'react-redux';
 import { supabase } from '../../supabaseClient';
 import { selectSharedExpensesByDebt, useGetExpensesQuery, useUpdateExpensesMutation } from '../../slices/expenseSlice';
 import { useUpdateDebtsMutation, useGetDebtsQuery } from '../../slices/debtSlice';
+import { useGetAccountQuery } from '../../slices/accountSlice';
 
 const PayUp = ({ setOpenPayUp, friend, sharedDebts, balances }) => {
-  const account = useSelector(state => state.account.data);
+  const user = useSelector(state => state.auth.user);
+  const {
+    data: account
+  } = useGetAccountQuery(user?.id);
+
   const [userDebtor, setUserDebtor] = useState(account);
   const [userCreditor, setUserCreditor] = useState(friend);
   const [payType, setPayType] = useState('OWE');

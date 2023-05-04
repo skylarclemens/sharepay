@@ -4,69 +4,68 @@ import { supabase } from '../../supabaseClient';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
-import { setAccountData } from '../../slices/accountSlice';
+import { useGetAccountQuery, useUpdateAccountMutation } from '../../slices/accountSlice';
 import { resetAuth } from '../../slices/authSlice';
+import { supabaseApi } from '../../api/supabaseApi';
 
 const Account = () => {
   const user = useSelector(state => state.auth.user);
-  const account = useSelector(state => state.account);
-  const [loading, setLoading] = useState(false);
+  const {
+    data: account,
+    isSuccess
+  } = useGetAccountQuery(user?.id);
+  const [updateAccount, { isLoading }] = useUpdateAccountMutation();
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [avatarUrl, setAvatarUrl] = useState(null);
 
   useEffect(() => {
-    setEmail(account.data.email);
-    setName(account.data.name);
-    setAvatarUrl(account.data.avatar_url);
-  }, [account]);
+    if(isSuccess) {
+      setEmail(account.email);
+      setName(account.name);
+      setAvatarUrl(account.avatar_url);
+    }
+  }, [account, isSuccess]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const updateAccount = async e => {
+  const handleAccountUpdate = async e => {
     e.preventDefault();
-    setLoading(true);
 
     const accountUpdates = {
-      id: account.data.id,
+      id: account.id,
       email,
       name,
       avatar_url: avatarUrl,
       updated_at: new Date(),
     };
+
     try {
-      const { data, error } = await supabase
-        .from('users')
-        .upsert(accountUpdates)
-        .select();
-      if (error) throw error;
-      dispatch(setAccountData(data[0]));
+      await updateAccount(accountUpdates).unwrap()
     } catch (error) {
       console.error(error);
     }
-
-    setLoading(false);
   };
 
   const handleLogOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      await supabase.auth.signOut();
+      supabaseApi.util.resetApiState();
       dispatch(resetAuth());
       localStorage.clear();
+      navigate('/');
     } catch (error) {
       console.error(error);
-    } finally {
-      navigate('/');
     }
   };
 
   return (
     <div className="account-container">
-      {user ? (
+      {isSuccess ? (
         <>
-          <form className="account-form" onSubmit={updateAccount}>
+          <form className="account-form" onSubmit={handleAccountUpdate}>
             <AvatarUpload
               url={avatarUrl}
               onUpload={url => {
@@ -105,7 +104,7 @@ const Account = () => {
               alt="Update account expense"
               title="Update account"
             >
-              {loading ? 'Saving...' : 'Update'}
+              {isLoading ? 'Saving...' : 'Update'}
             </button>
           </form>
           <button

@@ -7,8 +7,8 @@ import { createSelector } from '@reduxjs/toolkit';
 const Recent = () => {
   const selectPaidDebts = useMemo(() => {
     return createSelector(
-      res => res.data,
-      data => data.filter(debt => debt.paid === true) ?? []
+      res => res?.data,
+      data => data?.filter(debt => debt.paid === true) ?? []
     )
   }, []);
 
