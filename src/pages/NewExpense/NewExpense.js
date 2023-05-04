@@ -12,10 +12,14 @@ import UserButton from '../../components/User/UserButton/UserButton';
 import Modal from '../../components/Modal/Modal';
 import SelectFriends from '../../components/SelectFriends/SelectFriends';
 import { useNavigate } from 'react-router-dom';
+import { useGetAccountQuery } from '../../slices/accountSlice';
 
 const NewExpense = () => {
   const user = useSelector(state => state.auth.user);
-  const account = useSelector(state => state.account.data);
+  const {
+    data: account
+  } = useGetAccountQuery(user?.id);
+  
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [splitWith, setSplitWith] = useState([{ ...account }]);

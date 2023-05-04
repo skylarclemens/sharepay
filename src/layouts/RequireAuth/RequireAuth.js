@@ -1,15 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Outlet } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { supabase } from '../../supabaseClient';
 import { setCredentials } from '../../slices/authSlice';
-import { fetchAccount } from '../../slices/accountSlice';
 import Welcome from '../../pages/Welcome/Welcome';
 
 const RequireAuth = () => {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
-  const accountStatus = useSelector(state => state.account.status);
   const dispatch = useDispatch();
 
   const initializeSession = useCallback(async () => {
@@ -43,7 +41,6 @@ const RequireAuth = () => {
         user: session?.user ?? null,
         isLoading: false
       }));
-      accountStatus === 'idle' && dispatch(fetchAccount(session?.user.id));
     });
     return () => 
       subscription.unsubscribe();

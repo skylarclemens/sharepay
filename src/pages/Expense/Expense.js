@@ -8,6 +8,7 @@ import deleteImg from '../../images/Delete.svg';
 import { useGetFriendQuery } from '../../slices/friendSlice';
 import { useGetExpenseQuery, useRemoveExpenseMutation } from '../../slices/expenseSlice';
 import { useGetDebtsQuery, selectDebtsByExpenseId } from '../../slices/debtSlice';
+import { useGetAccountQuery } from '../../slices/accountSlice';
 
 const UserDebtor = ({ debt, account }) => {
   const {
@@ -52,7 +53,10 @@ const Expense = () => {
   });
   const [removeExpense] = useRemoveExpenseMutation();
   
-  const account = useSelector(state => state.account.data);
+  const {
+    data: account
+  } = useGetAccountQuery(auth?.user?.id);
+  
   const {
     data: friend
   } = useGetFriendQuery(expense?.payer_id);

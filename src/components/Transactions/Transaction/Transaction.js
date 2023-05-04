@@ -4,14 +4,18 @@ import { Link } from 'react-router-dom';
 import Avatar from '../../Avatar/Avatar';
 import { useGetFriendQuery } from '../../../slices/friendSlice';
 import { useGetExpenseQuery } from '../../../slices/expenseSlice';
+import { useGetAccountQuery } from '../../../slices/accountSlice';
 
 const Transaction = ({ debt, paid }) => {
+  const user = useSelector(state => state.auth.user);
   const {
     data: currentExpense,
     isSuccess
   } = useGetExpenseQuery(debt.expense_id);
   
-  const account = useSelector(state => state.account.data);
+  const {
+    data: account
+  } = useGetAccountQuery(user?.id);
 
   let friendId,
     debtType,

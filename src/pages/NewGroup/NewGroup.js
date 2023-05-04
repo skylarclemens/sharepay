@@ -8,9 +8,14 @@ import Modal from '../../components/Modal/Modal';
 import SelectFriends from '../../components/SelectFriends/SelectFriends';
 import UserButton from '../../components/User/UserButton/UserButton';
 import { supabase } from '../../supabaseClient';
+import { useGetAccountQuery } from '../../slices/accountSlice';
 
 const NewGroup = () => {
-  const account = useSelector(state => state.account.data);
+  const user = useSelector(state => state.auth.user);
+  const {
+    data: account
+  } = useGetAccountQuery(user?.id);
+  
   const [groupName, setGroupName] = useState('');
   const [groupMembers, setGroupMembers] = useState([{ ...account }]);
   const [openSelectFriends, setOpenSelectFriends] = useState(false);
