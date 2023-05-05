@@ -1,19 +1,17 @@
 import './Transactions.scss';
-import Transaction from './Transaction/Transaction';
+import ExpenseTransaction from './ExpenseTransaction/ExpenseTransaction';
 
-const Transactions = ({ debts, paid }) => {
+const Transactions = ({ transactions, showPaid = false }) => {
   return (
     <div className="transactions">
-      {debts?.map(debt => {
-        const hideDebt = !paid && debt?.paid;
+      {transactions?.map(transaction => {
+        const hideDebt = !showPaid && transaction?.paid;
+        if (hideDebt) return null;
         return (
-          !hideDebt && (
-            <Transaction
-              key={debt?.id}
-              debt={debt}
-              paid={paid}
-            />
-          )
+          <ExpenseTransaction
+            key={transaction?.id}
+            transaction={transaction}
+          />
         );
       })}
     </div>

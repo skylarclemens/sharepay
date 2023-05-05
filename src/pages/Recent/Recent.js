@@ -1,28 +1,58 @@
 import './Recent.scss';
-import Transactions from '../../components/Transactions/Transactions';
-import { useGetDebtsQuery } from '../../slices/debtSlice';
-import { useMemo } from 'react';
-import { createSelector } from '@reduxjs/toolkit';
+import { useGetPaidUpsQuery } from '../../slices/paidApi';
+import Transaction from '../../components/Transaction/Transaction';
 
 const Recent = () => {
-  const selectPaidDebts = useMemo(() => {
-    return createSelector(
-      res => res?.data,
-      data => data?.filter(debt => debt.paid === true) ?? []
-    )
-  }, []);
+  /**/
 
-  const { paidDebts, isSuccess } = useGetDebtsQuery(undefined, {
-    selectFromResult: result => ({
-      ...result,
-      paidDebts: selectPaidDebts(result)
-    })
-  })
+  const {
+    data: paidUps,
+    isSuccess: paidUpsFetched
+  } = useGetPaidUpsQuery();
+
+  const paidText = (debtor, creditor, date) => (
+    <div className="paid-info">
+      <div className="paid-text">
+        <span>{debtor.name}</span>
+        paid
+        <span>{creditor.name}</span>
+      </div>
+      <div className="paid-date">
+        {new Date(date).toLocaleDateString('en-US', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+        })}
+      </div>
+    </div>
+  )
+
+  const transactionRight = (
+    <div className="debt-paid">
+      PAID UP
+    </div>
+  )
+  
 
   return (
     <div className="recent">
       <h2 className="heading">Recent</h2>
-      {isSuccess && <Transactions debts={paidDebts} paid={true} />}
+      {paidUpsFetched && paidUps.map((paidUp) => {
+        return (
+          <div className="paid-up" key={paidUp.id}>
+            <Transaction
+              avatarUrls={[
+                paidUp.creditor_id?.avatar_url,
+                paidUp.debtor_id?.avatar_url
+              ]}
+              text={paidText(paidUp.debtor_id, paidUp.creditor_id, paidUp.created_at)}
+              transactionRight={transactionRight}
+              showArrow={false}
+            />
+            
+          </div>
+        )
+      })}
     </div>
   );
 };

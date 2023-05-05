@@ -1,0 +1,24 @@
+@use '../../utilities/colors' as v;
+
+.paid-up {
+  margin: 0.875rem 20px;
+  .paid-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .paid-date {
+    color: v.$dark-gray;
+    text-transform: uppercase;
+    font-size: 0.825rem;
+    letter-spacing: 0.03em;
+    font-weight: 500;
+  }
+  .paid-text {
+    display: flex;
+    gap: 0.25rem;
+    span {
+      font-weight: 600;
+    }
+  }
+}

@@ -2,10 +2,9 @@ import './Dashboard.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { balanceCalc } from '../../helpers/balance';
 import { useEffect } from 'react';
-import { setBalances } from '../../slices/expenseSlice';
+import { setBalances, useGetExpensesQuery } from '../../slices/expenseSlice';
 import Transactions from '../../components/Transactions/Transactions';
 import { formatMoney } from '../../helpers/money';
-
 import { useGetDebtsQuery } from '../../slices/debtSlice';
 
 const Dashboard = () => {
@@ -13,6 +12,10 @@ const Dashboard = () => {
     data: debts,
     isSuccess
   } = useGetDebtsQuery();
+  const {
+    data: expenses,
+    isSuccess: expensesFetched
+  } = useGetExpensesQuery();
   const user = useSelector(state => state.auth.user);
   const balances = useSelector(state => state.expenses.balances);
 
@@ -56,7 +59,7 @@ const Dashboard = () => {
           </div>
           <div className="transactions-container">
             <h2 className="main-heading">Recent Transactions</h2>
-            <Transactions debts={debts} paid={false} />
+            {expensesFetched && <Transactions transactions={expenses} />}
           </div>
         </div>
       ) : null}
