@@ -39,9 +39,11 @@ const Expense = () => {
 
   const {
     data: expense,
-    isSuccess
+    isSuccess: expenseFetchSuccess
   } = useGetExpenseQuery(id);
-  const { debts } = useGetDebtsQuery(undefined, {
+
+  const { debts,
+    isSuccess: debtsFetchSuccess } = useGetDebtsQuery(undefined, {
     selectFromResult: result => ({
       ...result,
       debts: selectDebtsByExpenseId(result, expense?.id)
@@ -50,8 +52,12 @@ const Expense = () => {
   const [removeExpense] = useRemoveExpenseMutation();
   
   const {
-    data: userCreditor
-  } = useGetAccountQuery(expense?.payer_id);
+    data: userCreditor,
+    isSuccess: creditorFetchSuccess
+  } = useGetAccountQuery(expense?.payer_id,
+    {
+      skip: !expenseFetchSuccess
+    });
 
   const handleDelete = async () => {
     try {
@@ -72,7 +78,7 @@ const Expense = () => {
               headerRight={headerImg}
               headerRightFn={handleDelete}
             />
-      {(auth.session && isSuccess) && (
+      {(auth.session && expenseFetchSuccess && creditorFetchSuccess) && (
         <div className="expense-container">
           <div className="expense-page-container">
             <div className="page-info-container">
@@ -105,7 +111,7 @@ const Expense = () => {
                   ${expense?.amount.toFixed(2)}
                 </span>
               </div>
-              {debts.map(debt => (
+              {debtsFetchSuccess && debts.map(debt => (
                 <UserDebtor key={debt?.id} debt={debt} />
               ))}
             </div>

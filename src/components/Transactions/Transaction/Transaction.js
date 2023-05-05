@@ -2,69 +2,72 @@ import './Transaction.scss';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Avatar from '../../Avatar/Avatar';
-import { useGetFriendQuery } from '../../../slices/friendSlice';
-import { useGetExpenseQuery } from '../../../slices/expenseSlice';
-import { useGetAccountQuery } from '../../../slices/accountSlice';
+import { useGetAccountQuery, useGetAccountsQuery } from '../../../slices/accountSlice';
+import { useGetDebtsQuery } from '../../../slices/debtSlice';
+import { useMemo } from 'react';
+import { createSelector } from '@reduxjs/toolkit';
 
-const Transaction = ({ debt, paid }) => {
+const Transaction = ({ transaction }) => {
   const user = useSelector(state => state.auth.user);
-  const {
-    data: currentExpense,
-    isSuccess
-  } = useGetExpenseQuery(debt.expense_id);
-  
-  const {
-    data: account
-  } = useGetAccountQuery(user?.id);
 
-  let friendId,
-    debtType,
-    userCreditor,
-    userDebtor = '';
-  if (currentExpense?.payer_id === account?.id) {
-    debtType = 'OWED';
-    friendId = debt?.debtor_id;
-  } else {
-    debtType = 'OWE';
-    friendId = debt?.creditor_id;
-  }
+  const selectDebtorsByExpenseId = useMemo(() => {
+    return createSelector(
+      res => res.data,
+      (res, transactionId) => transactionId,
+      (data, transactionId) => data?.reduce((filtered, debt) => {
+        if (debt.expense_id === transactionId) {
+          filtered.push(debt.debtor_id);
+        }
+        return filtered;
+      }, []) ?? []
+    )
+  }, []);
+
+  const { debtors,
+    isSuccess: debtorsFetched } = useGetDebtsQuery(undefined, {
+    selectFromResult: result => ({
+      ...result,
+      debtors: selectDebtorsByExpenseId(result, transaction?.id)
+    })
+  });
 
   const {
-    data: currentFriend,
-  } = useGetFriendQuery(friendId);
+    data: userCreditor
+  } = useGetAccountQuery(transaction?.payer_id);
 
-  if(debtType === 'OWED') {
-    userCreditor = account;
-    userDebtor = currentFriend;
-  } else {
-    userCreditor = currentFriend;
-    userDebtor = account;
-  }
+  const {
+    data: userDebtors,
+    isSuccess: accountsFetched
+  } = useGetAccountsQuery(debtors, {
+    skip: !debtorsFetched
+  });
+
+  const transactionType = (transaction?.payer_id === user?.id) ? 'OWED' : 'OWE';
 
   return (
-    isSuccess && (
+    accountsFetched && (
       <Link
         className="expense-link"
-        to={`/expense/${debt?.expense_id}`}
+        to={`/expense/${transaction?.id}`}
       >
         <div className={`transaction ${
-            debtType === 'OWE' ? 'transaction--owe' : ''
+            transactionType === 'OWE' ? 'transaction--owe' : ''
           }`}>
           <div className="expense-avatars">
             <Avatar url={userCreditor?.avatar_url} classes="white-border" size={40} />
-            <Avatar url={userDebtor?.avatar_url} classes="white-border" size={40} />
+            {userDebtors.map((userDebtor) => <Avatar key={userDebtor?.id} url={userDebtor?.avatar_url} classes="white-border" size={40} />)}
           </div>
-          <div className="desc">{currentExpense?.description}</div>
-          {paid && <div className="debt-paid">PAID UP</div>}
-          {!paid && (
+          <div className="desc">{transaction?.description}</div>
+          {transaction?.paid && <div className="debt-paid">PAID UP</div>}
+          {!transaction?.paid && (
             <>
               <div className="transaction-amount">
                 <div
                   className={`expense-amount ${
-                    debtType === 'OWE' ? 'expense-amount--owe' : ''
+                    transactionType === 'OWE' ? 'expense-amount--owe' : ''
                   }`}
                 >
-                  ${debt?.amount.toFixed(2)}
+                  ${transaction?.amount.toFixed(2)}
                 </div>
               </div>
               <div className="arrow arrow--right"></div>
