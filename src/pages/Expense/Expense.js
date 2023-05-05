@@ -5,19 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
 import deleteImg from '../../images/Delete.svg';
-import { useGetFriendQuery } from '../../slices/friendSlice';
 import { useGetExpenseQuery, useRemoveExpenseMutation } from '../../slices/expenseSlice';
 import { useGetDebtsQuery, selectDebtsByExpenseId } from '../../slices/debtSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 
-const UserDebtor = ({ debt, account }) => {
+const UserDebtor = ({ debt }) => {
   const {
-    data: friend
-  } = useGetFriendQuery(debt?.debtor_id);
-  let debtor = friend;
-  if (debt?.debtor_id === account?.id) {
-    debtor = account;
-  }
+    data: debtor
+  } = useGetAccountQuery(debt?.debtor_id);
+  
   return (
     <div className="debtor-transaction">
       <div className="user-details">
@@ -54,21 +50,13 @@ const Expense = () => {
   const [removeExpense] = useRemoveExpenseMutation();
   
   const {
-    data: account
-  } = useGetAccountQuery(auth?.user?.id);
-  
-  const {
-    data: friend
-  } = useGetFriendQuery(expense?.payer_id);
-  let userCreditor = friend;
-  if (expense?.payer_id === account?.id) {
-    userCreditor = account;
-  }
+    data: userCreditor
+  } = useGetAccountQuery(expense?.payer_id);
 
   const handleDelete = async () => {
     try {
       await removeExpense(id).unwrap();
-      navigate(-1);
+      navigate('/');
     } catch (error) {
       console.error(error);
     }
@@ -118,7 +106,7 @@ const Expense = () => {
                 </span>
               </div>
               {debts.map(debt => (
-                <UserDebtor key={debt?.id} debt={debt} account={account} />
+                <UserDebtor key={debt?.id} debt={debt} />
               ))}
             </div>
           </div>
