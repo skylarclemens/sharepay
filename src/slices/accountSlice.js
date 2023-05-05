@@ -11,7 +11,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         const [returnData] = data;
         return { data: returnData, error };
       },
-      providesTags: ['Account']
+      providesTags: (result, error, arg) => [{ type: 'Account', id: arg }]
     }),
     updateAccount: builder.mutation({
       queryFn: async (accountUpdates) => {
@@ -21,7 +21,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
           .select();
         return { data, error }
       },
-      invalidatesTags: ['Account']
+      invalidatesTags: (result, error, arg) => [{ type: 'Account', id: arg.id}]
     })
   })
 })

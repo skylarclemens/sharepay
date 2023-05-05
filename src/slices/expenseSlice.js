@@ -55,18 +55,17 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
           .select();
         return { data, error };
       },
-      invalidatesTags: ['Expense']
+      invalidatesTags: [{ type: 'Expense', id: 'LIST' }]
     }),
     removeExpense: builder.mutation({
       queryFn: async (expenseId) => {
-        const { data, error } = await supabase
+        const { error } = await supabase
           .from('expense')
           .delete()
           .eq('id', expenseId)
-          .select();
-        return { data, error };
+        return { error };
       },
-      invalidateTags: (result, error, arg) => [{ type: 'Expense', id: arg }, { type: 'Debt', id: 'LIST' }]
+      invalidatesTags: (result, error, arg) => [{ type: 'Expense', id: arg }, { type: 'Debt', id: 'LIST' }]
     }),
   })
 })
