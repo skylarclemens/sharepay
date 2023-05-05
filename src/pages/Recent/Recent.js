@@ -1,6 +1,6 @@
 import './Recent.scss';
 import { useGetPaidUpsQuery } from '../../slices/paidApi';
-import Avatar from '../../components/Avatar/Avatar';
+import Transaction from '../../components/Transaction/Transaction';
 
 const Recent = () => {
   /**/
@@ -10,12 +10,29 @@ const Recent = () => {
     isSuccess: paidUpsFetched
   } = useGetPaidUpsQuery();
 
-  /*const { paidDebts, isSuccess } = useGetDebtsQuery(undefined, {
-    selectFromResult: result => ({
-      ...result,
-      paidDebts: selectPaidDebts(result)
-    })
-  })*/
+  const paidText = (debtor, creditor, date) => (
+    <div className="paid-info">
+      <div className="paid-text">
+        <span>{debtor.name}</span>
+        paid
+        <span>{creditor.name}</span>
+      </div>
+      <div className="paid-date">
+        {new Date(date).toLocaleDateString('en-US', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+        })}
+      </div>
+    </div>
+  )
+
+  const transactionRight = (
+    <div className="debt-paid">
+      PAID UP
+    </div>
+  )
+  
 
   return (
     <div className="recent">
@@ -23,9 +40,16 @@ const Recent = () => {
       {paidUpsFetched && paidUps.map((paidUp) => {
         return (
           <div className="paid-up" key={paidUp.id}>
-            <Avatar url={paidUp.creditor_id?.avatar_url} classes="white-border" size={40} />
-            <Avatar url={paidUp.debtor_id?.avatar_url} classes="white-border" size={40} />
-            {paidUp.debtor_id.name} paid {paidUp.creditor_id.name}
+            <Transaction
+              avatarUrls={[
+                paidUp.creditor_id?.avatar_url,
+                paidUp.debtor_id?.avatar_url
+              ]}
+              text={paidText(paidUp.debtor_id, paidUp.creditor_id, paidUp.created_at)}
+              transactionRight={transactionRight}
+              showArrow={false}
+            />
+            
           </div>
         )
       })}

@@ -1,4 +1,4 @@
-import './Transaction.scss';
+import './ExpenseTransaction.scss';
 import { useSelector } from 'react-redux';
 import { useGetAccountQuery, useGetAccountsQuery } from '../../../slices/accountSlice';
 import { useGetDebtsQuery } from '../../../slices/debtSlice';

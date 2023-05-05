@@ -2,7 +2,7 @@ import './Transaction.scss';
 import Avatar from '../Avatar/Avatar';
 import { Link } from 'react-router-dom';
 
-const Transaction = ({ avatarUrls = [], text = '', transactionRight = null, showArrow = true, color, link = '/' }) => {
+const Transaction = ({ avatarUrls = [], text = '', transactionRight = null, showArrow = true, color, link = null }) => {
   return (
       <Link
         className="transaction-link"
@@ -12,8 +12,12 @@ const Transaction = ({ avatarUrls = [], text = '', transactionRight = null, show
             color === 'red' ? 'transaction--red' : null
           }`}>
           <div className="transaction-avatars">
-            {avatarUrls.map((url) =>
-              <Avatar key={url} url={url} classes="white-border" size={40} />)}
+            {avatarUrls.map((url) => {
+              const key = `${url}-${Math.random()}`;
+              return (
+                <Avatar key={key} url={url} classes="white-border" size={40} />
+              )
+            })}
           </div>
           <div className="desc">{text}</div>
           {transactionRight}
