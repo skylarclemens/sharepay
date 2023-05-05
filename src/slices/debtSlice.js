@@ -67,3 +67,8 @@ export const selectDebtsByExpenseId = createSelector(
   (res, expenseId) => expenseId,
   (data, expenseId) => data?.filter(debt => debt.expense_id === expenseId) ?? []
 );
+
+export const selectPaidDebts = createSelector(
+  res => res?.data,
+  data => data?.filter(debt => debt.paid === true) ?? []
+);

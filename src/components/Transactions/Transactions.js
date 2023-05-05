@@ -1,5 +1,5 @@
 import './Transactions.scss';
-import Transaction from './Transaction/Transaction';
+import ExpenseTransaction from './ExpenseTransaction/ExpenseTransaction';
 
 const Transactions = ({ transactions, showPaid = false }) => {
   return (
@@ -8,7 +8,7 @@ const Transactions = ({ transactions, showPaid = false }) => {
         const hideDebt = !showPaid && transaction?.paid;
         if (hideDebt) return null;
         return (
-          <Transaction
+          <ExpenseTransaction
             key={transaction?.id}
             transaction={transaction}
           />
