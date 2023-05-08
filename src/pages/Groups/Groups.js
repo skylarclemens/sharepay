@@ -38,10 +38,10 @@ const Groups = () => {
             })
           : null}
         {groups?.length === 0 && (
-          <div className="create-groups">
+          <div className="no-people">
             <span>Create a group by tapping the</span>
-            <div className="create-groups-img">
-              <img className="create-group-icon" src={addGroupImg} alt="Add Group Icon" />
+            <div className="add-people-img">
+              <img className="add-people-icon" src={addGroupImg} alt="Add Group Icon" />
             </div>
             <span>icon above.</span>
           </div>

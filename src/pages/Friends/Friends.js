@@ -95,7 +95,7 @@ const Friends = () => {
             </div>
           </>
         ) : null}
-        {friendsSuccess
+        {friendsSuccess && friends?.length > 0
           ? friends.map(friend => {
               return (
                 <Link
@@ -115,6 +115,19 @@ const Friends = () => {
               );
             })
           : null}
+        {friendsSuccess && friends?.length === 0 ? (
+          <div className="no-people">
+            <span>Add friends to start sharing expenses.</span>
+            <div className="icon-details">
+              <span>Tap the</span>
+              <div className="add-people-img">
+                <img className="add-people-icon" src={addFriendImg} alt="Add Friend Icon" />
+              </div>
+              <span>icon above to get started.</span>
+            </div>
+          </div>
+          ) : null
+          }
         {requestsSuccess
           ? requests.map(req => {
               if (req?.user_id.id === user.id) {
