@@ -14,6 +14,16 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         ...result.map(({ id }) => ({ type: 'Debt', id: id }))
       ]
     }),
+    getDebt: builder.query({
+      queryFn: async debtId => {
+        const { data, error } = await supabase
+          .from('debt')
+          .select()
+          .eq('id', debtId);
+          return { data, error }
+      },
+      providesTags: (result, error, arg) => [{ type: 'Debt', id: arg }]
+    }),
     addNewDebt: builder.mutation({
       queryFn: async (newDebt) => {
         const { data, error } = await supabase
@@ -50,6 +60,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
 
 export const {
   useGetDebtsQuery,
+  useGetDebtQuery,
   useAddNewDebtMutation,
   useUpdateDebtMutation,
   useUpdateDebtsMutation
