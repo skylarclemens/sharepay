@@ -28,10 +28,7 @@ const RoutesContainer = () => {
           <Route element={<MainLayout />}>
             <Route path="account" element={<Account />} />
             <Route path="recent" element={<Recent />} />
-            <Route path="people" element={<People />}>
-              <Route path="friends" element={<Friends />} />
-              <Route path="groups" element={<Groups />} />
-            </Route>
+            <Route path="people" element={<People />} />
           </Route>
           <Route element={<DetailsLayout />}>
             <Route path="expense/:id" element={<Expense />} />

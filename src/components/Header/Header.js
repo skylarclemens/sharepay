@@ -1,5 +1,4 @@
 import './Header.scss';
-import logo from '../../images/logo.png';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -11,13 +10,9 @@ const Header = ({ type = 'main', title, headerLeft, headerLeftFn, headerRight, h
     return (
       <div className="header-container">
         <div className="main-header header">
-          <Link to="/">
-            <img
-              src={logo}
-              className="header-logo"
-              alt="Dollar sign Sharepay logo"
-            />
-          </Link>
+          {headerLeft ? headerLeft : (
+            <div className="placeholder"></div>
+          )}
           <div className="header-right">
             {user ? null : (
               <Link

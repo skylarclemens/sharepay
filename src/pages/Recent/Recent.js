@@ -1,6 +1,7 @@
 import './Recent.scss';
 import { useGetPaidUpsQuery } from '../../slices/paidApi';
 import Transaction from '../../components/Transaction/Transaction';
+import Header from '../../components/Header/Header';
 
 const Recent = () => {
   const {
@@ -33,8 +34,11 @@ const Recent = () => {
   
 
   return (
+    <>
+    <Header type="main" headerLeft={
+      <h1 className="title header-page-title">Recent</h1>
+    }/>
     <div className="recent">
-      <h2 className="heading">Recent</h2>
       {paidUpsFetched && paidUps.map((paidUp) => {
         return (
           <div className="paid-up" key={paidUp.id}>
@@ -52,6 +56,7 @@ const Recent = () => {
         )
       })}
     </div>
+    </>
   );
 };
 
