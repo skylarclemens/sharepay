@@ -22,7 +22,9 @@ const FriendDetails = () => {
     data: friend
   } = useGetFriendQuery(id);
 
-  const { sharedDebts } = useGetDebtsQuery(undefined, {
+  const { sharedDebts,
+    isLoading: debtsLoading,
+    isSuccess: debtsFetched } = useGetDebtsQuery(undefined, {
     selectFromResult: (result) => ({
       ...result,
       sharedDebts: selectSharedDebtsByFriendId(result, id)
@@ -36,13 +38,6 @@ const FriendDetails = () => {
   const handleOpenPayUp = () => {
     setOpenPayUp(true);
   };
-
-  let displayExpenses = null;
-  if (balances.total !== 0) {
-    displayExpenses = <Transactions debts={sharedDebts} friend={friend} />;
-  } else {
-    displayExpenses = <div className="medium-gray">No transactions available</div>;
-  }
 
   return (
     <>
@@ -81,7 +76,12 @@ const FriendDetails = () => {
             )}
             <div className="shared-expenses">
               <h2 className="heading">Shared expenses</h2>
-              {displayExpenses}
+              {debtsLoading &&
+                <div className="medium-gray">Loading...</div>}
+              {debtsFetched && balances.total !== 0 &&
+                <Transactions transactions={sharedDebts} type="debt" />}
+              {balances.total === 0 &&
+                <div className="medium-gray">No transactions available</div>}
             </div>
           </div>
         )}
