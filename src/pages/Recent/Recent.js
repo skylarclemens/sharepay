@@ -3,8 +3,6 @@ import { useGetPaidUpsQuery } from '../../slices/paidApi';
 import Transaction from '../../components/Transaction/Transaction';
 
 const Recent = () => {
-  /**/
-
   const {
     data: paidUps,
     isSuccess: paidUpsFetched

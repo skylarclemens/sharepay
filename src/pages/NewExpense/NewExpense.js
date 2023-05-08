@@ -13,12 +13,12 @@ import Modal from '../../components/Modal/Modal';
 import SelectFriends from '../../components/SelectFriends/SelectFriends';
 import { useNavigate } from 'react-router-dom';
 import { useGetAccountQuery } from '../../slices/accountSlice';
+import SplitWith from './SplitWith/SplitWith';
 
 const NewExpense = () => {
   const user = useSelector(state => state.auth.user);
   const {
     data: account,
-    isLoading: accountLoading,
     isSuccess: accountFetched
   } = useGetAccountQuery(user?.id);
   
@@ -129,31 +129,6 @@ const NewExpense = () => {
     setSplitWith([account]);
   }
 
-  const splitWithRender = () => {
-    if (accountLoading) {
-      return (
-        <span>Loading...</span>
-      )
-    } else if (accountFetched) {
-      return (
-        <>
-          {splitWith.map(member => {
-            return (
-              <UserButton
-                key={member?.id}
-                user={member}
-                name={member?.name}
-                variant="white"
-              />
-            );
-          })}
-        </>
-      )
-    } else {
-      <span>Error</span>
-    }
-  }
-
   return (
     <>
       <Header type="title" title="Add expense" />
@@ -184,45 +159,23 @@ const NewExpense = () => {
               }
               onChange={e => setDescription(e.target.value)}
             />
-            <div className="split-with-container">
-              <span className="input-label">Split between</span>
-              <div className="split-with">
-                {(!splitWithGroup) && 
-                  splitWithRender()
-                }
-                {!splitWithGroup && <button
-                  type="button"
-                  className="button--form-add button--icon"
-                  onClick={() => setOpenSelectFriends(true)}
-                  >
-                    <div className="add-plus"></div>
-                  </button>
-                }
-                {splitWithGroup && 
-                  <div className="group-selected">
-                    <div className="group-name">{splitWithGroup.group_name}</div>
-                    <button type="button" className="remove-group button--icon" onClick={removeGroupSplit}>x</button>
-                  </div>
-                }
-              </div>
+            <>
+              {accountFetched && <SplitWith account={account}
+                splitWith={splitWith}
+                setSplitWith={setSplitWith}
+                splitWithGroup={splitWithGroup}
+                setOpenSelectFriends={setOpenSelectFriends}
+                removeGroupSplit={removeGroupSplit} />}
               {fieldErrors.splitWith && (
                 <span className="field-error-text">{fieldErrors.splitWith}</span>
               )}
-            </div>
-            {splitWith.length > 0 && (
+            </>
+            {splitWith.length > 1 && (
               <>
                 <fieldset>
                   <div className="expense-input">
                     <legend className="input-label">Paid By</legend>
                     <div className="expense-radio paid-by">
-                      {!splitWithGroup && <UserButton
-                        user={account}
-                        name={account?.name}
-                        selected={paidBy === account?.id}
-                        onClick={() => {
-                          setPaidBy(account?.id);
-                          setFieldErrors({ ...fieldErrors, paidBy: null });
-                        }} />}
                       {splitWith.map(member => {
                         return (
                           <UserButton

@@ -7,6 +7,9 @@
     border-top: none;
   }
   .shared-expenses {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
     background: #ffffff;
     padding: 1rem 20px;
   }
