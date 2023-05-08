@@ -16,8 +16,6 @@ import FormLayout from './layouts/FormLayout/FormLayout';
 import EmptyLayout from './layouts/EmptyLayout/EmptyLayout';
 import RequireAuth from './layouts/RequireAuth/RequireAuth';
 import People from './pages/People/People';
-import Friends from './pages/Friends/Friends';
-import Groups from './pages/Groups/Groups';
 
 const RoutesContainer = () => {
   return (
