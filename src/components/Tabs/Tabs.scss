@@ -1,0 +1,37 @@
+@use '../../utilities/colors' as v;
+
+.tabs {
+  width: 100%;
+  display: flex;
+  .tab {
+    width: 100%;
+    background: v.$layout-green;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    min-height: 50px;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.134) 145.1%
+      ),
+      v.$layout-green;
+    &.left-tab {
+      border-radius: 0px 0px 0px 6px;
+      box-shadow: inset -2px -2px 0px rgba(0, 0, 0, 0.15);
+    }
+    &.right-tab {
+      border-radius: 0px 0px 6px 0px;
+      box-shadow: inset 2px -2px 0px rgba(0, 0, 0, 0.15);
+    }
+    &.selected {
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+        #729b79;
+      box-shadow: inset 0px 2px 0px rgba(0, 0, 0, 0.1);
+    }
+  }
+}

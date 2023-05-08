@@ -1,10 +1,14 @@
-const Tabs = ({ leftTab, leftTabFn, rightTab, rightTabFn, selected }) => {
+import './Tabs.scss';
+
+const Tabs = ({ leftTab, rightTab, selected, setSelected }) => {
+
   return (
     <div className="tabs">
-      <button className={`left-tab`} onClick={leftTabFn}>
+      <button type="button" className={`tab button button--icon left-tab ${selected === 'left' && 'selected'}`} onClick={() => setSelected('left')}>
         {leftTab}
       </button>
-      <button className={`right-tab`} onClick={rightTabFn}>
+      <button type="button" className={`tab button button--icon right-tab
+      ${selected === 'right' && 'selected'}`} onClick={() => setSelected('right')}>
         {rightTab}
       </button>
     </div>
