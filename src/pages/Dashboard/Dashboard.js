@@ -24,7 +24,8 @@ const Dashboard = () => {
     data: groups,
     isSuccess: groupsFetched
   } = useGetGroupsQuery(user?.id);
-  const friendExpenses = useSelector(state => selectAllFriendExpenses(state))
+  const friendExpenses = useSelector(state => selectAllFriendExpenses(state));
+  const unpaidFriendExpenses = friendExpenses.filter(expense => !expense?.paid);
 
   const dispatch = useDispatch();
 
@@ -66,8 +67,8 @@ const Dashboard = () => {
           </div>
           <div className="transactions-container">
             <h2 className="main-heading">Recent Transactions</h2>
-            {expensesFetched && <Transactions transactions={friendExpenses} />}
-            {groupsFetched &&
+            {(expensesFetched && unpaidFriendExpenses.length > 0) && <Transactions transactions={unpaidFriendExpenses} />}
+            {(groupsFetched && groups.length > 0) &&
               groups.map(group => {
                 return <GroupExpenses key={group.id} group={group} />
               })}
