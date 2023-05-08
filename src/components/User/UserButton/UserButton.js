@@ -20,11 +20,11 @@ const UserButton = ({
       onClick={onClick}
     >
       <Avatar
-        url={user.avatar_url}
+        url={user?.avatar_url}
         size={avatarSize || 45}
         classes="white-border"
       />
-      {name || user.name}
+      {name || user?.name}
     </div>
   );
 };
