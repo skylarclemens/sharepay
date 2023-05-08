@@ -1,0 +1,38 @@
+@use '../../../utilities/colors' as v;
+
+.group-expenses {
+  margin: 0 20px 0.875rem 20px;
+  font-size: 0.875rem;
+  .group-name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: v.$light-gray;
+    min-height: 36px;
+    font-size: 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    padding: 0.875rem 0.625rem 0.875rem 1rem;
+    border-width: 0px 0px 1px 3px;
+    border-style: solid;
+    border-color: v.$accent-gray;
+    font-family: 'Rubik', sans-serif;
+  }
+  .group-expenses__link {
+    text-decoration: inherit;
+    color: inherit;
+  }
+
+  .group-expense {
+    border-radius: 0;
+    min-height: 56px;
+    border-bottom: 1px solid v.$accent-gray;
+    .arrow--right {
+      display: none;
+    }
+  }
+
+  .expenses-list .transaction-link:last-child .group-expense {
+    border-radius: 0 0 0.5rem 0.5rem;
+    border-bottom: none;
+  }
+}

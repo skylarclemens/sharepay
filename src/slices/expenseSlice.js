@@ -78,11 +78,33 @@ export const { useGetExpensesQuery,
   useRemoveExpenseMutation
 } = extendedSupabaseApi;
 
+export const selectExpensesResult = extendedSupabaseApi.endpoints.getExpenses.select();
+const emptyExpenses = [];
+
+export const selectAllExpenses = createSelector(
+  selectExpensesResult,
+  expensesResult => expensesResult?.data ?? emptyExpenses
+)
+
 export const selectSharedExpensesByDebt = createSelector(
   res => res.data, (data, sharedDebts) => sharedDebts,
   (data, sharedDebts) => data?.filter(expense =>
     sharedDebts.find(shared => shared.expense_id === expense.id)
   ) ?? []
+)
+
+export const selectUnpaidExpenses = createSelector(
+  res => res.data,
+  (data) => data?.filter(expense => !expense.paid) ?? []
+)
+
+export const selectUserExpensesByGroup = createSelector(
+  selectAllExpenses, (state, groupId) => groupId,
+  (expenses, groupId) => expenses.filter(expense => expense.group_id === groupId) ?? []
+)
+export const selectAllFriendExpenses = createSelector(
+  selectAllExpenses,
+  (expenses) => expenses.filter(expense => expense.group_id === null) ?? []
 )
 
 export const expenseSlice = createSlice({
