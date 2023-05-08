@@ -16,10 +16,35 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         { type: 'Group', id: 'LIST' },
         ...result.map(({ id }) => ({ type: 'Group', id: id }))
       ]
+    }),
+    getGroup: builder.query({
+      queryFn: async groupId => {
+        const { data, error } = await supabase
+          .from('group')
+          .select()
+          .eq('id', groupId)
+          const [returnData] = data;
+        return { data: returnData, error }
+      },
+      providesTags: (result, error, arg) => [{ type: 'Group', id: arg }]
+    }),
+    getGroupExpenses: builder.query({
+      queryFn: async groupId => {
+        const { data, error } = await supabase
+          .from('expense')
+          .select()
+          .eq('group_id', groupId);
+      return { data, error }
+      },
+      providesTags: (result, error, arg) => [
+        ...result.map(({ id }) => ({ type: 'Expense', id: id }))
+      ]
     })
   })
 })
 
 export const {
-  useGetGroupsQuery
+  useGetGroupsQuery,
+  useGetGroupQuery,
+  useGetGroupExpensesQuery
 } = extendedSupabaseApi;

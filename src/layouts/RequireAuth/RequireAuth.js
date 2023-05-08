@@ -2,8 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { supabase } from '../../supabaseClient';
+import { extendedSupabaseApi } from '../../slices/accountSlice';
 import { setCredentials } from '../../slices/authSlice';
 import Welcome from '../../pages/Welcome/Welcome';
+import { store } from '../../store/store';
 
 const RequireAuth = () => {
   const [session, setSession] = useState(null);
@@ -21,6 +23,7 @@ const RequireAuth = () => {
       user: session?.user ?? null,
       isLoading: false
     }));
+    store.dispatch(extendedSupabaseApi.endpoints.getAccount.initiate(session?.user.id));
   }, [dispatch]);
 
   useEffect(() => {

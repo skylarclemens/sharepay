@@ -22,6 +22,7 @@ export const balanceCalc = (debts, userId) => {
 };
 
 export const groupBalanceCalc = expenses => {
+  if(!expenses) return 0;
   let totalBalance = 0;
   expenses.forEach(expense => {
     if (expense.paid) return;

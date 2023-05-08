@@ -13,18 +13,20 @@ import Modal from '../../components/Modal/Modal';
 import SelectFriends from '../../components/SelectFriends/SelectFriends';
 import { useNavigate } from 'react-router-dom';
 import { useGetAccountQuery } from '../../slices/accountSlice';
+import SplitWith from './SplitWith/SplitWith';
 
 const NewExpense = () => {
   const user = useSelector(state => state.auth.user);
   const {
-    data: account
+    data: account,
+    isSuccess: accountFetched
   } = useGetAccountQuery(user?.id);
   
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
-  const [splitWith, setSplitWith] = useState([{ ...account }]);
+  const [splitWith, setSplitWith] = useState([]);
   const [splitWithGroup, setSplitWithGroup] = useState(null);
-  const [paidBy, setPaidBy] = useState(user.id);
+  const [paidBy, setPaidBy] = useState(user?.id);
   const [split, setSplit] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
   const [openSelectFriends, setOpenSelectFriends] = useState(false);
@@ -113,7 +115,9 @@ const NewExpense = () => {
     if (selected?.group_name) {
       setSplitWithGroup(selected);
       const groupsUsers = getAllGroupsUsers(selected.id);
-      groupsUsers.then(res => setSplitWith(res));
+      groupsUsers.then(res => {
+        setSplitWith(res)
+      });
     } else {
       setSplitWith([...splitWith, selected]);
     }
@@ -122,7 +126,7 @@ const NewExpense = () => {
 
   const removeGroupSplit = () => {
     setSplitWithGroup(null);
-    setSplitWith([{ ...account }]);
+    setSplitWith([account]);
   }
 
   return (
@@ -155,39 +159,17 @@ const NewExpense = () => {
               }
               onChange={e => setDescription(e.target.value)}
             />
-            <div className="split-with-container">
-              <span className="input-label">Split between</span>
-              <div className="split-with">
-                {!splitWithGroup && 
-                    splitWith.map(member => {
-                    return (
-                      <UserButton
-                        key={member.id}
-                        user={member}
-                        name={member.name}
-                        variant="white"
-                      />
-                    );
-                })}
-                {!splitWithGroup && <button
-                  type="button"
-                  className="button--form-add button--icon"
-                  onClick={() => setOpenSelectFriends(true)}
-                  >
-                    <div className="add-plus"></div>
-                  </button>
-                }
-                {splitWithGroup && 
-                  <div className="group-selected">
-                    <div className="group-name">{splitWithGroup.group_name}</div>
-                    <button type="button" className="remove-group button--icon" onClick={removeGroupSplit}>x</button>
-                  </div>
-                }
-              </div>
+            <>
+              {accountFetched && <SplitWith account={account}
+                splitWith={splitWith}
+                setSplitWith={setSplitWith}
+                splitWithGroup={splitWithGroup}
+                setOpenSelectFriends={setOpenSelectFriends}
+                removeGroupSplit={removeGroupSplit} />}
               {fieldErrors.splitWith && (
                 <span className="field-error-text">{fieldErrors.splitWith}</span>
               )}
-            </div>
+            </>
             {splitWith.length > 1 && (
               <>
                 <fieldset>
@@ -197,12 +179,12 @@ const NewExpense = () => {
                       {splitWith.map(member => {
                         return (
                           <UserButton
-                            key={member.id + '-2'}
+                            key={member?.id + '-2'}
                             user={member}
-                            name={member.name}
-                            selected={paidBy === member.id}
+                            name={member?.name}
+                            selected={paidBy === member?.id}
                             onClick={() => {
-                              setPaidBy(member.id);
+                              setPaidBy(member?.id);
                               setFieldErrors({ ...fieldErrors, paidBy: null });
                             }}
                           />
