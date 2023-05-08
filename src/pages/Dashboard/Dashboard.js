@@ -2,28 +2,35 @@ import './Dashboard.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { balanceCalc } from '../../helpers/balance';
 import { useEffect } from 'react';
-import { setBalances, useGetExpensesQuery } from '../../slices/expenseSlice';
+import { selectAllFriendExpenses, setBalances, useGetExpensesQuery } from '../../slices/expenseSlice';
 import Transactions from '../../components/Transactions/Transactions';
 import { formatMoney } from '../../helpers/money';
 import { useGetDebtsQuery } from '../../slices/debtSlice';
+import { useGetGroupsQuery } from '../../slices/groupSlice';
+import GroupExpenses from './GroupExpenses/GroupExpenses';
 
 const Dashboard = () => {
-  const {
-    data: debts,
-    isSuccess
-  } = useGetDebtsQuery();
-  const {
-    data: expenses,
-    isSuccess: expensesFetched
-  } = useGetExpensesQuery();
   const user = useSelector(state => state.auth.user);
   const balances = useSelector(state => state.expenses.balances);
+
+  const {
+    data: debts,
+    isSuccess: debtsFetched
+  } = useGetDebtsQuery();
+  const {
+    isSuccess: expensesFetched
+  } = useGetExpensesQuery();
+  const {
+    data: groups,
+    isSuccess: groupsFetched
+  } = useGetGroupsQuery(user?.id);
+  const friendExpenses = useSelector(state => selectAllFriendExpenses(state))
 
   const dispatch = useDispatch();
 
   const dataLoaded =
     user &&
-    isSuccess;
+    debtsFetched;
 
   useEffect(() => {
     if (dataLoaded) {
@@ -59,7 +66,11 @@ const Dashboard = () => {
           </div>
           <div className="transactions-container">
             <h2 className="main-heading">Recent Transactions</h2>
-            {expensesFetched && <Transactions transactions={expenses} />}
+            {expensesFetched && <Transactions transactions={friendExpenses} />}
+            {groupsFetched &&
+              groups.map(group => {
+                return <GroupExpenses key={group.id} group={group} />
+              })}
           </div>
         </div>
       ) : null}

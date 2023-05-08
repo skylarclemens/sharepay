@@ -1,34 +1,22 @@
 import './ExpenseTransaction.scss';
 import { useSelector } from 'react-redux';
 import { useGetAccountQuery, useGetAccountsQuery } from '../../../slices/accountSlice';
-import { useGetDebtsQuery } from '../../../slices/debtSlice';
-import { useMemo } from 'react';
-import { createSelector } from '@reduxjs/toolkit';
+import { selectDebtsByExpenseId, useGetDebtsQuery } from '../../../slices/debtSlice';
 import Transaction from '../../Transaction/Transaction';
 
-const ExpenseTransaction = ({ transaction }) => {
+const ExpenseTransaction = ({ transaction, classes='' }) => {
   const user = useSelector(state => state.auth.user);
 
-  const selectDebtorsByExpenseId = useMemo(() => {
-    return createSelector(
-      res => res.data,
-      (res, transactionId) => transactionId,
-      (data, transactionId) => data?.reduce((filtered, debt) => {
-        if (debt.expense_id === transactionId) {
-          filtered.push(debt.debtor_id);
-        }
-        return filtered;
-      }, []) ?? []
-    )
-  }, []);
-
-  const { debtors,
+  const { debts,
     isSuccess: debtorsFetched } = useGetDebtsQuery(undefined, {
-    selectFromResult: result => ({
+    selectFromResult: (result) => ({
       ...result,
-      debtors: selectDebtorsByExpenseId(result, transaction?.id)
+      debts: selectDebtsByExpenseId(result, transaction?.id)
     })
   });
+
+  const debtors = debts?.map(debt => debt?.debtor_id);
+  const userDebt = debts?.filter(debt => debt?.debtor_id === user?.id || debt?.creditor_id === user?.id)[0];
 
   const {
     data: userCreditor
@@ -53,6 +41,7 @@ const ExpenseTransaction = ({ transaction }) => {
           ...userDebtors.map(userDebtor => userDebtor?.avatar_url)
         ]}
         text={transaction?.description}
+        classes={classes}
         transactionRight={(
           <div className="transaction-amount">
             <div
@@ -60,7 +49,7 @@ const ExpenseTransaction = ({ transaction }) => {
                 transactionType === 'OWE' ? 'expense-amount--owe' : ''
               }`}
             >
-              ${transaction?.amount.toFixed(2)}
+              ${userDebt?.amount.toFixed(2)}
             </div>
           </div>
         )}

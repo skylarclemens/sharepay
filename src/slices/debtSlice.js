@@ -9,6 +9,15 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         const { data, error } = await supabase.from('debt').select();
         return { data, error };
       },
+      /*transformResponse: (data) => {
+        return data.map(debt => {
+          return {
+            ...debt,
+            debtType: 'OWE',
+            
+          }
+        })
+      },*/
       providesTags: (result = [], error, arg) => [
         { type: 'Debt', id: 'LIST' },
         ...result.map(({ id }) => ({ type: 'Debt', id: id }))
@@ -67,16 +76,21 @@ export const {
 } = extendedSupabaseApi;
 
 export const selectDebtsResult = extendedSupabaseApi.endpoints.getDebts.select();
-
-export const selectSharedDebtsByFriendId = createSelector(
-  res => res.data, (data, friendId) => friendId,
-  (data, friendId) => data?.filter(debt => (debt.creditor_id === friendId || debt.debtor_id === friendId)) ?? []
+const emptyDebts = [];
+export const selectAllDebts = createSelector(
+  selectDebtsResult,
+  res => res.data ?? emptyDebts
 );
 
 export const selectDebtsByExpenseId = createSelector(
   res => res.data,
   (res, expenseId) => expenseId,
   (data, expenseId) => data?.filter(debt => debt.expense_id === expenseId) ?? []
+);
+
+export const selectSharedDebtsByFriendId = createSelector(
+  res => res.data, (data, friendId) => friendId,
+  (data, friendId) => data?.filter(debt => (debt.creditor_id === friendId || debt.debtor_id === friendId)) ?? []
 );
 
 export const selectPaidDebts = createSelector(
