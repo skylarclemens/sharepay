@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 import { useGetAccountQuery, useUpdateAccountMutation } from '../../slices/accountSlice';
-import { resetAuth } from '../../slices/authSlice';
+import { userLogout } from '../../slices/authSlice';
 import { supabaseApi } from '../../api/supabaseApi';
 import Header from '../../components/Header/Header';
 
@@ -53,8 +53,8 @@ const Account = () => {
   const handleLogOut = async () => {
     try {
       await supabase.auth.signOut();
-      supabaseApi.util.resetApiState();
-      dispatch(resetAuth());
+      dispatch(supabaseApi.util.resetApiState());
+      dispatch(userLogout());
       localStorage.clear();
       navigate('/');
     } catch (error) {
@@ -64,9 +64,7 @@ const Account = () => {
 
   return (
     <>
-    <Header type="main" headerLeft={
-      <h1 className="title header-page-title">Account</h1>
-    }/>
+    <Header type="main" title="Account" />
     <div className="account-container">
       {isSuccess ? (
         <>

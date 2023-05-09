@@ -1,0 +1,23 @@
+@use '../../utilities/colors' as v;
+
+.refresh {
+  width: 100%;
+  margin-top: -48px;
+  padding-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: v.$layout-green;
+  &.refresh--loading {
+    margin-top: 4px;
+    .refresh__icon img {
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  @keyframes spin {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

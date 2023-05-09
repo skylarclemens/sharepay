@@ -8,7 +8,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         const { data, error } = await supabase.from('users')
           .select()
           .eq('id', userId);
-        const [returnData] = data;
+        const [returnData] = data ?? [];
         return { data: returnData, error };
       },
       providesTags: (result, error, arg) => [{ type: 'Account', id: arg }]

@@ -35,9 +35,7 @@ const Recent = () => {
 
   return (
     <>
-    <Header type="main" headerLeft={
-      <h1 className="title header-page-title">Recent</h1>
-    }/>
+    <Header type="main" title="Recent" />
     <div className="recent">
       {paidUpsFetched && paidUps.map((paidUp) => {
         return (
