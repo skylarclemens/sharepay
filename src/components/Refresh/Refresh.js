@@ -54,7 +54,7 @@ const Refresh = ({ onRefresh = null, loading = false }) => {
       style={{
         marginTop: pullDifference ? (pullDifference / 3.5) - 48 : "",
         opacity: (pullDifference > 110 || isLoading) ? 1 : 0,
-        transition: 'margin-top 0.2s ease-out, opacity 0.4s ease-in-out',
+        transition: pullDifference ? 'opacity 0.4s ease-in-out' : 'margin-top 0.2s ease-out, opacity 0.4s ease-in-out',
       }}>
       <div className={`refresh__icon`}>
         <img src={refreshImg} style={{

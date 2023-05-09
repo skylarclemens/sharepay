@@ -15,11 +15,11 @@ export const authSlice = createSlice({
         user,
       }
     },
-    resetAuth: () => {
+    userLogout: () => {
       return initialState;
     },
   },
 });
 
-export const { setCredentials, resetAuth } = authSlice.actions;
+export const { setCredentials, userLogout } = authSlice.actions;
 export default authSlice.reducer;

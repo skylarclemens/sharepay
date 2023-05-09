@@ -9,7 +9,12 @@ const combinedReducer = combineReducers({
   [supabaseApi.reducerPath]: supabaseApi.reducer
 });
 
-const rootReducer = (state, action) => combinedReducer(state, action);
+const rootReducer = (state, action) => {
+  if (action.type === 'auth/userLogout') {
+    return combinedReducer(undefined, action);
+  }
+  return combinedReducer(state, action);
+}
 
 export const store = configureStore({
   reducer: rootReducer,
