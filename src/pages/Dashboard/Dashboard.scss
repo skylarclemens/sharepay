@@ -25,9 +25,18 @@ h2 {
   background: v.$layout-green;
 }
 
-.dashboard {
-  height: calc(100% + 96px);
+.divider {
   background: v.$light-gray;
+  height: 86px;
+  margin-top: -62px;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% + 96px);
+  margin-bottom: 96px;
+  background: #ffffff;
 }
 
 .balance {
@@ -111,8 +120,10 @@ h2 {
 
 .transactions-container {
   background: #ffffff;
+  margin-top: -1.5rem;
   padding: 1.5rem 0;
   border-radius: 1rem 1rem 0px 0px;
+  flex-grow: 1;
   .main-heading {
     font-family: 'Rubik', sans-serif;
     font-weight: 500;

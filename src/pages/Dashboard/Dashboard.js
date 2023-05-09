@@ -17,17 +17,26 @@ const Dashboard = () => {
 
   const {
     data: debts,
-    isSuccess: debtsFetched
+    isSuccess: debtsFetched,
+    refetch: refetchDebts
   } = useGetDebtsQuery();
   const {
-    isSuccess: expensesFetched
+    isSuccess: expensesFetched,
+    refetch: refetchExpenses
   } = useGetExpensesQuery();
   const {
     data: groups,
-    isSuccess: groupsFetched
+    isSuccess: groupsFetched,
+    refetch: refetchGroups
   } = useGetGroupsQuery(user?.id);
   const friendExpenses = useSelector(state => selectAllFriendExpenses(state));
   const unpaidFriendExpenses = friendExpenses.filter(expense => !expense?.paid);
+
+  const onRefresh = () => {
+    refetchDebts();
+    refetchExpenses();
+    refetchGroups();
+  }
 
   const dispatch = useDispatch();
 
@@ -46,7 +55,7 @@ const Dashboard = () => {
       <Header type="main" title="Dashboard" />
       {dataLoaded ? (
         <>
-          <Refresh />
+          <Refresh onRefresh={onRefresh} />
           <div className="dashboard">
             <div className="details-container">
               <div className="balance">
@@ -70,6 +79,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
+            <div className="divider"></div>
             <div className="transactions-container">
               <h2 className="main-heading">Recent Transactions</h2>
               {(expensesFetched && unpaidFriendExpenses.length > 0) && <Transactions transactions={unpaidFriendExpenses} />}
