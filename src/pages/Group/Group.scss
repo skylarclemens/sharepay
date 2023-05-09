@@ -24,6 +24,37 @@
   }
 }
 
+.group--blue {
+  background: v.$accent-blue;
+}
+.group--purple {
+  background: v.$plum;
+}
+
+.page-info-container {
+  &.group--green,
+  &.group--blue,
+  &.group--purple {
+    box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.1);
+  }
+  &.group--blue {
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.2) 100%
+      ),
+      v.$accent-blue;
+  }
+  &.group--purple {
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.2) 100%
+      ),
+      v.$plum;
+  }
+}
+
 .expense-card {
   display: flex;
   align-items: center;
