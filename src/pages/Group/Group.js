@@ -6,6 +6,7 @@ import { groupBalanceCalc } from '../../helpers/balance';
 import { formatMoney } from '../../helpers/money';
 import Header from '../../components/Header/Header';
 import { useGetGroupExpensesQuery, useGetGroupQuery } from '../../slices/groupSlice';
+import Avatar from '../../components/Avatar/Avatar';
 
 const Group = () => {
   const { id } = useParams();
@@ -46,6 +47,12 @@ const Group = () => {
         {groupFetched && (
           <>
             <div className="page-info-container">
+              <Avatar
+                classes="white-border"
+                url={group?.avatar_url}
+                size={65}
+                type="group"
+              />
               <div className="page-info">
                 <h1 className="page-title">{group?.group_name}</h1>
               </div>

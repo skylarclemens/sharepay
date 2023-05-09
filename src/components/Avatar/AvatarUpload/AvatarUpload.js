@@ -5,7 +5,7 @@ import { v4 as uuid } from 'uuid';
 import Avatar from '../Avatar';
 import { useSelector } from 'react-redux';
 
-const AvatarUpload = ({ url, onUpload }) => {
+const AvatarUpload = ({ url, onUpload, type = 'account', className = '' }) => {
   const user = useSelector(state => state.auth.user);
   const [uploading, setUploading] = useState(false);
 
@@ -22,8 +22,10 @@ const AvatarUpload = ({ url, onUpload }) => {
       const fileName = `${uuid()}.${fileExtension}`;
       const filePath = `${fileName}`;
 
+      const storageType = type === 'account' ? 'avatars' : 'group-avatars';
+
       const { data, error } = await supabase.storage
-        .from('avatars')
+        .from(storageType)
         .upload(`${user?.id}/${filePath}`, file, {
           cacheControl: '604800',
         });
@@ -36,12 +38,12 @@ const AvatarUpload = ({ url, onUpload }) => {
   };
 
   return (
-    <div className="avatar-input">
+    <div className={`avatar-input ${className}`}>
       <label className="input-label" htmlFor="avatar">
         Avatar
       </label>
       <div className="img-input">
-        <Avatar url={url} size={60} />
+        <Avatar url={url} size={60} type={type} />
         <input
           id="avatar"
           name="avatar"
