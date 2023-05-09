@@ -1,0 +1,36 @@
+@use '../../utilities/colors' as v;
+
+.groups-container {
+  .group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 20px;
+    border-bottom: 2px solid v.$accent-gray;
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.no-people {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Rubik', san-serif;
+  color: rgba(0, 0, 0, 0.4);
+  .add-people-img {
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: v.$light-gray;
+    border-bottom: 1px solid v.$accent-gray;
+    border-radius: 4px;
+  }
+  .add-people-icon {
+    filter: invert(40%);
+    height: 24px;
+  }
+}

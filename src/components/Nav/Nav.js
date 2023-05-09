@@ -17,10 +17,10 @@ const Nav = () => {
             <img src={homeImg} alt="Home icon" />
           </Link>
           <Link
-            className={`nav-button ${selectedPath('/friends')}`}
-            to="/friends"
+            className={`nav-button ${selectedPath('/people')}`}
+            to="/people"
           >
-            <img src={groupImg} alt="Friends icon" />
+            <img src={groupImg} alt="Friends and groups icon" />
           </Link>
         </div>
         <div className="nav-buttons nav-buttons-right">

@@ -7,6 +7,7 @@ import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 import { useGetAccountQuery, useUpdateAccountMutation } from '../../slices/accountSlice';
 import { resetAuth } from '../../slices/authSlice';
 import { supabaseApi } from '../../api/supabaseApi';
+import Header from '../../components/Header/Header';
 
 const Account = () => {
   const user = useSelector(state => state.auth.user);
@@ -62,6 +63,10 @@ const Account = () => {
   };
 
   return (
+    <>
+    <Header type="main" headerLeft={
+      <h1 className="title header-page-title">Account</h1>
+    }/>
     <div className="account-container">
       {isSuccess ? (
         <>
@@ -117,6 +122,7 @@ const Account = () => {
         </>
       ) : null}
     </div>
+    </>
   );
 };
 

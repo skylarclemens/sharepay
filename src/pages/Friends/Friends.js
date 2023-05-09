@@ -6,7 +6,7 @@ import Header from '../../components/Header/Header';
 import addFriendImg from '../../images/Add_friend.svg';
 import { useGetFriendsQuery, useAddNewFriendMutation } from '../../slices/friendSlice';
 import { useGetFriendRequestsQuery, useUpdateFriendRequestStatusMutation } from '../../slices/friendRequestSlice';
-import { useGetGroupsQuery } from '../../slices/groupSlice';
+
 
 const Friends = () => {
   const user = useSelector(state => state.auth.user);
@@ -18,11 +18,6 @@ const Friends = () => {
 
   const [addNewFriend] = useAddNewFriendMutation();
   const [updateFriendRequest] = useUpdateFriendRequestStatusMutation();
-
-  const {
-    data: groups,
-    isSuccess: groupsSuccess
-  } = useGetGroupsQuery(user?.id);
 
   const {
     data: requests,
@@ -62,7 +57,7 @@ const Friends = () => {
         }
       />
       <div className="friends-container">
-        {requestsSuccess ? (
+        {(requestsSuccess && requests.length > 0) ? (
           <>
             <h2 className="heading">Requests</h2>
             <div className="requests-container">
@@ -100,8 +95,7 @@ const Friends = () => {
             </div>
           </>
         ) : null}
-        <h2 className="heading">Friends</h2>
-        {friendsSuccess
+        {friendsSuccess && friends?.length > 0
           ? friends.map(friend => {
               return (
                 <Link
@@ -121,6 +115,19 @@ const Friends = () => {
               );
             })
           : null}
+        {friendsSuccess && friends?.length === 0 ? (
+          <div className="no-people">
+            <span>Add friends to start sharing expenses.</span>
+            <div className="icon-details">
+              <span>Tap the</span>
+              <div className="add-people-img">
+                <img className="add-people-icon" src={addFriendImg} alt="Add Friend Icon" />
+              </div>
+              <span>icon above to get started.</span>
+            </div>
+          </div>
+          ) : null
+          }
         {requestsSuccess
           ? requests.map(req => {
               if (req?.user_id.id === user.id) {
@@ -144,27 +151,6 @@ const Friends = () => {
               return null;
             })
           : null}
-
-        <div className="groups-container">
-          <h2 className="heading">Groups</h2>
-          {groupsSuccess
-            ? groups?.map(group => {
-                return (
-                  <Link
-                    to={`/group/${group?.id}`}
-                    key={group?.id}
-                    className="group"
-                  >
-                    <span>{group?.group_name}</span>
-                    <div className="arrow arrow--right"></div>
-                  </Link>
-                );
-              })
-            : null}
-          <Link className="button button--link" to="/new-group">
-            Create a group
-          </Link>
-        </div>
       </div>
     </>
   );
