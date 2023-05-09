@@ -10,9 +10,13 @@ const Header = ({ type = 'main', title, headerLeft, headerLeftFn, headerRight, h
     return (
       <div className="header-container">
         <div className="main-header header">
-          {headerLeft ? headerLeft : (
-            <div className="placeholder"></div>
-          )}
+          <div className={`header-left ${title && 'title'}`}>
+            {title ? (
+              <h1>{title}</h1>
+            ) : (
+              <div className="placeholder"></div>
+            )}
+          </div>
           <div className="header-right">
             {user ? null : (
               <Link

@@ -20,7 +20,13 @@ h2 {
     v.$layout-green;
 }
 
+.layout:has(.dashboard) {
+  height: 100%;
+  background: v.$layout-green;
+}
+
 .dashboard {
+  height: calc(100% + 96px);
   background: v.$light-gray;
 }
 

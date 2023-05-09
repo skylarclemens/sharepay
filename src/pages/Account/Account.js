@@ -64,9 +64,7 @@ const Account = () => {
 
   return (
     <>
-    <Header type="main" headerLeft={
-      <h1 className="title header-page-title">Account</h1>
-    }/>
+    <Header type="main" title="Account" />
     <div className="account-container">
       {isSuccess ? (
         <>
