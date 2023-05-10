@@ -2,7 +2,8 @@ import './SelectPeople.scss';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../Header/Header';
-import Avatar from '../Avatar/Avatar';
+import UserSelect from './UserSelect/UserSelect';
+import GroupSelect from './GroupSelect/GroupSelect';
 import { supabase } from '../../supabaseClient';
 import { useGetFriendsQuery } from '../../slices/friendSlice';
 import { useGetGroupsQuery } from '../../slices/groupSlice';
@@ -100,21 +101,7 @@ const SelectPeople = ({ newFriends = false, showGroups = false, handleAdd }) => 
           {groupSuggestions.length > 0 && (
             groupSuggestions.map(suggested => {
               return (
-                <div key={suggested.id} className="search-user search-user--group">
-                  <div className="user-info">
-                    <Avatar url={suggested.avatar_url} type="group" classes="white-border" size={40} />
-                    <div className="user-info-text">
-                      <div className="user-name">{suggested.group_name}</div>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    className="add-user-search"
-                    onClick={() => handleAddGroup(suggested)}
-                  >
-                    <div className="add-user-plus"></div>
-                  </button>
-                </div> 
+                <GroupSelect key={suggested.id} group={suggested} handleSelect={() => handleAddGroup(suggested)} />
               );
             })
           )}
@@ -123,31 +110,9 @@ const SelectPeople = ({ newFriends = false, showGroups = false, handleAdd }) => 
           {friendSuggestions.length > 0 && <span className="search-heading">Friends</span>}
           {friendSuggestions.length > 0 &&
             friendSuggestions.map(suggested => {
-              /*const sentStatus =
-                requestSent.id === suggested.id && requestSent.sent
-                  ? true
-                  : false;*/
               return (
-                <div key={suggested.id} className="search-user">
-                  <div className="user-info">
-                    <Avatar url={suggested.avatar_url} classes="white-border" size={40} />
-                    <div className="user-info-text">
-                      <div className="user-name">{suggested.name}</div>
-                      <div className="user-email">{suggested.email}</div>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    className="select"
-                    onClick={() => handleAddFriend(suggested)}
-                  >
-                    <div
-                      className={`select-check`}
-                    ></div>
-                    {/* Need to fix sentStatus to show if user already added friend/user */}
-                  </button>
-                </div>
-              );
+                <UserSelect key={suggested.id} user={suggested} handleSelect={() => handleAddFriend(suggested)} />
+              )
             })}
           </div>
         </div>
