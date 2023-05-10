@@ -1,22 +1,23 @@
+import "./AddUsers.scss";
 import { useEffect } from "react";
 import UserButton from "../../../components/User/UserButton/UserButton";
 
-const SplitWith = ({ account, splitWith, setSplitWith, splitWithGroup, setOpenSelectPeople, removeGroupSplit }) => {
+const AddUsers = ({ label, account, usersList, setUsersList, selectedGroup, setOpenSelectPeople, removeGroupSelect }) => {
   useEffect(() => {
-    setSplitWith([account]);
+    setUsersList([account]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="split-with-container">
-      <span className="input-label">Split between</span>
-      <div className="split-with">
-        {!splitWithGroup && 
+    <div className="add-users input-container">
+      <span className="input-label">{label}</span>
+      <div className="users-selected">
+        {!selectedGroup && 
           <>
-          {splitWith.map(member => {
+          {usersList.map(member => {
             return (
               <UserButton
-                key={member?.id}
+                key={`${member?.id}-user-button`}
                 user={member}
                 name={member?.name}
                 variant="white"
@@ -32,10 +33,10 @@ const SplitWith = ({ account, splitWith, setSplitWith, splitWithGroup, setOpenSe
           </button>
           </>
         }
-        {splitWithGroup && 
+        {selectedGroup && 
           <div className="group-selected">
-            <div className="group-name">{splitWithGroup.group_name}</div>
-            <button type="button" className="remove-group button--icon" onClick={removeGroupSplit}>x</button>
+            <div className="group-name">{selectedGroup.group_name}</div>
+            <button type="button" className="remove-group button--icon" onClick={removeGroupSelect}>x</button>
           </div>
         }
       </div>
@@ -43,4 +44,4 @@ const SplitWith = ({ account, splitWith, setSplitWith, splitWithGroup, setOpenSe
   )
 }
 
-export default SplitWith;
+export default AddUsers;

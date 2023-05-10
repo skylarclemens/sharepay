@@ -8,11 +8,11 @@ import { supabase } from '../../supabaseClient';
 import { useGetFriendsQuery } from '../../slices/friendSlice';
 import { useGetGroupsQuery } from '../../slices/groupSlice';
 
-const SelectPeople = ({ newFriends = false, showGroups = false, handleAdd }) => {
+const SelectPeople = ({ newFriends = false, showGroups = false, handleAdd, existingUsers = [] }) => {
   const [value, setValue] = useState('');
   const [friendSuggestions, setFriendSuggestions] = useState([]);
   const [groupSuggestions, setGroupSuggestions] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState(existingUsers ?? []);
   const user = useSelector(state => state.auth.user);
   const {
     data: friends
@@ -68,20 +68,12 @@ const SelectPeople = ({ newFriends = false, showGroups = false, handleAdd }) => 
     }
   }, [value, user, friends, newFriends, groups, showGroups]);
 
-  /*const handleAddUsers = suggested => {
-    handleAdd(suggested);
-  };*/
-
   const handleUserSelected = (suggested, selected) => {
     if (selected) {
       setSelectedUsers([...selectedUsers, suggested]);
     } else {
       setSelectedUsers(selectedUsers.filter(user => user.id !== suggested.id));
     }
-  }
-
-  const searchSelectedUsers = (userId) => {
-    return selectedUsers.find(user => user.id === userId);
   }
 
   const handleAddGroup = suggested => {
@@ -116,7 +108,7 @@ const SelectPeople = ({ newFriends = false, showGroups = false, handleAdd }) => 
           {friendSuggestions.length > 0 &&
             friendSuggestions.map(suggested => {
               return (
-                <UserSelect key={suggested.id} isSelected={searchSelectedUsers} user={suggested} handleSelect={handleUserSelected} />
+                <UserSelect key={suggested.id} selectedUsers={existingUsers} user={suggested} handleSelect={handleUserSelected} />
               )
             })}
         </div>

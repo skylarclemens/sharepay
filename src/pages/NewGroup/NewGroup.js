@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import TextInput from '../../components/Input/TextInput/TextInput';
 import Modal from '../../components/Modal/Modal';
+import AddUsers from '../NewExpense/AddUsers/AddUsers';
 import SelectPeople from '../../components/SelectPeople/SelectPeople';
-import UserButton from '../../components/User/UserButton/UserButton';
 import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 import { GROUP_COLORS } from '../../constants/groups';
 import { useGetAccountQuery } from '../../slices/accountSlice';
@@ -15,7 +15,8 @@ import { useAddNewGroupMutation, useAddNewUserGroupsMutation } from '../../slice
 const NewGroup = () => {
   const user = useSelector(state => state.auth.user);
   const {
-    data: account
+    data: account,
+    isSuccess: accountFetched
   } = useGetAccountQuery(user?.id);
   
   const [groupName, setGroupName] = useState('');
@@ -65,8 +66,8 @@ const NewGroup = () => {
     }
   };
 
-  const handleAddUser = friend => {
-    setGroupMembers([...groupMembers, friend]);
+  const handleAddUsers = users => {
+    setGroupMembers(users);
     setOpenSelectPeople(false);
   };
 
@@ -90,28 +91,13 @@ const NewGroup = () => {
             ref={inputRef}
             onChange={e => setGroupName(e.target.value)}
           />
-          <div className="add-friends input-container">
-            <span className="input-label group-spacing">Group members</span>
-            <div className="group-members">
-              {groupMembers.map(member => {
-                return (
-                  <UserButton
-                    key={member.id}
-                    user={member}
-                    name={member.name}
-                    variant="white"
-                  />
-                );
-              })}
-              <button
-              type="button"
-              className="button--form-add button--icon"
-              onClick={() => setOpenSelectPeople(true)}
-              >
-                <div className="add-plus"></div>
-              </button>
-            </div>
-          </div>
+          {accountFetched ? <AddUsers
+            label={'Group members'}
+            account={account}
+            usersList={groupMembers}
+            setUsersList={handleAddUsers}
+            setOpenSelectPeople={setOpenSelectPeople}
+          /> : null}
           <div className="input-container group-spacing">
             <div className="input-label">Group color</div>
             <div className="group-colors">
@@ -140,7 +126,7 @@ const NewGroup = () => {
         </form>
       </div>
       <Modal open={openSelectPeople}>
-        <SelectPeople handleAdd={handleAddUser} />
+        <SelectPeople handleAdd={handleAddUsers} existingUsers={groupMembers} />
       </Modal>
     </>
   );

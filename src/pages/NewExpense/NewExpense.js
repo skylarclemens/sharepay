@@ -13,7 +13,7 @@ import Modal from '../../components/Modal/Modal';
 import SelectPeople from '../../components/SelectPeople/SelectPeople';
 import { useNavigate } from 'react-router-dom';
 import { useGetAccountQuery } from '../../slices/accountSlice';
-import SplitWith from './SplitWith/SplitWith';
+import AddUsers from './AddUsers/AddUsers';
 
 const NewExpense = () => {
   const user = useSelector(state => state.auth.user);
@@ -122,12 +122,7 @@ const NewExpense = () => {
       return;
     }
 
-    selected.map(user => {
-      if (!splitWith.some(friend => friend.id === user.id)) {
-        setSplitWith(splitWith => [...splitWith, user]);
-      }
-      return user;
-    });
+    setSplitWith(selected);
     setOpenSelectPeople(false);
   };
 
@@ -167,12 +162,13 @@ const NewExpense = () => {
               onChange={e => setDescription(e.target.value)}
             />
             <>
-              {accountFetched && <SplitWith account={account}
-                splitWith={splitWith}
-                setSplitWith={setSplitWith}
-                splitWithGroup={splitWithGroup}
+              {accountFetched && <AddUsers account={account}
+                label={'Split with'}
+                usersList={splitWith}
+                setUsersList={setSplitWith}
+                selectedGroup={splitWithGroup}
                 setOpenSelectPeople={setOpenSelectPeople}
-                removeGroupSplit={removeGroupSplit} />}
+                removeGroupSelect={removeGroupSplit} />}
               {fieldErrors.splitWith && (
                 <span className="field-error-text">{fieldErrors.splitWith}</span>
               )}
@@ -245,7 +241,7 @@ const NewExpense = () => {
         </form>
       </div>
       <Modal open={openSelectPeople}>
-        <SelectPeople handleAdd={handleAdd} showGroups={true} />
+        <SelectPeople handleAdd={handleAdd} showGroups={true} existingUsers={splitWith} />
       </Modal>
     </>
   );

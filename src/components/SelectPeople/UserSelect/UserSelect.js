@@ -2,8 +2,10 @@ import './UserSelect.scss';
 import Avatar from '../../Avatar/Avatar';
 import { useState } from 'react';
 
-const UserSelect = ({ user, isSelected, handleSelect }) => {
-  const [selected, setSelected] = useState(isSelected(user.id));
+const UserSelect = ({ user, selectedUsers, handleSelect }) => {
+  const [selected, setSelected] = useState(
+    selectedUsers.find(selected => selected.id === user.id));
+
   return (
     <button type="button" key={user.id} className={`search-user button--icon ${selected ? 'selected' : ''}`} onClick={() => {
       handleSelect(user, !selected)
