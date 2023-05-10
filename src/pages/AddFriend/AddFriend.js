@@ -77,7 +77,6 @@ const AddFriend = ({ selectFriends = false, handleAddUser }) => {
             suggestions.map(suggestedUser => {
               const sentStatus =
                 requestSent.find(request => request.id === suggestedUser.id) ?? false;
-              console.log(sentStatus);
               return (
                 <div key={suggestedUser.id} className="user">
                   <div className="user-info">
