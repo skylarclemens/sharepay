@@ -10,6 +10,14 @@
     text-decoration: none;
     color: inherit;
   }
+  .group-info-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    .group-name {
+      font-weight: 500;
+    }
+  }
 }
 
 .no-people {

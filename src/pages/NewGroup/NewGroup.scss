@@ -21,4 +21,48 @@
     border-top: 1px solid v.$accent-gray;
     border-bottom: 2px solid v.$accent-gray;
   }
+
+  .group-colors {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .group-color {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .group-color.selected {
+    .group-color-option {
+      border: 2px solid v.$accent-blue;
+      box-shadow: inset 0px 2px 0px 4px rgba(0, 0, 0, 0.25);
+    }
+    .color-name {
+      font-weight: 600;
+    }
+  }
+  .group-color-option {
+    height: 35px;
+    width: 35px;
+    border-radius: 0.5rem;
+    border: 2px solid v.$accent-gray;
+    box-shadow: inset 0px -2px 0px 4px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    &.green {
+      background: v.$layout-green;
+    }
+    &.blue {
+      background: v.$accent-blue;
+    }
+    &.purple {
+      background: v.$plum;
+    }
+  }
+  .color-name {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: rgba(0, 0, 0, 0.75);
+  }
 }

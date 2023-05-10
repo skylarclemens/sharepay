@@ -2,13 +2,13 @@ import './Header.scss';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Header = ({ type = 'main', title, headerLeft, headerLeftFn, headerRight, headerRightFn }) => {
+const Header = ({ type = 'main', title, headerLeft, headerLeftFn, headerRight, headerRightFn, classes = '' }) => {
   const user = useSelector(state => state.auth.user);
   const navigate = useNavigate();
 
   if (type === "main") {
     return (
-      <div className="header-container">
+      <div className={`header-container ${classes}`}>
         <div className="main-header header">
           <div className={`header-left ${title && 'title'}`}>
             {title ? (
@@ -33,7 +33,7 @@ const Header = ({ type = 'main', title, headerLeft, headerLeftFn, headerRight, h
     )
   } else if (type === 'main-title') {
     return (
-      <div className="header-container">
+      <div className={`header-container ${classes}`}>
         <div className="main-header header">
           <span className="title">{title}</span>
           {headerRight ? (
@@ -49,7 +49,7 @@ const Header = ({ type = 'main', title, headerLeft, headerLeftFn, headerRight, h
   }
    else if (type === 'title') {
     return (
-      <div className="header-container">
+      <div className={`header-container ${classes}`}>
         <div className="title-header header">
           {headerLeft ? headerLeft : (
             <button

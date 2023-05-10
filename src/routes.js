@@ -9,6 +9,7 @@ import Expense from './pages/Expense/Expense';
 import NewExpense from './pages/NewExpense/NewExpense';
 import NewGroup from './pages/NewGroup/NewGroup';
 import Group from './pages/Group/Group';
+import Groups from './pages/Groups/Groups';
 import Recent from './pages/Recent/Recent';
 import MainLayout from './layouts/MainLayout/MainLayout';
 import DetailsLayout from './layouts/DetailsLayout/DetailsLayout';
@@ -16,6 +17,7 @@ import FormLayout from './layouts/FormLayout/FormLayout';
 import EmptyLayout from './layouts/EmptyLayout/EmptyLayout';
 import RequireAuth from './layouts/RequireAuth/RequireAuth';
 import People from './pages/People/People';
+import Friends from './pages/Friends/Friends';
 
 const RoutesContainer = () => {
   return (
@@ -26,7 +28,10 @@ const RoutesContainer = () => {
           <Route element={<MainLayout />}>
             <Route path="account" element={<Account />} />
             <Route path="recent" element={<Recent />} />
-            <Route path="people" element={<People />} />
+            <Route path="people" element={<People />}>
+              <Route path="friends" element={<Friends />} />
+              <Route path="groups" element={<Groups />} />
+            </Route>
           </Route>
           <Route element={<DetailsLayout />}>
             <Route path="expense/:id" element={<Expense />} />
