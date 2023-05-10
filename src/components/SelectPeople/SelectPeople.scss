@@ -14,3 +14,10 @@
   padding: 1rem 20px 0.25rem 20px;
   margin: 0;
 }
+
+.selected-users-button {
+  visibility: hidden;
+  &.show {
+    visibility: visible;
+  }
+}

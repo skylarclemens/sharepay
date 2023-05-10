@@ -12,10 +12,7 @@ const SelectPeople = ({ newFriends = false, showGroups = false, handleAdd }) => 
   const [value, setValue] = useState('');
   const [friendSuggestions, setFriendSuggestions] = useState([]);
   const [groupSuggestions, setGroupSuggestions] = useState([]);
-  /*const [requestSent, setRequestSent] = useState({
-    id: '',
-    sent: false,
-  });*/
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const user = useSelector(state => state.auth.user);
   const {
     data: friends
@@ -71,13 +68,21 @@ const SelectPeople = ({ newFriends = false, showGroups = false, handleAdd }) => 
     }
   }, [value, user, friends, newFriends, groups, showGroups]);
 
-  const handleAddFriend = suggested => {
-    /*setRequestSent({
-      id: suggested.id,
-      sent: true,
-    });*/
+  /*const handleAddUsers = suggested => {
     handleAdd(suggested);
-  };
+  };*/
+
+  const handleUserSelected = (suggested, selected) => {
+    if (selected) {
+      setSelectedUsers([...selectedUsers, suggested]);
+    } else {
+      setSelectedUsers(selectedUsers.filter(user => user.id !== suggested.id));
+    }
+  }
+
+  const searchSelectedUsers = (userId) => {
+    return selectedUsers.find(user => user.id === userId);
+  }
 
   const handleAddGroup = suggested => {
     handleAdd(suggested);
@@ -111,11 +116,12 @@ const SelectPeople = ({ newFriends = false, showGroups = false, handleAdd }) => 
           {friendSuggestions.length > 0 &&
             friendSuggestions.map(suggested => {
               return (
-                <UserSelect key={suggested.id} user={suggested} handleSelect={() => handleAddFriend(suggested)} />
+                <UserSelect key={suggested.id} isSelected={searchSelectedUsers} user={suggested} handleSelect={handleUserSelected} />
               )
             })}
-          </div>
         </div>
+      </div>
+      <button className={`button button--floating selected-users-button ${selectedUsers.length ? 'show' : ''}`} onClick={() => handleAdd(selectedUsers)}>{`Add friend${selectedUsers.length > 1 ? 's' : ''}`}</button>
     </div>
   );
 };

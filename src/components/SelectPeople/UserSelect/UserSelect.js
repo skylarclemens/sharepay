@@ -1,9 +1,14 @@
 import './UserSelect.scss';
 import Avatar from '../../Avatar/Avatar';
+import { useState } from 'react';
 
-const UserSelect = ({ user, handleSelect }) => {
+const UserSelect = ({ user, isSelected, handleSelect }) => {
+  const [selected, setSelected] = useState(isSelected(user.id));
   return (
-    <div key={user.id} className="search-user">
+    <button type="button" key={user.id} className={`search-user button--icon ${selected ? 'selected' : ''}`} onClick={() => {
+      handleSelect(user, !selected)
+      setSelected(!selected)
+    }}>
       <div className="user-info">
         <Avatar url={user.avatar_url} classes="white-border" size={40} />
         <div className="user-info-text">
@@ -11,17 +16,10 @@ const UserSelect = ({ user, handleSelect }) => {
           <div className="user-email">{user.email}</div>
         </div>
       </div>
-      <button
-        type="button"
-        className="select"
-        onClick={() => handleSelect(user)}
-      >
-        <div
-          className={`select-check`}
-        ></div>
-        {/* Need to fix sentStatus to show if user already added friend/user */}
-      </button>
-    </div>
+      <div className="select">
+        <div className="select-check"></div>
+      </div>
+    </button>
   )
 }
 
