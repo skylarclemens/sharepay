@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import TextInput from '../../components/Input/TextInput/TextInput';
 import Modal from '../../components/Modal/Modal';
-import SelectFriends from '../../components/SelectFriends/SelectFriends';
+import SelectPeople from '../../components/SelectPeople/SelectPeople';
 import UserButton from '../../components/User/UserButton/UserButton';
 import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 import { GROUP_COLORS } from '../../constants/groups';
@@ -21,7 +21,7 @@ const NewGroup = () => {
   const [groupName, setGroupName] = useState('');
   const [groupMembers, setGroupMembers] = useState([{ ...account }]);
   const [groupColor, setGroupColor] = useState(GROUP_COLORS[0].color);
-  const [openSelectFriends, setOpenSelectFriends] = useState(false);
+  const [openSelectPeople, setOpenSelectPeople] = useState(false);
   const [groupAvatarUrl, setGroupAvatarUrl] = useState(null);
   const inputRef = useRef(null);
   const navigate = useNavigate();
@@ -67,7 +67,7 @@ const NewGroup = () => {
 
   const handleAddUser = friend => {
     setGroupMembers([...groupMembers, friend]);
-    setOpenSelectFriends(false);
+    setOpenSelectPeople(false);
   };
 
   return (
@@ -106,7 +106,7 @@ const NewGroup = () => {
               <button
               type="button"
               className="button--form-add button--icon"
-              onClick={() => setOpenSelectFriends(true)}
+              onClick={() => setOpenSelectPeople(true)}
               >
                 <div className="add-plus"></div>
               </button>
@@ -139,8 +139,8 @@ const NewGroup = () => {
           </button>
         </form>
       </div>
-      <Modal open={openSelectFriends}>
-        <SelectFriends handleAdd={handleAddUser} />
+      <Modal open={openSelectPeople}>
+        <SelectPeople handleAdd={handleAddUser} />
       </Modal>
     </>
   );

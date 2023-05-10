@@ -1,4 +1,4 @@
-import './SelectFriends.scss';
+import './SelectPeople.scss';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../Header/Header';
@@ -7,7 +7,7 @@ import { supabase } from '../../supabaseClient';
 import { useGetFriendsQuery } from '../../slices/friendSlice';
 import { useGetGroupsQuery } from '../../slices/groupSlice';
 
-const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) => {
+const SelectPeople = ({ newFriends = false, showGroups = false, handleAdd }) => {
   const [value, setValue] = useState('');
   const [friendSuggestions, setFriendSuggestions] = useState([]);
   const [groupSuggestions, setGroupSuggestions] = useState([]);
@@ -150,4 +150,4 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) =>
   );
 };
 
-export default SelectFriends;
+export default SelectPeople;

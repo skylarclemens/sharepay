@@ -10,7 +10,7 @@ import AmountInput from '../../components/Input/AmountInput/AmountInput';
 import RadioSelect from '../../components/Input/RadioSelect/RadioSelect';
 import UserButton from '../../components/User/UserButton/UserButton';
 import Modal from '../../components/Modal/Modal';
-import SelectFriends from '../../components/SelectFriends/SelectFriends';
+import SelectPeople from '../../components/SelectPeople/SelectPeople';
 import { useNavigate } from 'react-router-dom';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import SplitWith from './SplitWith/SplitWith';
@@ -29,7 +29,7 @@ const NewExpense = () => {
   const [paidBy, setPaidBy] = useState(user?.id);
   const [split, setSplit] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
-  const [openSelectFriends, setOpenSelectFriends] = useState(false);
+  const [openSelectPeople, setOpenSelectPeople] = useState(false);
   const navigate = useNavigate();
 
   const [addNewExpense, { isExpenseLoading }] = useAddNewExpenseMutation();
@@ -121,7 +121,7 @@ const NewExpense = () => {
     } else {
       setSplitWith([...splitWith, selected]);
     }
-    setOpenSelectFriends(false);
+    setOpenSelectPeople(false);
   };
 
   const removeGroupSplit = () => {
@@ -164,7 +164,7 @@ const NewExpense = () => {
                 splitWith={splitWith}
                 setSplitWith={setSplitWith}
                 splitWithGroup={splitWithGroup}
-                setOpenSelectFriends={setOpenSelectFriends}
+                setOpenSelectPeople={setOpenSelectPeople}
                 removeGroupSplit={removeGroupSplit} />}
               {fieldErrors.splitWith && (
                 <span className="field-error-text">{fieldErrors.splitWith}</span>
@@ -237,8 +237,8 @@ const NewExpense = () => {
           </div>
         </form>
       </div>
-      <Modal open={openSelectFriends}>
-        <SelectFriends handleAdd={handleAdd} showGroups={true} />
+      <Modal open={openSelectPeople}>
+        <SelectPeople handleAdd={handleAdd} showGroups={true} />
       </Modal>
     </>
   );

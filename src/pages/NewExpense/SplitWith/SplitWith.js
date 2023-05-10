@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import UserButton from "../../../components/User/UserButton/UserButton";
 
-const SplitWith = ({ account, splitWith, setSplitWith, splitWithGroup, setOpenSelectFriends, removeGroupSplit }) => {
+const SplitWith = ({ account, splitWith, setSplitWith, splitWithGroup, setOpenSelectPeople, removeGroupSplit }) => {
   useEffect(() => {
     setSplitWith([account]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -26,7 +26,7 @@ const SplitWith = ({ account, splitWith, setSplitWith, splitWithGroup, setOpenSe
           <button
             type="button"
             className="button--form-add button--icon"
-            onClick={() => setOpenSelectFriends(true)}
+            onClick={() => setOpenSelectPeople(true)}
             >
             <div className="add-plus"></div>
           </button>
