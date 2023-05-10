@@ -118,9 +118,16 @@ const NewExpense = () => {
       groupsUsers.then(res => {
         setSplitWith(res)
       });
-    } else {
-      setSplitWith([...splitWith, selected]);
+      setOpenSelectPeople(false);
+      return;
     }
+
+    selected.map(user => {
+      if (!splitWith.some(friend => friend.id === user.id)) {
+        setSplitWith(splitWith => [...splitWith, user]);
+      }
+      return user;
+    });
     setOpenSelectPeople(false);
   };
 
