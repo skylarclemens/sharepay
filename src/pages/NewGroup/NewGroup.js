@@ -9,8 +9,8 @@ import SelectFriends from '../../components/SelectFriends/SelectFriends';
 import UserButton from '../../components/User/UserButton/UserButton';
 import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 import { GROUP_COLORS } from '../../constants/groups';
-import { supabase } from '../../supabaseClient';
 import { useGetAccountQuery } from '../../slices/accountSlice';
+import { useAddNewGroupMutation, useAddNewUserGroupsMutation } from '../../slices/groupSlice';
 
 const NewGroup = () => {
   const user = useSelector(state => state.auth.user);
@@ -25,6 +25,8 @@ const NewGroup = () => {
   const [groupAvatarUrl, setGroupAvatarUrl] = useState(null);
   const inputRef = useRef(null);
   const navigate = useNavigate();
+  const [addNewGroup, { isLoading: isGroupLoading }] = useAddNewGroupMutation();
+  const [addNewUserGroups, { isLoading: isUserGroupLoading }] = useAddNewUserGroupsMutation();
 
   useEffect(() => {
     inputRef?.current?.click();
@@ -33,20 +35,17 @@ const NewGroup = () => {
   const handleSubmit = async e => {
     e.preventDefault();
 
-    let groupData;
+    if (isGroupLoading || isUserGroupLoading) return;
+
     const newGroup = {
       group_name: groupName,
       avatar_url: groupAvatarUrl,
       color: groupColor,
     };
 
+    let groupData;
     try {
-      const { data, error } = await supabase
-        .from('group')
-        .insert(newGroup)
-        .select();
-      if (error) throw error;
-      groupData = data[0];
+      [groupData] = await addNewGroup(newGroup).unwrap();
     } catch (error) {
       console.error(error);
     }
@@ -59,16 +58,11 @@ const NewGroup = () => {
     });
 
     try {
-      const { error } = await supabase
-        .from('user_group')
-        .insert(newMembers)
-        .select();
-      if (error) throw error;
+      await addNewUserGroups(newMembers).unwrap();
+      navigate(-1);
     } catch (error) {
       console.error(error);
     }
-
-    navigate(-1);
   };
 
   const handleAddUser = friend => {

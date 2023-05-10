@@ -39,12 +39,34 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
       providesTags: (result, error, arg) => [
         ...result.map(({ id }) => ({ type: 'Expense', id: id }))
       ]
-    })
+    }),
+    addNewGroup: builder.mutation({
+      queryFn: async (newGroup) => {
+        const { data, error } = await supabase
+          .from('group')
+          .insert(newGroup)
+          .select();
+        return { data, error };
+      },
+      invalidatesTags: [{ type: 'Group', id: 'LIST' }],
+    }),
+    addNewUserGroups: builder.mutation({
+      queryFn: async (newMembers) => {
+        const { data, error } = await supabase
+          .from('user_group')
+          .insert(newMembers)
+          .select();
+        return { data, error };
+      },
+      invalidatesTags: [{ type: 'Group', id: 'LIST' }],
+    }),
   })
 })
 
 export const {
   useGetGroupsQuery,
   useGetGroupQuery,
-  useGetGroupExpensesQuery
+  useGetGroupExpensesQuery,
+  useAddNewGroupMutation,
+  useAddNewUserGroupsMutation,
 } = extendedSupabaseApi;
