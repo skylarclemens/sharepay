@@ -11,10 +11,10 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) =>
   const [value, setValue] = useState('');
   const [friendSuggestions, setFriendSuggestions] = useState([]);
   const [groupSuggestions, setGroupSuggestions] = useState([]);
-  const [requestSent, setRequestSent] = useState({
+  /*const [requestSent, setRequestSent] = useState({
     id: '',
     sent: false,
-  });
+  });*/
   const user = useSelector(state => state.auth.user);
   const {
     data: friends
@@ -71,10 +71,10 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) =>
   }, [value, user, friends, newFriends, groups, showGroups]);
 
   const handleAddFriend = suggested => {
-    setRequestSent({
+    /*setRequestSent({
       id: suggested.id,
       sent: true,
-    });
+    });*/
     handleAdd(suggested);
   };
 
@@ -119,10 +119,10 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) =>
         {friendSuggestions.length > 0 && <span className="heading">Friends</span>}
         {friendSuggestions.length > 0 &&
           friendSuggestions.map(suggested => {
-            const sentStatus =
+            /*const sentStatus =
               requestSent.id === suggested.id && requestSent.sent
                 ? true
-                : false;
+                : false;*/
             return (
               <div key={suggested.id} className="user">
                 <div className="user-info">
@@ -138,11 +138,9 @@ const SelectFriends = ({ newFriends = false, showGroups = false, handleAdd }) =>
                   onClick={() => handleAddFriend(suggested)}
                 >
                   <div
-                    className={`add-user-plus ${sentStatus ? 'hide' : ''}`}
+                    className={`add-user-plus`}
                   ></div>
-                  <div
-                    className={`checkmark ${sentStatus ? '' : 'hide'}`}
-                  ></div>
+                  {/* Need to fix sentStatus to show if user already added friend/user */}
                 </button>
               </div>
             );

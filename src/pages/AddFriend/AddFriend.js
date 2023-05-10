@@ -8,10 +8,7 @@ import Header from '../../components/Header/Header';
 const AddFriend = ({ selectFriends = false, handleAddUser }) => {
   const [value, setValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [requestSent, setRequestSent] = useState({
-    id: '',
-    sent: false,
-  });
+  const [requestSent, setRequestSent] = useState([]);
   const user = useSelector(state => state.auth.user);
 
   const inputTimer = 1000;
@@ -51,10 +48,10 @@ const AddFriend = ({ selectFriends = false, handleAddUser }) => {
         status: 0,
       });
       if (error) throw error;
-      setRequestSent({
+      setRequestSent([...requestSent, {
         id: userReceiveId,
         sent: true,
-      });
+      }]);
     } catch (error) {
       console.error(error);
     }
@@ -79,9 +76,8 @@ const AddFriend = ({ selectFriends = false, handleAddUser }) => {
           {suggestions &&
             suggestions.map(suggestedUser => {
               const sentStatus =
-                requestSent.id === suggestedUser.id && requestSent.sent
-                  ? true
-                  : false;
+                requestSent.find(request => request.id === suggestedUser.id) ?? false;
+              console.log(sentStatus);
               return (
                 <div key={suggestedUser.id} className="user">
                   <div className="user-info">
@@ -97,10 +93,10 @@ const AddFriend = ({ selectFriends = false, handleAddUser }) => {
                     onClick={() => sendFriendRequest(suggestedUser.id)}
                   >
                     <div
-                      className={`add-user-plus ${sentStatus ? 'hide' : ''}`}
+                      className={`add-user-plus ${sentStatus && 'hide'}`}
                     ></div>
                     <div
-                      className={`checkmark ${sentStatus ? '' : 'hide'}`}
+                      className={`checkmark ${!sentStatus && 'hide'}`}
                     ></div>
                   </button>
                 </div>
