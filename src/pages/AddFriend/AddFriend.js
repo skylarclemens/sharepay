@@ -4,14 +4,14 @@ import { supabase } from '../../supabaseClient';
 import { useSelector } from 'react-redux';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
-import SelectPeople from '../../components/SelectPeople/SelectPeople';
-import Modal from '../../components/Modal/Modal';
+//import SelectPeople from '../../components/SelectPeople/SelectPeople';
+//import Modal from '../../components/Modal/Modal';
 import Search from '../../components/Search/Search';
 
 const AddFriend = ({ selectFriends = false, handleAddUser }) => {
   const [value, setValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [openSelectPeople, setOpenSelectPeople] = useState(false);
+  //const [openSelectPeople, setOpenSelectPeople] = useState(false);
   const user = useSelector(state => state.auth.user);
 
   const inputTimer = 1000;

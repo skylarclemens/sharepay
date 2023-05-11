@@ -156,7 +156,7 @@ const Friends = () => {
             })
           : null}
       </div>
-      <Modal open={openSearchPeople} fullPage={true} setOpen={setOpenSearchPeople}>
+      <Modal open={openSearchPeople} fullScreen={true}>
         <SearchPeople />
       </Modal>
     </>
