@@ -25,6 +25,31 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         ...result.map(({ id }) => ({ type: 'Account', id: id }))
       ]
     }),
+    getAllAccounts: builder.query({
+      queryFn: async () => {
+        const { data, error } = await supabase
+          .from('users')
+          .select();
+        return { data, error }
+      },
+      providesTags: (result = [], error, arg) => [
+        { type: 'Account', id: 'LIST' },
+        ...result.map(({ id }) => ({ type: 'Account', id: id }))
+      ]
+    }),
+    searchAccounts: builder.query({
+      queryFn: async ({ userId, value }) => {
+        const { data, error } = await supabase
+          .from('users')
+          .select()
+          .neq('id', userId)
+          .or(`email.ilike.%${value}%,name.ilike.%${value}%`);
+        return { data, error }
+      },
+      providesTags: (result = [], error, arg) => [
+        ...result.map(({ id }) => ({ type: 'Account', id: id }))
+      ]
+    }),
     updateAccount: builder.mutation({
       queryFn: async (accountUpdates) => {
         const { data, error } = await supabase
@@ -41,5 +66,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
 export const {
   useGetAccountQuery,
   useGetAccountsQuery,
+  useGetAllAccountsQuery,
+  useSearchAccountsQuery,
   useUpdateAccountMutation
 } = extendedSupabaseApi;

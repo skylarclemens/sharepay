@@ -6,13 +6,12 @@
   width: 100%;
   height: calc(100vh - 46px - env(safe-area-inset-top));
   background: #ffffff;
-}
 
-.select-friends .search-container {
-  width: 100%;
-  gap: 0.5rem;
-  padding: 1rem 20px 0.25rem 20px;
-  margin: 0;
+  .results {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
 }
 
 .selected-users-button {

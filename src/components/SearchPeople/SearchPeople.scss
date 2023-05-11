@@ -1,0 +1,13 @@
+.search-people {
+  position: relative;
+  top: env(safe-area-inset-top);
+  width: 100%;
+  height: calc(100vh - env(safe-area-inset-top));
+  background: #ffffff;
+
+  .suggested-users {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+}

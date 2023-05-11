@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import blankAvatar from '../../images/Blank_avatar.svg';
 
-const Avatar = ({ url, size, classes, type = 'account' }) => {
+const Avatar = ({ url, size, classes, type = 'user' }) => {
   const [avatarUrl, setAvatarUrl] = useState(null);
 
   useEffect(() => {
     const downloadAvatar = async urlPath => {
-      const storageType = type === 'account' ? 'avatars' : 'group-avatars';
+      const storageType = type === 'user' ? 'avatars' : 'group-avatars';
       try {
         const { data, error } = await supabase.storage
           .from(storageType)

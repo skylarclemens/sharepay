@@ -2,8 +2,9 @@ import './SelectPeople.scss';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../Header/Header';
-import UserSelect from './UserSelect/UserSelect';
-import GroupSelect from './GroupSelect/GroupSelect';
+import UserSelect from '../Search/UserSelect/UserSelect';
+import UserAdd from '../Search/UserAdd/UserAdd';
+import Search from '../Search/Search';
 import { supabase } from '../../supabaseClient';
 import { useGetFriendsQuery } from '../../slices/friendSlice';
 import { useGetGroupsQuery } from '../../slices/groupSlice';
@@ -70,50 +71,49 @@ const SelectPeople = ({ newFriends = false, showGroups = false, handleAdd, exist
 
   const handleUserSelected = (suggested, selected) => {
     if (selected) {
-      setSelectedUsers([...selectedUsers, suggested]);
+      setSelectedUsers(selectedUsers => [...selectedUsers, suggested]);
     } else {
       setSelectedUsers(selectedUsers.filter(user => user.id !== suggested.id));
     }
   }
 
-  const handleAddGroup = suggested => {
-    handleAdd(suggested);
-  };
+  const renderSuggestions = (
+    <>
+      <div className="results">
+            {groupSuggestions.length > 0 && <span className="search-heading">Groups</span>}
+            {groupSuggestions.length > 0 && (
+              groupSuggestions.map(suggested => {
+                return (
+                  <UserAdd key={suggested.id} user={suggested} type="group" handleSelect={() => handleAdd(suggested)} />
+                );
+              })
+            )}
+      </div>
+      <div className="results">
+        {friendSuggestions.length > 0 && <span className="search-heading">Friends</span>}
+        {friendSuggestions.length > 0 &&
+          friendSuggestions.map(suggested => {
+            const userSelected = selectedUsers.find(selected => selected.id === suggested.id) ?? false;
+            if (newFriends && !userSelected) {
+              return (
+                <UserAdd key={suggested.id} user={suggested} handleSelect={() => handleAdd(suggested)} />
+              )
+            } else if (!newFriends) {
+              return (
+                <UserSelect key={suggested.id} userSelected={!!userSelected} user={suggested} handleSelect={handleUserSelected} />
+              )
+            }
+            return null;
+          })}
+      </div>
+    </>
+  )
 
   return (
     <div className={`add-friend-container ${!newFriends && 'select-friends'}`}>
       <Header type="title" title="Select people" />
-      <div className="search-container">
-        <input
-          className="text-input search-input"
-          type="search"
-          value={value}
-          placeholder="Search for people..."
-          onChange={e => setValue(e.target.value)}
-        />
-      </div>
-      <div className="suggested-users">
-        <div className="results-container">
-          {groupSuggestions.length > 0 && <span className="search-heading">Groups</span>}
-          {groupSuggestions.length > 0 && (
-            groupSuggestions.map(suggested => {
-              return (
-                <GroupSelect key={suggested.id} group={suggested} handleSelect={() => handleAddGroup(suggested)} />
-              );
-            })
-          )}
-        </div>
-        <div className="results-container">
-          {friendSuggestions.length > 0 && <span className="search-heading">Friends</span>}
-          {friendSuggestions.length > 0 &&
-            friendSuggestions.map(suggested => {
-              return (
-                <UserSelect key={suggested.id} selectedUsers={existingUsers} user={suggested} handleSelect={handleUserSelected} />
-              )
-            })}
-        </div>
-      </div>
-      <button className={`button button--floating selected-users-button ${selectedUsers.length ? 'show' : ''}`} onClick={() => handleAdd(selectedUsers)}>{`Add friend${selectedUsers.length > 1 ? 's' : ''}`}</button>
+      <Search value={value} setValue={setValue} suggestions={renderSuggestions} />
+      <button className={`button button--floating selected-users-button ${selectedUsers.length > 0 ? 'show' : ''}`} onClick={() => handleAdd(selectedUsers)}>{`Add friend${selectedUsers.length > 1 ? 's' : ''}`}</button>
     </div>
   );
 };
