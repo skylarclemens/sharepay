@@ -1,5 +1,6 @@
 import { supabase } from '../supabaseClient';
 import { supabaseApi } from '../api/supabaseApi';
+import { createSelector } from '@reduxjs/toolkit';
 
 const extendedSupabaseApi = supabaseApi.injectEndpoints({
   endpoints: builder => ({
@@ -50,3 +51,11 @@ export const { useGetFriendsQuery,
   useGetFriendQuery,
   useAddNewFriendMutation
 } = extendedSupabaseApi;
+
+export const selectFriendsBySearchQuery = createSelector(
+  res => res.data, (data, searchQuery) => searchQuery,
+  (data, searchQuery) => data?.filter(friend => 
+    friend.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    friend.email.toLowerCase().includes(searchQuery.toLowerCase())
+  ) ?? []
+)

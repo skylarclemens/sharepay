@@ -1,5 +1,6 @@
 import { supabase } from '../supabaseClient';
 import { supabaseApi } from '../api/supabaseApi';
+import { createSelector } from '@reduxjs/toolkit';
 
 export const extendedSupabaseApi = supabaseApi.injectEndpoints({
   endpoints: builder => ({
@@ -70,3 +71,10 @@ export const {
   useAddNewGroupMutation,
   useAddNewUserGroupsMutation,
 } = extendedSupabaseApi;
+
+export const selectGroupsBySearchQuery = createSelector(
+  res => res.data, (data, searchQuery) => searchQuery,
+  (data, searchQuery) => data?.filter(group => 
+    group.group_name.toLowerCase().includes(searchQuery.toLowerCase())
+  ) ?? []
+)
