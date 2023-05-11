@@ -11,6 +11,7 @@
   font-size: 1rem;
   border: 1px solid white;
   cursor: pointer;
+  transition: width 0.5s ease-in-out;
   &:active {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -26,6 +27,10 @@
     font-size: 0.875rem;
   }
 
+  &.button--flat {
+    background: v.$layout-green;
+  }
+
   &.button--white {
     background: #ffffff;
     color: v.$green;
@@ -38,10 +43,6 @@
     font-weight: 600;
   }
 
-  &.button--border-none {
-    border: none;
-  }
-
   &.button--red-gradient {
     border: none;
     background: v.$red-gradient;
@@ -49,6 +50,10 @@
 
   &.button--box-shadow {
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
+  }
+
+  &.button--solid-box-shadow {
+    box-shadow: 0px 2px 0px #507155;
   }
 
   &.button--link {
@@ -64,6 +69,17 @@
     left: 0;
     margin: 0 auto;
     z-index: 100;
+  }
+
+  &.button--disabled {
+    background: v.$accent-gray;
+    color: v.$dark-gray;
+    border: 1px solid v.$dark-gray;
+    cursor: not-allowed;
+  }
+
+  &.button--border-none {
+    border: none;
   }
 }
 

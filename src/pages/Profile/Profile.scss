@@ -1,0 +1,46 @@
+@use '../../utilities/colors' as v;
+
+.profile {
+  margin: 1.25rem;
+  .profile-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: v.$light-gray;
+    padding: 0.75rem;
+    border-radius: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .profile__user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    .profile__info-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .profile__name {
+      font-family: 'Rubik', sans-serif;
+      font-weight: 600;
+      font-size: 1.5rem;
+      color: v.$almost-black;
+    }
+    .profile__username {
+      font-family: 'Rubik', sans-serif;
+      font-weight: 400;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      color: v.$washed-gray;
+    }
+  }
+  .profile__friend-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+    .profile__friend-actions--left {
+      display: flex;
+      gap: 0.75rem;
+    }
+  }
+}

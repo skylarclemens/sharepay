@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
-import AddFriend from './pages/AddFriend/AddFriend';
 import FriendDetails from './pages/FriendDetails/FriendDetails';
 import Account from './pages/Account/Account';
 import Expense from './pages/Expense/Expense';
@@ -18,6 +17,7 @@ import EmptyLayout from './layouts/EmptyLayout/EmptyLayout';
 import RequireAuth from './layouts/RequireAuth/RequireAuth';
 import People from './pages/People/People';
 import Friends from './pages/Friends/Friends';
+import Profile from './pages/Profile/Profile';
 
 const RoutesContainer = () => {
   return (
@@ -36,11 +36,11 @@ const RoutesContainer = () => {
           <Route element={<DetailsLayout />}>
             <Route path="expense/:id" element={<Expense />} />
             <Route path="people/:id" element={<FriendDetails />} />
+            <Route path="user/:id" element={<Profile />} />
             <Route path="group/:id" element={<Group />} />
           </Route>
           <Route element={<FormLayout />}>
             <Route path="new-expense" element={<NewExpense />} />
-            <Route path="add-friend" element={<AddFriend />} />
             <Route path="new-group" element={<NewGroup />} />
           </Route>
         </Route>
