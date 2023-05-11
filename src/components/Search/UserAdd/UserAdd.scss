@@ -1,0 +1,44 @@
+@use '../../../utilities/colors' as v;
+
+.search-user {
+  &.search-user--add {
+    padding: 0.5rem 0.625rem;
+  }
+}
+
+.add-user-search {
+  position: relative;
+  height: 25px;
+  width: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5rem;
+  background: v.$layout-green;
+  border: 2px solid v.$layout-green;
+  box-shadow: 0 2px 0 v.$accent-gray;
+
+  .add-user-plus {
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: #ffffff;
+    }
+    &::after {
+      width: 2px;
+      margin: 6px auto;
+    }
+    &::before {
+      height: 2px;
+      margin: auto 6px;
+    }
+    &.hide {
+      display: none;
+    }
+  }
+}

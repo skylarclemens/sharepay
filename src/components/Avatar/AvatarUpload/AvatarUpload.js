@@ -5,7 +5,7 @@ import { v4 as uuid } from 'uuid';
 import Avatar from '../Avatar';
 import { useSelector } from 'react-redux';
 
-const AvatarUpload = ({ url, onUpload, type = 'account', className = '' }) => {
+const AvatarUpload = ({ url, onUpload, type = 'user', className = '' }) => {
   const user = useSelector(state => state.auth.user);
   const [uploading, setUploading] = useState(false);
 

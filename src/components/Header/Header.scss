@@ -51,6 +51,10 @@
   width: 32px;
 }
 
+.header-icon {
+  filter: brightness(0) invert(1);
+}
+
 .title-header {
   display: grid;
   grid-auto-flow: column;

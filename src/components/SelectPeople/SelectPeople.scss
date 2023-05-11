@@ -1,0 +1,22 @@
+@use '../../utilities/colors' as v;
+
+.select-friends {
+  position: relative;
+  top: calc(46px + env(safe-area-inset-top));
+  width: 100%;
+  height: calc(100vh - 46px - env(safe-area-inset-top));
+  background: #ffffff;
+
+  .results {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+}
+
+.selected-users-button {
+  visibility: hidden;
+  &.show {
+    visibility: visible;
+  }
+}

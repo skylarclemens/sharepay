@@ -1,15 +1,20 @@
 import './Friends.scss';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
+import Modal from '../../components/Modal/Modal';
+import SearchPeople from '../../components/SearchPeople/SearchPeople';
 import addFriendImg from '../../images/Add_friend.svg';
+import searchImg from '../../images/Search.svg'
 import { useGetFriendsQuery, useAddNewFriendMutation } from '../../slices/friendSlice';
 import { useGetFriendRequestsQuery, useUpdateFriendRequestStatusMutation } from '../../slices/friendRequestSlice';
 
 
 const Friends = () => {
   const user = useSelector(state => state.auth.user);
+  const [openSearchPeople, setOpenSearchPeople] = useState(false);
 
   const {
     data: friends,
@@ -49,12 +54,11 @@ const Friends = () => {
   return (
     <>
       <Header
-        type="main"
+        type="main-title"
         headerRight={
-          <Link to="/add-friend">
-            <img src={addFriendImg} alt="Add Friend Icon" />
-          </Link>
+          <img src={searchImg} className="header-icon" alt="Add Friend Icon" />
         }
+        headerRightFn={() => setOpenSearchPeople(true)}
       />
       <div className="friends-container">
         {(requestsSuccess && requests.length > 0) ? (
@@ -101,7 +105,7 @@ const Friends = () => {
                 <Link
                   key={friend.id}
                   className="user"
-                  to={`/friend/${friend.id}`}
+                  to={`/people/${friend.id}`}
                 >
                   <div className="user-info">
                     <Avatar url={friend.avatar_url} />
@@ -152,6 +156,9 @@ const Friends = () => {
             })
           : null}
       </div>
+      <Modal open={openSearchPeople} fullScreen={true}>
+        <SearchPeople />
+      </Modal>
     </>
   );
 };

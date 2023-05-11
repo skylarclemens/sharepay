@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import TextInput from '../../components/Input/TextInput/TextInput';
 import Modal from '../../components/Modal/Modal';
-import SelectFriends from '../../components/SelectFriends/SelectFriends';
-import UserButton from '../../components/User/UserButton/UserButton';
+import AddUsers from '../NewExpense/AddUsers/AddUsers';
+import SelectPeople from '../../components/SelectPeople/SelectPeople';
 import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 import { GROUP_COLORS } from '../../constants/groups';
 import { useGetAccountQuery } from '../../slices/accountSlice';
@@ -15,13 +15,14 @@ import { useAddNewGroupMutation, useAddNewUserGroupsMutation } from '../../slice
 const NewGroup = () => {
   const user = useSelector(state => state.auth.user);
   const {
-    data: account
+    data: account,
+    isSuccess: accountFetched
   } = useGetAccountQuery(user?.id);
   
   const [groupName, setGroupName] = useState('');
   const [groupMembers, setGroupMembers] = useState([{ ...account }]);
   const [groupColor, setGroupColor] = useState(GROUP_COLORS[0].color);
-  const [openSelectFriends, setOpenSelectFriends] = useState(false);
+  const [openSelectPeople, setOpenSelectPeople] = useState(false);
   const [groupAvatarUrl, setGroupAvatarUrl] = useState(null);
   const inputRef = useRef(null);
   const navigate = useNavigate();
@@ -65,9 +66,9 @@ const NewGroup = () => {
     }
   };
 
-  const handleAddUser = friend => {
-    setGroupMembers([...groupMembers, friend]);
-    setOpenSelectFriends(false);
+  const handleAddUsers = users => {
+    setGroupMembers(users);
+    setOpenSelectPeople(false);
   };
 
   return (
@@ -90,28 +91,13 @@ const NewGroup = () => {
             ref={inputRef}
             onChange={e => setGroupName(e.target.value)}
           />
-          <div className="add-friends input-container">
-            <span className="input-label group-spacing">Group members</span>
-            <div className="group-members">
-              {groupMembers.map(member => {
-                return (
-                  <UserButton
-                    key={member.id}
-                    user={member}
-                    name={member.name}
-                    variant="white"
-                  />
-                );
-              })}
-              <button
-              type="button"
-              className="button--form-add button--icon"
-              onClick={() => setOpenSelectFriends(true)}
-              >
-                <div className="add-plus"></div>
-              </button>
-            </div>
-          </div>
+          {accountFetched ? <AddUsers
+            label={'Group members'}
+            account={account}
+            usersList={groupMembers}
+            setUsersList={handleAddUsers}
+            setOpenSelectPeople={setOpenSelectPeople}
+          /> : null}
           <div className="input-container group-spacing">
             <div className="input-label">Group color</div>
             <div className="group-colors">
@@ -139,8 +125,8 @@ const NewGroup = () => {
           </button>
         </form>
       </div>
-      <Modal open={openSelectFriends}>
-        <SelectFriends handleAdd={handleAddUser} />
+      <Modal open={openSelectPeople}>
+        <SelectPeople handleAdd={handleAddUsers} existingUsers={groupMembers} />
       </Modal>
     </>
   );

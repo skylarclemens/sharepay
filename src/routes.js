@@ -35,7 +35,7 @@ const RoutesContainer = () => {
           </Route>
           <Route element={<DetailsLayout />}>
             <Route path="expense/:id" element={<Expense />} />
-            <Route path="friend/:id" element={<FriendDetails />} />
+            <Route path="people/:id" element={<FriendDetails />} />
             <Route path="group/:id" element={<Group />} />
           </Route>
           <Route element={<FormLayout />}>

@@ -23,6 +23,7 @@
 .text-input {
   background-color: #ffffff;
   -webkit-appearance: none;
+  appearance: none;
   min-height: 42px;
   border: 1px solid v.$dark-gray;
   box-shadow: 0px 2px 0px v.$accent-gray;
@@ -35,6 +36,20 @@
     border-color: v.$accent-gray;
     background: v.$light-gray;
     color: #aaaaaa;
+  }
+}
+
+.checkmark {
+  position: relative;
+  display: inline-block;
+  transform: rotate(45deg);
+  height: 16px;
+  width: 9px;
+  bottom: 1px;
+  border-bottom: 2px solid v.$green;
+  border-right: 2px solid v.$green;
+  &.hide {
+    display: none;
   }
 }
 
