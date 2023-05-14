@@ -15,7 +15,6 @@ import DetailsLayout from './layouts/DetailsLayout/DetailsLayout';
 import FormLayout from './layouts/FormLayout/FormLayout';
 import EmptyLayout from './layouts/EmptyLayout/EmptyLayout';
 import RequireAuth from './layouts/RequireAuth/RequireAuth';
-import People from './pages/People/People';
 import Friends from './pages/Friends/Friends';
 import Profile from './pages/Profile/Profile';
 
@@ -28,10 +27,8 @@ const RoutesContainer = () => {
           <Route element={<MainLayout />}>
             <Route path="account" element={<Account />} />
             <Route path="recent" element={<Recent />} />
-            <Route path="people" element={<People />}>
-              <Route path="friends" element={<Friends />} />
-              <Route path="groups" element={<Groups />} />
-            </Route>
+            <Route path="friends" element={<Friends />} />
+            <Route path="groups" element={<Groups />} />
           </Route>
           <Route element={<DetailsLayout />}>
             <Route path="expense/:id" element={<Expense />} />

@@ -2,6 +2,7 @@ import './Dashboard.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { balanceCalc } from '../../helpers/balance';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { selectAllFriendExpenses, setBalances, useGetExpensesQuery } from '../../slices/expenseSlice';
 import Header from '../../components/Header/Header';
 import Transactions from '../../components/Transactions/Transactions';
@@ -10,6 +11,7 @@ import { formatMoney } from '../../helpers/money';
 import { useGetDebtsQuery } from '../../slices/debtSlice';
 import { useGetGroupsQuery } from '../../slices/groupSlice';
 import GroupExpenses from './GroupExpenses/GroupExpenses';
+import Avatar from '../../components/Avatar/Avatar';
 
 const Dashboard = () => {
   const user = useSelector(state => state.auth.user);
@@ -52,7 +54,13 @@ const Dashboard = () => {
 
   return (
     <>
-      <Header type="main" title="Dashboard" />
+      <Header type="main"
+        title="Dashboard"
+        headerRight={
+          <Link to="/account">
+            <Avatar user={user} size={28} classes="white-border"/>
+          </Link>
+        } />
       {dataLoaded ? (
         <>
           <Refresh onRefresh={onRefresh} />
