@@ -17,6 +17,20 @@ const extendedSupabaseApi = supabaseApi.injectEndpoints({
         ...result.map(({ id }) => ({ type: 'FriendRequest', id: id }))
       ]
     }),
+    addFriendRequest: builder.mutation({
+      queryFn: async ({ userId, friendId }) => {
+        const { data, error } = await supabase
+          .from('user_friend')
+          .insert({
+            user_id: userId,
+            friend_id: friendId,
+            status: 0,
+          })
+          .select();
+        return { data, error };
+      },
+      invalidatesTags: (result, error, arg) => [{ type: 'FriendRequest', id: arg.userId }]
+    }),
     updateFriendRequestStatus: builder.mutation({
       queryFn: async ({ status, userId, friendId }) => {
         const { data, error } = await supabase
@@ -30,11 +44,12 @@ const extendedSupabaseApi = supabaseApi.injectEndpoints({
         return { data, error };
       },
       invalidatesTags: (result, error, arg) => [{ type: 'FriendRequest', id: arg.userId }]
-    })
+    }),
   })
 })
 
 export const {
   useGetFriendRequestsQuery,
+  useAddFriendRequestMutation,
   useUpdateFriendRequestStatusMutation
 } = extendedSupabaseApi;

@@ -10,6 +10,7 @@ import addFriendImg from '../../images/Add_friend.svg';
 import searchImg from '../../images/Search.svg'
 import { useGetFriendsQuery, useAddNewFriendMutation } from '../../slices/friendSlice';
 import { useGetFriendRequestsQuery, useUpdateFriendRequestStatusMutation } from '../../slices/friendRequestSlice';
+import UserResult from '../../components/Search/UserResult/UserResult';
 
 
 const Friends = () => {
@@ -54,7 +55,8 @@ const Friends = () => {
   return (
     <>
       <Header
-        type="main-title"
+        type="main"
+        title="Friends"
         headerRight={
           <img src={searchImg} className="header-icon" alt="Add Friend Icon" />
         }
@@ -99,26 +101,22 @@ const Friends = () => {
             </div>
           </>
         ) : null}
-        {friendsSuccess && friends?.length > 0
-          ? friends.map(friend => {
-              return (
-                <Link
-                  key={friend.id}
-                  className="user"
-                  to={`/people/${friend.id}`}
-                >
-                  <div className="user-info">
-                    <Avatar url={friend.avatar_url} />
-                    <div className="user-info-text">
-                      <div className="user-name">{friend.name}</div>
-                      <div className="user-email">{friend.email}</div>
-                    </div>
-                  </div>
-                  <div className="arrow arrow--right"></div>
-                </Link>
-              );
-            })
-          : null}
+        <div className="friends-list">
+          {friendsSuccess && friends?.length > 0
+            ? friends.map(friend => {
+                return (
+                  <Link
+                    key={friend.id}
+                    className="search-user"
+                    to={`/user/${friend.id}`}
+                  >
+                    <UserResult user={friend} />
+                    <div className="arrow arrow--right"></div>
+                  </Link>
+                );
+              })
+            : null}
+          </div>
         {friendsSuccess && friends?.length === 0 ? (
           <div className="no-people">
             <span>Add friends to start sharing expenses.</span>

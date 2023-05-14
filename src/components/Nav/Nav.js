@@ -1,8 +1,8 @@
 import './Nav.scss';
 import homeImg from '../../images/Home.svg';
+import friendImg from '../../images/Friend.svg'
 import groupImg from '../../images/Group.svg';
 import graphImg from '../../images/Graph.svg';
-import profileImg from '../../images/Profile.svg';
 import { Link, useLocation } from 'react-router-dom';
 
 const Nav = () => {
@@ -17,24 +17,24 @@ const Nav = () => {
             <img src={homeImg} alt="Home icon" />
           </Link>
           <Link
-            className={`nav-button ${selectedPath('people')}`}
-            to="/people/friends"
+            className={`nav-button ${selectedPath('friends')}`}
+            to="/friends"
           >
-            <img src={groupImg} alt="Friends and groups icon" />
+            <img src={friendImg} alt="Friends icon" />
           </Link>
         </div>
         <div className="nav-buttons nav-buttons-right">
           <Link
-            className={`nav-button ${selectedPath('recent')}`}
-            to="/recent"
-          >
-            <img src={graphImg} alt="Graph icon" />
+              className={`nav-button ${selectedPath('groups')}`}
+              to="/groups"
+            >
+            <img src={groupImg} alt="Groups icon" />
           </Link>
           <Link
-            className={`nav-button ${selectedPath('account')}`}
-            to="/account"
+            className={`nav-button ${selectedPath('activity')}`}
+            to="/activity"
           >
-            <img src={profileImg} alt="Account icon" />
+            <img src={graphImg} alt="Graph icon" />
           </Link>
         </div>
       </div>

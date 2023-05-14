@@ -1,9 +1,9 @@
-import './Recent.scss';
+import './Activity.scss';
 import { useGetPaidUpsQuery } from '../../slices/paidApi';
 import Transaction from '../../components/Transaction/Transaction';
 import Header from '../../components/Header/Header';
 
-const Recent = () => {
+const Activity = () => {
   const {
     data: paidUps,
     isSuccess: paidUpsFetched
@@ -35,7 +35,7 @@ const Recent = () => {
 
   return (
     <>
-    <Header type="main" title="Recent" />
+    <Header type="main" title="Activity" />
     <div className="recent">
       {paidUpsFetched && paidUps.map((paidUp) => {
         return (
@@ -58,4 +58,4 @@ const Recent = () => {
   );
 };
 
-export default Recent;
+export default Activity;

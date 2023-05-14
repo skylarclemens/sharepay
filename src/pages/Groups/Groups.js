@@ -4,7 +4,7 @@ import { useGetGroupsQuery } from '../../slices/groupSlice';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import addGroupImg from '../../images/Add_group.svg';
-import Avatar from '../../components/Avatar/Avatar';
+import UserResult from '../../components/Search/UserResult/UserResult';
 
 const Groups = () => {
   const user = useSelector(state => state.auth.user);
@@ -18,6 +18,7 @@ const Groups = () => {
     <>
       <Header
         type="main"
+        title="Groups"
         headerRight={
           <Link to="/new-group">
             <img src={addGroupImg} alt="Add Group Icon" />
@@ -29,18 +30,10 @@ const Groups = () => {
               return (
                 <Link
                   to={`/group/${group?.id}`}
+                  className="search-user"
                   key={group?.id}
-                  className="group"
                 >
-                  <div className="group-info-container">
-                    <Avatar
-                      classes="white-border"
-                      url={group?.avatar_url}
-                      size={45}
-                      type="group"
-                    />
-                    <span className="group-name">{group?.group_name}</span>
-                  </div>
+                  <UserResult user={group} type="group" />
                   <div className="arrow arrow--right"></div>
                 </Link>
               );

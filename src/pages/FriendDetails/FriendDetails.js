@@ -11,6 +11,7 @@ import { useGetFriendQuery } from '../../slices/friendSlice';
 import { balanceCalc } from '../../helpers/balance';
 import { formatMoney } from '../../helpers/money';
 import { useGetDebtsQuery, selectSharedDebtsByFriendId } from '../../slices/debtSlice';
+import FriendAction from '../FriendAction/FriendAction';
 
 const FriendDetails = () => {
   const user = useSelector(state => state.auth.user);
@@ -19,7 +20,8 @@ const FriendDetails = () => {
   let { id } = useParams();
 
   const {
-    data: friend
+    data: friend,
+    isSuccess: friendFetched,
   } = useGetFriendQuery(id);
 
   const { sharedDebts,
@@ -42,58 +44,62 @@ const FriendDetails = () => {
   return (
     <>
       <Header type="title" title="Friend details" />
-      <div className={`friend-pay-container ${openPayUp ? 'modal-open' : ''}`}>
-        <div className={openPayUp ? 'modal-overlay' : ''}></div>
-        {friend && (
-          <div className="friend-container">
-            <div className="page-info-container">
-              <div className="page-info">
-                <Avatar
-                  classes="white-border"
-                  url={friend?.avatar_url}
-                  size={50}
-                />
-                <h1 className="page-title">{friend?.name}</h1>
+      {friendFetched && (
+      <>
+        <div className={`friend-pay-container ${openPayUp ? 'modal-open' : ''}`}>
+          <div className={openPayUp ? 'modal-overlay' : ''}></div>
+          {friend && (
+            <div className="friend-container">
+              <div className="page-info-container">
+                <div className="page-info">
+                  <Avatar
+                    classes="white-border"
+                    url={friend?.avatar_url}
+                    size={50}
+                  />
+                  <h1 className="page-title">{friend?.name}</h1>
+                </div>
+                <div className="balance-block">
+                  <h3 className="balance-text">TOTAL BALANCE</h3>
+                  <span className="total-amount">
+                    {formatMoney(balances.total)}
+                  </span>
+                </div>
               </div>
-              <div className="balance-block">
-                <h3 className="balance-text">TOTAL BALANCE</h3>
-                <span className="total-amount">
-                  {formatMoney(balances.total)}
-                </span>
+              <FriendAction person={friend} />
+              {!(balances.total === 0) && (
+                <div className="pay-up-button">
+                  <button
+                    type="button"
+                    className="button button--border-none"
+                    title="Pay up"
+                    onClick={handleOpenPayUp}
+                  >
+                    Pay up
+                  </button>
+                </div>
+              )}
+              <div className="shared-expenses">
+                <h2 className="heading">Shared expenses</h2>
+                {debtsLoading &&
+                  <div className="medium-gray">Loading...</div>}
+                {debtsFetched && balances.total !== 0 &&
+                  <Transactions transactions={sharedDebts} type="debt" />}
+                {balances.total === 0 &&
+                  <div className="medium-gray">No transactions available</div>}
               </div>
             </div>
-            {!(balances.total === 0) && (
-              <div className="pay-up-button">
-                <button
-                  type="button"
-                  className="button button--border-none"
-                  title="Pay up"
-                  onClick={handleOpenPayUp}
-                >
-                  Pay up
-                </button>
-              </div>
-            )}
-            <div className="shared-expenses">
-              <h2 className="heading">Shared expenses</h2>
-              {debtsLoading &&
-                <div className="medium-gray">Loading...</div>}
-              {debtsFetched && balances.total !== 0 &&
-                <Transactions transactions={sharedDebts} type="debt" />}
-              {balances.total === 0 &&
-                <div className="medium-gray">No transactions available</div>}
-            </div>
-          </div>
-        )}
-      </div>
-      <Modal open={openPayUp}>
-        <PayUp
-          setOpenPayUp={setOpenPayUp}
-          friend={friend}
-          sharedDebts={sharedDebts}
-          balances={balances}
-        />
-      </Modal>
+          )}
+        </div>
+        <Modal open={openPayUp}>
+          <PayUp
+            setOpenPayUp={setOpenPayUp}
+            friend={friend}
+            sharedDebts={sharedDebts}
+            balances={balances}
+          />
+        </Modal>
+      </>)}
     </>
   );
 };
