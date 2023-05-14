@@ -10,7 +10,7 @@
     background: v.$light-gray;
     min-height: 36px;
     font-size: 1rem;
-    border-radius: 0.5rem 0.5rem 0 0;
+    border-radius: 1rem 1rem 0 0;
     padding: 0.875rem 0.625rem 0.875rem 1rem;
     border-width: 0px 0px 1px 3px;
     border-style: solid;
@@ -32,7 +32,7 @@
   }
 
   .expenses-list .transaction-link:last-child .group-expense {
-    border-radius: 0 0 0.5rem 0.5rem;
+    border-radius: 0 0 1rem 1rem;
     border-bottom: none;
   }
 }

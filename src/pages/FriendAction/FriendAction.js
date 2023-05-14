@@ -29,7 +29,7 @@ const FriendAction = ({ friend }) => {
   return (
     <>
     {isUsersFriendFetched && (
-      <button className={`button button--with-icon button--small button--border-none button--flat ${addFriendRequestLoading || addFriendRequestSuccess || addFriendRequestError || isFriend ? 'button--disabled' : ''}`}
+      <button className={`button button--with-icon button--medium button--border-none button--flat ${addFriendRequestLoading || addFriendRequestSuccess || addFriendRequestError || isFriend ? 'button--disabled' : ''}`}
         disabled={addFriendRequestLoading || addFriendRequestSuccess || addFriendRequestError || isFriend}
         onClick={() => sendFriendRequest()}>
           {isFriend ? (

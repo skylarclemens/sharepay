@@ -1,6 +1,5 @@
 import './DetailsCard.scss';
 import Avatar from '../Avatar/Avatar';
-import FriendAction from '../../pages/FriendAction/FriendAction';
 
 const DetailsCard = ({ user, actions }) => {
   return (
