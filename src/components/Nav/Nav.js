@@ -31,8 +31,8 @@ const Nav = () => {
             <img src={groupImg} alt="Groups icon" />
           </Link>
           <Link
-            className={`nav-button ${selectedPath('recent')}`}
-            to="/recent"
+            className={`nav-button ${selectedPath('activity')}`}
+            to="/activity"
           >
             <img src={graphImg} alt="Graph icon" />
           </Link>
