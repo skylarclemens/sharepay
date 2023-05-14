@@ -12,10 +12,14 @@ import { useGetDebtsQuery } from '../../slices/debtSlice';
 import { useGetGroupsQuery } from '../../slices/groupSlice';
 import GroupExpenses from './GroupExpenses/GroupExpenses';
 import Avatar from '../../components/Avatar/Avatar';
+import { useGetAccountQuery } from '../../slices/accountSlice';
 
 const Dashboard = () => {
   const user = useSelector(state => state.auth.user);
   const balances = useSelector(state => state.expenses.balances);
+  const {
+    data: currentAccount,
+  } = useGetAccountQuery(user?.id);
 
   const {
     data: debts,
@@ -58,7 +62,7 @@ const Dashboard = () => {
         title="Dashboard"
         headerRight={
           <Link to="/account">
-            <Avatar user={user} size={28} classes="white-border"/>
+            <Avatar url={currentAccount?.avatar_url} size={28} classes="white-border"/>
           </Link>
         } />
       {dataLoaded ? (

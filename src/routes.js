@@ -9,7 +9,7 @@ import NewExpense from './pages/NewExpense/NewExpense';
 import NewGroup from './pages/NewGroup/NewGroup';
 import Group from './pages/Group/Group';
 import Groups from './pages/Groups/Groups';
-import Recent from './pages/Recent/Recent';
+import Activity from './pages/Activity/Activity';
 import MainLayout from './layouts/MainLayout/MainLayout';
 import DetailsLayout from './layouts/DetailsLayout/DetailsLayout';
 import FormLayout from './layouts/FormLayout/FormLayout';
@@ -26,7 +26,7 @@ const RoutesContainer = () => {
           <Route index element={<Home />} />
           <Route element={<MainLayout />}>
             <Route path="account" element={<Account />} />
-            <Route path="recent" element={<Recent />} />
+            <Route path="activity" element={<Activity />} />
             <Route path="friends" element={<Friends />} />
             <Route path="groups" element={<Groups />} />
           </Route>

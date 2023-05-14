@@ -55,7 +55,8 @@ const Friends = () => {
   return (
     <>
       <Header
-        type="main-title"
+        type="main"
+        title="Friends"
         headerRight={
           <img src={searchImg} className="header-icon" alt="Add Friend Icon" />
         }

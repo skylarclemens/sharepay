@@ -18,6 +18,7 @@ const Groups = () => {
     <>
       <Header
         type="main"
+        title="Groups"
         headerRight={
           <Link to="/new-group">
             <img src={addGroupImg} alt="Add Group Icon" />
