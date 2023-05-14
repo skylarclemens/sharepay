@@ -4,7 +4,6 @@ import { useGetGroupsQuery } from '../../slices/groupSlice';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import addGroupImg from '../../images/Add_group.svg';
-import Avatar from '../../components/Avatar/Avatar';
 import UserResult from '../../components/Search/UserResult/UserResult';
 
 const Groups = () => {
