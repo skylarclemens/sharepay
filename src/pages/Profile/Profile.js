@@ -27,13 +27,13 @@ const Profile = () => {
                 <p className="profile__username">{profileUser?.email}</p>
               </div>
             </div>
-          </div>
-          <div className="profile__friend-actions">
-            <div className="profile__friend-actions--left">
-              <FriendAction friend={profileUser} />
-              <button className="button button--small button--border-none button--flat">Add expense</button>
+            <div className="profile__friend-actions">
+              <div className="profile__friend-actions--left">
+                <FriendAction friend={profileUser} />
+                <button className="button button--small button--border-none button--flat">Add expense</button>
+              </div>
+              <button className="button button--small button--border-none button--flat">Pay up</button>
             </div>
-            <button className="button button--small button--border-none button--flat">Pay up</button>
           </div>
         </div>
       )}
