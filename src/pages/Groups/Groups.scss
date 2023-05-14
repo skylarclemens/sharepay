@@ -1,23 +1,10 @@
 @use '../../utilities/colors' as v;
 
 .groups-container {
-  .group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 20px;
-    border-bottom: 2px solid v.$accent-gray;
-    text-decoration: none;
-    color: inherit;
-  }
-  .group-info-container {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    .group-name {
-      font-weight: 500;
-    }
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
 }
 
 .no-people {
