@@ -12,7 +12,7 @@ const extendedSupabaseApi = supabaseApi.injectEndpoints({
           .eq('status', 0);
         return { data, error }
       },
-      providesTags: (result = [], error,  arg) => [
+      providesTags: (result, error, arg) => [
         { type: 'FriendRequest', id: 'LIST' },
         ...result.map(({ id }) => ({ type: 'FriendRequest', id: id }))
       ]
@@ -25,8 +25,7 @@ const extendedSupabaseApi = supabaseApi.injectEndpoints({
             user_id: userId,
             friend_id: friendId,
             status: 0,
-          })
-          .select();
+          });
         return { data, error };
       },
       invalidatesTags: (result, error, arg) => [{ type: 'FriendRequest', id: arg.userId }]
@@ -39,11 +38,10 @@ const extendedSupabaseApi = supabaseApi.injectEndpoints({
             status: status,
             status_change: new Date().toISOString(),
           }).eq('user_id', userId)
-          .eq('friend_id', friendId)
-          .select();
+          .eq('friend_id', friendId);
         return { data, error };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'FriendRequest', id: arg.userId }]
+      invalidatesTags: (result, error, arg) => [{ type: 'FriendRequest', id: arg.userId }, { type: 'Friend', id: arg.friendId }]
     }),
   })
 })

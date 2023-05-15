@@ -1,48 +1,80 @@
 import './FriendAction.scss';
 import { useSelector } from 'react-redux';
 import { useGetFriendQuery } from '../../slices/friendSlice';
-import { useAddFriendRequestMutation } from '../../slices/friendRequestSlice';
+import { useAddFriendRequestMutation, useGetFriendRequestsQuery } from '../../slices/friendRequestSlice';
 import downArrow from '../../images/Arrow_down.svg';
 
 const FriendAction = ({ friend }) => {
   const user = useSelector(state => state.auth.user);
   const {
-    data: isUsersFriend,
-    isSuccess: isUsersFriendFetched,
+    data: usersFriend,
+    isFetching: usersFriendFetching,
+    isSuccess: usersFriendFetched,
+    isError: usersFriendError
   } = useGetFriendQuery(friend?.id);
+
+  const {
+    data: friendRequest,
+    isSuccess: friendRequestFetched,
+  } = useGetFriendRequestsQuery(friend?.id, {
+    skip: !usersFriendError && !usersFriendFetching
+  });
 
   const [addFriendRequest, {
     isLoading: addFriendRequestLoading,
     isSuccess: addFriendRequestSuccess,
     isError: addFriendRequestError,
    }] = useAddFriendRequestMutation();
-  const isFriend = (isUsersFriendFetched && isUsersFriend);
+
+  const isFriend = (usersFriendFetched && usersFriend);
+  const friendStatus = friendRequest ? friendRequest?.status : -1;
 
   const sendFriendRequest = async () => {
     try {
-      await addFriendRequest({ user: user.id, friend: friend.id }).unwrap();
+      await addFriendRequest({ userId: user.id, friendId: friend.id }).unwrap();
     } catch (error) {
       console.error(error);
     }
   };
 
+  const handleFriendClick = () => {
+    console.log('friend clicked');
+  }
+
+  const friendRequestText = 
+    addFriendRequestLoading ? 'Sending' :
+    addFriendRequestSuccess ? 'Requested' :
+    addFriendRequestError ? 'Error' :
+    'Add';
+
   return (
     <>
-    {isUsersFriendFetched && (
-      <button className={`button button--with-icon button--medium button--border-none button--flat ${addFriendRequestLoading || addFriendRequestSuccess || addFriendRequestError || isFriend ? 'button--disabled' : ''}`}
-        disabled={addFriendRequestLoading || addFriendRequestSuccess || addFriendRequestError || isFriend}
-        onClick={() => sendFriendRequest()}>
-          {isFriend ? (
-            <>
-              <span>Friends</span>
-              <img src={downArrow} alt="Down arrow" className="button__icon down-arrow" />
-            </>
-          ) : 'Add'}
-          {addFriendRequestLoading && '...'}
-          {addFriendRequestSuccess && 'Sent'}
-          {addFriendRequestError && 'Error'}
+      {isFriend && (
+        <button className="button button--with-icon button--medium button--border-none button--flat button--disabled"
+          onClick={() => handleFriendClick()}>
+            {isFriend ? (
+              <>
+                <span>Friends</span>
+                <img src={downArrow} alt="Down arrow" className="button__icon down-arrow" />
+              </>
+            ) :
+              friendStatus === 0 ? 'Requested' : ''}
+            
+          </button>
+      )}
+      {friendRequestFetched && friendRequest?.status === 0 && (
+          <button className="button button--with-icon button--medium button--border-none button--flat button--disabled" disabled={true}>
+            Requested
+          </button>
+        )
+      }
+      {usersFriendError && friendRequest?.length === 0 && (
+        <button className={`button button--with-icon button--medium button--border-none button--flat ${addFriendRequestLoading || addFriendRequestSuccess || addFriendRequestError ? 'button--disabled' : ''}`}
+          onClick={() => sendFriendRequest()}
+          disabled={addFriendRequestLoading || addFriendRequestSuccess || addFriendRequestError}>
+          {friendRequestText}
         </button>
-    )}
+      )}
     </>
   );
 };

@@ -28,7 +28,7 @@ const extendedSupabaseApi = supabaseApi.injectEndpoints({
           .eq('status', 1)
           .limit(1)
           .single();
-        return { data: data.friend, error };
+        return { data: data?.friend, error };
       },
       provideTags: (result, error, arg) => [{ type: 'Friend', id: arg }]
     }),

@@ -8,7 +8,7 @@ const DetailsCard = ({ user, actions }) => {
       <div className="details-card">
         <div className="details__user">
           <div className="details__avatar">
-            <Avatar url={user?.avatar_url} classes="white-border" size={65} />
+            <Avatar url={user?.avatar_url} classes="white-border white-border--thick" size={65} />
           </div>
           <div className="details__info-text">
             <h1 className="details__name">{user?.name}</h1>
