@@ -55,7 +55,7 @@ const Friends = () => {
   return (
     <>
       <Header
-        type="main"
+        type="main-title"
         title="Friends"
         headerRight={
           <img src={searchImg} className="header-icon" alt="Add Friend Icon" />
@@ -65,21 +65,13 @@ const Friends = () => {
       <div className="friends-container">
         {(requestsSuccess && requests.length > 0) ? (
           <>
-            <h2 className="heading">Requests</h2>
+            <h2>Requests</h2>
             <div className="requests-container">
               {requests.map(req => {
                 return (
                   req.status === 0 ? (
-                  <div key={req.id} className="user">
-                    <div className="user-info">
-                      <Avatar url={req.from.avatar_url} />
-                      <div className="user-info-text">
-                        <div className="user-name">{req.from.name}</div>
-                        <div className="user-email">
-                          {req.from.email}
-                        </div>
-                      </div>
-                    </div>
+                  <div key={req.id} className="search-user">
+                    <UserResult user={req?.from} />
                     <div className="request-buttons">
                       <button
                         type="button"
@@ -155,7 +147,7 @@ const Friends = () => {
           : null}
       </div>
       <Modal open={openSearchPeople} fullScreen={true}>
-        <SearchPeople />
+        <SearchPeople setOpen={setOpenSearchPeople} />
       </Modal>
     </>
   );

@@ -28,7 +28,7 @@ const extendedSupabaseApi = supabaseApi.injectEndpoints({
           .eq('status', 1)
           .limit(1)
           .single();
-        return { data: data.friend, error };
+        return { data: data?.friend, error };
       },
       provideTags: (result, error, arg) => [{ type: 'Friend', id: arg }]
     }),
@@ -44,12 +44,24 @@ const extendedSupabaseApi = supabaseApi.injectEndpoints({
       },
       invalidatesTags: [{ type: 'Friend', id: 'LIST' }],
     }),
+    removeFriend: builder.mutation({
+      queryFn: async ({ userId, friendId }) => {
+        const { error } = await supabase
+          .from('user_friend')
+          .delete()
+          .eq('user_id', userId)
+          .eq('friend_id', friendId)
+        return { error };
+      },
+      invalidatesTags: (result, error, arg) => [{ type: 'Friend', id: arg.user }],
+    }),
   })
 })
 
 export const { useGetFriendsQuery,
   useGetFriendQuery,
-  useAddNewFriendMutation
+  useAddNewFriendMutation,
+  useRemoveFriendMutation
 } = extendedSupabaseApi;
 
 export const selectFriendsBySearchQuery = createSelector(

@@ -13,6 +13,77 @@
   margin-top: 1.25rem;
 }
 
+.friends-container {
+  h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: none;
+    color: v.$blue-black;
+    padding: 1rem 0 1rem 20px;
+  }
+
+  .requests-container {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid v.$accent-gray;
+
+    .request-buttons {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .add-user {
+      position: relative;
+      height: 30px;
+      width: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: v.$light-gray;
+      border-radius: 50%;
+      border: 2px solid v.$green;
+    }
+    .checkmark {
+      position: relative;
+      display: inline-block;
+      transform: rotate(45deg);
+      height: 16px;
+      width: 9px;
+      bottom: 1px;
+      border-bottom: 2px solid v.$green;
+      border-right: 2px solid v.$green;
+    }
+    .ignore-button {
+      position: relative;
+      height: 30px;
+      width: 30px;
+      background: v.$light-gray;
+      border-radius: 50%;
+      border: 2px solid v.$washed-gray;
+      transform: rotate(45deg);
+    }
+    .ignore-user {
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: v.$washed-gray;
+      }
+      &::after {
+        width: 2px;
+        margin: 5px auto;
+      }
+      &::before {
+        height: 2px;
+        margin: auto 5px;
+      }
+    }
+  }
+}
+
 .user {
   display: flex;
   align-items: center;
@@ -44,61 +115,6 @@
     border: 2px solid v.$washed-gray;
     border-radius: 1rem;
     padding: 0.25rem 0.5rem;
-  }
-
-  .request-buttons {
-    display: flex;
-    gap: 0.25rem;
-  }
-  .add-user {
-    position: relative;
-    height: 40px;
-    width: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    background: white;
-    border: 2px solid v.$green;
-  }
-  .checkmark {
-    position: relative;
-    display: inline-block;
-    transform: rotate(45deg);
-    height: 16px;
-    width: 9px;
-    bottom: 1px;
-    border-bottom: 2px solid v.$green;
-    border-right: 2px solid v.$green;
-  }
-  .ignore-button {
-    position: relative;
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    background: white;
-    border: 2px solid v.$washed-gray;
-    transform: rotate(45deg);
-  }
-  .ignore-user {
-    &::before,
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background: v.$washed-gray;
-    }
-    &::after {
-      width: 2px;
-      margin: 10px auto;
-    }
-    &::before {
-      height: 2px;
-      margin: auto 10px;
-    }
   }
 }
 
