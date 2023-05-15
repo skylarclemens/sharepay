@@ -4,10 +4,12 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Header from '../../components/Header/Header';
+import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import deleteImg from '../../images/Delete.svg';
 import { useGetExpenseQuery, useRemoveExpenseMutation } from '../../slices/expenseSlice';
 import { useGetDebtsQuery, selectDebtsByExpenseId } from '../../slices/debtSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
+import { formatExpenseDate } from '../../helpers/date';
 
 const UserDebtor = ({ debt }) => {
   const {
@@ -73,29 +75,18 @@ const Expense = () => {
   return (
     <>
       <Header
-              type="title"
-              title="Expense details"
-              headerRight={headerImg}
-              headerRightFn={handleDelete}
-            />
+        type="title"
+        headerRight={headerImg}
+        headerRightFn={handleDelete}
+      />
       {(auth.session && expenseFetchSuccess && creditorFetchSuccess) && (
-        <div className="expense-container">
-          <div className="expense-page-container">
-            <div className="page-info-container">
-              <div className="page-info">
-                <h1 className="page-title">{expense?.description}</h1>
-              </div>
-              <span className="total-amount">${expense?.amount.toFixed(2)}</span>
-              <span className="created-date">
-                Created on{' '}
-                {new Date(expense?.created_at).toLocaleDateString('en-US', {
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric',
-                })}
-              </span>
-              {expense?.paid && <div className="paid-up">PAID UP</div>}
-            </div>
+        <div className="expense-details-container">
+          <DetailsCard 
+            title={expense?.description}
+            subTitle={`Created on ${formatExpenseDate(expense?.created_at)}`}
+            type="expense"
+          />
+          <div className="expense-transactions-container">
             <div className="user-transaction">
               <div className="details-paid">
                 <div className="user-details">
