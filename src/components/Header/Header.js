@@ -35,7 +35,7 @@ const Header = ({ type = 'main', title, headerLeft, headerLeftFn, headerRight, h
     return (
       <div className={`header-container ${classes}`}>
         <div className="main-header header">
-          <span className="title">{title}</span>
+          <h1 className="title">{title}</h1>
           {headerRight ? (
             <div className="title-right">
               <button type="button" className="button--icon" onClick={headerRightFn}>

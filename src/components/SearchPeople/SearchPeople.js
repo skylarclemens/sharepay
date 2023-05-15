@@ -28,7 +28,7 @@ const SearchPeople = ({ setOpen = null }) => {
         <Link 
           key={`${suggested.id}-search-people`}
           className="search-user button--no-style"
-          to={`/people/${suggested.id}`}>
+          to={`/user/${suggested.id}`}>
           <UserResult key={`${suggested.id}-search-people`} user={suggested} action={handleSelect} />
         </Link>
       ))}
@@ -37,7 +37,7 @@ const SearchPeople = ({ setOpen = null }) => {
 
   return (
     <div className="search-people">
-      <Search value={value} setValue={setValue} suggestions={renderSuggestions} />
+      <Search value={value} setValue={setValue} suggestions={renderSuggestions} setOpen={setOpen} />
     </div>
   )
 }

@@ -1,9 +1,15 @@
 @use '../../utilities/colors' as v;
 
 .search-container {
+  display: flex;
   width: 100%;
   gap: 0.5rem;
   padding: 1rem 20px;
+  .button--cancel {
+    color: v.$dark-gray;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
 }
 
 .search-input {

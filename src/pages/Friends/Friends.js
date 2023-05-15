@@ -55,7 +55,7 @@ const Friends = () => {
   return (
     <>
       <Header
-        type="main"
+        type="main-title"
         title="Friends"
         headerRight={
           <img src={searchImg} className="header-icon" alt="Add Friend Icon" />
@@ -147,7 +147,7 @@ const Friends = () => {
           : null}
       </div>
       <Modal open={openSearchPeople} fullScreen={true}>
-        <SearchPeople />
+        <SearchPeople setOpen={setOpenSearchPeople} />
       </Modal>
     </>
   );
