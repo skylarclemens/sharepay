@@ -93,6 +93,12 @@ export const selectSharedDebtsByFriendId = createSelector(
   (data, friendId) => data?.filter(debt => (debt.creditor_id === friendId || debt.debtor_id === friendId)) ?? []
 );
 
+export const selectUserDebtsByGroupId = createSelector(
+  res => res.data, (data, groupId) => groupId,
+  (data, groupId) => data?.filter(debt =>
+    debt.group_id === groupId) ?? []
+)
+
 export const selectPaidDebts = createSelector(
   res => res?.data,
   data => data?.filter(debt => debt.paid === true) ?? []

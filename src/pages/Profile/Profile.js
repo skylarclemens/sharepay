@@ -9,12 +9,10 @@ import PayUp from '../../components/PayUp/PayUp';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import FriendAction from '../FriendAction/FriendAction';
 import Transactions from '../../components/Transactions/Transactions';
+import Balances from '../../components/Balances/Balances';
 import { useGetDebtsQuery, selectSharedDebtsByFriendId } from '../../slices/debtSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import { balanceCalc } from '../../helpers/balance';
-import { formatMoney } from '../../helpers/money';
-import receiveImg from '../../images/Receive.svg';
-import sendImg from '../../images/Send.svg';
 
 const Profile = () => {
   const user = useSelector(state => state.auth.user);
@@ -59,22 +57,10 @@ const Profile = () => {
             } />
             <div className="profile__section profile__section--balance">
               <h2>Balance</h2>
-              <div className="balance__items">
-                <div className="balance__item balance__item--owed">
-                  <h3 className="balance__title">
-                    You're owed
-                    <img src={receiveImg} alt="Green arrow pointing bottom left" />
-                  </h3>
-                  <p className="balance__amount">{formatMoney(balances?.owed, false)}</p>
-                </div>
-                <div className="balance__item balance__item--owe">
-                  <h3 className="balance__title">
-                    You owe
-                    <img src={sendImg} alt="Red arrow pointing top right" />
-                  </h3>
-                  <p className="balance__amount">{formatMoney(balances?.owe, false)}</p>
-              </div>
-              </div>
+              <Balances debts={sharedDebts} debtsStatus={{
+                loading: debtsLoading,
+                fetched: debtsFetched
+              }} />
             </div>
             <div className="profile__section profile__section--transactions">
               <h2>Transactions</h2>
