@@ -56,9 +56,13 @@ const Group = () => {
   return (
     groupFetched && (
       <>
-      <Header type="title" title="Group details" classes={`group--${group?.color}`} />
+      <Header type="title" classes={`group--${group?.color}`} />
       <div className="group-container">
-        <DetailsCard user={group} type="group" />
+        <DetailsCard 
+          title={group.group_name}
+          avatarUrl={group?.avatar_url}
+          classes={`group--${group?.color}`}
+          type="group" />
         <div className="group__section group__section--balance">
           <h2>Balance</h2>
           <Balances debts={userGroupDebts} debtsStatus={{
