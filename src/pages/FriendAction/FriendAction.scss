@@ -1,3 +1,5 @@
+@use '../../utilities/colors' as v;
+
 .down-arrow {
   height: 6px;
   filter: invert(60%);
@@ -7,4 +9,39 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.friend-actions-container {
+  position: relative;
+}
+
+.friend-dropdown {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 43.5px;
+  left: 0;
+  right: 0;
+  min-width: 115px;
+  background: #ffffff;
+  box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.05), 0px 0px 4px rgba(0, 0, 0, 0.04),
+    0px 4px 8px rgba(0, 0, 0, 0.06);
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  border-radius: 8px;
+  &.hide {
+    display: none;
+  }
+  .friend-dropdown__item {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    align-items: center;
+    font-family: 'Inter';
+    color: v.$dark-gray;
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+  .friend-dropdown__icon {
+    max-width: 1.25rem;
+  }
 }
