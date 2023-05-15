@@ -43,7 +43,11 @@ const Profile = () => {
       {profileUserFetched && (
         <>
           <div className="profile">
-            <DetailsCard user={profileUser} actions={
+            <DetailsCard
+              title={profileUser?.name}
+              subTitle={profileUser?.email}
+              avatarUrl={profileUser?.avatar_url}
+              actions={
               <>
                 <FriendAction friend={profileUser} />
                 <button
