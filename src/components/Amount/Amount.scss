@@ -1,0 +1,20 @@
+@use '../../utilities/colors' as v;
+
+.amount-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  .amount {
+    color: #ffffff;
+    font-weight: 600;
+    background: v.$layout-green;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    border-bottom: 2px solid v.$dark-green;
+  }
+  .amount--owe {
+    background: v.$red;
+    border-bottom: 2px solid v.$dark-red;
+  }
+}

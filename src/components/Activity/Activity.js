@@ -27,8 +27,6 @@ const Activity = ({ userId, referenceId, type, action, date }) => {
     skip: type !== 'DEBT'
   });
 
-  debtFetched && console.log('debt', debt);
-
   const formattedDate = new Date(date).toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',

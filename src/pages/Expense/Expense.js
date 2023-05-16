@@ -7,6 +7,7 @@ import Header from '../../components/Header/Header';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import Modal from '../../components/Modal/Modal';
 import PayUp from '../../components/PayUp/PayUp';
+import Amount from '../../components/Amount/Amount';
 import deleteImg from '../../images/Delete.svg';
 import { useGetExpenseQuery, useRemoveExpenseMutation } from '../../slices/expenseSlice';
 import { useGetExpenseDebtsQuery } from '../../slices/debtSlice';
@@ -111,8 +112,9 @@ const Expense = () => {
               actions={payButton}
             />
             <div className="expense-transactions-container">
-              <div className="user-transaction">
-                <div className="details-paid">
+              <div className="details-paid">
+                <h2>Paid by</h2>
+                <div className="user-transaction">
                   <div className="user-details">
                     <Avatar
                       classes="white-border"
@@ -121,15 +123,12 @@ const Expense = () => {
                     />
                     <span>{userCreditor?.name}</span>
                   </div>
-                  <span className="expense-type">PAID</span>
-                  <span className="expense-amount">
-                    ${expense?.amount.toFixed(2)}
-                  </span>
+                  <Amount amount={expense?.amount} />
                 </div>
-                {debtsFetchSuccess ? debts?.map(debt => (
-                  <UserDebtor key={debt?.id} debt={debt} />
-                )) : null}
               </div>
+              {debtsFetchSuccess ? debts?.map(debt => (
+                <UserDebtor key={debt?.id} debt={debt} />
+              )) : null}
             </div>
           </div>
           <Modal open={openPayUp}>
