@@ -21,7 +21,7 @@
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1.75rem;
 
   .expense-amount {
     color: v.$green;
@@ -49,29 +49,40 @@
     font-size: 1rem;
   }
 
-  .details-paid {
+  .details-paid,
+  .details-owed,
+  .expense-activities-container {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    .user-details {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: v.$almost-black;
-      font-size: 0.875rem;
-      font-weight: 500;
-    }
+    gap: 0.75rem;
+  }
 
-    .user-transaction {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.375rem;
-      background: #ffffff;
-      font-size: 0.875rem;
-      border-radius: 1rem;
-      padding: 0.25rem 0.75rem 0.25rem 0.5rem;
-    }
+  .split-with,
+  .paid-by,
+  .expense-activities {
+    background: #ffffff;
+    padding: 0.75rem;
+    border-radius: 1rem;
+  }
+
+  .user-details {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: v.$almost-black;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .user-transaction {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.375rem;
+    background: #ffffff;
+    font-size: 0.875rem;
+    border-radius: 1rem;
+    padding: 0.25rem 0.75rem 0.25rem 0.5rem;
   }
 
   .page-info-container {

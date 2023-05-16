@@ -50,7 +50,7 @@ const Activity = ({ userId, referenceId, type, action, date }) => {
                 accountFetched && `${account?.name} `}
             </span>
             <span className="activity__action">
-              {action === 'CREATE' && 'added a new'}
+              {action === 'CREATE' && 'created'}
               {action === 'UPDATE' && `updated a${type === 'EXPENSE' && 'n'}`}
               {action === 'DELETE' && `deleted a${type === 'EXPENSE' && 'n'}`}
               {action === 'PAY' && 'paid a'}

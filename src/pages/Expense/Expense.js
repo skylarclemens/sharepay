@@ -8,11 +8,12 @@ import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import Modal from '../../components/Modal/Modal';
 import PayUp from '../../components/PayUp/PayUp';
 import Amount from '../../components/Amount/Amount';
+import Activity from '../../components/Activity/Activity';
 import deleteImg from '../../images/Delete.svg';
 import { useGetExpenseQuery, useRemoveExpenseMutation } from '../../slices/expenseSlice';
 import { useGetExpenseDebtsQuery } from '../../slices/debtSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
-import { useAddActivityMutation } from '../../slices/activityApi';
+import { useAddActivityMutation, useGetExpenseActivitiesQuery } from '../../slices/activityApi';
 import { formatExpenseDate } from '../../helpers/date';
 
 const UserDebtor = ({ debt }) => {
@@ -21,19 +22,16 @@ const UserDebtor = ({ debt }) => {
   } = useGetAccountQuery(debt?.debtor_id);
   
   return (
-    <div className="debtor-transaction">
+    <div className="user-transaction">
       <div className="user-details">
         <Avatar
           classes="white-border"
           url={debtor?.avatar_url}
-          size={40}
+          size={50}
         />
         <span>{debtor?.name}</span>
       </div>
-      <div className="expense-type">OWES</div>
-      <div className="expense-amount expense-amount--owe">
-        ${debt?.amount.toFixed(2)}
-      </div>
+      <Amount amount={debt?.amount} type="OWE" />
     </div>
   )
 }
@@ -52,6 +50,11 @@ const Expense = () => {
   const { 
     data: debts,
     isSuccess: debtsFetchSuccess } = useGetExpenseDebtsQuery(id);
+
+  const {
+    data: activities,
+    isSuccess: activitiesFetchSuccess
+  } = useGetExpenseActivitiesQuery(id);
 
   const [removeExpense] = useRemoveExpenseMutation();
   const [addActivity] = useAddActivityMutation();
@@ -114,21 +117,43 @@ const Expense = () => {
             <div className="expense-transactions-container">
               <div className="details-paid">
                 <h2>Paid by</h2>
-                <div className="user-transaction">
-                  <div className="user-details">
-                    <Avatar
-                      classes="white-border"
-                      url={userCreditor?.avatar_url}
-                      size={40}
-                    />
-                    <span>{userCreditor?.name}</span>
+                <div className="paid-by">
+                  <div className="user-transaction">
+                    <div className="user-details">
+                      <Avatar
+                        classes="white-border"
+                        url={userCreditor?.avatar_url}
+                        size={50}
+                      />
+                      <span>{userCreditor?.name}</span>
+                    </div>
+                    <Amount amount={expense?.amount} />
                   </div>
-                  <Amount amount={expense?.amount} />
                 </div>
               </div>
-              {debtsFetchSuccess ? debts?.map(debt => (
-                <UserDebtor key={debt?.id} debt={debt} />
-              )) : null}
+              <div className="details-owed">
+                <h2>Split with</h2>
+                <div className="split-with">
+                  {debtsFetchSuccess ? debts?.map(debt => (
+                    <UserDebtor key={debt?.id} debt={debt} />
+                  )) : null}
+                </div>
+              </div>
+              {activitiesFetchSuccess && (
+                <div className="expense-activities-container">
+                  <h2>Activities</h2>
+                  <div className="expense-activities">
+                    {activities?.map(activity => (
+                      <Activity key={activity?.id}
+                        userId={activity?.user_id}
+                        referenceId={activity?.reference_id}
+                        type={activity?.type}
+                        action={activity?.action}
+                        date={activity?.created_at} />
+                    ))}
+                  </div>
+                </div>)
+              }
             </div>
           </div>
           <Modal open={openPayUp}>
