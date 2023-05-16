@@ -11,6 +11,7 @@ import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 import { GROUP_COLORS } from '../../constants/groups';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import { useAddNewGroupMutation, useAddNewUserGroupsMutation } from '../../slices/groupSlice';
+import { useAddNewActivityMutation } from '../../slices/activityApi';
 
 const NewGroup = () => {
   const user = useSelector(state => state.auth.user);
@@ -28,6 +29,7 @@ const NewGroup = () => {
   const navigate = useNavigate();
   const [addNewGroup, { isLoading: isGroupLoading }] = useAddNewGroupMutation();
   const [addNewUserGroups, { isLoading: isUserGroupLoading }] = useAddNewUserGroupsMutation();
+  const [addNewActivity, { isLoading: isActivityLoading }] = useAddNewActivityMutation();
 
   useEffect(() => {
     inputRef?.current?.click();
@@ -36,7 +38,7 @@ const NewGroup = () => {
   const handleSubmit = async e => {
     e.preventDefault();
 
-    if (isGroupLoading || isUserGroupLoading) return;
+    if (isGroupLoading || isUserGroupLoading || isActivityLoading) return;
 
     const newGroup = {
       group_name: groupName,
@@ -60,7 +62,18 @@ const NewGroup = () => {
 
     try {
       await addNewUserGroups(newMembers).unwrap();
-      navigate(-1);
+    } catch (error) {
+      console.error(error);
+    }
+
+    try {
+      await addNewActivity({
+        user_id: user.id,
+        reference_id: groupData.id,
+        type: 'GROUP',
+        action: 'CREATE',
+      }).unwrap();
+      navigate(`/group/${groupData.id}`);
     } catch (error) {
       console.error(error);
     }

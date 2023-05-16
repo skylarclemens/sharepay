@@ -53,8 +53,7 @@ const Activity = ({ userId, referenceId, type, action, date }) => {
               {action === 'CREATE' && 'added a new'}
               {action === 'UPDATE' && `updated a${type === 'EXPENSE' && 'n'}`}
               {action === 'DELETE' && `deleted a${type === 'EXPENSE' && 'n'}`}
-              {type === 'EXPENSE' && ' expense'}
-              {type === 'DEBT' && ' debt'}
+              {` ${type?.toLowerCase()}`}
             </span>
           </div>
         </div>
