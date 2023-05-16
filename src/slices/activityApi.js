@@ -27,12 +27,12 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
       providesTags: (result, error, arg) => [{ type: 'Activity', id: arg }]
     }),
     getExpenseActivities: builder.query({
-      queryFn: async expenseId => {
+      queryFn: async referenceIds => {
         const { data, error } = await supabase
           .from('activity')
           .select()
-          .eq('reference_id', expenseId)
-          .eq('type', 'EXPENSE');
+          .or('type.eq.EXPENSE,type.eq.DEBT')
+          .in('reference_id', referenceIds);
         return { data, error };
       },
       providesTags: (result = [], error, arg) => [

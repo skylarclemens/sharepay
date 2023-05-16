@@ -42,7 +42,7 @@ const Activity = ({ userId, referenceId, type, action, date }) => {
       <div className="activity__main">
         <div className="activity__left">
           {accountFetched && (
-            <Avatar url={account?.avatar_url} size={40} classes="white-border activity__avatar" />
+            <Avatar url={account?.avatar_url} size={38} classes="white-border activity__avatar" />
           )}
           <div className="activity__text">
             <span className="activity__name">

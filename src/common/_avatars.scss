@@ -6,9 +6,9 @@
   object-fit: cover;
 
   &.white-border {
-    border: 2px solid #ffffff;
+    outline: 2px solid #ffffff;
     &--thick {
-      border: 4px solid #ffffff;
+      outline: 4px solid #ffffff;
     }
   }
 }

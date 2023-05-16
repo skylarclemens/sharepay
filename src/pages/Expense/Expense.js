@@ -1,5 +1,6 @@
 import './Expense.scss';
-import { useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import { createSelector } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
@@ -15,6 +16,7 @@ import { useGetExpenseDebtsQuery } from '../../slices/debtSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import { useAddActivityMutation, useGetExpenseActivitiesQuery } from '../../slices/activityApi';
 import { formatExpenseDate } from '../../helpers/date';
+
 
 const UserDebtor = ({ debt }) => {
   const {
@@ -41,6 +43,7 @@ const Expense = () => {
   const user = useSelector(state => state.auth.user);
   const navigate = useNavigate();
   const [openPayUp, setOpenPayUp] = useState(false);
+  const [referenceIds, setReferenceIds] = useState([]);
 
   const {
     data: expense,
@@ -51,10 +54,31 @@ const Expense = () => {
     data: debts,
     isSuccess: debtsFetchSuccess } = useGetExpenseDebtsQuery(id);
 
+  useEffect(() => {
+    if (!debtsFetchSuccess || !expenseFetchSuccess) return;
+    setReferenceIds(debts?.map(debt => debt?.id));
+    setReferenceIds(previousState => [...previousState, expense?.id]);
+  }, [debtsFetchSuccess, expenseFetchSuccess, debts, expense]);
+
+  const sortActivities = useMemo(() => {
+    return createSelector(
+      res => res.data,
+      (data) => data?.slice(-10).sort((a, b) => {
+          return new Date(b.created_at) - new Date(a.created_at);
+        }) ?? []
+      )
+  }, []);
+
   const {
     data: activities,
     isSuccess: activitiesFetchSuccess
-  } = useGetExpenseActivitiesQuery(id);
+  } = useGetExpenseActivitiesQuery(referenceIds, {
+    skip: !debtsFetchSuccess || !expenseFetchSuccess,
+    selectFromResult: (result) => ({
+      data: sortActivities(result),
+      isSuccess: result.isSuccess
+    })
+  });
 
   const [removeExpense] = useRemoveExpenseMutation();
   const [addActivity] = useAddActivityMutation();
@@ -139,7 +163,7 @@ const Expense = () => {
                   )) : null}
                 </div>
               </div>
-              {activitiesFetchSuccess && (
+              {activitiesFetchSuccess && activities.length > 0 ? (
                 <div className="expense-activities-container">
                   <h2>Activities</h2>
                   <div className="expense-activities">
@@ -152,8 +176,7 @@ const Expense = () => {
                         date={activity?.created_at} />
                     ))}
                   </div>
-                </div>)
-              }
+                </div>) : null}
             </div>
           </div>
           <Modal open={openPayUp}>
