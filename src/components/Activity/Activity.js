@@ -46,26 +46,29 @@ const Activity = ({ userId, referenceId, type, action, date }) => {
           )}
           <div className="activity__text">
             <span className="activity__name">
-              {accountFetched && `${account?.name} `}
+              {accountFetched && currentUser ? 'You ' :
+                accountFetched && `${account?.name} `}
             </span>
             <span className="activity__action">
               {action === 'CREATE' && 'added a new'}
-              {action === 'UPDATE' && 'updated a'}
-              {action === 'DELETE' && 'deleted a'}
+              {action === 'UPDATE' && `updated a${expense && 'n'}`}
+              {action === 'DELETE' && `deleted a${expense && 'n'}`}
               {type === 'EXPENSE' && ' expense'}
               {type === 'DEBT' && ' debt'}
             </span>
           </div>
         </div>
         <div className="activity__right">
-          <div className="activity__amount">
-            {type === 'EXPENSE' && expenseFetched && (
+          {type === 'EXPENSE' && expenseFetched && (
+            <div className="activity__amount">
               <span>${expense?.amount.toFixed(2)}</span>
-            )}
-            {type === 'DEBT' && debtFetched && (
+            </div>
+          )}
+          {type === 'DEBT' && debtFetched && (
+            <div className="activity__amount">
               <span>${debt?.amount.toFixed(2)}</span>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="activity__bottom">

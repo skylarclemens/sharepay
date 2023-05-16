@@ -9,6 +9,7 @@ import deleteImg from '../../images/Delete.svg';
 import { useGetExpenseQuery, useRemoveExpenseMutation } from '../../slices/expenseSlice';
 import { useGetDebtsQuery, selectDebtsByExpenseId } from '../../slices/debtSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
+import { useAddNewActivityMutation } from '../../slices/activityApi';
 import { formatExpenseDate } from '../../helpers/date';
 
 const UserDebtor = ({ debt }) => {
@@ -52,6 +53,7 @@ const Expense = () => {
     })
   });
   const [removeExpense] = useRemoveExpenseMutation();
+  const [addNewActivity] = useAddNewActivityMutation();
   
   const {
     data: userCreditor,
@@ -64,6 +66,17 @@ const Expense = () => {
   const handleDelete = async () => {
     try {
       await removeExpense(id).unwrap();
+    } catch (error) {
+      console.error(error);
+    }
+
+    try {
+      await addNewActivity({
+        user_id: auth.session.user.id,
+        reference_id: id,
+        type: 'EXPENSE',
+        action: 'DELETE'
+      }).unwrap();
       navigate('/');
     } catch (error) {
       console.error(error);
