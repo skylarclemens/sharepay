@@ -26,7 +26,7 @@ const FriendDetails = () => {
 
   const { sharedDebts,
     isLoading: debtsLoading,
-    isSuccess: debtsFetched } = useGetDebtsQuery(undefined, {
+    isSuccess: debtsFetched } = useGetDebtsQuery(user?.id, {
     selectFromResult: (result) => ({
       ...result,
       sharedDebts: selectSharedDebtsByFriendId(result, id)

@@ -1,7 +1,7 @@
 import './Group.scss';
 import { useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { groupBalanceCalc } from '../../helpers/balance';
 import { formatMoney } from '../../helpers/money';
 import Header from '../../components/Header/Header';
@@ -12,6 +12,7 @@ import Balances from '../../components/Balances/Balances';
 
 const Group = () => {
   const { id } = useParams();
+  const user = useSelector(state => state.auth.user);
 
   const {
     data: group,
@@ -27,7 +28,7 @@ const Group = () => {
   const {
     userGroupDebts,
     isLoading: debtsLoading,
-    isSuccess: debtsFetched } = useGetDebtsQuery(undefined, {
+    isSuccess: debtsFetched } = useGetDebtsQuery(user?.id, {
     selectFromResult: (result) => ({
       ...result,
       userGroupDebts: selectUserDebtsByGroupId(result, id)

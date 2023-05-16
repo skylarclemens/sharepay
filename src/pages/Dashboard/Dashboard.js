@@ -25,7 +25,7 @@ const Dashboard = () => {
     data: debts,
     isSuccess: debtsFetched,
     refetch: refetchDebts
-  } = useGetDebtsQuery();
+  } = useGetDebtsQuery(user?.id);
   const {
     isSuccess: expensesFetched,
     refetch: refetchExpenses

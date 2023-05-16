@@ -5,8 +5,11 @@ import { supabaseApi } from '../api/supabaseApi';
 export const extendedSupabaseApi = supabaseApi.injectEndpoints({
   endpoints: builder => ({
     getDebts: builder.query({
-      queryFn: async () => {
-        const { data, error } = await supabase.from('debt').select();
+      queryFn: async (userId) => {
+        const { data, error } = await supabase
+          .from('debt')
+          .select()
+          .or(`debtor_id.eq.${userId},creditor_id.eq.${userId}`);
         return { data, error };
       },
       providesTags: (result = [], error, arg) => [
@@ -23,6 +26,18 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
           return { data, error }
       },
       providesTags: (result, error, arg) => [{ type: 'Debt', id: arg }]
+    }),
+    getExpenseDebts: builder.query({
+      queryFn: async expenseId => {
+        const { data, error } = await supabase
+          .from('debt')
+          .select()
+          .eq('expense_id', expenseId);
+          return { data, error }
+      },
+      providesTags: (result = [], error, arg) => [
+        ...result.map(({ id }) => ({ type: 'Debt', id: id })),
+      ]
     }),
     addNewDebt: builder.mutation({
       queryFn: async (newDebt) => {
@@ -61,6 +76,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
 export const {
   useGetDebtsQuery,
   useGetDebtQuery,
+  useGetExpenseDebtsQuery,
   useAddNewDebtMutation,
   useUpdateDebtMutation,
   useUpdateDebtsMutation

@@ -22,7 +22,7 @@ const PayUp = ({ setOpenPayUp, friend, sharedDebts, balances }) => {
 
   const {
     data: debts
-  } = useGetDebtsQuery();
+  } = useGetDebtsQuery(user?.id);
 
   const { currentExpenses } = useGetExpensesQuery(undefined, {
     selectFromResult: (result) => ({
