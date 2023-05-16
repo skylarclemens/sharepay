@@ -1,0 +1,52 @@
+@use '../../utilities/colors' as v;
+
+.activity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.activity__main,
+.activity__left {
+  display: flex;
+  align-items: center;
+}
+
+.activity__main {
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: v.$light-gray;
+  border-radius: 3rem;
+  padding: 2px 0.5rem 2px 0;
+}
+.activity__left {
+  gap: 0.5rem;
+  flex: 1 1 auto;
+}
+.activity__amount {
+  background: v.$layout-green;
+  border-radius: 1rem;
+  border-bottom: 2px solid v.$dark-green;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.activity__text {
+  color: v.$almost-black;
+  font-size: 0.875rem;
+  line-height: 1.063rem;
+  padding: 0.5rem 0.5rem 0.5rem 0;
+  .activity__name {
+    font-weight: 600;
+  }
+}
+
+.activity__bottom {
+  color: v.$washed-gray;
+  font-size: 0.75rem;
+  .activity__date {
+    font-weight: 600;
+  }
+}
