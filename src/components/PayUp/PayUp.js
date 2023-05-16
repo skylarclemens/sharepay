@@ -9,7 +9,7 @@ import { useGetAccountQuery } from '../../slices/accountSlice';
 import { useAddPaymentsMutation } from '../../slices/paymentApi';
 import { useAddActivityMutation } from '../../slices/activityApi';
 
-const PayUp = ({ setOpenPayUp, expenses, allDebts = null, sharedDebts, recipient }) => {
+const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }) => {
   const user = useSelector(state => state.auth.user);
   const {
     data: account
@@ -28,15 +28,15 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = null, sharedDebts, recipient
   const {
     data: expenseDebts,
     isSuccess: expenseDebtsFetched,
-  } = useGetDebtsByExpenseIdsQuery(expenses?.map(expense => expense.id), {
+  } = useGetDebtsByExpenseIdsQuery(expenses?.filter(expense => expense.paid === false).map(expense => expense.id), {
     skip: allDebts.length > 0,
   });
 
   useEffect(() => {
-    if(!allDebts) {
+    if(debts.length === 0 && expenseDebtsFetched) {
       setDebts(expenseDebts);
     }
-  }, [allDebts, expenseDebts]);
+  }, [debts, expenseDebts, expenseDebtsFetched]);
 
   const markExpensePaid = (expense) => {
     const unpaidDebts = debts?.filter(
@@ -48,11 +48,9 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = null, sharedDebts, recipient
         paid: true,
       };
     } else {
-      return expense;
+      return null;
     }
   };
-
-  expenseDebtsFetched && console.log(markExpensePaid(expenses[0]));
 
   const handlePayButton = async () => {
     const updatedDebts = sharedDebts?.map(debt => {
@@ -64,7 +62,7 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = null, sharedDebts, recipient
 
     const updatedExpenses = expenses?.map(expense => {
       return markExpensePaid(expense);
-    });
+    }).filter(expense => expense !== null);
 
     try {
       await updateDebts(updatedDebts).unwrap();
@@ -82,7 +80,7 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = null, sharedDebts, recipient
       return {
         payer_id: debt.debtor_id,
         recipient_id: debt.creditor_id,
-        amount: debt.amount,
+        amount: Math.abs(balances?.total).toFixed(2),
         debt_id: debt.id,
         group_id: debt?.group_id ?? null,
       }
@@ -101,6 +99,15 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = null, sharedDebts, recipient
         type: 'DEBT',
         action: 'PAY',
       }
+    });
+
+    updatedExpenses.forEach(expense => {
+      newActivities.push({
+        user_id: user?.id,
+        reference_id: expense.id,
+        type: 'EXPENSE',
+        action: 'PAY',
+      })
     });
 
     try {

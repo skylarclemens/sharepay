@@ -90,10 +90,9 @@ const Profile = () => {
           <Modal open={openPayUp}>
             <PayUp
               setOpenPayUp={setOpenPayUp}
-              friend={profileUser}
               expenses={currentExpenses}
               sharedDebts={sharedDebts}
-              balances={balances}
+              recipient={profileUser}
             />
           </Modal>
         </>
