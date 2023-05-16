@@ -11,8 +11,8 @@ const DetailsCard = ({ title, subTitle, avatarUrl = null, actions, type = 'user'
             <Avatar url={avatarUrl} classes="white-border white-border--thick" size={65} type={type} />
           </div>}
           <div className="details__info-text">
-            <h1 className="details__name">{title}</h1>
-            {subTitle && <p className="details__username">{subTitle}</p>}
+            <h1 className="details__title">{title}</h1>
+            {subTitle && <p className="details__subtitle">{subTitle}</p>}
           </div>
           {actions && <div className="details__actions">
             {actions}

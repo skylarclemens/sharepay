@@ -1,5 +1,6 @@
 import './Expense.scss';
-import { useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import { createSelector } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
@@ -7,12 +8,16 @@ import Header from '../../components/Header/Header';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import Modal from '../../components/Modal/Modal';
 import PayUp from '../../components/PayUp/PayUp';
+import Amount from '../../components/Amount/Amount';
+import Activity from '../../components/Activity/Activity';
 import deleteImg from '../../images/Delete.svg';
 import { useGetExpenseQuery, useRemoveExpenseMutation } from '../../slices/expenseSlice';
 import { useGetExpenseDebtsQuery } from '../../slices/debtSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
-import { useAddActivityMutation } from '../../slices/activityApi';
+import { useAddActivityMutation, useGetExpenseActivitiesQuery } from '../../slices/activityApi';
 import { formatExpenseDate } from '../../helpers/date';
+import successImg from '../../images/Success.svg';
+
 
 const UserDebtor = ({ debt }) => {
   const {
@@ -20,19 +25,19 @@ const UserDebtor = ({ debt }) => {
   } = useGetAccountQuery(debt?.debtor_id);
   
   return (
-    <div className="debtor-transaction">
+    <div className="user-transaction">
       <div className="user-details">
-        <Avatar
-          classes="white-border"
-          url={debtor?.avatar_url}
-          size={40}
-        />
+        <div className="user__avatar">
+          <Avatar
+            classes={debt?.paid ? 'success-border' : 'white-border'}
+            url={debtor?.avatar_url}
+            size={50}
+          />
+          {debt?.paid ? <img className="user__avatar--success" src={successImg} alt="success" /> : null}
+        </div>
         <span>{debtor?.name}</span>
       </div>
-      <div className="expense-type">OWES</div>
-      <div className="expense-amount expense-amount--owe">
-        ${debt?.amount.toFixed(2)}
-      </div>
+      <Amount amount={debt?.amount} type={debt?.paid ? 'OWED' : 'OWE'} />
     </div>
   )
 }
@@ -42,6 +47,7 @@ const Expense = () => {
   const user = useSelector(state => state.auth.user);
   const navigate = useNavigate();
   const [openPayUp, setOpenPayUp] = useState(false);
+  const [referenceIds, setReferenceIds] = useState([]);
 
   const {
     data: expense,
@@ -51,6 +57,32 @@ const Expense = () => {
   const { 
     data: debts,
     isSuccess: debtsFetchSuccess } = useGetExpenseDebtsQuery(id);
+
+  useEffect(() => {
+    if (!debtsFetchSuccess || !expenseFetchSuccess) return;
+    setReferenceIds(debts?.map(debt => debt?.id));
+    setReferenceIds(previousState => [...previousState, expense?.id]);
+  }, [debtsFetchSuccess, expenseFetchSuccess, debts, expense]);
+
+  const sortActivities = useMemo(() => {
+    return createSelector(
+      res => res.data,
+      (data) => data?.slice(-10).sort((a, b) => {
+          return new Date(b.created_at) - new Date(a.created_at);
+        }) ?? []
+      )
+  }, []);
+
+  const {
+    data: activities,
+    isSuccess: activitiesFetchSuccess
+  } = useGetExpenseActivitiesQuery(referenceIds, {
+    skip: !debtsFetchSuccess || !expenseFetchSuccess,
+    selectFromResult: (result) => ({
+      data: sortActivities(result),
+      isSuccess: result.isSuccess
+    })
+  });
 
   const [removeExpense] = useRemoveExpenseMutation();
   const [addActivity] = useAddActivityMutation();
@@ -106,30 +138,49 @@ const Expense = () => {
           <div className="expense-details-container">
             <DetailsCard 
               title={expense?.description}
-              subTitle={`Created on ${formatExpenseDate(expense?.created_at)}`}
+              subTitle={`Added ${formatExpenseDate(expense?.created_at)}`}
               type="expense"
               actions={payButton}
             />
             <div className="expense-transactions-container">
-              <div className="user-transaction">
-                <div className="details-paid">
-                  <div className="user-details">
-                    <Avatar
-                      classes="white-border"
-                      url={userCreditor?.avatar_url}
-                      size={40}
-                    />
-                    <span>{userCreditor?.name}</span>
+              <div className="details-paid">
+                <h2>Paid by</h2>
+                <div className="paid-by">
+                  <div className="user-transaction">
+                    <div className="user-details">
+                      <Avatar
+                        classes="white-border"
+                        url={userCreditor?.avatar_url}
+                        size={50}
+                      />
+                      <span>{userCreditor?.name}</span>
+                    </div>
+                    <Amount amount={expense?.amount} />
                   </div>
-                  <span className="expense-type">PAID</span>
-                  <span className="expense-amount">
-                    ${expense?.amount.toFixed(2)}
-                  </span>
                 </div>
-                {debtsFetchSuccess ? debts?.map(debt => (
-                  <UserDebtor key={debt?.id} debt={debt} />
-                )) : null}
               </div>
+              <div className="details-owed">
+                <h2>Split with</h2>
+                <div className="split-with">
+                  {debtsFetchSuccess ? debts?.map(debt => (
+                    <UserDebtor key={debt?.id} debt={debt} />
+                  )) : null}
+                </div>
+              </div>
+              {activitiesFetchSuccess && activities.length > 0 ? (
+                <div className="expense-activities-container">
+                  <h2>Activities</h2>
+                  <div className="expense-activities">
+                    {activities?.map(activity => (
+                      <Activity key={activity?.id}
+                        userId={activity?.user_id}
+                        referenceId={activity?.reference_id}
+                        type={activity?.type}
+                        action={activity?.action}
+                        date={activity?.created_at} />
+                    ))}
+                  </div>
+                </div>) : null}
             </div>
           </div>
           <Modal open={openPayUp}>

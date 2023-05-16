@@ -1,3 +1,5 @@
+@use '../utilities/colors' as v;
+
 // Avatars
 .avatar {
   height: 45px;
@@ -6,9 +8,16 @@
   object-fit: cover;
 
   &.white-border {
-    border: 2px solid #ffffff;
+    outline: 2px solid #ffffff;
     &--thick {
-      border: 4px solid #ffffff;
+      outline: 4px solid #ffffff;
+    }
+  }
+
+  &.success-border {
+    outline: 2px solid v.$layout-green;
+    &--thick {
+      outline: 4px solid v.$layout-green;
     }
   }
 }

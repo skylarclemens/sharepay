@@ -27,8 +27,6 @@ const Activity = ({ userId, referenceId, type, action, date }) => {
     skip: type !== 'DEBT'
   });
 
-  debtFetched && console.log('debt', debt);
-
   const formattedDate = new Date(date).toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
@@ -44,7 +42,7 @@ const Activity = ({ userId, referenceId, type, action, date }) => {
       <div className="activity__main">
         <div className="activity__left">
           {accountFetched && (
-            <Avatar url={account?.avatar_url} size={40} classes="white-border activity__avatar" />
+            <Avatar url={account?.avatar_url} size={38} classes="white-border activity__avatar" />
           )}
           <div className="activity__text">
             <span className="activity__name">
@@ -52,7 +50,7 @@ const Activity = ({ userId, referenceId, type, action, date }) => {
                 accountFetched && `${account?.name} `}
             </span>
             <span className="activity__action">
-              {action === 'CREATE' && 'added a new'}
+              {action === 'CREATE' && 'created'}
               {action === 'UPDATE' && `updated a${type === 'EXPENSE' && 'n'}`}
               {action === 'DELETE' && `deleted a${type === 'EXPENSE' && 'n'}`}
               {action === 'PAY' && 'paid a'}

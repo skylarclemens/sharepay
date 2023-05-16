@@ -26,6 +26,19 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
       },
       providesTags: (result, error, arg) => [{ type: 'Activity', id: arg }]
     }),
+    getExpenseActivities: builder.query({
+      queryFn: async referenceIds => {
+        const { data, error } = await supabase
+          .from('activity')
+          .select()
+          .or('type.eq.EXPENSE,type.eq.DEBT')
+          .in('reference_id', referenceIds);
+        return { data, error };
+      },
+      providesTags: (result = [], error, arg) => [
+        ...result.map(({ id }) => ({ type: 'Activity', id: id }))
+      ]
+    }),
     addActivity: builder.mutation({
       queryFn: async (newActivity) => {
         const { data, error } = await supabase
@@ -42,5 +55,6 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
 export const {
   useGetUserActivitiesQuery,
   useGetActivityQuery,
+  useGetExpenseActivitiesQuery,
   useAddActivityMutation,
 } = extendedSupabaseApi;

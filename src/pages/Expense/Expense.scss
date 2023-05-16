@@ -2,11 +2,13 @@
 
 .expense-details-container {
   background: v.$light-gray;
+  height: 100vh;
   .details-card {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 1rem 0.75rem;
   }
   .details__actions {
     justify-content: center;
@@ -14,92 +16,110 @@
       width: 120px;
     }
   }
+  .details__user {
+    .details__subtitle {
+      letter-spacing: 0;
+    }
+    .details__info-text {
+      gap: 0.5rem;
+    }
+  }
 }
 
 .expense-transactions-container {
-  background: #ffffff;
-  border-radius: 24px 24px 0px 0px;
   padding: 20px;
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1.75rem;
 
-  .paid-up {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-size: 0.875rem;
-    letter-spacing: 0.25px;
+  h2 {
+    font-family: 'Inter', sans-serif;
+    color: v.$blue-black;
+    text-transform: none;
     font-weight: 600;
-    border: 1.5px solid #ffffff;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.75rem;
-    background-color: rgba(0, 0, 0, 0.15);
-    box-shadow: 0px 2px 0px rgba(104, 150, 54, 0.376);
-  }
-
-  .expense-type {
-    display: flex;
-    gap: 0.25rem;
-    color: v.$dark-gray;
-    font-weight: 500;
     font-size: 1rem;
   }
-  .expense-amount {
-    color: v.$green;
-    font-weight: 600;
 
-    &.expense-amount--details {
-      font-size: 1.5rem;
-    }
-  }
-  .expense-amount--owe {
-    color: v.$red;
+  .details-paid,
+  .details-owed,
+  .expense-activities-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
-  .user-transaction {
+  .split-with,
+  .paid-by,
+  .expense-activities {
+    background: #ffffff;
+    padding: 0.75rem;
+    border-radius: 1rem;
+  }
+
+  .split-with {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
 
-  .debtor-transaction {
+  .expense-activities {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 0.75rem;
   }
-
-  .created-date {
-    font-size: 0.875rem;
-    letter-spacing: 0.05em;
-    font-weight: 500;
-    text-transform: uppercase;
-    padding: 0.25rem 0.5rem;
-    background: rgba(114, 155, 121, 0.48);
-    border: 1px solid rgba(80, 113, 85, 0.75);
-    border-radius: 0.5rem;
+  .user__avatar {
+    position: relative;
+    .user__avatar--success {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
   }
 
   .user-details {
     display: flex;
     align-items: center;
-    gap: 0.375rem;
-    background: v.$light-gray;
+    gap: 0.5rem;
+    color: v.$almost-black;
     font-size: 0.875rem;
-    border-radius: 1rem;
-    padding: 0.25rem 0.75rem 0.25rem 0.5rem;
-    box-shadow: 0px 2px 0px v.$accent-gray;
+    font-weight: 500;
   }
 
-  .details-paid {
+  .user-transaction {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: space-between;
+    gap: 0.375rem;
+    background: #ffffff;
+    font-size: 0.875rem;
+    border-radius: 1rem;
   }
 
   .page-info-container {
     align-items: flex-start;
     gap: 0.875rem;
+  }
+
+  .activity {
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      left: 18px;
+      bottom: -15%;
+      width: 1px;
+      height: 40%;
+      background: v.$accent-gray;
+    }
+    &:last-of-type {
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  .activity__date {
+    padding-left: 48px;
   }
 }
