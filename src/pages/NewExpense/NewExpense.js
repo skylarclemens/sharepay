@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useAddNewExpenseMutation } from '../../slices/expenseSlice';
 import { useAddNewDebtMutation } from '../../slices/debtSlice';
 import { getAllGroupsUsers } from '../../services/groups';
-import { useAddNewActivityMutation } from '../../slices/activityApi';
+import { useAddActivityMutation } from '../../slices/activityApi';
 import Header from '../../components/Header/Header';
 import TextInput from '../../components/Input/TextInput/TextInput';
 import AmountInput from '../../components/Input/AmountInput/AmountInput';
@@ -35,7 +35,7 @@ const NewExpense = () => {
 
   const [addNewExpense, { isExpenseLoading }] = useAddNewExpenseMutation();
   const [addNewDebt, { isDebtLoading }] = useAddNewDebtMutation();
-  const [addNewActivity, { isActivityLoading }] = useAddNewActivityMutation();
+  const [addActivity, { isActivityLoading }] = useAddActivityMutation();
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -84,7 +84,7 @@ const NewExpense = () => {
     }
 
     try {
-       await addNewActivity(newActivity).unwrap();
+       await addActivity(newActivity).unwrap();
        navigate(`/expense/${expenseData.id}`);
     } catch (error) {
       console.error(error);

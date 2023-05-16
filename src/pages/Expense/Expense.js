@@ -11,7 +11,7 @@ import deleteImg from '../../images/Delete.svg';
 import { useGetExpenseQuery, useRemoveExpenseMutation } from '../../slices/expenseSlice';
 import { useGetExpenseDebtsQuery } from '../../slices/debtSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
-import { useAddNewActivityMutation } from '../../slices/activityApi';
+import { useAddActivityMutation } from '../../slices/activityApi';
 import { formatExpenseDate } from '../../helpers/date';
 
 const UserDebtor = ({ debt }) => {
@@ -51,14 +51,13 @@ const Expense = () => {
   const { 
     data: debts,
     isSuccess: debtsFetchSuccess } = useGetExpenseDebtsQuery(id);
-  console.log('debts', debts);
+
   const [removeExpense] = useRemoveExpenseMutation();
-  const [addNewActivity] = useAddNewActivityMutation();
+  const [addActivity] = useAddActivityMutation();
 
   const currentUserPayer = user?.id === expense?.payer_id;
   const currentUserDebts = !currentUserPayer ?
     debts?.filter(debt => debt.debtor_id === user?.id) : [];
-  console.log('currentUserDebts', currentUserDebts);
   
   const {
     data: userCreditor,
@@ -76,7 +75,7 @@ const Expense = () => {
     }
 
     try {
-      await addNewActivity({
+      await addActivity({
         user_id: user?.id,
         reference_id: id,
         type: 'EXPENSE',
@@ -89,6 +88,11 @@ const Expense = () => {
   };
 
   const headerImg = <img src={deleteImg} alt="Garbage icon for delete button" />;
+  const payButton = !currentUserPayer ? (
+    <button className="button button--flat button--medium" onClick={() => setOpenPayUp(true)}>
+      Pay
+    </button>
+  ) : null;
 
   return (
     <>
@@ -104,11 +108,7 @@ const Expense = () => {
               title={expense?.description}
               subTitle={`Created on ${formatExpenseDate(expense?.created_at)}`}
               type="expense"
-              actions={
-                <button className="button button--flat button--medium" onClick={() => navigate(`/expense/${id}/edit`)}>
-                  Pay
-                </button>
-              }
+              actions={payButton}
             />
             <div className="expense-transactions-container">
               <div className="user-transaction">
@@ -135,8 +135,9 @@ const Expense = () => {
           <Modal open={openPayUp}>
             <PayUp
               setOpenPayUp={setOpenPayUp}
+              allDebts={debts}
               sharedDebts={currentUserDebts}
-
+              recipient={userCreditor}
             />
           </Modal>
         </>

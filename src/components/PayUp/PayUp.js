@@ -1,47 +1,42 @@
 import './PayUp.scss';
 import Avatar from '../Avatar/Avatar';
+import { balanceCalc } from '../../helpers/balance';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { supabase } from '../../supabaseClient';
-import { selectSharedExpensesByDebt, useGetExpensesQuery, useUpdateExpensesMutation } from '../../slices/expenseSlice';
-import { useUpdateDebtsMutation, useGetDebtsQuery } from '../../slices/debtSlice';
+import { useUpdateExpensesMutation } from '../../slices/expenseSlice';
+import { useGetDebtsByExpenseIdsQuery, useUpdateDebtsMutation } from '../../slices/debtSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
+import { useAddPaymentsMutation } from '../../slices/paymentApi';
+import { useAddActivityMutation } from '../../slices/activityApi';
 
-const PayUp = ({ setOpenPayUp, friend, sharedDebts, balances }) => {
+const PayUp = ({ setOpenPayUp, expenses, allDebts = null, sharedDebts, recipient }) => {
   const user = useSelector(state => state.auth.user);
   const {
     data: account
   } = useGetAccountQuery(user?.id);
-
-  const [userDebtor, setUserDebtor] = useState(account);
-  const [userCreditor, setUserCreditor] = useState(friend);
-  const [payType, setPayType] = useState('OWE');
-
+  const [balances, setBalances] = useState({ total: 0, owed: 0, owe: 0 });
+  const [debts, setDebts] = useState(allDebts);
   const [updateDebts] = useUpdateDebtsMutation();
   const [updateExpenses] = useUpdateExpensesMutation();
-
-  const {
-    data: debts
-  } = useGetDebtsQuery(user?.id);
-
-  const { currentExpenses } = useGetExpensesQuery(undefined, {
-    selectFromResult: (result) => ({
-      ...result,
-      currentExpenses: selectSharedExpensesByDebt(result, sharedDebts)
-    })
-  })
+  const [addPayments] = useAddPaymentsMutation();
+  const [addActivity] = useAddActivityMutation();
 
   useEffect(() => {
-    if (balances.total > 0) {
-      setPayType('OWED');
-      setUserCreditor(account);
-      setUserDebtor(friend);
-    } else {
-      setPayType('OWE');
-      setUserCreditor(friend);
-      setUserDebtor(account);
+    setBalances(balanceCalc(sharedDebts, user?.id));
+  }, [sharedDebts, user]);
+
+  const {
+    data: expenseDebts,
+    isSuccess: expenseDebtsFetched,
+  } = useGetDebtsByExpenseIdsQuery(expenses?.map(expense => expense.id), {
+    skip: allDebts.length > 0,
+  });
+
+  useEffect(() => {
+    if(!allDebts) {
+      setDebts(expenseDebts);
     }
-  }, [balances, account, friend]);
+  }, [allDebts, expenseDebts]);
 
   const markExpensePaid = (expense) => {
     const unpaidDebts = debts?.filter(
@@ -57,6 +52,8 @@ const PayUp = ({ setOpenPayUp, friend, sharedDebts, balances }) => {
     }
   };
 
+  expenseDebtsFetched && console.log(markExpensePaid(expenses[0]));
+
   const handlePayButton = async () => {
     const updatedDebts = sharedDebts?.map(debt => {
       return {
@@ -65,8 +62,8 @@ const PayUp = ({ setOpenPayUp, friend, sharedDebts, balances }) => {
       };
     });
 
-    const updatedExpenses = currentExpenses?.map(expense => {
-      return markExpensePaid(expense, updatedDebts);
+    const updatedExpenses = expenses?.map(expense => {
+      return markExpensePaid(expense);
     });
 
     try {
@@ -81,60 +78,52 @@ const PayUp = ({ setOpenPayUp, friend, sharedDebts, balances }) => {
       console.error(error);
     }
 
-    const insertDebtPaid = async paidUpId => {
-      const paidDebt = updatedDebts?.map(debt => {
-        return {
-          debt_id: debt.id,
-          paid_id: paidUpId,
-        };
-      });
-
-      try {
-        const { error } = await supabase.from('debt_paid').insert(paidDebt);
-        if (error) throw error;
-      } catch (error) {
-        console.error(error);
+    const newPayments = updatedDebts?.map(debt => {
+      return {
+        payer_id: debt.debtor_id,
+        recipient_id: debt.creditor_id,
+        amount: debt.amount,
+        debt_id: debt.id,
+        group_id: debt?.group_id ?? null,
       }
-    };
+    });
 
     try {
-      const { data, error } = await supabase
-        .from('paid_up')
-        .insert({
-          creditor_id: userCreditor.id,
-          debtor_id: userDebtor.id,
-        })
-        .select();
-      insertDebtPaid(data[0].id);
-      if (error) throw error;
+      await addPayments(newPayments).unwrap();
     } catch (error) {
       console.error(error);
-    } finally {
-      closePayUp();
     }
-  };
+
+    const newActivities = updatedDebts?.map(debt => {
+      return {
+        user_id: user?.id,
+        reference_id: debt.id,
+        type: 'DEBT',
+        action: 'PAID',
+      }
+    });
+
+    try {
+      await addActivity(newActivities).unwrap();
+      closePayUp();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const closePayUp = () => {
     setOpenPayUp(false);
-  };
+  }
 
   return (
     <div className="pay-up-container">
       <div className="expense-avatars">
-        <Avatar url={userDebtor?.avatar_url} size={65} />
-        <Avatar url={userCreditor?.avatar_url} size={65} />
+        <Avatar url={account?.avatar_url} size={65} />
+        <Avatar url={recipient?.avatar_url} size={65} />
       </div>
       <div className="balance-block balance-block--total">
         <div>
-          {payType === 'OWE' ? (
-            <>
-              Pay <span className="friend-name">{friend.name}</span>
-            </>
-          ) : (
-            <>
-              <span className="friend-name">{friend.name}</span> paid you
-            </>
-          )}
+          Pay <span className="friend-name">{recipient?.name}</span>
         </div>
         <span className="total">
           ${Math.abs(balances?.total).toFixed(2) || 0.0}
