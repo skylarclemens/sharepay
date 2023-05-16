@@ -1,45 +1,32 @@
 import './Activities.scss';
-import { useGetPaidUpsQuery } from '../../slices/paidApi';
-import { useGetUserActivitiesQuery } from '../../slices/activityApi';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import Transaction from '../../components/Transaction/Transaction';
+import { createSelector } from '@reduxjs/toolkit';
 import Activity from '../../components/Activity/Activity';
 import Header from '../../components/Header/Header';
+import { useGetUserActivitiesQuery } from '../../slices/activityApi';
 
 const Activities = () => {
   const user = useSelector(state => state.auth.user);
-  const {
-    data: paidUps,
-    isSuccess: paidUpsFetched
-  } = useGetPaidUpsQuery();
+
+  const sortActivities = useMemo(() => {
+    return createSelector(
+      res => res.data,
+      (data) => data?.slice().sort((a, b) => {
+          return new Date(b.created_at) - new Date(a.created_at);
+        }) ?? []
+      )
+  }, []);
+
   const {
     data: activities,
     isSuccess: activitiesFetched
-  } = useGetUserActivitiesQuery(user?.id);
-
-  const paidText = (debtor, creditor, date) => (
-    <div className="paid-info">
-      <div className="paid-text">
-        <span>{debtor.name}</span>
-        paid
-        <span>{creditor.name}</span>
-      </div>
-      <div className="paid-date">
-        {new Date(date).toLocaleDateString('en-US', {
-          month: 'long',
-          day: 'numeric',
-          year: 'numeric',
-        })}
-      </div>
-    </div>
-  )
-
-  const transactionRight = (
-    <div className="debt-paid">
-      PAID UP
-    </div>
-  )
-  
+  } = useGetUserActivitiesQuery(user?.id, {
+    selectFromResult: (result) => ({
+      data: sortActivities(result),
+      isSuccess: result.isSuccess
+    })
+  });
 
   return (
     <>
@@ -58,24 +45,6 @@ const Activities = () => {
                 />
               )
             }) : null}
-          <div className="recent">
-            {paidUpsFetched && paidUps.map((paidUp) => {
-              return (
-                <div className="paid-up" key={paidUp.id}>
-                  <Transaction
-                    avatarUrls={[
-                      paidUp.creditor_id?.avatar_url,
-                      paidUp.debtor_id?.avatar_url
-                    ]}
-                    text={paidText(paidUp.debtor_id, paidUp.creditor_id, paidUp.created_at)}
-                    transactionRight={transactionRight}
-                    showArrow={false}
-                  />
-                  
-                </div>
-              )
-            })}
-          </div>
         </div>
       </div>
     </>

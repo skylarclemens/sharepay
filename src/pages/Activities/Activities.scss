@@ -1,33 +1,15 @@
 @use '../../utilities/colors' as v;
 
-.paid-up {
-  .paid-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-  .paid-date {
-    color: v.$dark-gray;
-    text-transform: uppercase;
-    font-size: 0.825rem;
-    letter-spacing: 0.03em;
-    font-weight: 500;
-  }
-  .paid-text {
-    display: flex;
-    gap: 0.25rem;
-    span {
-      font-weight: 600;
-    }
-  }
-}
-
 .activities-container {
   background: v.$light-gray;
   padding-top: 0.875rem;
+  height: calc(
+    100vh - 82px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+  );
 }
 
 .activities {
+  height: 100%;
   margin: 0 20px;
   padding: 1.25rem 1rem;
   display: flex;
