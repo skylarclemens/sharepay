@@ -22,7 +22,8 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         const { data, error } = await supabase
           .from('debt')
           .select()
-          .eq('id', debtId);
+          .eq('id', debtId)
+          .single();
           return { data, error }
       },
       providesTags: (result, error, arg) => [{ type: 'Debt', id: arg }]

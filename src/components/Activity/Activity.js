@@ -27,6 +27,8 @@ const Activity = ({ userId, referenceId, type, action, date }) => {
     skip: type !== 'DEBT'
   });
 
+  debtFetched && console.log('debt', debt);
+
   const formattedDate = new Date(date).toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
@@ -53,21 +55,22 @@ const Activity = ({ userId, referenceId, type, action, date }) => {
               {action === 'CREATE' && 'added a new'}
               {action === 'UPDATE' && `updated a${type === 'EXPENSE' && 'n'}`}
               {action === 'DELETE' && `deleted a${type === 'EXPENSE' && 'n'}`}
+              {action === 'PAY' && 'paid a'}
               {` ${type?.toLowerCase()}`}
             </span>
           </div>
         </div>
         <div className="activity__right">
-          {type === 'EXPENSE' && expenseFetched && (
+          {type === 'EXPENSE' && expenseFetched && expense?.amount ? (
             <div className="activity__amount">
               <span>${expense?.amount.toFixed(2)}</span>
             </div>
-          )}
-          {type === 'DEBT' && debtFetched && (
+          ) : null}
+          {type === 'DEBT' && debtFetched && debt?.amount ? (
             <div className="activity__amount">
               <span>${debt?.amount.toFixed(2)}</span>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
       <div className="activity__bottom">

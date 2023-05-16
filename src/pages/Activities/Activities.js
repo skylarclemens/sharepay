@@ -12,7 +12,7 @@ const Activities = () => {
   const sortActivities = useMemo(() => {
     return createSelector(
       res => res.data,
-      (data) => data?.slice().sort((a, b) => {
+      (data) => data?.slice(-10).sort((a, b) => {
           return new Date(b.created_at) - new Date(a.created_at);
         }) ?? []
       )

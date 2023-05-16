@@ -99,7 +99,7 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = null, sharedDebts, recipient
         user_id: user?.id,
         reference_id: debt.id,
         type: 'DEBT',
-        action: 'PAID',
+        action: 'PAY',
       }
     });
 
