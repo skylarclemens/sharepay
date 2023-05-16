@@ -42,6 +42,7 @@ const Activities = () => {
                   type={activity?.type}
                   action={activity?.action}
                   date={activity?.created_at}
+                  relatedUserId={activity?.related_user_id}
                 />
               )
             }) : null}

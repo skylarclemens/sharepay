@@ -10,8 +10,8 @@ import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import FriendAction from '../FriendAction/FriendAction';
 import Transactions from '../../components/Transactions/Transactions';
 import Balances from '../../components/Balances/Balances';
-import { useGetDebtsQuery, selectSharedDebtsByFriendId } from '../../slices/debtSlice';
-import { useGetExpensesQuery, selectSharedExpensesByDebt } from '../../slices/expenseSlice';
+import { useGetDebtsQuery, selectUnpaidSharedDebtsByFriendId } from '../../slices/debtSlice';
+import { useGetExpensesQuery, selectUnpaidSharedExpensesByDebt } from '../../slices/expenseSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import { balanceCalc } from '../../helpers/balance';
 
@@ -30,7 +30,7 @@ const Profile = () => {
     isSuccess: debtsFetched } = useGetDebtsQuery(user?.id, {
     selectFromResult: (result) => ({
       ...result,
-      sharedDebts: selectSharedDebtsByFriendId(result, id)
+      sharedDebts: selectUnpaidSharedDebtsByFriendId(result, id)
     })
   });
 
@@ -38,13 +38,15 @@ const Profile = () => {
     skip: !debtsFetched,
     selectFromResult: (result) => ({
       ...result,
-      currentExpenses: selectSharedExpensesByDebt(result, sharedDebts)
+      currentExpenses: selectUnpaidSharedExpensesByDebt(result, sharedDebts)
     })
   })
 
   useEffect(() => {
-    setBalances(balanceCalc(sharedDebts, user.id));
-  }, [sharedDebts, user]);
+    if(debtsFetched) {
+      setBalances(balanceCalc(sharedDebts, user.id));
+    }
+  }, [sharedDebts, debtsFetched, user]);
 
   return (
     <>

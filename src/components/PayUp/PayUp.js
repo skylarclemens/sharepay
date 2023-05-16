@@ -38,9 +38,9 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }
     }
   }, [debts, expenseDebts, expenseDebtsFetched]);
 
-  const markExpensePaid = (expense) => {
+  const markExpensePaid = (expense, debts) => {
     const unpaidDebts = debts?.filter(
-      debt => debt.expense_id === expense.id && !debt.paid
+      debt => (debt.expense_id === expense.id) && !debt.paid
     ) ?? [];
     if (unpaidDebts.length === 0) {
       return {
@@ -60,8 +60,19 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }
       };
     });
 
+    const updatedAllDebts = debts?.map(debt => {
+      if(updatedDebts.find(shared => (shared.id === debt.id) && shared.paid)) {
+        return {
+          ...debt,
+          paid: true,
+        };
+      } else {
+        return debt;
+      }
+    });
+
     const updatedExpenses = expenses?.map(expense => {
-      return markExpensePaid(expense);
+      return markExpensePaid(expense, updatedAllDebts);
     }).filter(expense => expense !== null);
 
     try {
@@ -93,15 +104,29 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }
     }
 
     const newActivities = updatedDebts?.map(debt => {
-      return {
-        user_id: user?.id,
+      const newActivity = {
         reference_id: debt.id,
         type: 'DEBT',
+      }
+      if (debt.debtor_id !== user?.id) {
+        return {
+          user_id: debt.creditor_id,
+          related_user_id: debt.debtor_id,
+          action: 'SETTLE',
+          ...newActivity
+        }
+      }
+      return {
+        user_id: debt.debtor_id,
+        related_user_id: debt.creditor_id,
         action: 'PAY',
+        ...newActivity
       }
     });
 
-    updatedExpenses.forEach(expense => {
+    console.log('newActivities', newActivities);
+
+    updatedExpenses?.length > 0 && updatedExpenses?.forEach(expense => {
       newActivities.push({
         user_id: user?.id,
         reference_id: expense.id,

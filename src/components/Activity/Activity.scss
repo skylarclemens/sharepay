@@ -34,12 +34,16 @@
 }
 
 .activity__text {
+  display: inline-block;
   color: v.$almost-black;
   font-size: 0.875rem;
   line-height: 1.063rem;
   padding: 0.5rem 0.5rem 0.5rem 0;
   .activity__name {
     font-weight: 600;
+  }
+  .activity__pay {
+    display: inline-block;
   }
 }
 
