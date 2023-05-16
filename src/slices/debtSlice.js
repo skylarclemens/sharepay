@@ -9,15 +9,6 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         const { data, error } = await supabase.from('debt').select();
         return { data, error };
       },
-      /*transformResponse: (data) => {
-        return data.map(debt => {
-          return {
-            ...debt,
-            debtType: 'OWE',
-            
-          }
-        })
-      },*/
       providesTags: (result = [], error, arg) => [
         { type: 'Debt', id: 'LIST' },
         ...result.map(({ id }) => ({ type: 'Debt', id: id }))

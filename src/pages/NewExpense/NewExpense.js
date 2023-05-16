@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useAddNewExpenseMutation } from '../../slices/expenseSlice';
 import { useAddNewDebtMutation } from '../../slices/debtSlice';
 import { getAllGroupsUsers } from '../../services/groups';
+import { useAddNewActivityMutation } from '../../slices/activityApi';
 import Header from '../../components/Header/Header';
 import TextInput from '../../components/Input/TextInput/TextInput';
 import AmountInput from '../../components/Input/AmountInput/AmountInput';
@@ -34,12 +35,13 @@ const NewExpense = () => {
 
   const [addNewExpense, { isExpenseLoading }] = useAddNewExpenseMutation();
   const [addNewDebt, { isDebtLoading }] = useAddNewDebtMutation();
+  const [addNewActivity, { isActivityLoading }] = useAddNewActivityMutation();
 
   const handleSubmit = async e => {
     e.preventDefault();
     setFieldErrors({ ...fieldErrors, formValid: true });
 
-    if (!handleValidation() || isExpenseLoading || isDebtLoading) return;
+    if (!handleValidation() || isExpenseLoading || isDebtLoading || isActivityLoading) return;
 
     const groupId = splitWithGroup?.id || null;
 
@@ -70,7 +72,20 @@ const NewExpense = () => {
 
     try {
       await addNewDebt(newDebt).unwrap();
-      navigate(`/expense/${expenseData.id}`);
+    } catch (error) {
+      console.error(error);
+    }
+
+    const newActivity = {
+      user_id: user?.id,
+      reference_id: expenseData.id,
+      type: 'EXPENSE',
+      action: 'CREATE',
+    }
+
+    try {
+       await addNewActivity(newActivity).unwrap();
+       navigate(`/expense/${expenseData.id}`);
     } catch (error) {
       console.error(error);
     }
