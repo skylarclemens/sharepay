@@ -5,12 +5,18 @@ import { useGetExpenseQuery } from '../../slices/expenseSlice';
 import { useGetDebtQuery } from '../../slices/debtSlice';
 import Avatar from '../Avatar/Avatar';
 
-const Activity = ({ userId, referenceId, type, action, date }) => {
+const Activity = ({ userId, referenceId, type, action, date, relatedUserId = null }) => {
   const user = useSelector(state => state.auth.user);
   const {
     data: account,
     isSuccess: accountFetched
   } = useGetAccountQuery(userId);
+  const {
+    data: relatedAccount,
+    isSuccess: relatedAccountFetched
+  } = useGetAccountQuery(relatedUserId, {
+    skip: !relatedUserId
+  });
   const currentUser = user?.id === userId;
 
   const {
@@ -53,8 +59,29 @@ const Activity = ({ userId, referenceId, type, action, date }) => {
               {action === 'CREATE' && 'created'}
               {action === 'UPDATE' && `updated a${type === 'EXPENSE' && 'n'}`}
               {action === 'DELETE' && `deleted a${type === 'EXPENSE' && 'n'}`}
-              {action === 'PAY' && 'paid a'}
-              {` ${type?.toLowerCase()}`}
+              {action === 'PAY' ? (
+                <div className="activity__pay">
+                  <span className="activity__pay-text">paid{' '}</span>
+                  {relatedAccountFetched ? (
+                  <span className="activity__name">
+                    {relatedAccount?.name}
+                  </span>) : type?.toLowerCase()}
+                </div>
+              ) : null}
+              {action === 'SETTLE' ? (
+                <div className="activity__pay">
+                  <span className="activity__pay-text">settled{' '}
+                    {relatedAccountFetched ? (
+                      <>
+                        <span>with{' '}</span>
+                        <span className="activity__name">
+                          {relatedAccount?.name}
+                        </span>
+                      </>) : type?.toLowerCase()}
+                  </span>
+                </div>
+              ) : null}
+              {action !== 'PAY' && action !== 'SETTLE' && ` ${type?.toLowerCase()}`}
             </span>
           </div>
         </div>

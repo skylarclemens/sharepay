@@ -177,7 +177,8 @@ const Expense = () => {
                         referenceId={activity?.reference_id}
                         type={activity?.type}
                         action={activity?.action}
-                        date={activity?.created_at} />
+                        date={activity?.created_at}
+                        relatedUserId={activity?.related_user_id} />
                     ))}
                   </div>
                 </div>) : null}

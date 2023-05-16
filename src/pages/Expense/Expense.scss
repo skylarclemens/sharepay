@@ -22,6 +22,9 @@
     }
     .details__info-text {
       gap: 0.5rem;
+      .details__title {
+        text-align: center;
+      }
     }
   }
 }

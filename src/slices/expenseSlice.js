@@ -93,6 +93,13 @@ export const selectSharedExpensesByDebt = createSelector(
   ) ?? []
 )
 
+export const selectUnpaidSharedExpensesByDebt = createSelector(
+  res => res.data, (data, sharedDebts) => sharedDebts,
+  (data, sharedDebts) => data?.filter(expense =>
+    sharedDebts.find(shared => shared.expense_id === expense.id && !shared.paid)
+  ) ?? []
+)
+
 export const selectUnpaidExpenses = createSelector(
   res => res.data,
   (data) => data?.filter(expense => !expense.paid) ?? []
