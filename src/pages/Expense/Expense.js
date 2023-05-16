@@ -16,6 +16,7 @@ import { useGetExpenseDebtsQuery } from '../../slices/debtSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import { useAddActivityMutation, useGetExpenseActivitiesQuery } from '../../slices/activityApi';
 import { formatExpenseDate } from '../../helpers/date';
+import successImg from '../../images/Success.svg';
 
 
 const UserDebtor = ({ debt }) => {
@@ -26,14 +27,17 @@ const UserDebtor = ({ debt }) => {
   return (
     <div className="user-transaction">
       <div className="user-details">
-        <Avatar
-          classes="white-border"
-          url={debtor?.avatar_url}
-          size={50}
-        />
+        <div className="user__avatar">
+          <Avatar
+            classes={debt?.paid ? 'success-border' : 'white-border'}
+            url={debtor?.avatar_url}
+            size={50}
+          />
+          {debt?.paid ? <img className="user__avatar--success" src={successImg} alt="success" /> : null}
+        </div>
         <span>{debtor?.name}</span>
       </div>
-      <Amount amount={debt?.amount} type="OWE" />
+      <Amount amount={debt?.amount} type={debt?.paid ? 'OWED' : 'OWE'} />
     </div>
   )
 }
@@ -134,7 +138,7 @@ const Expense = () => {
           <div className="expense-details-container">
             <DetailsCard 
               title={expense?.description}
-              subTitle={`Created on ${formatExpenseDate(expense?.created_at)}`}
+              subTitle={`Added ${formatExpenseDate(expense?.created_at)}`}
               type="expense"
               actions={payButton}
             />
