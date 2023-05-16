@@ -8,7 +8,7 @@ const ExpenseTransaction = ({ transaction, classes='' }) => {
   const user = useSelector(state => state.auth.user);
 
   const { debts,
-    isSuccess: debtorsFetched } = useGetDebtsQuery(undefined, {
+    isSuccess: debtorsFetched } = useGetDebtsQuery(user?.id, {
     selectFromResult: (result) => ({
       ...result,
       debts: selectDebtsByExpenseId(result, transaction?.id)

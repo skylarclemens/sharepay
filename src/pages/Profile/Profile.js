@@ -11,6 +11,7 @@ import FriendAction from '../FriendAction/FriendAction';
 import Transactions from '../../components/Transactions/Transactions';
 import Balances from '../../components/Balances/Balances';
 import { useGetDebtsQuery, selectSharedDebtsByFriendId } from '../../slices/debtSlice';
+import { useGetExpensesQuery, selectSharedExpensesByDebt } from '../../slices/expenseSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import { balanceCalc } from '../../helpers/balance';
 
@@ -26,10 +27,18 @@ const Profile = () => {
 
   const { sharedDebts,
     isLoading: debtsLoading,
-    isSuccess: debtsFetched } = useGetDebtsQuery(undefined, {
+    isSuccess: debtsFetched } = useGetDebtsQuery(user?.id, {
     selectFromResult: (result) => ({
       ...result,
       sharedDebts: selectSharedDebtsByFriendId(result, id)
+    })
+  });
+
+  const { currentExpenses } = useGetExpensesQuery(undefined, {
+    skip: !debtsFetched,
+    selectFromResult: (result) => ({
+      ...result,
+      currentExpenses: selectSharedExpensesByDebt(result, sharedDebts)
     })
   })
 
@@ -81,9 +90,9 @@ const Profile = () => {
           <Modal open={openPayUp}>
             <PayUp
               setOpenPayUp={setOpenPayUp}
-              friend={profileUser}
+              expenses={currentExpenses}
               sharedDebts={sharedDebts}
-              balances={balances}
+              recipient={profileUser}
             />
           </Modal>
         </>

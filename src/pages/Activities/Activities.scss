@@ -1,0 +1,25 @@
+@use '../../utilities/colors' as v;
+
+.activities-container {
+  background: v.$light-gray;
+  padding-top: 0.875rem;
+  height: calc(
+    100vh - 46px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+  );
+}
+
+.activities {
+  height: 100%;
+  margin: 0 20px;
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #ffffff;
+  border-radius: 1rem 1rem 0px 0px;
+  .recent {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
