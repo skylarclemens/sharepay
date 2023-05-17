@@ -8,6 +8,7 @@ import { useGetDebtsByExpenseIdsQuery, useUpdateDebtsMutation } from '../../slic
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import { useAddPaymentsMutation } from '../../slices/paymentApi';
 import { useAddActivityMutation } from '../../slices/activityApi';
+import successPayImg from '../../images/Success-pay.svg';
 
 const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }) => {
   const user = useSelector(state => state.auth.user);
@@ -16,6 +17,7 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }
   } = useGetAccountQuery(user?.id);
   const [balances, setBalances] = useState({ total: 0, owed: 0, owe: 0 });
   const [debts, setDebts] = useState(allDebts);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [updateDebts] = useUpdateDebtsMutation();
   const [updateExpenses] = useUpdateExpensesMutation();
   const [addPayments] = useAddPaymentsMutation();
@@ -42,7 +44,7 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }
     const unpaidDebts = debts?.filter(
       debt => (debt.expense_id === expense.id) && !debt.paid
     ) ?? [];
-    if (unpaidDebts.length === 0) {
+    if (unpaidDebts?.length === 0) {
       return {
         ...expense,
         paid: true,
@@ -149,7 +151,7 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }
       console.error(error);
     }
 
-    return closePayUp();
+    return setShowSuccess(true);
   }
 
   const closePayUp = () => {
@@ -158,34 +160,55 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }
 
   return (
     <div className="pay-up-container">
-      <div className="expense-avatars">
-        <Avatar url={account?.avatar_url} size={65} />
-        <Avatar url={recipient?.avatar_url} size={65} />
-      </div>
-      <div className="balance-block balance-block--total">
-        <div>
-          Pay <span className="friend-name">{recipient?.name}</span>
-        </div>
-        <span className="total">
-          ${Math.abs(balances?.total).toFixed(2) || 0.0}
-        </span>
-      </div>
-      <button
-        type="button"
-        className="button"
-        title="Pay up"
-        onClick={handlePayButton}
-      >
-        Paid up
-      </button>
-      <button
-        type="button"
-        className="button button--white button--small"
-        title="Cancel"
-        onClick={closePayUp}
-      >
-        Cancel
-      </button>
+      {!showSuccess ? (
+        <>
+          <div className="pay-up-text">
+            <div className="pay-avatars">
+              <Avatar url={balances < 0 ? account?.avatar_url : recipient?.avatar_url} size={70} classes="white-border" />
+              <Avatar url={balances < 0 ? recipient?.avatar_url : account?.avatar_url} size={70} classes="white-border" />
+            </div>
+            <div className="balance-block balance-block--total">
+              <div div className="pay-text">
+                <span className="user-name">{balances < 0 ? 'You' : recipient?.name}</span> paid <span className="user-name">{balances < 0 ? recipient?.name : 'you'}</span>
+              </div>
+              <span className="total">
+                ${Math.abs(balances?.total).toFixed(2) || 0.0}
+              </span>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="button button--flat button--medium"
+            title="Pay up"
+            onClick={handlePayButton}
+          >
+            Confirm
+          </button>
+          <button
+            type="button"
+            className="button button--gray button--medium"
+            title="Cancel"
+            onClick={closePayUp}
+          >
+            Cancel
+          </button>
+        </>) : (
+        <>
+          <div className="pay-up-text">
+          <img src={successPayImg} alt="Success" className="success-img" />
+
+            <div className="pay-text">You're all paid up!</div>
+          </div>
+          <button
+            type="button"
+            className="button button--flat button--medium"
+            title="Close"
+            onClick={closePayUp}
+          >
+            Close
+          </button>
+        </>
+      )}
     </div>
   );
 };

@@ -37,10 +37,16 @@
     border: 2px solid v.$green;
   }
 
+  &.button--gray {
+    background: v.$accent-gray;
+    color: v.$dark-gray;
+    border: 2px solid v.$accent-gray;
+  }
+
   &.button--medium {
     padding: 8px 12px;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 0.875rem;
+    font-weight: 500;
   }
 
   &.button--red-gradient {

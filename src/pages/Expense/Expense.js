@@ -112,7 +112,6 @@ const Expense = () => {
     try {
       await addActivity({
         user_id: user?.id,
-        reference_id: id,
         type: 'EXPENSE',
         action: 'DELETE'
       }).unwrap();
