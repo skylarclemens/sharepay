@@ -57,7 +57,8 @@ const Expense = () => {
 
   const { 
     data: debts,
-    isSuccess: debtsFetchSuccess } = useGetExpenseDebtsQuery(id);
+    isSuccess: debtsFetchSuccess
+  } = useGetExpenseDebtsQuery(id);
 
   useEffect(() => {
     if (!debtsFetchSuccess || !expenseFetchSuccess) return;
@@ -91,6 +92,7 @@ const Expense = () => {
   const currentUserPayer = user?.id === expense?.payer_id;
   const currentUserDebts = !currentUserPayer ?
     debts?.filter(debt => debt.debtor_id === user?.id) : [];
+  const userDebtsPaid = !currentUserPayer ? currentUserDebts?.filter(debt => debt.paid) : [];
   
   const {
     data: userCreditor,
@@ -121,7 +123,7 @@ const Expense = () => {
   };
 
   const headerImg = <img src={deleteImg} alt="Garbage icon for delete button" />;
-  const payButton = !currentUserPayer && !expense.paid ? (
+  const payButton = !currentUserPayer ? (
     <button className="button button--flat button--medium" onClick={() => setOpenPayUp(true)}>
       Pay
     </button>
@@ -141,7 +143,7 @@ const Expense = () => {
               title={expense?.description}
               subTitle={`Added ${formatExpenseDate(expense?.created_at)}`}
               type="expense"
-              actions={payButton}
+              actions={expense?.paid || userDebtsPaid?.length ? null : payButton}
             />
             <div className="expense-transactions-container">
               <div className="details-paid">
@@ -189,6 +191,7 @@ const Expense = () => {
             <PayUp
               setOpenPayUp={setOpenPayUp}
               allDebts={debts}
+              expenses={[expense]}
               sharedDebts={currentUserDebts}
               recipient={userCreditor}
             />

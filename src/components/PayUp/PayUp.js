@@ -73,7 +73,7 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }
 
     const updatedExpenses = expenses?.map(expense => {
       return markExpensePaid(expense, updatedAllDebts);
-    }).filter(expense => expense !== null);
+    }).filter(expense => expense !== null) ?? [];
 
     try {
       await updateDebts(updatedDebts).unwrap();
@@ -82,7 +82,9 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }
     }
 
     try {
-      await updateExpenses(updatedExpenses).unwrap();
+      if(updatedExpenses?.length > 0) {
+        await updateExpenses(updatedExpenses).unwrap();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -103,7 +105,7 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }
       console.error(error);
     }
 
-    const newActivities = updatedDebts?.map(debt => {
+    const newDebtActivities = updatedDebts?.map(debt => {
       const newActivity = {
         reference_id: debt.id,
         type: 'DEBT',
@@ -124,21 +126,30 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }
       }
     });
 
-    updatedExpenses?.length > 0 && updatedExpenses?.forEach(expense => {
-      newActivities.push({
+    const newExpenseActivities = updatedExpenses?.map(expense => {
+      return {
         user_id: user?.id,
         reference_id: expense.id,
         type: 'EXPENSE',
         action: 'PAY',
-      })
-    });
+      }
+    }) ?? [];
 
     try {
-      await addActivity(newActivities).unwrap();
-      closePayUp();
+      await addActivity(newDebtActivities).unwrap();
     } catch (error) {
       console.error(error);
     }
+
+    try {
+      if(newExpenseActivities?.length > 0) {
+        await addActivity(newExpenseActivities).unwrap();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    return closePayUp();
   }
 
   const closePayUp = () => {

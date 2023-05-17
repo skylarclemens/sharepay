@@ -6,7 +6,7 @@ import { useGetExpenseQuery } from '../../slices/expenseSlice';
 import { useGetDebtQuery } from '../../slices/debtSlice';
 import { useGetGroupQuery } from '../../slices/groupSlice';
 import Avatar from '../Avatar/Avatar';
-import successImg from '../../images/Success-white-border.svg';
+import successImg from '../../images/Success-white-border.png';
 import { Link } from 'react-router-dom';
 
 const Activity = ({ userId, referenceId, type, action, date, relatedUserId = null }) => {
