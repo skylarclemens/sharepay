@@ -20,6 +20,7 @@ import successImg from '../../images/Success.svg';
 
 
 const UserDebtor = ({ debt }) => {
+  const user = useSelector(state => state.auth.user);
   const {
     data: debtor
   } = useGetAccountQuery(debt?.debtor_id);
@@ -35,7 +36,7 @@ const UserDebtor = ({ debt }) => {
           />
           {debt?.paid ? <img className="user__avatar--success" src={successImg} alt="success" /> : null}
         </div>
-        <span>{debtor?.name}</span>
+        <span>{debtor?.id !== user?.id ? debtor?.name : 'You'}</span>
       </div>
       <Amount amount={debt?.amount} type={debt?.paid ? 'OWED' : 'OWE'} />
     </div>
@@ -56,7 +57,8 @@ const Expense = () => {
 
   const { 
     data: debts,
-    isSuccess: debtsFetchSuccess } = useGetExpenseDebtsQuery(id);
+    isSuccess: debtsFetchSuccess
+  } = useGetExpenseDebtsQuery(id);
 
   useEffect(() => {
     if (!debtsFetchSuccess || !expenseFetchSuccess) return;
@@ -90,6 +92,7 @@ const Expense = () => {
   const currentUserPayer = user?.id === expense?.payer_id;
   const currentUserDebts = !currentUserPayer ?
     debts?.filter(debt => debt.debtor_id === user?.id) : [];
+  const userDebtsPaid = !currentUserPayer ? currentUserDebts?.filter(debt => debt.paid) : [];
   
   const {
     data: userCreditor,
@@ -140,7 +143,7 @@ const Expense = () => {
               title={expense?.description}
               subTitle={`Added ${formatExpenseDate(expense?.created_at)}`}
               type="expense"
-              actions={payButton}
+              actions={expense?.paid || userDebtsPaid?.length ? null : payButton}
             />
             <div className="expense-transactions-container">
               <div className="details-paid">
@@ -153,7 +156,7 @@ const Expense = () => {
                         url={userCreditor?.avatar_url}
                         size={50}
                       />
-                      <span>{userCreditor?.name}</span>
+                      <span>{userCreditor?.id !== user?.id ? userCreditor?.name : 'You'}</span>
                     </div>
                     <Amount amount={expense?.amount} />
                   </div>
@@ -188,6 +191,7 @@ const Expense = () => {
             <PayUp
               setOpenPayUp={setOpenPayUp}
               allDebts={debts}
+              expenses={[expense]}
               sharedDebts={currentUserDebts}
               recipient={userCreditor}
             />
