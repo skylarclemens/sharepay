@@ -124,8 +124,6 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }
       }
     });
 
-    console.log('newActivities', newActivities);
-
     updatedExpenses?.length > 0 && updatedExpenses?.forEach(expense => {
       newActivities.push({
         user_id: user?.id,

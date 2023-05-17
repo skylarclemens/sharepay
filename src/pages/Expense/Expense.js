@@ -20,6 +20,7 @@ import successImg from '../../images/Success.svg';
 
 
 const UserDebtor = ({ debt }) => {
+  const user = useSelector(state => state.auth.user);
   const {
     data: debtor
   } = useGetAccountQuery(debt?.debtor_id);
@@ -35,7 +36,7 @@ const UserDebtor = ({ debt }) => {
           />
           {debt?.paid ? <img className="user__avatar--success" src={successImg} alt="success" /> : null}
         </div>
-        <span>{debtor?.name}</span>
+        <span>{debtor?.id !== user?.id ? debtor?.name : 'You'}</span>
       </div>
       <Amount amount={debt?.amount} type={debt?.paid ? 'OWED' : 'OWE'} />
     </div>
@@ -120,7 +121,7 @@ const Expense = () => {
   };
 
   const headerImg = <img src={deleteImg} alt="Garbage icon for delete button" />;
-  const payButton = !currentUserPayer ? (
+  const payButton = !currentUserPayer && !expense.paid ? (
     <button className="button button--flat button--medium" onClick={() => setOpenPayUp(true)}>
       Pay
     </button>
@@ -153,7 +154,7 @@ const Expense = () => {
                         url={userCreditor?.avatar_url}
                         size={50}
                       />
-                      <span>{userCreditor?.name}</span>
+                      <span>{userCreditor?.id !== user?.id ? userCreditor?.name : 'You'}</span>
                     </div>
                     <Amount amount={expense?.amount} />
                   </div>
