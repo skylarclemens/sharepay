@@ -1,21 +1,42 @@
 @use '../../utilities/colors' as v;
 
 .pay-up-container {
-  position: relative;
-  top: 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   background: #ffffff;
-  margin: 20px;
-  padding: 1rem;
+  padding: 1.25rem;
   border-radius: 1rem;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 1.25rem);
+
+  .pay-up-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    background: v.$light-gray;
+    border-radius: 1rem;
+    width: 100%;
+    padding: 1.875rem 0;
+  }
+
+  .pay-text {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: v.$blue-black;
+  }
 
   .balance-block {
-    padding: 0;
-    background: #ffffff;
-    border: none;
+    gap: 0.875rem;
+  }
+
+  .user-name {
+    font-weight: 500;
+  }
+
+  .pay-avatars {
+    display: flex;
+    gap: 0.5rem;
   }
 
   .friend-name {
@@ -25,7 +46,33 @@
   .total {
     font-family: 'Rubik', sans-serif;
     font-size: 2rem;
-    font-weight: 400;
-    color: v.$almost-black;
+    font-weight: 600;
+    color: v.$layout-green;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .pay-up,
+  .pay-up--success {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .pay-up {
+    &.hide {
+      display: none;
+    }
+  }
+  .pay-up--success {
+    width: 100%;
+    display: none;
+    &.show {
+      display: flex;
+    }
   }
 }
