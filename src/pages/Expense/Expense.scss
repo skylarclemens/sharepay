@@ -1,8 +1,11 @@
 @use '../../utilities/colors' as v;
 
+.layout:has(.expense-details-container) {
+  background: v.$light-gray;
+}
+
 .expense-details-container {
   background: v.$light-gray;
-  height: 100vh;
   .details-card {
     display: flex;
     flex-direction: column;
