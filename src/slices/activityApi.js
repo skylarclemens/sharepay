@@ -26,7 +26,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
       },
       providesTags: (result, error, arg) => [{ type: 'Activity', id: arg }]
     }),
-    getExpenseActivities: builder.query({
+    getActivityByReferenceIds: builder.query({
       queryFn: async referenceIds => {
         const { data, error } = await supabase
           .from('activity')
@@ -55,6 +55,6 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
 export const {
   useGetUserActivitiesQuery,
   useGetActivityQuery,
-  useGetExpenseActivitiesQuery,
+  useGetActivityByReferenceIdsQuery,
   useAddActivityMutation,
 } = extendedSupabaseApi;

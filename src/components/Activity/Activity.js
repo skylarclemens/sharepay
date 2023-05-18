@@ -39,7 +39,7 @@ const Activity = ({ userId, referenceId, type, action, date, relatedUserId = nul
   const {
     data: debtExpense,
   } = useGetExpenseQuery(debt?.expense_id, {
-    skip: type !== 'DEBT' && !debtFetched
+    skip: type !== 'DEBT' || !debtFetched
   });
   const {
     data: group,
