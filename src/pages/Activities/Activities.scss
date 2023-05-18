@@ -12,6 +12,7 @@
 .activities {
   margin: 0 20px;
   padding: 1.25rem 1rem;
+  min-height: calc(100vh - 96px);
   display: flex;
   flex-direction: column;
   gap: 1rem;
