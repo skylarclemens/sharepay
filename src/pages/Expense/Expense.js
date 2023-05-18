@@ -14,7 +14,7 @@ import deleteImg from '../../images/Delete.svg';
 import { useGetExpenseQuery, useRemoveExpenseMutation } from '../../slices/expenseSlice';
 import { useGetExpenseDebtsQuery } from '../../slices/debtSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
-import { useAddActivityMutation, useGetExpenseActivitiesQuery } from '../../slices/activityApi';
+import { useAddActivityMutation, useGetActivityByReferenceIdsQuery } from '../../slices/activityApi';
 import { formatExpenseDate } from '../../helpers/date';
 import successImg from '../../images/Success.svg';
 
@@ -53,12 +53,16 @@ const Expense = () => {
   const {
     data: expense,
     isSuccess: expenseFetchSuccess
-  } = useGetExpenseQuery(id);
+  } = useGetExpenseQuery(id, {
+    skip: !id
+  });
 
   const { 
     data: debts,
     isSuccess: debtsFetchSuccess
-  } = useGetExpenseDebtsQuery(id);
+  } = useGetExpenseDebtsQuery(id, {
+    skip: !id
+  });
 
   useEffect(() => {
     if (!debtsFetchSuccess || !expenseFetchSuccess) return;
@@ -78,8 +82,8 @@ const Expense = () => {
   const {
     data: activities,
     isSuccess: activitiesFetchSuccess
-  } = useGetExpenseActivitiesQuery(referenceIds, {
-    skip: !debtsFetchSuccess || !expenseFetchSuccess,
+  } = useGetActivityByReferenceIdsQuery(referenceIds, {
+    skip: !debtsFetchSuccess || !expenseFetchSuccess || referenceIds.length === 0,
     selectFromResult: (result) => ({
       data: sortActivities(result),
       isSuccess: result.isSuccess
