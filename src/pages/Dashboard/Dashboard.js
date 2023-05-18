@@ -69,6 +69,7 @@ const Dashboard = () => {
         <>
           <Refresh onRefresh={onRefresh} />
           <div className="dashboard">
+            <div className="details-background"></div>
             <div className="details-container">
               <div className="balance">
                 <div className="balance-block balance-block--total">
@@ -91,7 +92,6 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="divider"></div>
             <div className="transactions-container">
               <h2 className="main-heading">Recent Transactions</h2>
               {(expensesFetched && unpaidFriendExpenses.length > 0) && <Transactions transactions={unpaidFriendExpenses} />}

@@ -134,6 +134,7 @@ button {
 .layout {
   padding-top: calc(46px + env(safe-area-inset-top));
   padding-bottom: calc(46px + env(safe-area-inset-bottom));
+  overflow: auto;
 }
 
 .empty-layout {
