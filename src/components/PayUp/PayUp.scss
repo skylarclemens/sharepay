@@ -4,10 +4,6 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
   background: #ffffff;
   padding: 1.25rem;
   border-radius: 1rem;
@@ -56,5 +52,27 @@
 
   .button {
     width: 100%;
+  }
+
+  .pay-up,
+  .pay-up--success {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .pay-up {
+    &.hide {
+      display: none;
+    }
+  }
+  .pay-up--success {
+    width: 100%;
+    display: none;
+    &.show {
+      display: flex;
+    }
   }
 }

@@ -160,55 +160,52 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }
 
   return (
     <div className="pay-up-container">
-      {!showSuccess ? (
-        <>
-          <div className="pay-up-text">
-            <div className="pay-avatars">
-              <Avatar url={balances < 0 ? account?.avatar_url : recipient?.avatar_url} size={70} classes="white-border" />
-              <Avatar url={balances < 0 ? recipient?.avatar_url : account?.avatar_url} size={70} classes="white-border" />
-            </div>
-            <div className="balance-block balance-block--total">
-              <div div className="pay-text">
-                <span className="user-name">{balances < 0 ? 'You' : recipient?.name}</span> paid <span className="user-name">{balances < 0 ? recipient?.name : 'you'}</span>
-              </div>
-              <span className="total">
-                ${Math.abs(balances?.total).toFixed(2) || 0.0}
-              </span>
-            </div>
+      <div className={`pay-up ${showSuccess ? 'hide' : ''}`}>
+        <div className="pay-up-text">
+          <div className="pay-avatars">
+            <Avatar url={balances?.total < 0 ? account?.avatar_url : recipient?.avatar_url} size={70} classes="white-border" />
+            <Avatar url={balances?.total < 0 ? recipient?.avatar_url : account?.avatar_url} size={70} classes="white-border" />
           </div>
-          <button
-            type="button"
-            className="button button--flat button--medium"
-            title="Pay up"
-            onClick={handlePayButton}
-          >
-            Confirm
-          </button>
-          <button
-            type="button"
-            className="button button--gray button--medium"
-            title="Cancel"
-            onClick={closePayUp}
-          >
-            Cancel
-          </button>
-        </>) : (
-        <>
-          <div className="pay-up-text">
+          <div className="balance-block balance-block--total">
+            <div div className="pay-text">
+              <span className="user-name">{balances?.total < 0 ? 'You' : recipient?.name}</span> paid <span className="user-name">{balances?.total < 0 ? recipient?.name : 'you'}</span>
+            </div>
+            <span className="total">
+              ${Math.abs(balances?.total).toFixed(2) || 0.0}
+            </span>
+          </div>
+        </div>
+        <button
+          type="button"
+          className="button button--flat button--medium"
+          title="Pay up"
+          onClick={handlePayButton}
+        >
+          Confirm
+        </button>
+        <button
+          type="button"
+          className="button button--gray button--medium"
+          title="Cancel"
+          onClick={closePayUp}
+        >
+          Cancel
+        </button>
+      </div>
+      <div className={`pay-up--success ${showSuccess ? 'show' : ''}`}>
+        <div className="pay-up-text">
           <img src={successPayImg} alt="Success" className="success-img" />
-
-            <div className="pay-text">You're all paid up!</div>
-          </div>
-          <button
-            type="button"
-            className="button button--flat button--medium"
-            title="Close"
-            onClick={closePayUp}
-          >
-            Close
-          </button>
-        </>
-      )}
+          <div className="pay-text">You're all paid up!</div>
+        </div>
+        <button
+          type="button"
+          className="button button--flat button--medium"
+          title="Close"
+          onClick={closePayUp}
+        >
+          Close
+        </button>
+      </div>
     </div>
   );
 };
