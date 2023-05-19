@@ -3,6 +3,16 @@
 .profile {
   background: v.$light-gray;
 
+  .button--pay-up {
+    justify-self: flex-end;
+  }
+
+  .details__actions {
+    display: grid;
+    gap: 0;
+    grid-template-columns: 1fr auto;
+  }
+
   h2 {
     font-family: 'Inter', sans-serif;
     font-size: 1rem;

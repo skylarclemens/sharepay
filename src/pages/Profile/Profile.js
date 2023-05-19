@@ -64,7 +64,7 @@ const Profile = () => {
                 <FriendAction friend={profileUser} />
                 <button
                   type="button"
-                  className="button button--medium button--border-none button--flat"
+                  className="button button--medium button--border-none button--flat button--pay-up"
                   title="Pay up"
                   onClick={() => setOpenPayUp(true)}>
                     Pay up

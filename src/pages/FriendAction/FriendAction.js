@@ -90,11 +90,6 @@ const FriendAction = ({ friend }) => {
 
   return (
     <>
-      {usersFriendLoading || friendRequestLoading && (
-        <button className="button button--with-icon button--medium button--border-none button--flat button--disabled" disabled={true}>
-          Loading
-        </button> 
-      )}
       {isFriend && (
         <div ref={dropdownRef} className="friend-actions-container">
           <button className="button button--with-icon button--medium button--border-none button--flat button--disabled"
