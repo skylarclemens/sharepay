@@ -12,6 +12,7 @@
   border-radius: 1rem;
   font-size: 0.875rem;
   width: 100%;
+  min-height: 56px;
   &.transaction--red {
     border-left: 3px solid v.$red;
   }

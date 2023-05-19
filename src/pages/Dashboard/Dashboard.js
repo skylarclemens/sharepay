@@ -30,6 +30,7 @@ const Dashboard = () => {
   } = useGetDebtsQuery(user?.id);
   const {
     isSuccess: expensesFetched,
+    isLoading: expensesLoading,
     refetch: refetchExpenses
   } = useGetExpensesQuery();
   const {
@@ -112,9 +113,14 @@ const Dashboard = () => {
             <div className="recent-transactions">
               <h2 className="main-heading">Recent Transactions</h2>
               <div className="transactions-container">
-                {expensesFetched && unpaidFriendExpenses.length > 0 &&
+                {!expensesFetched || expensesLoading ? (
+                  <Skeleton width="100%" height="56px">
+                    <div className="skeleton__avatar"></div>
+                  </Skeleton>
+                ) : (
+                  unpaidFriendExpenses.length > 0 &&
                   <Transactions transactions={unpaidFriendExpenses} />
-                }
+                )}
                 {(groupsFetched && groups.length > 0) &&
                   groups.map(group => {
                     return <GroupExpenses key={group.id} group={group} />
