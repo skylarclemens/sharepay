@@ -109,15 +109,17 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="transactions-container">
+            <div className="recent-transactions">
               <h2 className="main-heading">Recent Transactions</h2>
-              {expensesFetched && unpaidFriendExpenses.length > 0 &&
-                <Transactions transactions={unpaidFriendExpenses} />
-              }
-              {(groupsFetched && groups.length > 0) &&
-                groups.map(group => {
-                  return <GroupExpenses key={group.id} group={group} />
-                })}
+              <div className="transactions-container">
+                {expensesFetched && unpaidFriendExpenses.length > 0 &&
+                  <Transactions transactions={unpaidFriendExpenses} />
+                }
+                {(groupsFetched && groups.length > 0) &&
+                  groups.map(group => {
+                    return <GroupExpenses key={group.id} group={group} />
+                  })}
+              </div>
             </div>
           </div>
         </>

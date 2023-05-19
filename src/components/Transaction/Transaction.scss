@@ -11,6 +11,7 @@
   box-shadow: 0px 2px 0px v.$accent-gray;
   border-radius: 1rem;
   font-size: 0.875rem;
+  width: 100%;
   &.transaction--red {
     border-left: 3px solid v.$red;
   }
