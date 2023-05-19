@@ -4,7 +4,6 @@ import blankAvatar from '../../images/Blank_avatar.svg';
 
 const Avatar = ({ url = null, size, classes, type = 'user' }) => {
   const [avatarUrl, setAvatarUrl] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (url) {
@@ -21,20 +20,13 @@ const Avatar = ({ url = null, size, classes, type = 'user' }) => {
         }
       }
       downloadAvatar(url);
-      setLoading(false);
       return;
     }
     setAvatarUrl(null);
-    setLoading(false);
   }, [url, type]);
 
   return (
     <>
-      {loading ? (
-        <div className="avatar-loader">
-          <div height={size} width={size} className={`avatar ${classes} avatar--loading`}></div>
-        </div>
-      ) : (
       <img
         src={avatarUrl ?? blankAvatar}
         alt={avatarUrl ? 'Avatar' : 'Blank Avatar Icon'}
@@ -42,9 +34,7 @@ const Avatar = ({ url = null, size, classes, type = 'user' }) => {
         style={{
           height: size,
           width: size,
-        }}
-      />
-      )}
+        }} />
     </>
   )
 };

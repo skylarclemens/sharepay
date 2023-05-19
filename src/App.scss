@@ -143,6 +143,7 @@ button {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+@import './common/animate';
 @import './common/avatars';
 @import './common/arrows';
 @import './common/buttons';

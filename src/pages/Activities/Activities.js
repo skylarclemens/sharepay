@@ -1,6 +1,7 @@
 import './Activities.scss';
-import { useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useBeforeUnload } from 'react-router-dom';
 import { createSelector } from '@reduxjs/toolkit';
 import Activity from '../../components/Activity/Activity';
 import Header from '../../components/Header/Header';
@@ -8,6 +9,7 @@ import { useGetUserActivitiesQuery } from '../../slices/activityApi';
 
 const Activities = () => {
   const user = useSelector(state => state.auth.user);
+  const [animate, setAnimate] = useState(false);
 
   const sortActivities = useMemo(() => {
     return createSelector(
@@ -28,12 +30,25 @@ const Activities = () => {
     })
   });
 
+  useBeforeUnload((e) => {
+    window.sessionStorage.removeItem('animate');
+  });
+
+  useEffect(() => {
+    if(window.sessionStorage.getItem('animate') === null) {
+      window.sessionStorage.setItem('animate', true);
+      setAnimate(true);
+    } else {
+      setAnimate(false);
+    }
+  }, [])
+
   return (
     <>
       <Header type="main" title="Activity" />
       <div className="activities-container">
         <div className="activities">
-          {activitiesFetched ? activities?.map((activity) => {
+          {activitiesFetched ? activities?.map((activity, index) => {
               return (
                 <Activity
                   key={activity?.id}
@@ -43,6 +58,8 @@ const Activities = () => {
                   action={activity?.action}
                   date={activity?.created_at}
                   relatedUserId={activity?.related_user_id}
+                  index={index}
+                  animate={animate}
                 />
               )
             }) : null}
