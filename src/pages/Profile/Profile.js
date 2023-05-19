@@ -10,6 +10,7 @@ import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import FriendAction from '../FriendAction/FriendAction';
 import Transactions from '../../components/Transactions/Transactions';
 import Balances from '../../components/Balances/Balances';
+import Skeleton from '../../components/Skeleton/Skeleton';
 import { useGetDebtsQuery, selectUnpaidSharedDebtsByFriendId } from '../../slices/debtSlice';
 import { useGetExpensesQuery, selectUnpaidSharedExpensesByDebt } from '../../slices/expenseSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
@@ -80,10 +81,12 @@ const Profile = () => {
             <div className="profile__section profile__section--transactions">
               <h2>Transactions</h2>
               <div className="profile__transactions">
-                {debtsLoading &&
-                  <div className="medium-gray">Loading...</div>}
-                {debtsFetched && balances.total !== 0 &&
-                  <Transactions transactions={sharedDebts} type="debt" />}
+                {!debtsFetched || debtsLoading ? (
+                  <Skeleton height={52} width={329}>
+                    <div className="skeleton__avatar"></div>
+                  </Skeleton>) : (
+                balances.total !== 0 &&
+                  <Transactions transactions={sharedDebts} type="debt" />)}
                 {balances.total === 0 &&
                   <div className="medium-gray">No transactions available</div>}
               </div>
