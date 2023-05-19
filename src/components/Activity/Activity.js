@@ -62,13 +62,14 @@ const Activity = ({ userId, referenceId, type, action, date, relatedUserId = nul
           switch (action) {
             case 'CREATE':
               setActivityName(userName);
-              setActivityDescription(` created a new expense`);
+              setActivityRelatedName(expense?.description)
+              setActivityDescription(` created a new expense `);
               setActivityLink(`/expense/${referenceId}`);
-              setActivityAmount(expense?.amount);
               break;
             case 'UPDATE':
               setActivityName(userName);
-              setActivityDescription(` updated an expense`);
+              setActivityRelatedName(expense?.description);
+              setActivityDescription(` updated the expense `);
               setActivityLink(`/expense/${referenceId}`);
               break;
             case 'DELETE':
@@ -79,7 +80,6 @@ const Activity = ({ userId, referenceId, type, action, date, relatedUserId = nul
               setActivityName(expense?.description ? expense?.description : 'Deleted');
               setActivityDescription(' completely paid up');
               setActivityLink(`/expense/${referenceId}`);
-              setActivityAmount(expense?.amount);
               break;
             default:
               break;
@@ -173,13 +173,13 @@ const Activity = ({ userId, referenceId, type, action, date, relatedUserId = nul
                 </span>)}
             </div>
           </div>
-          <div className="activity__right">
-            {activityAmount && (
+          {activityAmount && (
+            <div className="activity__right">
               <div className="activity__amount">
                 <span>${activityAmount.toFixed(2)}</span>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </Link>
       <div className="activity__bottom">
