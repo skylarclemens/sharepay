@@ -16,12 +16,14 @@ const FriendAction = ({ friend }) => {
 
   const {
     data: usersFriend,
+    isLoading: usersFriendLoading,
     isSuccess: usersFriendFetched,
     isError: usersFriendError
   } = useGetFriendQuery(friend?.id);
 
   const {
     data: friendRequest,
+    isLoading: friendRequestLoading,
     isSuccess: friendRequestFetched,
   } = useGetFriendRequestQuery({ userId: user.id, friendId: friend?.id }, {
     skip: !usersFriendError
@@ -88,6 +90,11 @@ const FriendAction = ({ friend }) => {
 
   return (
     <>
+      {usersFriendLoading || friendRequestLoading && (
+        <button className="button button--with-icon button--medium button--border-none button--flat button--disabled" disabled={true}>
+          Loading
+        </button> 
+      )}
       {isFriend && (
         <div ref={dropdownRef} className="friend-actions-container">
           <button className="button button--with-icon button--medium button--border-none button--flat button--disabled"

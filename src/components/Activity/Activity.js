@@ -109,18 +109,18 @@ const Activity = ({ userId, referenceId, type, action, date, relatedUserId = nul
           switch (action) {
             case 'CREATE':
               setActivityName(userName);
-              setActivityRelatedName(group?.name);
+              setActivityRelatedName(group?.group_name);
               setActivityDescription(` created the group `);
               setActivityLink(`/group/${referenceId}`);
               break;
             case 'UPDATE':
+              setActivityRelatedName(group?.group_name);
               setActivityDescription(` updated the group `);
               setActivityLink(`/group/${referenceId}`);
               break;
             case 'DELETE':
               setActivityName(userName);
-              setActivityRelatedName(group?.name);
-              setActivityDescription(` deleted the group `);
+              setActivityDescription(" deleted a group");
               break;
             default:
               break;
