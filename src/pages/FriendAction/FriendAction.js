@@ -16,14 +16,12 @@ const FriendAction = ({ friend }) => {
 
   const {
     data: usersFriend,
-    isLoading: usersFriendLoading,
     isSuccess: usersFriendFetched,
     isError: usersFriendError
   } = useGetFriendQuery(friend?.id);
 
   const {
     data: friendRequest,
-    isLoading: friendRequestLoading,
     isSuccess: friendRequestFetched,
   } = useGetFriendRequestQuery({ userId: user.id, friendId: friend?.id }, {
     skip: !usersFriendError
