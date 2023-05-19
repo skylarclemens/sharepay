@@ -1,16 +1,9 @@
 @use '../../utilities/colors' as v;
 
-h2 {
-  font-family: 'Rubik', sans-serif;
-  font-weight: 500;
-  text-transform: uppercase;
-  font-size: 0.875rem;
-  color: v.$dark-gray;
-}
-
 .details-container {
   position: relative;
-  padding: 0 1.5rem 4.5rem 1.5rem;
+  min-height: 120px;
+  padding: 0.25rem 1.5rem 3.75rem 1.5rem;
   margin-bottom: 62px;
   background: linear-gradient(
       180deg,
@@ -45,19 +38,20 @@ h2 {
   background: v.$layout-green;
 }
 
-.transactions-container {
+.main-heading {
+  padding: 0 1.25rem;
+}
+
+.recent-transactions {
   background: #ffffff;
   padding: 1.5rem 0;
   border-radius: 1rem 1rem 0px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
   flex-grow: 1;
-  .main-heading {
-    font-family: 'Rubik', sans-serif;
-    font-weight: 500;
-    font-size: 1.25rem;
-    color: v.$dark-green;
-    text-transform: none;
-    padding: 0 1.25rem 0.5rem 1.25rem;
-  }
+  padding: 1.5rem 20px;
+  margin-top: 0.75rem;
 }
 
 .balance {
@@ -75,7 +69,7 @@ h2 {
   margin: 0 auto;
   left: 0;
   right: 0;
-  bottom: -34px;
+  bottom: -36px;
   z-index: 2;
   display: flex;
   min-height: 76px;

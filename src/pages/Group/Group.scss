@@ -21,24 +21,19 @@
 }
 
 .details-card-background {
-  &.group--green,
-  &.group--blue,
-  &.group--purple {
-    box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.1);
-  }
   &.group--blue {
     background: linear-gradient(
         180deg,
-        rgba(0, 0, 0, 0) 30%,
-        rgba(0, 0, 0, 0.2) 100%
+        rgba(0, 0, 0, 0) 50%,
+        rgba(0, 0, 0, 0.13) 100%
       ),
       v.$accent-blue;
   }
   &.group--purple {
     background: linear-gradient(
         180deg,
-        rgba(0, 0, 0, 0) 30%,
-        rgba(0, 0, 0, 0.2) 100%
+        rgba(0, 0, 0, 0) 50%,
+        rgba(0, 0, 0, 0.13) 100%
       ),
       v.$plum;
   }
@@ -65,52 +60,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-}
-
-.expense-card {
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
-  background: v.$light-gray;
-  border-radius: 0.5rem;
-  box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
-  padding-right: 1rem;
-  text-decoration: inherit;
-  color: inherit;
-
-  .expense-date {
-    display: flex;
-    flex-direction: column;
-    width: 48px;
-    padding: 0.5rem 0.625rem;
-    text-align: center;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    background: #618467;
-    border-radius: 0.5rem 0 0 0.5rem;
-    color: #ffffff;
-    text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.15);
-    .month {
-      text-transform: uppercase;
-    }
-    .day {
-      font-weight: 600;
-    }
-  }
-
-  .expense-description {
-    font-size: 0.875rem;
-  }
-
-  .expense-amount {
-    font-weight: 600;
-    color: #686868;
-    flex: 1;
-    text-align: right;
-  }
-
-  .arrow {
-    border: solid v.$washed-gray;
-    border-width: 0 2px 2px 0;
+  .medium-gray {
+    color: v.$washed-gray;
   }
 }

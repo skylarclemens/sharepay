@@ -1,14 +1,13 @@
 import './Group.scss';
-import { useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { groupBalanceCalc } from '../../helpers/balance';
-import { formatMoney } from '../../helpers/money';
 import Header from '../../components/Header/Header';
 import { useGetGroupExpensesQuery, useGetGroupQuery } from '../../slices/groupSlice';
 import { selectUserDebtsByGroupId, useGetDebtsQuery } from '../../slices/debtSlice';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import Balances from '../../components/Balances/Balances';
+import Skeleton from '../../components/Skeleton/Skeleton';
+import ExpenseTransaction from '../../components/Transactions/ExpenseTransaction/ExpenseTransaction';
 
 const Group = () => {
   const { id } = useParams();
@@ -23,7 +22,9 @@ const Group = () => {
     data: groupExpenses,
     isLoading: groupExpensesLoading,
     isSuccess: groupExpensesFetched
-  } = useGetGroupExpensesQuery(id);
+  } = useGetGroupExpensesQuery(id, {
+    skip: !id
+  });
 
   const {
     userGroupDebts,
@@ -35,24 +36,7 @@ const Group = () => {
     })
   });
 
-  const groupBalance = useMemo(() => {
-    return groupBalanceCalc(groupExpenses);
-  }, [groupExpenses])
-
-  const formattedDate = expenseDate => {
-    const date = new Date(expenseDate)
-      .toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-      })
-      .split(' ');
-    return (
-      <>
-        <div className="month">{date[0]}</div>
-        <div className="day">{date[1]}</div>
-      </>
-    );
-  };
+  const unpaidGroupExpenses = groupExpenses?.filter(expense => !expense?.paid);
 
   return (
     groupFetched && (
@@ -74,31 +58,19 @@ const Group = () => {
         <div className="group__section group__section--transactions">
           <h2>Group expenses</h2>
           <div className="group__transactions">
-            {groupExpensesLoading ? (
-              <div className="medium-gray">Loading...</div>
+            {!groupExpensesFetched || groupExpensesLoading ? (
+              <Skeleton width="100%" height="56px" />
             ) : (
-              groupExpensesFetched && groupExpenses.map(expense => {
+              groupExpenses.length > 0 && unpaidGroupExpenses.map(expense => {
                 return (
-                  <Link
-                    to={`/expense/${expense.id}`}
+                  <ExpenseTransaction
                     key={expense.id}
-                    className="expense-card"
-                  >
-                    <div className={`expense-date ${`group--${group?.color}`}`}>
-                      {formattedDate(expense?.created_at)}
-                    </div>
-                    <div className="expense-description">
-                      {expense?.description}
-                    </div>
-                    <div className="expense-amount">
-                      {formatMoney(expense?.amount, false)}
-                    </div>
-                    <div className="arrow arrow--right"></div>
-                  </Link>
+                    transaction={expense}
+                    />
                 );
               })
             )}
-            {groupExpensesFetched && groupBalance === 0 && (
+            {groupExpensesFetched && unpaidGroupExpenses.length === 0 && (
               <div className="medium-gray">No group expenses available</div>
             )}
           </div>

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { balanceCalc } from '../../helpers/balance';
 import { formatMoney } from '../../helpers/money';
+import Skeleton from '../Skeleton/Skeleton';
 import receiveImg from '../../images/Receive.svg';
 import sendImg from '../../images/Send.svg';
 
@@ -23,18 +24,26 @@ const Balances = ({ debts, debtsStatus }) => {
           You're owed
           <img src={receiveImg} alt="Green arrow pointing bottom left" />
         </h3>
-        <p className="balance__amount">{
-          debtsStatus.loading ? 'Loading...' : debtsStatus.fetched && formatMoney(balances?.owed, false)
-        }</p>
+        <p className="balance__amount">
+          {!debtsStatus.fetched || debtsStatus.loading ? (
+            <Skeleton width="100%" height="32px" />
+          ) : (
+            formatMoney(balances?.owed, false)
+          )}
+        </p>
       </div>
       <div className="balance__item balance__item--owe">
         <h3 className="balance__title">
           You owe
           <img src={sendImg} alt="Red arrow pointing top right" />
         </h3>
-        <p className="balance__amount">{
-          debtsStatus.loading ? 'Loading...' : debtsStatus.fetched && formatMoney(balances?.owe, false)
-        }</p>
+        <p className="balance__amount">
+          {!debtsStatus.fetched || debtsStatus.loading ? (
+            <Skeleton width="100%" height="32px" />
+          ) : (
+            formatMoney(balances?.owe, false)
+          )}
+        </p>
       </div>
     </div>
   )

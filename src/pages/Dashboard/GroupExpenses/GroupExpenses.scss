@@ -1,21 +1,16 @@
 @use '../../../utilities/colors' as v;
 
 .group-expenses {
-  margin: 0 20px 0.875rem 20px;
   font-size: 0.875rem;
   .group-name {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: v.$light-gray;
-    min-height: 36px;
+    width: 100%;
     font-size: 1rem;
     border-radius: 1rem 1rem 0 0;
-    padding: 0.875rem 0.625rem 0.875rem 1rem;
-    border-width: 0px 0px 1px 3px;
-    border-style: solid;
-    border-color: v.$accent-gray;
-    font-family: 'Rubik', sans-serif;
+    padding: 0.875rem 0.625rem;
+    color: v.$blue-black;
   }
   .group-expenses__link {
     text-decoration: inherit;
@@ -31,8 +26,13 @@
     }
   }
 
+  .expenses-list .transaction-link:first-child .group-expense {
+    border-top-right-radius: 1rem;
+    border-top-left-radius: 1rem;
+  }
   .expenses-list .transaction-link:last-child .group-expense {
-    border-radius: 0 0 1rem 1rem;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
     border-bottom: none;
   }
 }
