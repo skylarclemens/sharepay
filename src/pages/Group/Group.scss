@@ -21,6 +21,7 @@
 }
 
 .details-card-background {
+  height: 142px;
   &.group--green,
   &.group--blue,
   &.group--purple {
@@ -42,6 +43,10 @@
       ),
       v.$plum;
   }
+}
+
+.details-card {
+  margin-top: -58px;
 }
 
 .group__section {
