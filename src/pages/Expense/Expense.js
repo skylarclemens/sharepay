@@ -17,6 +17,7 @@ import { useGetAccountQuery } from '../../slices/accountSlice';
 import { useAddActivityMutation, useGetActivityByReferenceIdsQuery } from '../../slices/activityApi';
 import { formatExpenseDate } from '../../helpers/date';
 import successImg from '../../images/Success.svg';
+import Skeleton from '../../components/Skeleton/Skeleton';
 
 
 const UserDebtor = ({ debt }) => {
@@ -52,6 +53,7 @@ const Expense = () => {
 
   const {
     data: expense,
+   isLoading: expenseLoading,
     isSuccess: expenseFetchSuccess
   } = useGetExpenseQuery(id, {
     skip: !id
@@ -59,6 +61,7 @@ const Expense = () => {
 
   const { 
     data: debts,
+    isLoading: debtsLoading,
     isSuccess: debtsFetchSuccess
   } = useGetExpenseDebtsQuery(id, {
     skip: !id
@@ -81,9 +84,10 @@ const Expense = () => {
 
   const {
     data: activities,
+    isLoading: activitiesLoading,
     isSuccess: activitiesFetchSuccess
   } = useGetActivityByReferenceIdsQuery(referenceIds, {
-    skip: !debtsFetchSuccess || !expenseFetchSuccess || referenceIds.length === 0,
+    skip: referenceIds.length === 0,
     selectFromResult: (result) => ({
       data: sortActivities(result),
       isSuccess: result.isSuccess
@@ -100,6 +104,7 @@ const Expense = () => {
   
   const {
     data: userCreditor,
+    isLoading: creditorLoading,
     isSuccess: creditorFetchSuccess
   } = useGetAccountQuery(expense?.payer_id,
     {
@@ -139,55 +144,71 @@ const Expense = () => {
         headerRight={headerImg}
         headerRightFn={handleDelete}
       />
-      {(expenseFetchSuccess && creditorFetchSuccess) && (
         <>
           <div className="expense-details-container">
             <DetailsCard 
               title={expense?.description}
-              subTitle={`Added ${formatExpenseDate(expense?.created_at)}`}
+              subTitle={`Added ${expenseFetchSuccess && formatExpenseDate(expense?.created_at)}`}
               type="expense"
               actions={expense?.paid || userDebtsPaid?.length ? null : payButton}
+              skeleton={expenseLoading || !expenseFetchSuccess}
             />
             <div className="expense-transactions-container">
               <div className="details-paid">
                 <h2>Paid by</h2>
                 <div className="paid-by">
                   <div className="user-transaction">
-                    <div className="user-details">
-                      <Avatar
-                        classes="white-border"
-                        url={userCreditor?.avatar_url}
-                        size={50}
-                      />
-                      <span>{userCreditor?.id !== user?.id ? userCreditor?.name : 'You'}</span>
-                    </div>
-                    <Amount amount={expense?.amount} />
+                    {creditorLoading || !creditorFetchSuccess ? (
+                      <Skeleton height={52} width={330}>
+                        <div className="skeleton__avatar"></div>
+                      </Skeleton>
+                    ) : (
+                    <>
+                      <div className="user-details">
+                        <Avatar
+                          classes="white-border"
+                          url={userCreditor?.avatar_url}
+                          size={50}
+                        />
+                        <span>{userCreditor?.id !== user?.id ? userCreditor?.name : 'You'}</span>
+                      </div>
+                      <Amount amount={expense?.amount} />
+                    </>
+                    )}
                   </div>
                 </div>
               </div>
               <div className="details-owed">
                 <h2>Split with</h2>
                 <div className="split-with">
-                  {debtsFetchSuccess ? debts?.map(debt => (
+                  {debtsLoading || !debtsFetchSuccess ? 
+                  <Skeleton height={52} width={329}>
+                    <div className="skeleton__avatar"></div>
+                  </Skeleton> : 
+                  debts?.map(debt => (
                     <UserDebtor key={debt?.id} debt={debt} />
-                  )) : null}
+                  ))}
                 </div>
               </div>
-              {activitiesFetchSuccess && activities.length > 0 ? (
-                <div className="expense-activities-container">
-                  <h2>Activities</h2>
-                  <div className="expense-activities">
-                    {activities?.map(activity => (
+              <div className="expense-activities-container">
+                <h2>Activities</h2>
+                <div className="expense-activities">
+                  {activitiesLoading || !activitiesFetchSuccess ?
+                    <Skeleton height={42} width={329}>
+                      <div className="skeleton__avatar"></div>
+                    </Skeleton>  :
+                      activities?.map(activity => (
                       <Activity key={activity?.id}
                         userId={activity?.user_id}
                         referenceId={activity?.reference_id}
                         type={activity?.type}
                         action={activity?.action}
                         date={activity?.created_at}
-                        relatedUserId={activity?.related_user_id} />
+                        relatedUserId={activity?.related_user_id}
+                        animate={true} />
                     ))}
-                  </div>
-                </div>) : null}
+                </div>
+              </div>
             </div>
           </div>
           <Modal open={openPayUp}>
@@ -200,7 +221,6 @@ const Expense = () => {
             />
           </Modal>
         </>
-      )}
     </>
   );
 };

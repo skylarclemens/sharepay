@@ -13,6 +13,7 @@ import { useGetGroupsQuery } from '../../slices/groupSlice';
 import GroupExpenses from './GroupExpenses/GroupExpenses';
 import Avatar from '../../components/Avatar/Avatar';
 import { useGetAccountQuery } from '../../slices/accountSlice';
+import Skeleton from '../../components/Skeleton/Skeleton';
 
 const Dashboard = () => {
   const user = useSelector(state => state.auth.user);
@@ -23,6 +24,7 @@ const Dashboard = () => {
 
   const {
     data: debts,
+    isLoading: debtsLoading,
     isSuccess: debtsFetched,
     refetch: refetchDebts
   } = useGetDebtsQuery(user?.id);
@@ -65,7 +67,6 @@ const Dashboard = () => {
             <Avatar url={currentAccount?.avatar_url} size={28} classes="white-border"/>
           </Link>
         } />
-      {dataLoaded ? (
         <>
           <Refresh onRefresh={onRefresh} />
           <div className="dashboard">
@@ -77,24 +78,42 @@ const Dashboard = () => {
                   <span
                     className="total"
                   >
-                    {formatMoney(balances?.total)}
+                    {!debtsFetched || debtsLoading ? (
+                      <Skeleton width="130px" height="36px" />
+                    ) : (
+                      formatMoney(balances?.total)
+                    )}
                   </span>
                 </div>
                 <div className="secondary-balance">
                   <div className="balance-block balance-block--green">
                     <h3>YOU'RE OWED</h3>
-                    <span className="secondary-amount">${balances?.owed.toFixed(2) || 0.0}</span>
+                    <span className="secondary-amount">
+                    {!debtsFetched || debtsLoading ? (
+                      <Skeleton width="57px" height="20px" />
+                    ) : (
+                      `$${balances?.owed.toFixed(2) || 0.00}`
+                    )}
+                    </span>
                   </div>
                   <div className="balance-block balance-block--red">
                     <h3>YOU OWE</h3>
-                    <span className="secondary-amount">${balances?.owe.toFixed(2) || 0.0}</span>
+                    <span className="secondary-amount">
+                      {!debtsFetched || debtsLoading ? (
+                        <Skeleton width="57px" height="20px" />
+                      ) : (
+                        `$${balances?.owe.toFixed(2) || 0.00}`
+                      )}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
             <div className="transactions-container">
               <h2 className="main-heading">Recent Transactions</h2>
-              {(expensesFetched && unpaidFriendExpenses.length > 0) && <Transactions transactions={unpaidFriendExpenses} />}
+              {expensesFetched && unpaidFriendExpenses.length > 0 &&
+                <Transactions transactions={unpaidFriendExpenses} />
+              }
               {(groupsFetched && groups.length > 0) &&
                 groups.map(group => {
                   return <GroupExpenses key={group.id} group={group} />
@@ -102,7 +121,6 @@ const Dashboard = () => {
             </div>
           </div>
         </>
-      ) : null}
     </>
   );
 };

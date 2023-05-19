@@ -9,7 +9,7 @@ import Avatar from '../Avatar/Avatar';
 import successImg from '../../images/Success-white-border.png';
 import { Link } from 'react-router-dom';
 
-const Activity = ({ userId, referenceId, type, action, date, relatedUserId = null }) => {
+const Activity = ({ userId, referenceId, type, action, date, relatedUserId = null, index = 1, animate = false }) => {
   const [activityDescription, setActivityDescription] = useState('');
   const [activityLink, setActivityLink] = useState('');
   const [activityAmount, setActivityAmount] = useState('');
@@ -145,7 +145,10 @@ const Activity = ({ userId, referenceId, type, action, date, relatedUserId = nul
   });
 
   return (
-    <div className="activity">
+    <div className={`activity ${animate ? 'fade-up' : ''}`}
+      style={{
+        animationDelay: `${(index+1) * 0.05}s`
+      }}>
       <Link to={activityLink} className="activity__link">
         <div className="activity__main">
           <div className="activity__left">

@@ -1,0 +1,13 @@
+.skeleton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.25rem;
+  .skeleton__avatar {
+    height: 38px;
+    width: 38px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-left: 0.5rem;
+  }
+}
