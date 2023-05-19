@@ -5,7 +5,8 @@ import ExpenseTransaction from '../../../components/Transactions/ExpenseTransact
 import './GroupExpenses.scss';
 
 const GroupExpenses = ({ group }) => {
-  const expensesList = useSelector(state => selectUserExpensesByGroup(state, group.id));
+  const allGroupExpenses = useSelector(state => selectUserExpensesByGroup(state, group.id));
+  const expensesList = allGroupExpenses.filter(expense => !expense?.paid);
 
   return (
     expensesList.length > 0 && (
@@ -15,7 +16,6 @@ const GroupExpenses = ({ group }) => {
           {group?.group_name}
           <div className="arrow arrow--right"></div>
         </div>
-        
       </Link>
       <div className="expenses-list">
         {expensesList.map(expense => {

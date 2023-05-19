@@ -1,13 +1,5 @@
 @use '../../utilities/colors' as v;
 
-h2 {
-  font-family: 'Rubik', sans-serif;
-  font-weight: 500;
-  text-transform: uppercase;
-  font-size: 0.875rem;
-  color: v.$dark-gray;
-}
-
 .details-container {
   position: relative;
   min-height: 130px;
@@ -46,25 +38,20 @@ h2 {
   background: v.$layout-green;
 }
 
+.main-heading {
+  padding: 0 1.25rem;
+}
+
 .recent-transactions {
   background: #ffffff;
   padding: 1.5rem 0;
   border-radius: 1rem 1rem 0px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
   flex-grow: 1;
-  .main-heading {
-    font-family: 'Rubik', sans-serif;
-    font-weight: 500;
-    font-size: 1.25rem;
-    color: v.$dark-green;
-    text-transform: none;
-    padding: 0 1.25rem;
-  }
-  .transactions-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.875rem;
-    padding: 1.5rem 20px 0 20px;
-  }
+  padding: 1.5rem 20px;
+  margin-top: 0.75rem;
 }
 
 .balance {

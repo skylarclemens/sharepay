@@ -110,9 +110,9 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="recent-transactions">
+            <div className="transactions-container">
               <h2 className="main-heading">Recent Transactions</h2>
-              <div className="transactions-container">
+              <div className="recent-transactions">
                 {!expensesFetched || expensesLoading ? (
                   <Skeleton width="100%" height="56px">
                     <div className="skeleton__avatar"></div>
