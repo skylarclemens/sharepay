@@ -1,12 +1,12 @@
 import './Modal.scss';
 
-const Modal = ({ handleClose, open = false, children, fullScreen = false }) => {
+const Modal = ({ handleClose, open = false, children, style = {}, fullScreen = false }) => {
   return (
     open && (
       <div className={`modal ${fullScreen ? 'full-screen' : 'include-backdrop'}`}>
-        <div className="modal-content">
+        <div style={style} className="modal-content">
           <button
-            className={`button button--icon modal-close ${!handleClose && 'hide-close'}`}
+            className={`button button--icon modal-close ${!handleClose ? 'hide-close' : ''}`}
             onClick={handleClose}
           >
             x

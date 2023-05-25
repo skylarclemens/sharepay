@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 
 const Orbital = ({ orbital = [], index, size = 0 }) => {
   const orbitalRef = useRef(null);
-  const [angles, setAngles] = useState([]);
   const [positions, setPositions] = useState([]);
   const orbitalSize = size * (index/2 + 1.5);
   const radius = orbitalSize / 2;
@@ -19,6 +18,7 @@ const Orbital = ({ orbital = [], index, size = 0 }) => {
       }
     });
     setPositions(positions => [...positions, ...newPositions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orbital]);
 
   return (

@@ -1,3 +1,5 @@
+@use '../../utilities/colors' as v;
+
 .modal {
   position: absolute;
   z-index: 11;
@@ -21,6 +23,13 @@
 }
 
 .modal-close {
+  position: absolute;
+  right: 0.75rem;
+  top: 0.25rem;
+  color: v.$blue-black;
+  font-family: 'Rubik', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 300;
   &.hide-close {
     display: none;
   }

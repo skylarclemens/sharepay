@@ -8,6 +8,7 @@
   overflow: visible;
 
   .atom__nucleus {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,6 +17,20 @@
     box-shadow: inset -3px 2px 0px rgba(0, 0, 0, 0.05);
     border-radius: 50%;
     border: 2px solid #ffffff;
+
+    .atom__icon {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      height: 28px;
+      width: 28px;
+      background: v.$washed-gray;
+      border: 1px solid #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+    }
   }
 
   .atom__orbital {
