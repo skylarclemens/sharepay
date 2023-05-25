@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import AddUsers from './AddUsers/AddUsers';
 import Atom from '../../components/Atom/Atom';
+import receiptImg from '../../images/Receipt.svg';
 
 const NewExpense = () => {
   const user = useSelector(state => state.auth.user);
@@ -175,6 +176,11 @@ const NewExpense = () => {
               size={120}
               numOrbitals={4}
               fade={true}
+              image={
+                <img src={receiptImg} alt="Receipt icon" style={{
+                  filter: 'brightness(0) invert(1)',
+                }} height={48} width={41} />
+              }
             />
             <AmountInput
               name="amount"
