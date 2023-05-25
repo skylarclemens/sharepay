@@ -15,6 +15,7 @@ import SelectPeople from '../../components/SelectPeople/SelectPeople';
 import { useNavigate } from 'react-router-dom';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import AddUsers from './AddUsers/AddUsers';
+import Atom from '../../components/Atom/Atom';
 
 const NewExpense = () => {
   const user = useSelector(state => state.auth.user);
@@ -148,20 +149,10 @@ const NewExpense = () => {
 
   return (
     <>
-      <Header type="title" title="Add expense" classes="transparent" />
+      <Header type="title" title="New expense" classes="transparent" />
       <div className="expense-container">
         <form className="expense-form" onSubmit={handleSubmit}>
           <div className="expense-details-page">
-            <AmountInput
-              name="amount"
-              label="Amount"
-              placeholder="0.00"
-              fieldError={fieldErrors.amount}
-              value={amount}
-              classes="big"
-              onFocus={() => setFieldErrors({ ...fieldErrors, amount: null })}
-              onChange={e => handleAmount(e.target.value)}
-            />
             <div className="expense-input-container">
               {fieldErrors.amount && (
                 <span className="field-error-text">{fieldErrors.amount}</span>
@@ -180,8 +171,25 @@ const NewExpense = () => {
                 onChange={e => setDescription(e.target.value)}
               />
             </div>
+            <Atom 
+              size={120}
+              numOrbitals={4}
+              fade={true}
+            />
+            <AmountInput
+              name="amount"
+              label="Amount"
+              placeholder="0.00"
+              fieldError={fieldErrors.amount}
+              value={amount}
+              classes="big"
+              onFocus={() => setFieldErrors({ ...fieldErrors, amount: null })}
+              onChange={e => handleAmount(e.target.value)}
+            />
           </div>
-          <div className="split-details-page">
+          <div style={{
+            display: 'none',
+          }} className="split-details-page">
             <>
               {accountFetched && <AddUsers account={account}
                 label={'Split with'}
