@@ -11,11 +11,6 @@
 
 .expense-form {
   .expense-input {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin: 0 20px;
-
     .field-error {
       border: 2px solid v.$red;
     }
@@ -30,8 +25,6 @@
   .expense-input-container {
     display: grid;
     gap: 1.5rem;
-    margin: 80px 0;
-    padding-top: 1.5rem;
   }
 
   .expense-radio.paid-by {

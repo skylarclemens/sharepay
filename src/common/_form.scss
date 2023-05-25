@@ -39,6 +39,40 @@
   }
 }
 
+.big {
+  &:focus-within {
+    textarea:focus,
+    input:focus {
+      outline: none;
+    }
+  }
+  label {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+  }
+  .text-input,
+  .amount-input-container,
+  .amount-input {
+    padding: 0.375rem 0.875rem;
+    width: auto;
+    max-width: 300px;
+    background: #ffffff;
+
+    font-family: 'Rubik', sans-serif;
+    min-height: 62px;
+    font-size: 1.875rem;
+    font-weight: 400;
+    border-radius: 1rem;
+    border: 1px solid v.$accent-gray;
+    box-shadow: none;
+    text-align: center;
+    &::placeholder {
+      color: v.$accent-gray;
+    }
+  }
+}
+
 .checkmark {
   position: relative;
   display: inline-block;

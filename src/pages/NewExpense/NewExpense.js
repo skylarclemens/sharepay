@@ -151,31 +151,37 @@ const NewExpense = () => {
       <Header type="title" title="Add expense" classes="transparent" />
       <div className="expense-container">
         <form className="expense-form" onSubmit={handleSubmit}>
-          <AmountInput
-            name="amount"
-            label="Amount"
-            placeholder="0.00"
-            fieldError={fieldErrors.amount}
-            value={amount}
-            onFocus={() => setFieldErrors({ ...fieldErrors, amount: null })}
-            onChange={e => handleAmount(e.target.value)}
-          />
-          <div className="expense-input-container">
-            {fieldErrors.amount && (
-              <span className="field-error-text">{fieldErrors.amount}</span>
-            )}
-            <TextInput
-              className="expense-input"
-              name="description"
-              label="Description"
-              value={description}
-              placeholder="What's it for?"
-              fieldError={fieldErrors.description}
-              onFocus={() =>
-                setFieldErrors({ ...fieldErrors, description: null })
-              }
-              onChange={e => setDescription(e.target.value)}
+          <div className="expense-details-page">
+            <AmountInput
+              name="amount"
+              label="Amount"
+              placeholder="0.00"
+              fieldError={fieldErrors.amount}
+              value={amount}
+              classes="big"
+              onFocus={() => setFieldErrors({ ...fieldErrors, amount: null })}
+              onChange={e => handleAmount(e.target.value)}
             />
+            <div className="expense-input-container">
+              {fieldErrors.amount && (
+                <span className="field-error-text">{fieldErrors.amount}</span>
+              )}
+              <TextInput
+                className="expense-input big"
+                name="description"
+                label="Expense name"
+                value={description}
+                size={description.length > 0 ? description.length + 1 : 12}
+                placeholder="Expense name"
+                fieldError={fieldErrors.description}
+                onFocus={() =>
+                  setFieldErrors({ ...fieldErrors, description: null })
+                }
+                onChange={e => setDescription(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="split-details-page">
             <>
               {accountFetched && <AddUsers account={account}
                 label={'Split with'}
