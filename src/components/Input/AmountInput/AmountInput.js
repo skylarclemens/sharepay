@@ -16,17 +16,17 @@ const AmountInput = ({
       <label className="input-label" htmlFor={name}>
         {label}
       </label>
-      <div className="amount-input-container input-icon">
+      <div className={`amount-input-container input-icon ${fieldError && 'field-error'}`}>
         <span className="currency-symbol">$</span>
         <input
           id={name}
           name={name}
-          size={value.length > 3 ? value.length + 1 : 4}
+          size={value.length > 0 ? value.length + 1 : 4}
           maxLength={5}
           inputMode="decimal"
           pattern={pattern}
           placeholder={placeholder}
-          className={`amount-input ${fieldError && 'field-error'}`}
+          className="amount-input"
           value={value}
           onFocus={onFocus}
           onChange={onChange}
