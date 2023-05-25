@@ -101,11 +101,13 @@ section {
 }
 html,
 #root {
+  height: 100%;
   min-height: 100vh;
   width: 100vw;
   overscroll-behavior: none;
 }
 body {
+  height: 100%;
   min-height: 100vh;
   line-height: 1;
 }

@@ -8,9 +8,14 @@
   overflow: visible;
 
   .atom__nucleus {
-    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    background: v.$layout-green;
+    box-shadow: inset -3px 2px 0px rgba(0, 0, 0, 0.05);
     border-radius: 50%;
-    border: 1px solid v.$accent-gray;
+    border: 2px solid #ffffff;
   }
 
   .atom__orbital {
@@ -53,10 +58,11 @@
   &::after {
     content: '';
     position: absolute;
-    z-index: 2;
-    bottom: -80px;
+    z-index: 0;
+    bottom: -150%;
+    height: 150%;
     width: 100%;
-    min-height: 90px;
+    //min-height: 200px;
     background: linear-gradient(
         180deg,
         rgba(0, 0, 0, 0) 0%,

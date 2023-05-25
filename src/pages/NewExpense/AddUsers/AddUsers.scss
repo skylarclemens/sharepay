@@ -12,6 +12,7 @@
   .users-selected {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 1rem;
     background: v.$light-gray;
     padding: 0.875rem 20px;

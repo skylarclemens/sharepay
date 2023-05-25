@@ -13,6 +13,7 @@ import { GROUP_COLORS } from '../../constants/groups';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import { useAddNewGroupMutation, useAddNewUserGroupsMutation } from '../../slices/groupSlice';
 import { useAddActivityMutation } from '../../slices/activityApi';
+import  groupImg from '../../images/Group_white.svg';
 
 const NewGroup = () => {
   const user = useSelector(state => state.auth.user);
@@ -87,18 +88,14 @@ const NewGroup = () => {
   };
 
   useEffect(() => {
-    let electrons = [];
-    let orbitalElectrons = [];
-    
-    for(let i = 0; i < groupMembers.length; i++) {
-      orbitalElectrons.push({
-        url: groupMembers[i].avatar_url
-      });
-      if(i % 2 === 1 || i === groupMembers.length - 1) {
-        electrons.push([...orbitalElectrons]);
-        orbitalElectrons = [];
+    const electrons = groupMembers.map((member, index) => {
+      if(index < 4) {
+        return [{
+          url: member.avatar_url
+        }];
       }
-    }
+      return null;
+    });
 
     setGroupElectrons(electrons);
   }, [groupMembers]);
@@ -109,7 +106,10 @@ const NewGroup = () => {
         <Header type="title" title="Create group" />
         <Atom
           orbitals={groupElectrons}
-          size={180}
+          icon={
+            <img src={groupImg} alt="Group icon" className="group-icon" height="60" width="60"/>
+          }
+          size={140}
           fade={true} />
         <form className="group-form" onSubmit={handleSubmit}>
           {/*<AvatarUpload

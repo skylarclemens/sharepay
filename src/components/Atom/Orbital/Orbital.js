@@ -1,21 +1,25 @@
 import Avatar from "../../Avatar/Avatar";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Orbital = ({ orbital = [], index, size = 0 }) => {
   const orbitalRef = useRef(null);
   const [angles, setAngles] = useState([]);
-  const orbitalSize = size * ((index * 0.4) + 1.4);
+  const [positions, setPositions] = useState([]);
+  const orbitalSize = size * (index/2 + 1.5);
   const radius = orbitalSize / 2;
-  const positions = [];
 
-  for(let i = 0; i < orbital.length; i++) {
-    if(angles.length < orbital.length) {
-      setAngles([...angles, Math.random()*2*Math.PI]);
-    }
-    let x = Math.round(orbitalSize/2 + radius * Math.cos(angles[i]) - 35/2),
-      y = Math.round(orbitalSize/2 + radius * Math.sin(angles[i]) - 35/2);
-    positions.push({x, y});
-  }
+  useEffect(() => {
+    const newPositions = [];
+    orbital.forEach((electron, electronIndex) => {
+      if(!positions[electronIndex]) {
+        const angle = Math.random()*2*Math.PI;
+        let x = Math.round(orbitalSize/2 + radius * Math.cos(angle) - 35/2),
+            y = Math.round(orbitalSize/2 + radius * Math.sin(angle) - 35/2);
+        newPositions.push({x, y});
+      }
+    });
+    setPositions(positions => [...positions, ...newPositions]);
+  }, [orbital]);
 
   return (
     <div className="atom__orbital" ref={orbitalRef} style={{
@@ -27,8 +31,8 @@ const Orbital = ({ orbital = [], index, size = 0 }) => {
           <div className="atom__electron-container"
             key={'electron-'+(electronIndex+1)+'-'+(index+1)}
             style={{
-              top: positions[electronIndex].y,
-              left: positions[electronIndex].x,
+              top: positions[electronIndex]?.y,
+              left: positions[electronIndex]?.x,
           }}>
             <Avatar
               url={electron.url}
