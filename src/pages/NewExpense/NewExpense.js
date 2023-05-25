@@ -1,5 +1,5 @@
 import './NewExpense.scss';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useAddNewExpenseMutation } from '../../slices/expenseSlice';
 import { useAddNewDebtMutation } from '../../slices/debtSlice';
@@ -16,7 +16,8 @@ import { useNavigate } from 'react-router-dom';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import AddUsers from './AddUsers/AddUsers';
 import Atom from '../../components/Atom/Atom';
-import receiptImg from '../../images/Receipt.svg';
+import DropdownSelect from '../../components/Input/DropdownSelect/DropdownSelect';
+import { CATEGORIES } from '../../constants/categories';
 
 const NewExpense = () => {
   const user = useSelector(state => state.auth.user);
@@ -32,8 +33,17 @@ const NewExpense = () => {
   const [paidBy, setPaidBy] = useState(user?.id);
   const [split, setSplit] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
+  const [category, setCategory] = useState('category');
+  const [categoryImg, setCategoryImg] = useState(null);
   const [openSelectPeople, setOpenSelectPeople] = useState(false);
   const navigate = useNavigate();
+
+  let categoriesList = useRef(Object.keys(CATEGORIES));
+
+  useEffect(() => {
+    const getCategoryImage = CATEGORIES[category]?.image;
+    setCategoryImg(getCategoryImage);
+  }, [category])
 
   const [addNewExpense, { isExpenseLoading }] = useAddNewExpenseMutation();
   const [addNewDebt, { isDebtLoading }] = useAddNewDebtMutation();
@@ -163,7 +173,7 @@ const NewExpense = () => {
                 name="description"
                 label="Expense name"
                 value={description}
-                size={description.length > 0 ? description.length + 1 : 12}
+                size={description.length > 0 ? description.length + 1 : 13}
                 placeholder="Expense name"
                 fieldError={fieldErrors.description}
                 onFocus={() =>
@@ -177,11 +187,19 @@ const NewExpense = () => {
               numOrbitals={4}
               fade={true}
               image={
-                <img src={receiptImg} alt="Receipt icon" style={{
+                <img src={categoryImg ? require(`../../${categoryImg}`) : null} alt={`${category} icon`} style={{
                   filter: 'brightness(0) invert(1)',
                 }} height={48} width={41} />
               }
-            />
+            >
+              <DropdownSelect
+                options={categoriesList.current}
+                value={category}
+                name="category-select"
+                onChange={(e) => setCategory(e.target.value)}
+                classes="new-expense-category small"
+              />
+            </Atom>
             <AmountInput
               name="amount"
               label="Amount"

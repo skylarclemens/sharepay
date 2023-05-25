@@ -1,9 +1,12 @@
 import './DropdownSelect.scss';
 
-const DropdownSelect = ({ options, onChange, classes }) => {
+const DropdownSelect = ({ options, name, onChange, classes }) => {
   return (
     <div className={`dropdown-select ${classes}`}>
-      <select name="dropdown-select" id="dropdown-select" onChange={onChange}>
+      <select name={name}
+        id={name}
+        onChange={onChange}
+        title={name}>
         {options.map((option, index) => {
           return (
             <option key={index} value={option}>{option.charAt(0).toUpperCase() + option.slice(1)}</option>

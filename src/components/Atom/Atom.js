@@ -1,7 +1,7 @@
 import './Atom.scss';
 import Orbital from './Orbital/Orbital';
 
-const Atom = ({ orbitals = [], numOrbitals = null, size, image = null, icon = null, iconFn = null, fade = false }) => {
+const Atom = ({ orbitals = [], numOrbitals = null, size, image = null, icon = null, iconFn = null, fade = false, children }) => {
   return (
     <div className={`atom-container ${fade ? 'atom--fade' : ''}`}>
       <div className="atom__nucleus" style={{
@@ -13,6 +13,7 @@ const Atom = ({ orbitals = [], numOrbitals = null, size, image = null, icon = nu
           <img src={icon} alt="Icon" height="20" width="20" />
         </button> : null}
       </div>
+      {children}
       {numOrbitals ? [...Array(numOrbitals)].map((_, index) => <Orbital key={"orbital-"+(index+1)} numOrbitals={true} index={index} size={size} />) : null}
       {orbitals.length ? orbitals.map((orbital, index) => orbital && <Orbital key={"orbital-"+(index+1)} index={index} orbital={orbital} size={size} />) : null}
     </div>

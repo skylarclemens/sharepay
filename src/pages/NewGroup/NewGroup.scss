@@ -13,27 +13,6 @@
   padding-top: 46px;
   height: 100%;
 
-  .group-color-select {
-    select {
-      padding: 0.5rem 1rem;
-      border-radius: 1rem;
-      border: none;
-      appearance: none;
-      -webkit-appearance: none;
-      background: #ffffff url('../../images/Arrow_down-gray.svg') no-repeat 90%
-        center;
-      width: 100%;
-      min-height: 40px;
-      text-indent: 0.01px;
-      color: v.$blue-black;
-      font-size: 0.875rem;
-    }
-    width: 161px;
-    min-height: 40px;
-    border-radius: 1rem;
-    overflow: hidden;
-  }
-
   .group-form {
     position: relative;
     display: flex;

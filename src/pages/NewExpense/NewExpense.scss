@@ -58,4 +58,13 @@
       top: -100%;
     }
   }
+
+  .new-expense-category {
+    position: absolute;
+    z-index: 3;
+    bottom: -1.25rem;
+    select {
+      color: v.$washed-gray;
+    }
+  }
 }
