@@ -1,7 +1,8 @@
 import Avatar from "../../Avatar/Avatar";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const Orbital = ({ orbital = [], index, size = 0 }) => {
+  const orbitalRef = useRef(null);
   const [angles, setAngles] = useState([]);
   const orbitalSize = size * ((index * 0.4) + 1.4);
   const radius = orbitalSize / 2;
@@ -17,21 +18,22 @@ const Orbital = ({ orbital = [], index, size = 0 }) => {
   }
 
   return (
-    <div className="atom__orbital" style={{
+    <div className="atom__orbital" ref={orbitalRef} style={{
       height: `${orbitalSize}px`,
       width: `${orbitalSize}px`,
     }}>
-      {orbital.map((electron, index) => {
+      {orbital.map((electron, electronIndex) => {
         return (
-          <div className="atom__electron-container" style={{
-            top: positions[index].y,
-            left: positions[index].x,
+          <div className="atom__electron-container"
+            key={'electron-'+(electronIndex+1)+'-'+(index+1)}
+            style={{
+              top: positions[electronIndex].y,
+              left: positions[electronIndex].x,
           }}>
             <Avatar
-              key={'atom-' + index}
               url={electron.url}
               size={35}
-              classes={`white-border atom__electron ${'atom__electron--' + (index+1)}`} />
+              classes={`white-border atom__electron ${'atom__electron--' + (electronIndex+1)}`} />
           </div>
         )}
       )}

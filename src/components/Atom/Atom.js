@@ -8,7 +8,7 @@ const Atom = ({ orbitals = [], size, fade = false }) => {
         height: `${size}px`,
         width: `${size}px`,
       }}></div>
-      {orbitals.map((orbital, index) => <Orbital key={index} index={index} orbital={orbital} electrons={orbital.electrons} size={size} />)}
+      {orbitals.map((orbital, index) => <Orbital key={"orbital-"+(index+1)} index={index} orbital={orbital} electrons={orbital.electrons} size={size} />)}
     </div>
   )
 }
