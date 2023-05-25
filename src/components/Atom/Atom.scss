@@ -1,0 +1,88 @@
+@use '../../utilities/colors' as v;
+
+.atom-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+
+  .atom__nucleus {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    background: v.$layout-green;
+    box-shadow: inset -3px 2px 0px rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+
+    .atom__icon {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      height: 28px;
+      width: 28px;
+      background: v.$washed-gray;
+      border: 1px solid #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+    }
+  }
+
+  .atom__orbital {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid v.$accent-gray;
+    animation: rotateOrbital 45s linear infinite;
+
+    @keyframes rotateOrbital {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  }
+  .atom__electron-container {
+    position: absolute;
+    animation: inherit;
+    z-index: 2;
+    animation-direction: reverse;
+  }
+}
+
+.atom--fade {
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    top: calc(-46px - env(safe-area-inset-top));
+    min-height: calc(65px + env(safe-area-inset-top));
+    width: 100%;
+    background: linear-gradient(
+      180deg,
+      v.$light-gray 21.35%,
+      rgba(244, 246, 248, 0) 100%
+    );
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    bottom: -150%;
+    height: 150%;
+    width: 100%;
+    //min-height: 200px;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(255, 255, 255, 0) 100%
+      ),
+      linear-gradient(180deg, rgba(244, 246, 248, 0) 0%, v.$light-gray 45.83%);
+  }
+}
