@@ -148,7 +148,7 @@ const NewExpense = () => {
 
   return (
     <>
-      <Header type="title" title="Add expense" />
+      <Header type="title" title="Add expense" classes="transparent" />
       <div className="expense-container">
         <form className="expense-form" onSubmit={handleSubmit}>
           <AmountInput

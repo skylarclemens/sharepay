@@ -107,7 +107,7 @@ const NewGroup = () => {
   return (
     <>
       <div className="new-group-container">
-        <Header type="title" title="Create group" />
+        <Header type="title" title="Create group" classes="transparent" />
         <Atom
           orbitals={groupElectrons}
           image={

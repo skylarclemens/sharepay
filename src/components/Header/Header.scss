@@ -1,15 +1,5 @@
 @use '../../utilities/colors' as v;
 
-.header-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: calc(46px + env(safe-area-inset-top));
-  background: v.$layout-green;
-  z-index: 10;
-}
-
 .header {
   position: absolute;
   bottom: 0;
@@ -59,5 +49,27 @@
   .title-right {
     justify-self: flex-end;
     padding-right: 20px;
+  }
+}
+
+.header-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(46px + env(safe-area-inset-top));
+  background: v.$layout-green;
+  z-index: 10;
+  &.transparent {
+    .title {
+      color: v.$dark-gray;
+      text-shadow: none;
+      font-size: 1rem;
+    }
+    .arrow {
+      border: solid v.$washed-gray;
+      border-width: 0 0 2px 2px;
+    }
+    background: none;
   }
 }

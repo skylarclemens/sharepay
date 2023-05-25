@@ -1,29 +1,16 @@
 @use '../../../utilities/colors' as v;
 
 .amount-input-container {
-  position: fixed;
-  top: calc(46px + env(safe-area-inset-top));
-  z-index: 10;
-  width: 100%;
-  max-width: 100%;
   overflow: hidden;
-  padding: 12px 20px;
-  background: v.$layout-green;
-  box-shadow: 0px 3px 0px rgba(114, 155, 121, 0.33);
-  border-radius: 0px 0px 8px 8px;
-
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.25rem;
-
   font-family: 'Rubik';
   font-style: normal;
   font-weight: 500;
   font-size: 2.5rem;
-  letter-spacing: 0.02rem;
-  color: #ffffff;
-  text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.25);
+  letter-spacing: 0.02em;
+  color: v.$accent-gray;
 
   &:focus-within {
     textarea:focus,
@@ -34,7 +21,8 @@
 
   &::before {
     content: '$';
-    justify-self: flex-end;
+    color: v.$washed-gray;
+    padding-right: 0.5rem;
   }
 
   label {
@@ -44,30 +32,20 @@
   }
 
   .amount-input {
-    background: v.$layout-green;
-
-    background: rgba(0, 0, 0, 0.08);
     -webkit-appearance: none;
-    -webkit-box-shadow: inset 1px -1px 0px rgba(255, 255, 255, 0.25),
-      inset -2px 2px 0px rgba(0, 0, 0, 0.1);
-    box-shadow: inset 1px -1px 0px rgba(255, 255, 255, 0.25),
-      inset -2px 2px 0px rgba(0, 0, 0, 0.1);
+    appearance: none;
     border-radius: 16px;
-    border: none;
-    color: #ffffff;
-    padding: 4px 8px;
+    border: 1px solid v.$accent-gray;
+    padding: 0.375rem 0.875rem;
 
     font-family: inherit;
     font-weight: inherit;
     font-size: inherit;
     letter-spacing: inherit;
     text-align: center;
-    color: #ffffff;
-    text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.15);
 
     &::placeholder {
-      color: rgba(255, 255, 255, 0.75);
-      text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.15);
+      color: v.$accent-gray;
     }
 
     &.field-error {

@@ -13,19 +13,6 @@
   padding-top: 46px;
   height: 100%;
 
-  .header-container {
-    background: none;
-    .arrow.arrow--white {
-      border: solid v.$accent-gray;
-      border-width: 0 0 2px 2px;
-    }
-    .title {
-      color: v.$dark-gray;
-      text-shadow: none;
-      font-size: 1rem;
-    }
-  }
-
   .group-color-select {
     select {
       padding: 0.5rem 1rem;
