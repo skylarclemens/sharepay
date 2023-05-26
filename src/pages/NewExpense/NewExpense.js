@@ -25,7 +25,7 @@ const NewExpense = () => {
   const [splitWith, setSplitWith] = useState([]);
   const [splitWithGroup, setSplitWithGroup] = useState(null);
   const [paidBy, setPaidBy] = useState(user?.id);
-  const [split, setSplit] = useState('');
+  const [split, setSplit] = useState('EQUALLY');
   const [page, setPage] = useState(1);
   const [fieldErrors, setFieldErrors] = useState({});
   const [openSelectPeople, setOpenSelectPeople] = useState(false);
@@ -111,7 +111,9 @@ const NewExpense = () => {
 
   return (
     <>
-      <Header type="title" title="New expense" classes="transparent" headerLeftFn={
+      <Header type="title" title={
+        page === 1 ? 'New expense' : description
+      }classes="transparent" headerLeftFn={
         page === 1 ? () => navigate(-1) : () => setPage(1)
       } />
       <div className="expense-container">

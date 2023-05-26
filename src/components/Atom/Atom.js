@@ -12,9 +12,7 @@ const Atom = ({ orbitals = [], numOrbitals = null, size, image = null, icon = nu
         {icon ? <button type="button" className="atom__icon button__no-style" onClick={iconFn}>
           <img src={icon} alt="Icon" height="20" width="20" />
         </button> : null}
-        <div className="nucleus__content">
-          {children}
-        </div>
+        {children}
       </div>
       {numOrbitals ? [...Array(numOrbitals)].map((_, index) => <Orbital key={"orbital-"+(index+1)} numOrbitals={true} index={index} size={size} />) : null}
       {orbitals.length ? orbitals.map((orbital, index) => orbital && <Orbital key={"orbital-"+(index+1)} index={index} orbital={orbital} size={size} />) : null}

@@ -52,23 +52,6 @@
     }
   }
 
-  .users-selected {
-    background: #ffffff;
-    border: 0;
-    border-radius: 1rem;
-    padding: 0.75rem 1rem;
-    .user-button {
-      box-shadow: none;
-      padding: 0;
-    }
-    .button--form-add {
-      height: 45px;
-      width: 45px;
-      background: v.$light-gray;
-      border: 0;
-    }
-  }
-
   .group-members {
     display: flex;
     align-items: center;

@@ -10,7 +10,12 @@ const NewExpenseDetails = ({ description, setDescription, amount, setAmount, fie
   const [categoryImg, setCategoryImg] = useState(null);
   const [category, setCategory] = useState('category');
 
-  let categoriesList = useRef(Object.keys(CATEGORIES));
+  const categoriesList = useRef(Object.keys(CATEGORIES))?.current?.map(category => {
+    return {
+      value: category,
+      text: category.slice(0, 1).toUpperCase() + category.slice(1)
+    }
+  });
 
   useEffect(() => {
     const getCategoryImage = CATEGORIES[category]?.image;
@@ -70,7 +75,7 @@ const NewExpenseDetails = ({ description, setDescription, amount, setAmount, fie
         }
       >
         <DropdownSelect
-          options={categoriesList.current}
+          options={categoriesList}
           value={category}
           name="category-select"
           onChange={(e) => setCategory(e.target.value)}

@@ -9,7 +9,7 @@ const DropdownSelect = ({ options, name, onChange, classes }) => {
         title={name}>
         {options.map((option, index) => {
           return (
-            <option key={index} value={option}>{option.charAt(0).toUpperCase() + option.slice(1)}</option>
+            <option key={'option-' + index} value={option.value}>{option.text}</option>
           )
         })}
       </select>

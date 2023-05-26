@@ -4,10 +4,10 @@
   select {
     padding: 0.5rem 1rem;
     border-radius: 1rem;
-    border: none;
+    border: 1px solid v.$accent-gray;
     appearance: none;
     -webkit-appearance: none;
-    background: #ffffff url('../../../images/Arrow_down-gray.svg') no-repeat 90%
+    background: #ffffff url('../../../images/Arrow_down-gray.svg') no-repeat 95%
       center;
     width: 100%;
     min-height: 40px;

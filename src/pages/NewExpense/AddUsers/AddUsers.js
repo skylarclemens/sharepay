@@ -20,7 +20,7 @@ const AddUsers = ({ label, account, usersList, setUsersList, selectedGroup, setO
                 key={`${member?.id}-user-button`}
                 user={member}
                 name={member?.name}
-                variant="white"
+                variant="transparent"
               />
             )
           })}
