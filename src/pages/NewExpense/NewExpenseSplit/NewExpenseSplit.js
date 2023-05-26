@@ -1,12 +1,45 @@
 import RadioSelect from '../../../components/Input/RadioSelect/RadioSelect';
 import UserButton from '../../../components/User/UserButton/UserButton';
 import AddUsers from '../AddUsers/AddUsers';
+import Atom from '../../../components/Atom/Atom';
+import { formatMoney } from '../../../helpers/money';
 
 
-const NewExpenseSplit = ({ account, accountFetched, paidBy, setPaidBy, splitWith, setSplitWith, split, setSplit, splitWithGroup, removeGroupSplit, setOpenSelectPeople, fieldErrors, setFieldErrors }) => {
+const NewExpenseSplit = ({ account, accountFetched, amount, paidBy, setPaidBy, splitWith, setSplitWith, split, setSplit, splitWithGroup, removeGroupSplit, setOpenSelectPeople, fieldErrors, setFieldErrors, handleSubmit }) => {
+  const handleValidation = () => {
+    const errors = {};
+    let formValid = true;
+
+    if (splitWith.length < 2) {
+      formValid = false;
+      errors.splitWith = 'Choose somebody to split the expense with.';
+    }
+    if (!paidBy) {
+      formValid = false;
+      errors.paidBy = 'Select who paid the expense.';
+    }
+    if (!split) {
+      formValid = false;
+      errors.split = 'Choose how you want to split the bill.';
+    }
+
+    errors.formValid = formValid;
+    setFieldErrors(errors);
+    return formValid;
+  }
+
   return (
     <div className="split-details-page">
-      <>
+      <Atom 
+        size={120}
+        numOrbitals={4}
+        fade={true}
+      >
+        <div className="nucleus__amount">
+          {formatMoney(amount, false)}
+        </div>
+      </Atom>
+      <div className="expense-input-container">
         {accountFetched && <AddUsers account={account}
           label={'Split with'}
           usersList={splitWith}
@@ -17,10 +50,10 @@ const NewExpenseSplit = ({ account, accountFetched, paidBy, setPaidBy, splitWith
         {fieldErrors.splitWith && (
           <span className="field-error-text">{fieldErrors.splitWith}</span>
         )}
-      </>
+      </div>
       {splitWith.length > 1 && (
         <>
-          <fieldset>
+          <fieldset className="expense-input-container">
             <div className="expense-input">
               <legend className="input-label">Paid By</legend>
               <div className="expense-radio paid-by">
@@ -46,35 +79,29 @@ const NewExpenseSplit = ({ account, accountFetched, paidBy, setPaidBy, splitWith
               </div>
             </div>
           </fieldset>
-          <RadioSelect
-            label="Split"
-            name="expense-split"
-            options={[
-              {
-                id: 'split-equally',
-                value: 'EQUALLY',
-                checked: split === 'EQUALLY',
-                content: 'Split equally',
-              },
-              {
-                id: 'full-amount',
-                value: 'FULL_AMOUNT',
-                checked: split === 'FULL_AMOUNT',
-                content: 'Owed full amount',
-              },
-            ]}
-            onFocus={() => setFieldErrors({ ...fieldErrors, split: null })}
-            onChange={e => setSplit(e.target.value)}
-            className="expense-input"
-          />
-          <button
-            className="button"
-            type="submit"
-            alt="Create expense"
-            title="Create expense"
-          >
-            Create
-          </button>
+          <div className="expense-input-container">
+            <RadioSelect
+              label="Split"
+              name="expense-split"
+              options={[
+                {
+                  id: 'split-equally',
+                  value: 'EQUALLY',
+                  checked: split === 'EQUALLY',
+                  content: 'Split equally',
+                },
+                {
+                  id: 'full-amount',
+                  value: 'FULL_AMOUNT',
+                  checked: split === 'FULL_AMOUNT',
+                  content: 'Owed full amount',
+                },
+              ]}
+              onFocus={() => setFieldErrors({ ...fieldErrors, split: null })}
+              onChange={e => setSplit(e.target.value)}
+              className="expense-input"
+            />
+          </div>
         </>
       )}
       {fieldErrors.formValid === false && (
@@ -82,6 +109,18 @@ const NewExpenseSplit = ({ account, accountFetched, paidBy, setPaidBy, splitWith
           Please fix the errors to submit expense.
         </span>
       )}
+      <button
+        className="button button--flat page-button"
+        type="submit"
+        alt="Create expense"
+        title="Create expense"
+        onClick={() => {
+          if (!handleValidation()) return;
+          handleSubmit();
+        }}
+      >
+        Send
+      </button>
     </div>
   )
 }

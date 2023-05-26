@@ -6,7 +6,7 @@ import AmountInput from '../../../components/Input/AmountInput/AmountInput';
 
 import { CATEGORIES } from '../../../constants/categories';
 
-const NewExpenseDetails = ({ description, setDescription, amount, setAmount, fieldErrors, setFieldErrors, setPage, handleValidation }) => {
+const NewExpenseDetails = ({ description, setDescription, amount, setAmount, fieldErrors, setFieldErrors, setPage }) => {
   const [categoryImg, setCategoryImg] = useState(null);
   const [category, setCategory] = useState('category');
 
@@ -21,6 +21,24 @@ const NewExpenseDetails = ({ description, setDescription, amount, setAmount, fie
     const validInput = value.match(/^(\d*\.{0,1}\d{0,2}$)/);
     if (validInput) setAmount(value);
   };
+
+  const handleValidation = () => {
+    const errors = {};
+    let formValid = true;
+
+    if (!description) {
+      formValid = false;
+      errors.description = 'Cannot be empty.';
+    }
+    if (!amount) {
+      formValid = false;
+      errors.amount = 'Please enter an amount.';
+    }
+
+    errors.formValid = formValid;
+    setFieldErrors(errors);
+    return formValid;
+  }
 
   return (
     <div className="expense-details-page">
@@ -69,12 +87,10 @@ const NewExpenseDetails = ({ description, setDescription, amount, setAmount, fie
         onFocus={() => setFieldErrors({ ...fieldErrors, amount: null })}
         onChange={e => handleAmount(e.target.value)}
       />
-      <button type="button" className="page-button button button--flat button--medium" onClick={
-        () => {
-          if(!handleValidation()) return;
-          setPage(2)
-        }
-      }>Continue</button>
+      <button type="button" className="page-button button button--flat button--medium" onClick={() => {
+        if(!handleValidation()) return;
+        setPage(2)
+      }}>Continue</button>
     </div>
   )
 }

@@ -38,9 +38,8 @@ const NewExpense = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setFieldErrors({ ...fieldErrors, formValid: true });
 
-    if (!handleValidation() || isExpenseLoading || isDebtLoading || isActivityLoading) return;
+    if (!fieldErrors.formValid || isExpenseLoading || isDebtLoading || isActivityLoading) return;
 
     const groupId = splitWithGroup?.id || null;
 
@@ -90,36 +89,6 @@ const NewExpense = () => {
     }
   };
 
-  const handleValidation = () => {
-    const errors = {};
-    let formValid = true;
-
-    if (!description) {
-      formValid = false;
-      errors.description = 'Cannot be empty.';
-    }
-    if (!amount) {
-      formValid = false;
-      errors.amount = 'Please enter an amount.';
-    }
-    if (!splitWith) {
-      formValid = false;
-      errors.splitWith = 'Choose somebody to split the expense with.';
-    }
-    if (!paidBy) {
-      formValid = false;
-      errors.paidBy = 'Select who paid the expense.';
-    }
-    if (!split) {
-      formValid = false;
-      errors.split = 'Choose how you want to split the bill.';
-    }
-
-    errors.formValid = formValid;
-    setFieldErrors(errors);
-    return formValid;
-  };
-
   const handleAdd = selected => {
     if (selected?.group_name) {
       setSplitWithGroup(selected);
@@ -152,14 +121,14 @@ const NewExpense = () => {
             setDescription={setDescription}
             fieldErrors={fieldErrors}
             setFieldErrors={setFieldErrors}
-            setPage={setPage}
             amount={amount}
             setAmount={setAmount}
-            handleValidation={handleValidation}
+            setPage={setPage}
           /> : null}
           {page === 2 ? <NewExpenseSplit
             account={account}
             accountFetched={accountFetched}
+            amount={amount}
             paidBy={paidBy}
             setPaidBy={setPaidBy}
             splitWith={splitWith}
@@ -171,6 +140,7 @@ const NewExpense = () => {
             setOpenSelectPeople={setOpenSelectPeople}
             fieldErrors={fieldErrors}
             setFieldErrors={setFieldErrors}
+            handleSubmit={handleSubmit}
           /> : null}
         </form>
       </div>
