@@ -4,7 +4,6 @@ import DropdownSelect from '../../../components/Input/DropdownSelect/DropdownSel
 import TextInput from '../../../components/Input/TextInput/TextInput';
 import AmountInput from '../../../components/Input/AmountInput/AmountInput';
 import DateInput from '../../../components/Input/DateInput/DateInput';
-import recurringImg from '../../../images/Recurring.svg';
 
 import { CATEGORIES } from '../../../constants/categories';
 
@@ -30,13 +29,6 @@ const NewExpenseDetails = ({ description, setDescription, amount, setAmount, fie
     const validInput = value.match(/^(\d*\.{0,1}\d{0,2}$)/);
     if (validInput) setAmount(value);
   };
-
-  const handleRecurring = () => {
-    const recurringOptions = ['Once', 'Daily', 'Weekly', 'Monthly', 'Yearly'];
-    const currentRecurringIndex = recurringOptions.indexOf(recurringVal);
-    const nextRecurringIndex = (currentRecurringIndex + 1) % recurringOptions.length;
-    setRecurringVal(recurringOptions[nextRecurringIndex]);
-  }
 
   const handleValidation = () => {
     const errors = {};
@@ -113,14 +105,7 @@ const NewExpenseDetails = ({ description, setDescription, amount, setAmount, fie
             dateFormat={'M/d/yy'}
             onChange={(date) => setDateVal(date)}
           />
-          <div className="recurring" onClick={
-            () => handleRecurring()
-          }>
-            <img src={recurringImg} alt="Recurring icon" height="18" width="18"/>
-            <div className="recurring-select">
-              {recurringVal}
-            </div>
-          </div>
+          <RecurringInput recurringVal={recurringVal} setRecurringVal={setRecurringVal} />
         </div>
         <button type="button" className="button button--flat button--medium" onClick={() => {
         if(!handleValidation()) return;

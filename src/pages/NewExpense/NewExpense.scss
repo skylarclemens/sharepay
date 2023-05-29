@@ -79,20 +79,6 @@
     display: flex;
     gap: 0.5rem;
   }
-  .recurring {
-    font-family: 'Inter', sans-serif;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: #ffffff;
-    border: 1px solid v.$accent-gray;
-    border-radius: 1rem;
-    padding: 0.5rem;
-    color: v.$dark-gray;
-    font-weight: 500;
-    font-size: 0.875rem;
-    cursor: pointer;
-  }
 }
 
 .split-details-page {
