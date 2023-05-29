@@ -3,12 +3,14 @@ import Atom from '../../../components/Atom/Atom';
 import DropdownSelect from '../../../components/Input/DropdownSelect/DropdownSelect';
 import TextInput from '../../../components/Input/TextInput/TextInput';
 import AmountInput from '../../../components/Input/AmountInput/AmountInput';
+import DateInput from '../../../components/Input/DateInput/DateInput';
 
 import { CATEGORIES } from '../../../constants/categories';
 
 const NewExpenseDetails = ({ description, setDescription, amount, setAmount, fieldErrors, setFieldErrors, setPage }) => {
   const [categoryImg, setCategoryImg] = useState(null);
   const [category, setCategory] = useState('category');
+  const [dateVal, setDateVal] = useState(new Date());
 
   const categoriesList = useRef(Object.keys(CATEGORIES))?.current?.map(category => {
     return {
@@ -92,10 +94,22 @@ const NewExpenseDetails = ({ description, setDescription, amount, setAmount, fie
         onFocus={() => setFieldErrors({ ...fieldErrors, amount: null })}
         onChange={e => handleAmount(e.target.value)}
       />
-      <button type="button" className="page-button button button--flat button--medium" onClick={() => {
+      <div className="bottom-container">
+        <div className="bottom-inputs">
+          <DateInput
+            selected={dateVal}
+            todayButton='Today'
+            placeholderText='Today'
+            showPopperArrow={false}
+            dateFormat={'M/d/yy'}
+            onChange={(date) => setDateVal(date)}
+          />
+        </div>
+        <button type="button" className="button button--flat button--medium" onClick={() => {
         if(!handleValidation()) return;
         setPage(2)
-      }}>Continue</button>
+        }}>Continue</button>
+      </div>
     </div>
   )
 }
