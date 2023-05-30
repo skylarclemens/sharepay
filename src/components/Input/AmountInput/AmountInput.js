@@ -22,7 +22,6 @@ const AmountInput = ({
           id={name}
           name={name}
           size={value.length > 0 ? value.length + 1 : 4}
-          maxLength={5}
           inputMode="decimal"
           pattern={pattern}
           placeholder={placeholder}

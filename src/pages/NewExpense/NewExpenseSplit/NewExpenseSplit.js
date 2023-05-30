@@ -146,9 +146,9 @@ const NewExpenseSplit = ({ account, accountFetched, amount, paidBy, setPaidBy, s
         type="submit"
         alt="Create expense"
         title="Create expense"
-        onClick={() => {
+        onClick={(e) => {
           if (!handleValidation()) return;
-          handleSubmit();
+          handleSubmit(e);
         }}
       >
         Send

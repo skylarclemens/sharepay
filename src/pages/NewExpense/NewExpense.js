@@ -29,6 +29,8 @@ const NewExpense = () => {
   const [page, setPage] = useState(1);
   const [fieldErrors, setFieldErrors] = useState({});
   const [openSelectPeople, setOpenSelectPeople] = useState(false);
+  const [category, setCategory] = useState('GENERAL');
+  const [expenseDate, setExpenseDate] = useState(new Date().toISOString().substring(0, 10));
 
   const [addNewExpense, { isExpenseLoading }] = useAddNewExpenseMutation();
   const [addNewDebt, { isDebtLoading }] = useAddNewDebtMutation();
@@ -48,7 +50,9 @@ const NewExpense = () => {
       payer_id: paidBy,
       description: description,
       amount: amount,
-      group_id: groupId
+      group_id: groupId,
+      category: category,
+      date: expenseDate,
     };
 
     try {
@@ -124,7 +128,11 @@ const NewExpense = () => {
             fieldErrors={fieldErrors}
             setFieldErrors={setFieldErrors}
             amount={amount}
+            category={category}
+            setCategory={setCategory}
             setAmount={setAmount}
+            date={expenseDate}
+            setDate={setExpenseDate}
             setPage={setPage}
           /> : null}
           {page === 2 ? <NewExpenseSplit

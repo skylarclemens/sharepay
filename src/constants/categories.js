@@ -1,15 +1,18 @@
 export const CATEGORIES = {
-  'category': {
+  'GENERAL': {
+    text: 'Category',
     image: 'images/Receipt.svg'
   },
-  'food': {
+  'FOOD': {
+    text: 'Food',
     image: 'images/categories/Food.svg'
   },
-  'shopping': {
+  'SHOPPING': {
+    text: 'Shopping',
     image: 'images/categories/Shopping.svg'
   },
-  'furniture': {
-    id: 'furniture',
+  'FURNITURE': {
+    text: 'Furniture',
     image: 'images/categories/Furniture.svg'
   },
 };

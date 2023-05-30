@@ -7,16 +7,13 @@ import DateInput from '../../../components/Input/DateInput/DateInput';
 
 import { CATEGORIES } from '../../../constants/categories';
 
-const NewExpenseDetails = ({ description, setDescription, amount, setAmount, fieldErrors, setFieldErrors, setPage }) => {
+const NewExpenseDetails = ({ description, setDescription, amount, setAmount, category, setCategory, date, setDate, fieldErrors, setFieldErrors, setPage }) => {
   const [categoryImg, setCategoryImg] = useState(null);
-  const [category, setCategory] = useState('category');
-  const [dateVal, setDateVal] = useState(new Date());
-  const [recurringVal, setRecurringVal] = useState('Once');
 
-  const categoriesList = useRef(Object.keys(CATEGORIES))?.current?.map(category => {
+  const categoriesList = useRef(Object.entries(CATEGORIES))?.current.map(([key, value]) => {
     return {
-      value: category,
-      text: category.slice(0, 1).toUpperCase() + category.slice(1)
+      value: key,
+      text: value?.text,
     }
   });
 
@@ -70,11 +67,14 @@ const NewExpenseDetails = ({ description, setDescription, amount, setAmount, fie
         numOrbitals={4}
         fade={true}
         image={
-          /* eslint-disable global-require */
-          <img src={categoryImg ? require(`../../../${categoryImg}`) : null} alt={`${category} icon`} style={{
+          
+          <img src={categoryImg ?
+            /* eslint-disable global-require */
+            require(`../../../${categoryImg}`)
+            /* eslint-enable global-require */
+            : null} alt={`${category} icon`} style={{
             filter: 'brightness(0) invert(1)',
           }} height={48} width={41} />
-          /* eslint-enable global-require */
         }
       >
         <DropdownSelect
@@ -98,14 +98,9 @@ const NewExpenseDetails = ({ description, setDescription, amount, setAmount, fie
       <div className="bottom-container">
         <div className="bottom-inputs">
           <DateInput
-            selected={dateVal}
-            todayButton='Today'
-            placeholderText='Today'
-            showPopperArrow={false}
-            dateFormat={'M/d/yy'}
-            onChange={(date) => setDateVal(date)}
+            date={date}
+            onChange={(e) => setDate(e.target.value)}
           />
-          <RecurringInput recurringVal={recurringVal} setRecurringVal={setRecurringVal} />
         </div>
         <button type="button" className="button button--flat button--medium" onClick={() => {
         if(!handleValidation()) return;
