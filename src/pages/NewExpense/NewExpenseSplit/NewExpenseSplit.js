@@ -1,13 +1,13 @@
-import RadioSelect from '../../../components/Input/RadioSelect/RadioSelect';
 import AddUsers from '../AddUsers/AddUsers';
 import Atom from '../../../components/Atom/Atom';
 import { formatMoney } from '../../../helpers/money';
 import DropdownSelect from '../../../components/Input/DropdownSelect/DropdownSelect';
-import Avatar from '../../../components/Avatar/Avatar';
-import TextInput from '../../../components/Input/TextInput/TextInput';
+import Split from '../../../components/Split/Split';
 
 
 const NewExpenseSplit = ({ account, accountFetched, amount, paidBy, setPaidBy, splitWith, setSplitWith, split, setSplit, splitWithGroup, removeGroupSplit, setOpenSelectPeople, fieldErrors, setFieldErrors, handleSubmit }) => {
+  
+
   const handleValidation = () => {
     const errors = {};
     let formValid = true;
@@ -79,66 +79,12 @@ const NewExpenseSplit = ({ account, accountFetched, amount, paidBy, setPaidBy, s
         </div>
         <div className="expense-input-container expense-input">
           <span className="input-label">Split</span>
-          <div className="split">
-            <RadioSelect
-              name="expense-split"
-              label="Choose split method"
-              options={[
-                {
-                  id: 'split-equally',
-                  value: 'EQUALLY',
-                  checked: split === 'EQUALLY',
-                  content: '=',
-                },
-                {
-                  id: 'split-percent',
-                  value: 'PERCENT',
-                  checked: split === 'PERCENT',
-                  content: '%',
-                },
-                {
-                  id: 'split-exact',
-                  value: 'EXACT',
-                  checked: split === 'EXACT',
-                  content: '$',
-                },
-                {
-                  id: 'split-adjust',
-                  value: 'ADJUST',
-                  checked: split === 'ADJUST',
-                  content: '+/-',
-                },
-              ]}
-              onFocus={() => setFieldErrors({ ...fieldErrors, split: null })}
-              onChange={e => setSplit(e.target.value)}
-              className="radio-split"
-            />
-            <div className="people-split">
-              {splitWith.map((member, index) => {
-                return (
-                  <div className="person-split" key={index}>
-                    <Avatar url={member?.avatar_url} size={50} classes="white-border" />
-                    <div className="person-info">
-                      <span className="person-name">{member?.name}</span>
-                      <span className="person-amount">33%</span>
-                    </div>
-                    <div className="divider"></div>
-                    <TextInput
-                      name={`split-${member?.id}`}
-                      className="person-amount-input"
-                      type="number"
-                      value={formatMoney(amount, false)}
-                      onChange={e => console.log(e)} />
-
-                  </div>
-              )})}
-            </div>
+          <Split split={split} setSplit={setSplit} splitWith={splitWith} fieldErrors={fieldErrors} setFieldErrors={setFieldErrors} account={account} amount={amount} />
           {fieldErrors.formValid === false && (
             <span className="field-error-text form-validation">
               Please fix the errors to submit expense.
             </span>
           )}
-          </div>
         </div>
       </div>
       <button

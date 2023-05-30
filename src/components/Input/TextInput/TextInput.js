@@ -13,6 +13,7 @@ const TextInput = forwardRef(
       value,
       size,
       className,
+      ...props
     },
     ref
   ) => {
@@ -33,6 +34,7 @@ const TextInput = forwardRef(
           onFocus={onFocus}
           onChange={onChange}
           onClick={() => ref?.current?.focus()}
+          {...props}
         />
         {fieldError && <span className="field-error-text">{fieldError}</span>}
       </div>

@@ -1,0 +1,48 @@
+@use '../../utilities/colors' as v;
+
+.split-details-page {
+  .split-percent {
+    border: 1px solid v.$accent-gray;
+    border-radius: 0.5rem;
+    flex-direction: row;
+    gap: 0;
+    .input-label {
+      display: none;
+    }
+    &::after {
+      content: '%';
+      height: 100%;
+      color: v.$washed-gray;
+      font-weight: 500;
+      padding: 0 0.5rem 0 0.25rem;
+    }
+    input {
+      border: none;
+      border-radius: 0.5rem;
+      max-width: 20px;
+      padding: 0 0.25rem 0 0.5rem;
+    }
+  }
+  .split-amount {
+    border: 1px solid v.$accent-gray;
+    border-radius: 0.5rem;
+    flex-direction: row;
+    min-width: 80px;
+    gap: 0;
+    .input-label {
+      display: none;
+    }
+    &::before {
+      content: '$';
+      height: 100%;
+      color: v.$washed-gray;
+      font-weight: 500;
+      padding: 0 0.25rem 0 0.5rem;
+    }
+    input {
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0 0.5rem 0 0rem;
+    }
+  }
+}
