@@ -26,6 +26,7 @@ const NewExpense = () => {
   const [splitWithGroup, setSplitWithGroup] = useState(null);
   const [paidBy, setPaidBy] = useState(user?.id);
   const [split, setSplit] = useState('EQUAL');
+  const [splitValues, setSplitValues] = useState({});
   const [page, setPage] = useState(1);
   const [fieldErrors, setFieldErrors] = useState({});
   const [openSelectPeople, setOpenSelectPeople] = useState(false);
@@ -60,13 +61,12 @@ const NewExpense = () => {
     } catch (error) {
       console.error(error);
     }
-    const numDebts = splitWith.length;
-    const debtAmount = split === 'EQUAL' ? amount / numDebts : amount / (numDebts - 1);
+    
     const newDebt = splitWith.filter(friend => !(friend.id === paidBy)).map(friend => {
       return {
         creditor_id: paidBy,
         debtor_id: friend.id,
-        amount: debtAmount,
+        amount: splitValues[friend.id]?.amount || 0,
         expense_id: expenseData.id,
         group_id: groupId
       }
@@ -146,6 +146,8 @@ const NewExpense = () => {
             splitWithGroup={splitWithGroup}
             split={split}
             setSplit={setSplit}
+            splitValues={splitValues}
+            setSplitValues={setSplitValues}
             removeGroupSplit={removeGroupSplit}
             setOpenSelectPeople={setOpenSelectPeople}
             fieldErrors={fieldErrors}

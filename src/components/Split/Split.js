@@ -6,8 +6,7 @@ import Avatar from '../Avatar/Avatar';
 import { formatMoney } from '../../helpers/money';
 import { useDebounce } from '../../hooks/useDebounce';
 
-const Split = ({ split, setSplit, splitWith, fieldErrors, setFieldErrors, account, amount }) => {
-  const [splitValues, setSplitValues] = useState({});
+const Split = ({ split, setSplit, splitWith, splitValues, setSplitValues, fieldErrors, setFieldErrors, account, amount }) => {
   const [percentInput, setPercentInput] = useState({});
   const [amountInput, setAmountInput] = useState({});
 
@@ -52,21 +51,19 @@ const Split = ({ split, setSplit, splitWith, fieldErrors, setFieldErrors, accoun
     if (split !== 'EQUAL') return;
     const usersSplit = calcSplit(amount, {}, split, splitWith);
     setSplitValues(usersSplit);
-  }, [amount, split, splitWith]);
+  }, [amount, split, splitWith, setSplitValues]);
 
   useEffect(() => {
     if(split !== 'PERCENT' || !Object.keys(debouncedPercentInput).length) return;
     const usersSplit = calcSplit(amount, debouncedPercentInput, split, splitWith);
     setSplitValues(usersSplit);
-  }, [splitWith, split, amount, debouncedPercentInput]);
+  }, [splitWith, split, amount, debouncedPercentInput, setSplitValues]);
 
   useEffect(() => {
     if(split !== 'EXACT' || !Object.keys(debouncedAmountInput).length) return;
     const usersSplit = calcSplit(amount, debouncedAmountInput, split, splitWith);
     setSplitValues(usersSplit);
-  }, [splitWith, split, amount, debouncedAmountInput]);
-
-  
+  }, [splitWith, split, amount, debouncedAmountInput, setSplitValues]);
 
   return (
     <div className="split">

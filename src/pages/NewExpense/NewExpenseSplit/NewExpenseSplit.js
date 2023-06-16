@@ -5,9 +5,7 @@ import DropdownSelect from '../../../components/Input/DropdownSelect/DropdownSel
 import Split from '../../../components/Split/Split';
 
 
-const NewExpenseSplit = ({ account, accountFetched, amount, paidBy, setPaidBy, splitWith, setSplitWith, split, setSplit, splitWithGroup, removeGroupSplit, setOpenSelectPeople, fieldErrors, setFieldErrors, handleSubmit }) => {
-  
-
+const NewExpenseSplit = ({ account, accountFetched, amount, paidBy, setPaidBy, splitWith, setSplitWith, split, setSplit, splitValues, setSplitValues, splitWithGroup, removeGroupSplit, setOpenSelectPeople, fieldErrors, setFieldErrors, handleSubmit }) => {
   const handleValidation = () => {
     const errors = {};
     let formValid = true;
@@ -79,7 +77,16 @@ const NewExpenseSplit = ({ account, accountFetched, amount, paidBy, setPaidBy, s
         </div>
         <div className="expense-input-container expense-input">
           <span className="input-label">Split</span>
-          <Split split={split} setSplit={setSplit} splitWith={splitWith} fieldErrors={fieldErrors} setFieldErrors={setFieldErrors} account={account} amount={amount} />
+          <Split
+            split={split}
+            setSplit={setSplit}
+            splitWith={splitWith}
+            splitValues={splitValues}
+            setSplitValues={setSplitValues}
+            fieldErrors={fieldErrors}
+            setFieldErrors={setFieldErrors}
+            account={account}
+            amount={amount} />
           {fieldErrors.formValid === false && (
             <span className="field-error-text form-validation">
               Please fix the errors to submit expense.
