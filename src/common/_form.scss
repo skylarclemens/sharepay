@@ -29,9 +29,11 @@
   padding: 0 0.75rem;
   font-size: 1rem;
   &:disabled {
+    font-family: 'Inter', sans-serif;
     border-color: v.$accent-gray;
+    color: v.$washed-gray;
+    font-weight: 500;
     background: v.$light-gray;
-    color: #aaaaaa;
   }
 }
 

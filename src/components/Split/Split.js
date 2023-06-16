@@ -58,14 +58,13 @@ const Split = ({ split, setSplit, splitWith, fieldErrors, setFieldErrors, accoun
     if(split !== 'PERCENT' || !Object.keys(debouncedPercentInput).length) return;
     const usersSplit = calcSplit(amount, debouncedPercentInput, split, splitWith);
     setSplitValues(usersSplit);
-  }, [splitWith, split, debouncedPercentInput]);
+  }, [splitWith, split, amount, debouncedPercentInput]);
 
   useEffect(() => {
     if(split !== 'EXACT' || !Object.keys(debouncedAmountInput).length) return;
-    console.log(debouncedAmountInput);
     const usersSplit = calcSplit(amount, debouncedAmountInput, split, splitWith);
     setSplitValues(usersSplit);
-  }, [splitWith, split, debouncedAmountInput]);
+  }, [splitWith, split, amount, debouncedAmountInput]);
 
   
 
@@ -92,12 +91,6 @@ const Split = ({ split, setSplit, splitWith, fieldErrors, setFieldErrors, accoun
             value: 'EXACT',
             checked: split === 'EXACT',
             content: '$',
-          },
-          {
-            id: 'split-adjust',
-            value: 'ADJUST',
-            checked: split === 'ADJUST',
-            content: '+/-',
           },
         ]}
         onFocus={() => setFieldErrors({ ...fieldErrors, split: null })}
@@ -142,6 +135,8 @@ const Split = ({ split, setSplit, splitWith, fieldErrors, setFieldErrors, accoun
                       name={`percent-${member?.id}`}
                       className="person-amount-input split-percent"
                       placeholder="0"
+                      type="number"
+                      inputMode="decimal"
                       value={percentInput[member?.id] || ''}
                       onChange={e => setPercentInput(prevState => ({...prevState, [member?.id]: e.target.value}))}
                     />
@@ -160,6 +155,8 @@ const Split = ({ split, setSplit, splitWith, fieldErrors, setFieldErrors, accoun
                       name={`amount-${member?.id}`}
                       className="person-amount-input split-amount"
                       placeholder="0"
+                      type="number"
+                      inputMode="decimal"
                       value={amountInput[member?.id] || ''}
                       onChange={e => setAmountInput(prevState => ({...prevState, [member?.id]: e.target.value}))}
                     />

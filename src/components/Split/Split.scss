@@ -1,6 +1,15 @@
 @use '../../utilities/colors' as v;
 
 .split-details-page {
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
   .split-percent {
     border: 1px solid v.$accent-gray;
     border-radius: 0.5rem;
