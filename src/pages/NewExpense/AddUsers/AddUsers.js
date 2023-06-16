@@ -19,8 +19,8 @@ const AddUsers = ({ label, account, usersList, setUsersList, selectedGroup, setO
               <UserButton
                 key={`${member?.id}-user-button`}
                 user={member}
-                name={member?.name}
-                variant="white"
+                name={member?.id === account?.id ? 'You' : member?.name}
+                variant="transparent"
               />
             )
           })}

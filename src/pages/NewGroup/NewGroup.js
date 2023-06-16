@@ -107,7 +107,7 @@ const NewGroup = () => {
   return (
     <>
       <div className="new-group-container">
-        <Header type="title" title="Create group" />
+        <Header type="title" title="Create group" classes="transparent" />
         <Atom
           orbitals={groupElectrons}
           image={
@@ -140,6 +140,7 @@ const NewGroup = () => {
               <DropdownSelect 
                 options={GROUP_COLORS.map(color => color.color)}
                 value={groupColor}
+                name="group-color-select"
                 onChange={e => setGroupColor(e.target.value)}
                 classes="group-color-select"
               />

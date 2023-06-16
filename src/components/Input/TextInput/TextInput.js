@@ -11,7 +11,9 @@ const TextInput = forwardRef(
       onChange,
       placeholder,
       value,
+      size,
       className,
+      ...props
     },
     ref
   ) => {
@@ -25,12 +27,14 @@ const TextInput = forwardRef(
           name={name}
           type="text"
           placeholder={placeholder}
-          className={`text-input ${fieldError && 'field-error'}`}
+          size={size}
+          className={`text-input ${fieldError ? 'field-error' : ''}`}
           ref={ref}
           value={value}
           onFocus={onFocus}
           onChange={onChange}
           onClick={() => ref?.current?.focus()}
+          {...props}
         />
         {fieldError && <span className="field-error-text">{fieldError}</span>}
       </div>

@@ -17,16 +17,15 @@
   .radio-option-select {
     display: block;
     background: v.$light-gray;
-    border: 2px solid v.$light-gray;
+    outline: 1px solid v.$accent-gray;
     padding: 0.5rem 0.875rem;
-    box-shadow: 0px 2px 0px v.$accent-gray;
     border-radius: 1.75rem;
     font-size: 0.875rem;
     cursor: pointer;
 
     &.selected {
-      border: 2px solid #6c91c2;
-      box-shadow: 0px 2px 0px rgba(75, 129, 198, 0.5);
+      background: rgba(75, 129, 198, 0.2);
+      outline: 2px solid #6c91c2;
     }
   }
 }

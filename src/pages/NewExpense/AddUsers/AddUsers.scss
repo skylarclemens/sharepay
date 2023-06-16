@@ -3,7 +3,14 @@
 .add-users {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
+
+  .button--form-add {
+    height: 45px;
+    width: 45px;
+    background: v.$light-gray;
+    border: none;
+  }
 
   .input-label {
     margin: 0 20px;
@@ -14,10 +21,10 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
-    background: v.$light-gray;
-    padding: 0.875rem 20px;
-    border-top: 1px solid v.$accent-gray;
-    border-bottom: 2px solid v.$accent-gray;
+    background: #ffffff;
+    padding: 0.5rem 1rem;
+    border: 1px solid v.$accent-gray;
+    border-radius: 1rem;
   }
 
   .group-selected {
