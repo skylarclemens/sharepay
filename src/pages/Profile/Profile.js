@@ -8,7 +8,7 @@ import Modal from '../../components/Modal/Modal';
 import PayUp from '../../components/PayUp/PayUp';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import FriendAction from '../FriendAction/FriendAction';
-import Transactions from '../../components/Transactions/Transactions';
+import TransactionsByDate from '../../components/Transactions/TransactionsByDate/TransactionsByDate';
 import Balances from '../../components/Balances/Balances';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import { useGetDebtsQuery, selectUnpaidSharedDebtsByFriendId } from '../../slices/debtSlice';
@@ -86,7 +86,7 @@ const Profile = () => {
                     <div className="skeleton__avatar"></div>
                   </Skeleton>) : (
                 balances.total !== 0 &&
-                  <Transactions transactions={sharedDebts} type="debt" />)}
+                  <TransactionsByDate transactions={sharedDebts} showYear={false} />)}
                 {balances.total === 0 &&
                   <div className="medium-gray">No transactions available</div>}
               </div>

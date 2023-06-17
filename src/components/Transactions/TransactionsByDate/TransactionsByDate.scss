@@ -1,0 +1,30 @@
+@use '../../../utilities/colors' as v;
+
+.transactions-by-year {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  .transactions-by-month {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    .transactions-by-month--first {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  .transactions-by-month__name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: v.$blue-black;
+    .transactions-by-year__year {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: v.$washed-gray;
+      &.hide-year {
+        display: none;
+      }
+    }
+  }
+}
