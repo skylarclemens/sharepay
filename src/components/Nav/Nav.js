@@ -3,6 +3,7 @@ import homeImg from '../../images/Home.svg';
 import friendImg from '../../images/Friend.svg'
 import groupImg from '../../images/Group.svg';
 import graphImg from '../../images/Graph.svg';
+import addPlusImg from '../../images/Add_plus.svg';
 import { Link, useLocation } from 'react-router-dom';
 
 const Nav = () => {
@@ -39,7 +40,9 @@ const Nav = () => {
         </div>
       </div>
       <Link className="add-button" to="/new-expense">
-        <div className="add-plus"></div>
+        <div className="add-plus">
+          <img src={addPlusImg} alt="Add plus icon" />
+        </div>
       </Link>
     </div>
   );
