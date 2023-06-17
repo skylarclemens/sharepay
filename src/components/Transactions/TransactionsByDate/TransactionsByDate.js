@@ -9,7 +9,7 @@ const TransactionsByDate = ({ transactions, type = 'debt', showYear = true }) =>
   useEffect(() => {
     const transactionsCopy = [...transactions];
     transactionsCopy?.sort((a, b) => {
-      return new Date(a?.created_at) - new Date(b?.created_at)
+      return new Date(b?.created_at) - new Date(a?.created_at)
     })
     setSortedTransactions(transactionsCopy);
   }, [transactions])
@@ -41,11 +41,11 @@ const TransactionsByDate = ({ transactions, type = 'debt', showYear = true }) =>
       {Object.keys(transactionsByYearAndMonth)?.map(year => {
         return (
           <div key={year} className="transactions-by-year">
-            {Object.keys(transactionsByYearAndMonth[year])?.map((month, index) => {
+            {Object.keys(transactionsByYearAndMonth[year])?.reverse().map((month, index) => {
               return (
                 <div key={month} className="transactions-by-month">
                   <div className={`transactions-by-month__name ${index === 0 ? 'transactions-by-month--first' : ''}`}>
-                    {new Date(2021, month).toLocaleString('default', { month: 'long' })}
+                    {new Date(year, month).toLocaleString('default', { month: 'long' })}
                     {index === 0 && (
                       <div className={`transactions-by-year__year ${!showYear && 'hide-year'}`}>{year}</div>
                     )}
