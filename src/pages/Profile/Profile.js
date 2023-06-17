@@ -11,10 +11,11 @@ import FriendAction from '../FriendAction/FriendAction';
 import TransactionsByDate from '../../components/Transactions/TransactionsByDate/TransactionsByDate';
 import Balances from '../../components/Balances/Balances';
 import Skeleton from '../../components/Skeleton/Skeleton';
-import { useGetDebtsQuery, selectUnpaidSharedDebtsByFriendId } from '../../slices/debtSlice';
+import { useGetDebtsQuery, selectUnpaidSharedDebtsByFriendId, selectPaidSharedDebtsByFriendId } from '../../slices/debtSlice';
 import { useGetExpensesQuery, selectUnpaidSharedExpensesByDebt } from '../../slices/expenseSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import { balanceCalc } from '../../helpers/balance';
+import historyImg from '../../images/History.svg'
 
 const Profile = () => {
   const user = useSelector(state => state.auth.user);
@@ -25,6 +26,7 @@ const Profile = () => {
   } = useGetAccountQuery(id);
   const [balances, setBalances] = useState({ total: 0, owed: 0, owe: 0 });
   const [openPayUp, setOpenPayUp] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
 
   const { sharedDebts,
     isLoading: debtsLoading,
@@ -32,6 +34,15 @@ const Profile = () => {
     selectFromResult: (result) => ({
       ...result,
       sharedDebts: selectUnpaidSharedDebtsByFriendId(result, id)
+    })
+  });
+
+  const { paidSharedDebts, 
+    isLoading: paidDebtsLoading,
+    isSuccess: paidDebtsFetched } = useGetDebtsQuery(user?.id, { 
+    selectFromResult: (result) => ({
+      ...result,
+      paidSharedDebts: selectPaidSharedDebtsByFriendId(result, id)
     })
   });
 
@@ -79,15 +90,24 @@ const Profile = () => {
               }} />
             </div>
             <div className="profile__section profile__section--transactions">
-              <h2>Transactions</h2>
+              <div className="section__heading">
+                <h2>Transactions {showHistory ? 'History' : ''}</h2>
+                <button className="button--icon" onClick={() => setShowHistory(!showHistory)}>
+                  <img src={historyImg} className="history-icon" alt="History icon" />
+                </button>
+              </div>
               <div className="profile__transactions">
-                {!debtsFetched || debtsLoading ? (
+                {!debtsFetched || debtsLoading || !paidDebtsFetched || paidDebtsLoading ? (
                   <Skeleton height={52} width={329}>
                     <div className="skeleton__avatar"></div>
                   </Skeleton>) : (
-                balances.total !== 0 &&
+                !showHistory && balances.total !== 0 &&
                   <TransactionsByDate transactions={sharedDebts} showYear={false} />)}
-                {balances.total === 0 &&
+                {!showHistory && balances.total === 0 &&
+                  <div className="medium-gray">No transactions available</div>}
+                {showHistory && paidSharedDebts?.length > 0 &&
+                  <TransactionsByDate transactions={paidSharedDebts} showYear={false} />}
+                {showHistory && paidSharedDebts?.length === 0 &&
                   <div className="medium-gray">No transactions available</div>}
               </div>
             </div>

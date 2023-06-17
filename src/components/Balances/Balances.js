@@ -24,26 +24,26 @@ const Balances = ({ debts, debtsStatus }) => {
           You're owed
           <img src={receiveImg} alt="Green arrow pointing bottom left" />
         </h3>
-        <p className="balance__amount">
+        <div className="balance__amount">
           {!debtsStatus.fetched || debtsStatus.loading ? (
             <Skeleton width="100%" height="32px" />
           ) : (
             formatMoney(balances?.owed, false)
           )}
-        </p>
+        </div>
       </div>
       <div className="balance__item balance__item--owe">
         <h3 className="balance__title">
           You owe
           <img src={sendImg} alt="Red arrow pointing top right" />
         </h3>
-        <p className="balance__amount">
+        <div className="balance__amount">
           {!debtsStatus.fetched || debtsStatus.loading ? (
             <Skeleton width="100%" height="32px" />
           ) : (
             formatMoney(balances?.owe, false)
           )}
-        </p>
+        </div>
       </div>
     </div>
   )
