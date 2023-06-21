@@ -16,9 +16,6 @@ const SelectPeople = ({ showGroups = false, handleAdd, existingUsers = [], setOp
   const debouncedSearchValue = useDebounce(value, 500);
 
   const [selectedUsers, setSelectedUsers] = useState(existingUsers ?? []);
-  const [searchActive, setSearchActive] = useState(false);
-  const onFocus = () => setSearchActive(true);
-  const onBlur = () => setSearchActive(false);
   const user = useSelector(state => state.auth.user);
   const searchInput = useRef(null);
 
@@ -105,7 +102,7 @@ const SelectPeople = ({ showGroups = false, handleAdd, existingUsers = [], setOp
               )})}
               </div>
           </div>
-          <Search value={value} setValue={setValue} onFocus={onFocus} onBlur={onBlur} suggestions={renderSuggestions} ref={searchInput} />
+          <Search value={value} setValue={setValue} suggestions={renderSuggestions} ref={searchInput} />
         </div>
       </div>
     </>
