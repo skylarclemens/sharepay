@@ -137,7 +137,8 @@ button {
   padding-top: calc(46px + env(safe-area-inset-top));
   padding-bottom: calc(46px + env(safe-area-inset-bottom));
   min-height: 100vh;
-  overflow: auto;
+  overflow-y: hidden;
+  overflow-x: auto;
 }
 
 .empty-layout {

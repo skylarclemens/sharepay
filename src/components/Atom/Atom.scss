@@ -5,8 +5,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: visible;
-
+  overflow-x: visible;
+  
   .atom__nucleus {
     position: relative;
     display: flex;

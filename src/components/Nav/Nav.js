@@ -5,6 +5,11 @@ import groupImg from '../../images/Group.svg';
 import graphImg from '../../images/Graph.svg';
 import addPlusImg from '../../images/Add_plus.svg';
 import { Link, useLocation } from 'react-router-dom';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+
+const hapticsImpactLight = async () => {
+  await Haptics.impact({ style: ImpactStyle.Light });
+};
 
 const Nav = () => {
   const location = useLocation();
@@ -39,7 +44,9 @@ const Nav = () => {
           </Link>
         </div>
       </div>
-      <Link className="add-button" to="/new-expense">
+      <Link className="add-button"
+        to="/new-expense"
+        onClick={hapticsImpactLight}>
         <div className="add-plus">
           <img src={addPlusImg} alt="Add plus icon" />
         </div>
