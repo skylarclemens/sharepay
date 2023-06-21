@@ -1,5 +1,5 @@
 import './SelectPeople.scss';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../Header/Header';
 import UserSelect from '../Search/UserSelect/UserSelect';
@@ -16,7 +16,11 @@ const SelectPeople = ({ showGroups = false, handleAdd, existingUsers = [], setOp
   const debouncedSearchValue = useDebounce(value, 500);
 
   const [selectedUsers, setSelectedUsers] = useState(existingUsers ?? []);
+  const [searchActive, setSearchActive] = useState(false);
+  const onFocus = () => setSearchActive(true);
+  const onBlur = () => setSearchActive(false);
   const user = useSelector(state => state.auth.user);
+  const searchInput = useRef(null);
 
   const {
     data: groupSuggestions,
@@ -50,14 +54,14 @@ const SelectPeople = ({ showGroups = false, handleAdd, existingUsers = [], setOp
   const renderSuggestions = (
     <>
       <div className="results">
-            {(groupResultsFetched && groupSuggestions.length > 0) && <span className="search-heading">Groups</span>}
-            {(groupResultsFetched && groupSuggestions.length > 0) && (
-              groupSuggestions.map(suggested => {
-                return (
-                  <UserAdd key={suggested.id} user={suggested} type="group" handleSelect={() => handleAdd(suggested)} />
-                );
-              })
-            )}
+        {(groupResultsFetched && groupSuggestions.length > 0) && <span className="search-heading">Groups</span>}
+        {(groupResultsFetched && groupSuggestions.length > 0) && (
+          groupSuggestions.map(suggested => {
+            return (
+              <UserAdd key={suggested.id} user={suggested} type="group" handleSelect={() => handleAdd(suggested)} />
+            );
+          })
+        )}
       </div>
       <div className="results">
         {(friendResultsFetched && friendSuggestions.length > 0) && <span className="search-heading">Friends</span>}
@@ -73,29 +77,38 @@ const SelectPeople = ({ showGroups = false, handleAdd, existingUsers = [], setOp
   )
 
   return (
-    <div className="add-friend-container select-friends">
-      <Header type="title" title="Select people" classes="transparent" headerLeftFn={() => setOpen(false)} />
-      <div className="split-with-people">
-        <div className="split-with-people__heading">
-          <span className="section-heading">Split with</span>
-          <button className="button--no-style clear-button" onClick={() => setSelectedUsers([])}>Clear</button>
-        </div>
-        <div className="split-with-people__users">
-        {selectedUsers.map(user => {
-          return (
-            <div key={`search-${user.id}`} className="split-with-user">
-              <Avatar url={user?.avatar_url} classes="white-border" />
-              <span>{user?.name}</span>
-              <button className="button--no-style remove-user">
-                <img src={removeImg} alt="Remove user" onClick={() => setSelectedUsers(selectedUsers.filter(selected => selected.id !== user.id))} />
-              </button>
+    <>
+      <Header type="title" title="Select people" classes="gray" headerLeftFn={() => setOpen(false)} headerRight={
+        <span style={{
+          fontSize: '1rem',
+          fontFamily: 'Inter',
+          fontWeight: '600',
+          color: '#6c91c2'
+        }}>Add</span>
+      } headerRightFn={() => handleAdd(selectedUsers)} />
+      <div className="add-friend-container select-friends">
+        <div className="search-split-container">
+          <div className="split-with-people">
+            <div className="split-with-people__heading">
+              <span className="section-heading">Split with</span>
             </div>
-          )})}
+            <div className="split-with-people__users">
+            {selectedUsers.map(user => {
+              return (
+                <div key={`search-${user.id}`} className="split-with-user">
+                  <Avatar url={user?.avatar_url} size={35} classes="white-border" />
+                  <span>{user?.name}</span>
+                  <button className="button--no-style remove-user">
+                    <img src={removeImg} alt="Remove user" onClick={() => setSelectedUsers(selectedUsers.filter(selected => selected.id !== user.id))} />
+                  </button>
+                </div>
+              )})}
+              </div>
           </div>
+          <Search value={value} setValue={setValue} onFocus={onFocus} onBlur={onBlur} suggestions={renderSuggestions} ref={searchInput} />
+        </div>
       </div>
-      <Search value={value} setValue={setValue} suggestions={renderSuggestions} />
-      <button className={`button button--floating selected-users-button ${selectedUsers.length > 0 ? 'show' : ''}`} onClick={() => handleAdd(selectedUsers)}>{`Add friend${selectedUsers.length > 1 ? 's' : ''}`}</button>
-    </div>
+    </>
   );
 };
 
