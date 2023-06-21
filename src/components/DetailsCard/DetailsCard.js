@@ -12,7 +12,7 @@ const DetailsCard = ({ title, subTitle, avatarUrl = null, actions, type = 'user'
             <Avatar url={avatarUrl} classes="white-border white-border--thick" size={65} type={type} />
           </div>}
           {skeleton ? (
-          <Skeleton height={65} width={300} />
+          <Skeleton height={50} width={300} />
             ) : (
           <>
             <div className="details__info-text">
