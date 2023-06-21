@@ -3,6 +3,7 @@
 .layout:has(.expense-container) {
   background: v.$light-gray;
   height: 100%;
+  overflow: hidden;
 }
 
 .expense-container {
@@ -10,7 +11,7 @@
   width: 100%;
   .page-button {
     position: absolute;
-    bottom: calc(1rem + env(safe-area-inset-bottom));
+    bottom: calc(1rem - env(safe-area-inset-bottom));
     width: calc(100% - 40px);
     margin: 0 auto;
   }

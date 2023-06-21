@@ -7,6 +7,7 @@ import './GroupExpenses.scss';
 const GroupExpenses = ({ group }) => {
   const allGroupExpenses = useSelector(state => selectUserExpensesByGroup(state, group.id));
   const expensesList = allGroupExpenses.filter(expense => !expense?.paid);
+  const displayExpenses = expensesList.slice(0,4);
 
   return (
     expensesList.length > 0 && (
@@ -18,13 +19,19 @@ const GroupExpenses = ({ group }) => {
         </div>
       </Link>
       <div className="expenses-list">
-        {expensesList.map(expense => {
+        {displayExpenses.map(expense => {
           return (
             <ExpenseTransaction key={expense.id}
               transaction={expense}
               classes="group-expense" />
           )
         })}
+        {expensesList.length > 4 && (
+          <Link to={`/group/${group?.id}`} className="more-expenses">
+            <div className="more-expenses__text">See more</div>
+            <div className="arrow arrow--right"></div>
+          </Link>
+        )}
       </div>
     </div>)
   )

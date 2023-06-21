@@ -119,7 +119,7 @@ const Dashboard = () => {
                   </Skeleton>
                 ) : (
                   unpaidFriendExpenses.length > 0 &&
-                  <Transactions transactions={unpaidFriendExpenses} />
+                  <Transactions transactions={unpaidFriendExpenses.splice(0,5)} />
                 )}
                 {(groupsFetched && groups.length > 0) &&
                   groups.map(group => {

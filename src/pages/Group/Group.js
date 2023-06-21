@@ -39,15 +39,15 @@ const Group = () => {
   const unpaidGroupExpenses = groupExpenses?.filter(expense => !expense?.paid);
 
   return (
-    groupFetched && (
       <>
       <Header type="title" classes={`group--${group?.color}`} />
+      <DetailsCard 
+        title={group?.group_name}
+        avatarUrl={group?.avatar_url}
+        classes={`group--${group?.color}`}
+        skeleton={!groupFetched}
+        type="group" />
       <div className="group-container">
-        <DetailsCard 
-          title={group.group_name}
-          avatarUrl={group?.avatar_url}
-          classes={`group--${group?.color}`}
-          type="group" />
         <div className="group__section group__section--balance">
           <h2>Balance</h2>
           <Balances debts={userGroupDebts} debtsStatus={{
@@ -64,7 +64,7 @@ const Group = () => {
               groupExpenses.length > 0 && unpaidGroupExpenses.map(expense => {
                 return (
                   <ExpenseTransaction
-                    key={expense.id}
+                    key={expense?.id}
                     transaction={expense}
                     />
                 );
@@ -77,7 +77,6 @@ const Group = () => {
         </div>
       </div>
       </>
-    )
   );
 };
 

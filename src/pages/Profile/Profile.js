@@ -63,13 +63,13 @@ const Profile = () => {
   return (
     <>
       <Header type="title"/>
-      {profileUserFetched && (
         <>
           <div className="profile">
             <DetailsCard
               title={profileUser?.name}
               subTitle={profileUser?.email}
               avatarUrl={profileUser?.avatar_url}
+              skeleton={!profileUserFetched}
               actions={
               <>
                 <FriendAction friend={profileUser} />
@@ -121,7 +121,6 @@ const Profile = () => {
             />
           </Modal>
         </>
-      )}
     </>
   )
 }
