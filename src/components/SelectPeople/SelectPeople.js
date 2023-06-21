@@ -85,21 +85,18 @@ const SelectPeople = ({ showGroups = false, handleAdd, existingUsers = [], setOp
       } headerRightFn={() => handleAdd(selectedUsers)} />
       <div className="add-friend-container select-friends">
         <div className="search-split-container">
-          <div className="split-with-people">
-            <div className="split-with-people__heading">
-              <span className="section-heading">Split with</span>
-            </div>
+          <div className={`split-with-people ${selectedUsers.length === 0 ? 'split-with-people--hide' : ''}`}>
             <div className="split-with-people__users">
-            {selectedUsers.map(user => {
-              return (
-                <div key={`search-${user.id}`} className="split-with-user">
-                  <Avatar url={user?.avatar_url} size={35} classes="white-border" />
-                  <span>{user?.name}</span>
-                  <button className="button--no-style remove-user">
-                    <img src={removeImg} alt="Remove user" onClick={() => setSelectedUsers(selectedUsers.filter(selected => selected.id !== user.id))} />
-                  </button>
-                </div>
-              )})}
+              {selectedUsers.map(user => {
+                return (
+                  <div key={`search-${user.id}`} className="split-with-user">
+                    <Avatar url={user?.avatar_url} size={35} classes="white-border" />
+                    <span>{user?.name}</span>
+                    <button className="button--no-style remove-user">
+                      <img src={removeImg} alt="Remove user" onClick={() => setSelectedUsers(selectedUsers.filter(selected => selected.id !== user.id))} />
+                    </button>
+                  </div>
+                )})}
               </div>
           </div>
           <Search value={value} setValue={setValue} suggestions={renderSuggestions} ref={searchInput} />

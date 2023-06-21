@@ -27,7 +27,7 @@ const SearchPeople = ({ setOpen = null }) => {
       {searchResultsFetched && searchResults.map(suggested => (
         <Link 
           key={`${suggested.id}-search-people`}
-          className="search-user button--no-style"
+          className="search-user"
           to={`/user/${suggested.id}`}>
           <UserResult key={`${suggested.id}-search-people`} user={suggested} action={handleSelect} />
         </Link>

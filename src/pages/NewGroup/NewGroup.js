@@ -157,7 +157,7 @@ const NewGroup = () => {
         </form>
       </div>
       <Modal open={openSelectPeople}>
-        <SelectPeople handleAdd={handleAddUsers} existingUsers={groupMembers} />
+        <SelectPeople handleAdd={handleAddUsers} existingUsers={groupMembers.slice(1)} setOpen={setOpenSelectPeople} />
       </Modal>
       <Modal open={openAvatarUpload}
         style={{

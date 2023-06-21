@@ -7,7 +7,7 @@ const UserSelect = ({ user, userSelected, handleSelect }) => {
   const [selected, setSelected] = useState(initialSelected);
 
   return (
-    <button type="button" key={user.id} className={`search-user button--icon ${selected ? 'selected' : ''}`} onClick={() => {
+    <button type="button" key={user.id} className={`search-user ${selected ? 'selected' : ''}`} onClick={() => {
       handleSelect(user, !selected)
       setSelected(!selected)
     }}>
