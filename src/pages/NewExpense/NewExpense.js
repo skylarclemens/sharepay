@@ -104,7 +104,7 @@ const NewExpense = () => {
       return;
     }
 
-    setSplitWith(selected);
+    setSplitWith([account, ...selected]);
     setOpenSelectPeople(false);
   };
 
@@ -157,7 +157,7 @@ const NewExpense = () => {
         </form>
       </div>
       <Modal open={openSelectPeople}>
-        <SelectPeople handleAdd={handleAdd} showGroups={true} existingUsers={splitWith} />
+        <SelectPeople handleAdd={handleAdd} setOpen={setOpenSelectPeople} showGroups={true} existingUsers={splitWith.slice(1)} />
       </Modal>
     </>
   );

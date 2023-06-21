@@ -1,6 +1,7 @@
 import './Search.scss';
+import { forwardRef } from 'react';
 
-const Search = ({ value, setValue, suggestions, setOpen = null }) => {
+const Search = forwardRef(({ value, setValue, suggestions, onFocus, onBlur, setOpen = null }, ref) => {
   return (
     <>
       <div className="search-container">
@@ -8,8 +9,11 @@ const Search = ({ value, setValue, suggestions, setOpen = null }) => {
           className="text-input search-input"
           type="search"
           value={value}
-          placeholder="Search..."
+          placeholder="Search"
           onChange={e => setValue(e.target.value)}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          ref={ref}
         />
         {setOpen && (
           <button
@@ -25,6 +29,6 @@ const Search = ({ value, setValue, suggestions, setOpen = null }) => {
       </div>
     </>
   )
-}
+});
 
 export default Search;

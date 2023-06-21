@@ -1,11 +1,72 @@
 @use '../../utilities/colors' as v;
 
+.modal-content:has(.select-friends) {
+  background: v.$light-gray;
+}
+
+.search-split-container {
+  background: #ffffff;
+  flex: 1;
+  border-radius: 1rem;
+  overflow: scroll;
+}
+
+.split-with-people {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-bottom: 1px solid v.$light-gray;
+  padding: 1rem 0;
+  &.split-with-people--hide {
+    display: none;
+  }
+  .split-with-people__heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.25rem;
+    .clear-button {
+      color: v.$accent-blue;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+  }
+  .split-with-people__users {
+    display: flex;
+    gap: 1rem;
+    padding: 0 1.25rem;
+  }
+  .split-with-user {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .remove-user {
+    position: absolute;
+    right: -6px;
+    top: -6px;
+    padding: 0 0 10px 10px;
+  }
+}
+
 .select-friends {
   position: relative;
   top: calc(46px + env(safe-area-inset-top));
   width: 100%;
   height: calc(100vh - 46px - env(safe-area-inset-top));
-  background: #ffffff;
+  background: v.$light-gray;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 
   .results {
     display: flex;
