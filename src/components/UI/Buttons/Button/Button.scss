@@ -1,8 +1,6 @@
 @use '../../../../utilities/colors' as v;
 
 .button {
-  display: inline-block;
-  font-family: 'Inter', sans-serif;
   font-weight: 500;
   border-radius: 1rem;
   color: #ffffff;
@@ -26,13 +24,6 @@
   color: v.$layout-green;
 }
 
-.button--text {
-  background: none;
-  border: none;
-  padding: none;
-  color: v.$layout-green;
-}
-
 .button--small {
   font-size: 0.75rem;
   font-weight: 500;
@@ -49,4 +40,11 @@
   color: v.$washed-gray;
   border: 1px solid v.$accent-gray;
   cursor: auto;
+}
+
+.button--text, .button--icon {
+  background: none;
+  border: none;
+  padding: 0 !important;
+  color: v.$layout-green;
 }

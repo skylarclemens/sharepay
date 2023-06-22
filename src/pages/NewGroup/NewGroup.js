@@ -2,7 +2,6 @@ import './NewGroup.scss';
 import { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/Header/Header';
 import TextInput from '../../components/Input/TextInput/TextInput';
 import DropdownSelect from '../../components/Input/DropdownSelect/DropdownSelect';
 import Modal from '../../components/Modal/Modal';
@@ -17,6 +16,7 @@ import { useAddActivityMutation } from '../../slices/activityApi';
 import groupImg from '../../images/Group_white.svg';
 import cameraIcon from '../../images/Camera-outline.svg';
 import Avatar from '../../components/Avatar/Avatar';
+import TitleHeader from '../../components/Layout/Headers/TitleHeader/TitleHeader';
 
 const NewGroup = () => {
   const user = useSelector(state => state.auth.user);
@@ -107,7 +107,11 @@ const NewGroup = () => {
   return (
     <>
       <div className="new-group-container">
-        <Header type="title" title="Create group" classes="transparent" />
+        <TitleHeader
+          title="Create group"
+          backButton={true}
+          className="header--transparent"
+          color="#787878" />
         <Atom
           orbitals={groupElectrons}
           image={

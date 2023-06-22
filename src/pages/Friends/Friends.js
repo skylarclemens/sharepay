@@ -58,7 +58,10 @@ const Friends = () => {
         title="Friends"
         right={
           <button type="button" className="button--icon" onClick={() => setOpenSearchPeople(true)}>
-            <img src={searchImg} className="header-icon" alt="Add Friend Icon" />
+            <img style={{
+              filter: 'brightness(0) invert(1)',  
+            }}
+            src={searchImg} className="header-icon" alt="Add Friend Icon" />
           </button>
         }
       />

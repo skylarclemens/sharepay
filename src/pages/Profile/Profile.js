@@ -3,8 +3,6 @@ import './Profile.scss';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import Header from '../../components/Header/Header';
 import Modal from '../../components/Modal/Modal';
 import PayUp from '../../components/PayUp/PayUp';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
@@ -29,7 +27,6 @@ const Profile = () => {
   const [balances, setBalances] = useState({ total: 0, owed: 0, owe: 0 });
   const [openPayUp, setOpenPayUp] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-  const navigate = useNavigate();
 
   const { sharedDebts,
     isLoading: debtsLoading,
@@ -65,7 +62,7 @@ const Profile = () => {
 
   return (
     <>
-      <TitleHeader backFn={() => navigate(-1)} />
+      <TitleHeader backButton={true} />
         <>
           <div className="profile">
             <DetailsCard

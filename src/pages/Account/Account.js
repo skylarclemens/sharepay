@@ -7,7 +7,7 @@ import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 import { useGetAccountQuery, useUpdateAccountMutation } from '../../slices/accountSlice';
 import { userLogout } from '../../slices/authSlice';
 import { supabaseApi } from '../../api/supabaseApi';
-import Header from '../../components/Header/Header';
+import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 
 const Account = () => {
   const user = useSelector(state => state.auth.user);
@@ -64,7 +64,7 @@ const Account = () => {
 
   return (
     <>
-    <Header type="main" title="Account" />
+    <MainHeader title="Account" />
     <div className="account-container">
       {isSuccess ? (
         <>

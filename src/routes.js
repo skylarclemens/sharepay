@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
-import FriendDetails from './pages/FriendDetails/FriendDetails';
 import Account from './pages/Account/Account';
 import Expense from './pages/Expense/Expense';
 import NewExpense from './pages/NewExpense/NewExpense';
@@ -32,7 +31,6 @@ const RoutesContainer = () => {
           </Route>
           <Route element={<DetailsLayout />}>
             <Route path="expense/:id" element={<Expense />} />
-            <Route path="people/:id" element={<FriendDetails />} />
             <Route path="user/:id" element={<Profile />} />
             <Route path="group/:id" element={<Group />} />
           </Route>

@@ -1,7 +1,6 @@
 import './SelectPeople.scss';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Header from '../Header/Header';
 import UserSelect from '../Search/UserSelect/UserSelect';
 import UserAdd from '../Search/UserAdd/UserAdd';
 import Search from '../Search/Search';
@@ -10,6 +9,8 @@ import { useGetGroupsQuery, selectGroupsBySearchQuery } from '../../slices/group
 import { useDebounce } from '../../hooks/useDebounce';
 import Avatar from '../Avatar/Avatar';
 import removeImg from '../../images/Remove.svg';
+import TitleHeader from '../Layout/Headers/TitleHeader/TitleHeader';
+import Button from '../UI/Buttons/Button/Button';
 
 const SelectPeople = ({ showGroups = false, handleAdd, existingUsers = [], setOpen }) => {
   const [value, setValue] = useState('');
@@ -75,14 +76,20 @@ const SelectPeople = ({ showGroups = false, handleAdd, existingUsers = [], setOp
 
   return (
     <>
-      <Header type="title" title="Select people" classes="gray" headerLeftFn={() => setOpen(false)} headerRight={
-        <span style={{
-          fontSize: '1rem',
-          fontFamily: 'Inter',
-          fontWeight: '600',
-          color: '#6c91c2'
-        }}>Add</span>
-      } headerRightFn={() => handleAdd(selectedUsers)} />
+      <TitleHeader backButton={true} backFn={() => setOpen(false)} color="#787878" className="header--gray" title="Select people" right={
+        <Button
+          variant="text"
+          style={{
+            fontSize: '1rem',
+            fontFamily: 'Inter',
+            fontWeight: '600',
+            color: '#6c91c2'
+          }}
+          onClick={() => handleAdd(selectedUsers)}
+          >
+            Add
+          </Button>
+      } />
       <div className="add-friend-container select-friends">
         <div className="search-split-container">
           <div className={`split-with-people ${selectedUsers.length === 0 ? 'split-with-people--hide' : ''}`}>
