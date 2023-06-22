@@ -133,9 +133,9 @@ const Expense = () => {
 
   const headerImg = <img src={deleteImg} alt="Garbage icon for delete button" />;
   const payButton = !currentUserPayer ? (
-    <button className="button button--flat button--medium" onClick={() => setOpenPayUp(true)}>
+    <Button onClick={() => setOpenPayUp(true)}>
       Pay
-    </button>
+    </Button>
   ) : null;
 
   return (

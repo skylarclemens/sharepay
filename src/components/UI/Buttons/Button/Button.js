@@ -1,15 +1,15 @@
 import './Button.scss';
 import PropTypes from 'prop-types';
 
-const Button = ({ children, label, variant = 'primary', color, backgroundColor, size = 'medium', disabled = false, onClick, style, className, ...props }) => {
+const Button = ({ children, type = "button", label, variant = 'primary', color, backgroundColor, borderColor, size = 'medium', disabled = false, onClick, style, className, ...props }) => {
   return (
     <button
-      type="button"
-      className={`button ${className} button--${variant} button--${size} ${disabled ? 'button--disabled' : ''}`}
+      type={type}
+      className={`button button--${variant} button--${size} ${disabled ? 'button--disabled' : ''} ${className}`}
       style={{
         color: color,
         backgroundColor: backgroundColor,
-        borderColor: backgroundColor,
+        borderColor: borderColor,
         ...style
       }}
       variant={variant}
@@ -27,7 +27,7 @@ Button.propTypes = {
   /**
    * What type of button is this?
    */
-  variant: PropTypes.oneOf(['primary', 'secondary', 'text', 'icon']),
+  variant: PropTypes.oneOf(['primary', 'secondary', 'text', 'icon', 'custom']),
   /**
    * What text should the button display?
    */

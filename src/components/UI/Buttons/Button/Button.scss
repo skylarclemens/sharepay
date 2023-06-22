@@ -1,7 +1,8 @@
 @use '../../../../utilities/colors' as v;
 
 .button {
-  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
   border-radius: 1rem;
   color: #ffffff;
   cursor: pointer;
@@ -42,9 +43,9 @@
   cursor: auto;
 }
 
-.button--text, .button--icon {
+.button--text, .button--icon, .button--custom {
   background: none;
   border: none;
-  padding: 0 !important;
-  color: v.$layout-green;
+  padding: revert;
+  color: revert;
 }

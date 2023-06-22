@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
 import { setCredentials } from '../../slices/authSlice';
+import Button from '../../components/UI/Buttons/Button/Button';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -64,12 +65,11 @@ const Login = () => {
           />
         </div>
         <div className="action-container">
-          <button
-            className="button button--medium button--border-none button--box-shadow"
+          <Button
             type="submit"
           >
             {loading ? 'Logging In...' : 'Log In'}
-          </button>
+          </Button>
           <span className="login-bottom-text">
             Need an account?{' '}
             <Link className="login-bottom-link" to="/signup">

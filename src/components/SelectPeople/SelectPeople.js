@@ -99,9 +99,9 @@ const SelectPeople = ({ showGroups = false, handleAdd, existingUsers = [], setOp
                   <div key={`search-${user.id}`} className="split-with-user">
                     <Avatar url={user?.avatar_url} size={35} classes="white-border" />
                     <span>{user?.name}</span>
-                    <button className="button--no-style remove-user">
+                    <Button variant="icon" className="remove-user">
                       <img src={removeImg} alt="Remove user" onClick={() => setSelectedUsers(selectedUsers.filter(selected => selected.id !== user.id))} />
-                    </button>
+                    </Button>
                   </div>
                 )})}
               </div>

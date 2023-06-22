@@ -3,6 +3,7 @@ import Atom from '../../../components/Atom/Atom';
 import { formatMoney } from '../../../helpers/money';
 import DropdownSelect from '../../../components/Input/DropdownSelect/DropdownSelect';
 import Split from '../../../components/Split/Split';
+import Button from '../../../components/UI/Buttons/Button/Button';
 
 
 const NewExpenseSplit = ({ account, accountFetched, amount, paidBy, setPaidBy, splitWith, setSplitWith, split, setSplit, splitValues, setSplitValues, splitWithGroup, removeGroupSplit, setOpenSelectPeople, fieldErrors, setFieldErrors, handleSubmit }) => {
@@ -94,8 +95,8 @@ const NewExpenseSplit = ({ account, accountFetched, amount, paidBy, setPaidBy, s
           )}
         </div>
       </div>
-      <button
-        className="button button--flat button--medium page-button"
+      <Button
+        className="page-button"
         type="submit"
         alt="Create expense"
         title="Create expense"
@@ -105,7 +106,7 @@ const NewExpenseSplit = ({ account, accountFetched, amount, paidBy, setPaidBy, s
         }}
       >
         Send
-      </button>
+      </Button>
     </div>
   )
 }

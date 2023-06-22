@@ -9,6 +9,7 @@ import { useGetAccountQuery } from '../../slices/accountSlice';
 import { useAddPaymentsMutation } from '../../slices/paymentApi';
 import { useAddActivityMutation } from '../../slices/activityApi';
 import successPayImg from '../../images/Success-pay.svg';
+import Button from '../UI/Buttons/Button/Button';
 
 const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }) => {
   const user = useSelector(state => state.auth.user);
@@ -175,36 +176,31 @@ const PayUp = ({ setOpenPayUp, expenses, allDebts = [], sharedDebts, recipient }
             </span>
           </div>
         </div>
-        <button
-          type="button"
-          className="button button--flat button--medium"
+        <Button
           title="Pay up"
           onClick={handlePayButton}
         >
           Confirm
-        </button>
-        <button
-          type="button"
-          className="button button--gray button--medium"
+        </Button>
+        <Button
+          variant="secondary"
           title="Cancel"
           onClick={closePayUp}
         >
           Cancel
-        </button>
+        </Button>
       </div>
       <div className={`pay-up--success ${showSuccess ? 'show' : ''}`}>
         <div className="pay-up-text">
           <img src={successPayImg} alt="Success" className="success-img" />
           <div className="pay-text">You're all paid up!</div>
         </div>
-        <button
-          type="button"
-          className="button button--flat button--medium"
+        <Button
           title="Close"
           onClick={closePayUp}
         >
           Close
-        </button>
+        </Button>
       </div>
     </div>
   );

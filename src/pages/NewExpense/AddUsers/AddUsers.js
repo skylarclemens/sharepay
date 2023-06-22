@@ -1,6 +1,7 @@
 import "./AddUsers.scss";
 import { useEffect } from "react";
 import UserButton from "../../../components/User/UserButton/UserButton";
+import Button from "../../../components/UI/Buttons/Button/Button";
 
 const AddUsers = ({ label, account, usersList, setUsersList, selectedGroup, setOpenSelectPeople, removeGroupSelect }) => {
   useEffect(() => {
@@ -24,19 +25,19 @@ const AddUsers = ({ label, account, usersList, setUsersList, selectedGroup, setO
               />
             )
           })}
-          <button
-            type="button"
-            className="button--form-add button--icon"
+          <Button
+            variant="icon"
+            className="button--form-add"
             onClick={() => setOpenSelectPeople(true)}
             >
             <div className="add-plus"></div>
-          </button>
+          </Button>
           </>
         }
         {selectedGroup && 
           <div className="group-selected">
             <div className="group-name">{selectedGroup.group_name}</div>
-            <button type="button" className="remove-group button--icon" onClick={removeGroupSelect}>x</button>
+            <Button variant="icon" className="remove-group" onClick={removeGroupSelect}>x</Button>
           </div>
         }
       </div>

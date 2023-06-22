@@ -1,6 +1,7 @@
 import './SignUp.scss';
 import { useState } from 'react';
 import { supabase } from '../../supabaseClient';
+import Button from '../../components/UI/Buttons/Button/Button';
 
 const SignUp = () => {
   const [loading, setLoading] = useState(false);
@@ -75,12 +76,11 @@ const SignUp = () => {
             onChange={e => setFullName(e.target.value)}
           />
         </div>
-        <button
-          className="button button--medium button--border-none button--box-shadow"
+        <Button
           type="submit"
         >
           {loading ? 'Signing up...' : 'Sign up'}
-        </button>
+        </Button>
       </form>
       {signedUp && (
         <div className="success">

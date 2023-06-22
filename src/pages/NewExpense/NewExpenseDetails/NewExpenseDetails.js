@@ -6,6 +6,7 @@ import AmountInput from '../../../components/Input/AmountInput/AmountInput';
 import DateInput from '../../../components/Input/DateInput/DateInput';
 
 import { CATEGORIES } from '../../../constants/categories';
+import Button from '../../../components/UI/Buttons/Button/Button';
 
 const NewExpenseDetails = ({ description, setDescription, amount, setAmount, category, setCategory, date, setDate, fieldErrors, setFieldErrors, setPage }) => {
   const [categoryImg, setCategoryImg] = useState(null);
@@ -102,10 +103,10 @@ const NewExpenseDetails = ({ description, setDescription, amount, setAmount, cat
             onChange={(e) => setDate(e.target.value)}
           />
         </div>
-        <button type="button" className="button button--flat button--medium" onClick={() => {
+        <Button onClick={() => {
         if(!handleValidation()) return;
         setPage(2)
-        }}>Continue</button>
+        }}>Continue</Button>
       </div>
     </div>
   )
