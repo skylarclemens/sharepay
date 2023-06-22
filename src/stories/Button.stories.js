@@ -1,4 +1,4 @@
-import Button from "../components/UI/Button/Button";
+import Button from "../components/UI/Buttons/Button/Button";
 
 export default {
   title: 'Components/Button',
@@ -8,34 +8,36 @@ export default {
 
 export const Primary = {
   args: {
+    variant: 'primary',
+    size: 'medium',
     label: 'Button',
   },
 };
 
 export const Secondary = {
   args: {
-    variant: 'secondary',
-    label: 'Button',
+    ...Primary.args,
+    variant: 'secondary'
   },
 };
 
 export const Text = {
   args: {
+    ...Primary.args,
     variant: 'text',
-    label: 'Button',
   }
 }
 
 export const Medium = {
   args: {
+    ...Primary.args,
     size: 'medium',
-    label: 'Button',
   }
 }
 
 export const Small = {
   args: {
+    ...Primary.args,
     size: 'small',
-    label: 'Button',
   },
 };

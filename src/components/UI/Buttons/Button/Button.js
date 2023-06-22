@@ -1,9 +1,10 @@
 import './Button.scss';
 import PropTypes from 'prop-types';
 
-const Button = ({ children, label, variant, color, backgroundColor, size, disabled, onClick, className, ...props }) => {
+const Button = ({ children, label, variant = 'primary', color, backgroundColor, size = 'medium', disabled = false, onClick, className, ...props }) => {
   return (
     <button
+      type="button"
       className={`button ${className} button--${variant} button--${size} button--${disabled ? 'disabled' : ''}`}
       style={{
         color: color,
@@ -50,15 +51,6 @@ Button.propTypes = {
    * Click handler
    */
   onClick: PropTypes.func,
-}
-
-Button.defaultProps = {
-  variant: 'primary',
-  color: null,
-  backgroundColor: null,
-  size: 'medium',
-  disabled: false,
-  onClick: null,
 }
 
 export default Button;
