@@ -7,11 +7,11 @@ import { getAllGroupsUsers } from '../../services/groups';
 import { useAddActivityMutation } from '../../slices/activityApi';
 import { useNavigate } from 'react-router-dom';
 import { useGetAccountQuery } from '../../slices/accountSlice';
-import Header from '../../components/Header/Header';
 import Modal from '../../components/Modal/Modal';
 import SelectPeople from '../../components/SelectPeople/SelectPeople';
 import NewExpenseDetails from './NewExpenseDetails/NewExpenseDetails';
 import NewExpenseSplit from './NewExpenseSplit/NewExpenseSplit';
+import TitleHeader from '../../components/Layout/Headers/TitleHeader/TitleHeader';
 
 const NewExpense = () => {
   const user = useSelector(state => state.auth.user);
@@ -115,11 +115,13 @@ const NewExpense = () => {
 
   return (
     <>
-      <Header type="title" title={
-        page === 1 ? 'New expense' : description
-      }classes="transparent" headerLeftFn={
-        page === 1 ? () => navigate(-1) : () => setPage(1)
-      } />
+      <TitleHeader
+        title={page === 1 ? 'New expense' : description}
+        backButton={true}
+        backFn={page === 1 ? () => navigate(-1) : () => setPage(1)}
+        className="header--transparent"
+        color="#787878"
+      />
       <div className="expense-container">
         <form className="expense-form" onSubmit={handleSubmit}>
           {page === 1 ? <NewExpenseDetails 

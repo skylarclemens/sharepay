@@ -3,7 +3,6 @@ import './Profile.scss';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Header from '../../components/Header/Header';
 import Modal from '../../components/Modal/Modal';
 import PayUp from '../../components/PayUp/PayUp';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
@@ -16,6 +15,7 @@ import { useGetExpensesQuery, selectUnpaidSharedExpensesByDebt } from '../../sli
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import { balanceCalc } from '../../helpers/balance';
 import historyImg from '../../images/History.svg'
+import TitleHeader from '../../components/Layout/Headers/TitleHeader/TitleHeader';
 
 const Profile = () => {
   const user = useSelector(state => state.auth.user);
@@ -62,7 +62,7 @@ const Profile = () => {
 
   return (
     <>
-      <Header type="title"/>
+      <TitleHeader backButton={true} />
         <>
           <div className="profile">
             <DetailsCard

@@ -4,7 +4,6 @@ import { createSelector } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
-import Header from '../../components/Header/Header';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import Modal from '../../components/Modal/Modal';
 import PayUp from '../../components/PayUp/PayUp';
@@ -18,6 +17,8 @@ import { useAddActivityMutation, useGetActivityByReferenceIdsQuery } from '../..
 import { formatExpenseDate } from '../../helpers/date';
 import successImg from '../../images/Success.svg';
 import Skeleton from '../../components/Skeleton/Skeleton';
+import TitleHeader from '../../components/Layout/Headers/TitleHeader/TitleHeader';
+import Button from '../../components/UI/Buttons/Button/Button';
 
 
 const UserDebtor = ({ debt }) => {
@@ -139,11 +140,15 @@ const Expense = () => {
 
   return (
     <>
-      <Header
-        type="title"
-        headerRight={headerImg}
-        headerRightFn={handleDelete}
-      />
+      <TitleHeader
+        backButton={true}
+        right={
+          <Button
+            variant="icon"
+            onClick={handleDelete}>
+              {headerImg}
+          </Button> 
+        }/>
         <>
           <div className="expense-details-container">
             <DetailsCard 

@@ -37,8 +37,11 @@
     ]
   },
   "devDependencies": {
+    "babel-plugin-named-exports-order": "^0.0.2",
     "eslint-config-prettier": "^8.8.0",
     "prettier": "2.8.8",
-    "sass": "^1.59.3"
+    "prop-types": "^15.8.1",
+    "sass": "^1.59.3",
+    "webpack": "^5.88.0"
   }
 }

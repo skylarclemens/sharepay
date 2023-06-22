@@ -4,7 +4,7 @@ import { balanceCalc } from '../../helpers/balance';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { selectAllFriendExpenses, setBalances, useGetExpensesQuery } from '../../slices/expenseSlice';
-import Header from '../../components/Header/Header';
+import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 import Transactions from '../../components/Transactions/Transactions';
 import Refresh from '../../components/Refresh/Refresh';
 import { formatMoney } from '../../helpers/money';
@@ -61,9 +61,9 @@ const Dashboard = () => {
 
   return (
     <>
-      <Header type="main"
+      <MainHeader
         title="Dashboard"
-        headerRight={
+        right={
           <Link to="/account">
             <Avatar url={currentAccount?.avatar_url} size={28} classes="white-border"/>
           </Link>

@@ -1,13 +1,13 @@
 import './Group.scss';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Header from '../../components/Header/Header';
 import { useGetGroupExpensesQuery, useGetGroupQuery } from '../../slices/groupSlice';
 import { selectUserDebtsByGroupId, useGetDebtsQuery } from '../../slices/debtSlice';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import Balances from '../../components/Balances/Balances';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import ExpenseTransaction from '../../components/Transactions/ExpenseTransaction/ExpenseTransaction';
+import TitleHeader from '../../components/Layout/Headers/TitleHeader/TitleHeader';
 
 const Group = () => {
   const { id } = useParams();
@@ -40,7 +40,7 @@ const Group = () => {
 
   return (
       <>
-      <Header type="title" classes={`group--${group?.color}`} />
+      <TitleHeader backButton={true} className={`group--${group?.color}`} />
       <DetailsCard 
         title={group?.group_name}
         avatarUrl={group?.avatar_url}
