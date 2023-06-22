@@ -5,8 +5,7 @@ import Nav from '../../components/Nav/Nav';
 const MainLayout = ({ children }) => {
   return (
     <div className="layout">
-      <Header type="main" />
-        {children ? children : <Outlet />}
+      {children ? children : <Outlet />}
       <Nav />
     </div>
   )

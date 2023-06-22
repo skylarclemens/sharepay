@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
-import Header from '../../components/Header/Header';
 import Modal from '../../components/Modal/Modal';
 import SearchPeople from '../../components/SearchPeople/SearchPeople';
 import addFriendImg from '../../images/Add_friend.svg';
@@ -11,6 +10,7 @@ import searchImg from '../../images/Search.svg'
 import { useGetFriendsQuery, useAddNewFriendMutation } from '../../slices/friendSlice';
 import { useGetFriendRequestsQuery, useUpdateFriendRequestStatusMutation } from '../../slices/friendRequestSlice';
 import UserResult from '../../components/Search/UserResult/UserResult';
+import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 
 
 const Friends = () => {
@@ -54,13 +54,13 @@ const Friends = () => {
 
   return (
     <>
-      <Header
-        type="main-title"
+      <MainHeader
         title="Friends"
-        headerRight={
-          <img src={searchImg} className="header-icon" alt="Add Friend Icon" />
+        right={
+          <button type="button" className="button--icon" onClick={() => setOpenSearchPeople(true)}>
+            <img src={searchImg} className="header-icon" alt="Add Friend Icon" />
+          </button>
         }
-        headerRightFn={() => setOpenSearchPeople(true)}
       />
       <div className="friends-container">
         {(requestsSuccess && requests.length > 0) ? (

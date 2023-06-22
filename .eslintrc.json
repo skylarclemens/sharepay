@@ -3,6 +3,5 @@
     "react-app",
     "react-app/jest",
     "prettier",
-    "plugin:storybook/recommended"
   ]
 }

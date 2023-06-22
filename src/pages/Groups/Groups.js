@@ -1,10 +1,10 @@
 import './Groups.scss';
-import Header from '../../components/Header/Header';
 import { useGetGroupsQuery } from '../../slices/groupSlice';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import addGroupImg from '../../images/Add_group.svg';
 import UserResult from '../../components/Search/UserResult/UserResult';
+import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 
 const Groups = () => {
   const user = useSelector(state => state.auth.user);
@@ -16,14 +16,13 @@ const Groups = () => {
 
   return (
     <>
-      <Header
-        type="main"
+      <MainHeader
         title="Groups"
-        headerRight={
+        right={
           <Link to="/new-group">
             <img src={addGroupImg} alt="Add Group Icon" />
           </Link>
-        } />
+        }/>
       <div className="groups-container">
         {groupsSuccess && groups?.length > 0
           ? groups?.map(group => {
