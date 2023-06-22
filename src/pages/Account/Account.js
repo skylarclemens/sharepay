@@ -8,6 +8,7 @@ import { useGetAccountQuery, useUpdateAccountMutation } from '../../slices/accou
 import { userLogout } from '../../slices/authSlice';
 import { supabaseApi } from '../../api/supabaseApi';
 import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
+import Button from '../../components/UI/Buttons/Button/Button';
 
 const Account = () => {
   const user = useSelector(state => state.auth.user);
@@ -101,22 +102,20 @@ const Account = () => {
                 onChange={e => setName(e.target.value)}
               />
             </div>
-            <button
-              className="button"
+            <Button
               type="submit"
               alt="Update account expense"
               title="Update account"
             >
               {isLoading ? 'Saving...' : 'Update'}
-            </button>
+            </Button>
           </form>
-          <button
-            type="button"
-            className="button button--white"
+          <Button
+            variant="secondary"
             onClick={handleLogOut}
           >
             Log Out
-          </button>
+          </Button>
         </>
       ) : null}
     </div>

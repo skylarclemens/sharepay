@@ -1,3 +1,4 @@
+import Button from "../../../UI/Buttons/Button/Button";
 import Header from "../Header/Header";
 import { useNavigate } from "react-router-dom";
 
@@ -20,13 +21,13 @@ export default TitleHeader;
 const BackButton = ({ backFn }) => {
   const navigate = useNavigate();
   return (
-    <button
-      type="button"
+    <Button
+      variant="icon"
       className="arrow-container--back-arrow"
       title="Back button"
       alt="Back button"
       onClick={backFn || (() => navigate(-1))}>
         <div className="arrow arrow--left arrow--back-arrow arrow--white"></div>
-    </button>
+    </Button>
   )
 }

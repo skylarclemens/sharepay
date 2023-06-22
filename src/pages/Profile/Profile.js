@@ -16,6 +16,7 @@ import { useGetAccountQuery } from '../../slices/accountSlice';
 import { balanceCalc } from '../../helpers/balance';
 import historyImg from '../../images/History.svg'
 import TitleHeader from '../../components/Layout/Headers/TitleHeader/TitleHeader';
+import Button from '../../components/UI/Buttons/Button/Button';
 
 const Profile = () => {
   const user = useSelector(state => state.auth.user);
@@ -73,13 +74,12 @@ const Profile = () => {
               actions={
               <>
                 <FriendAction friend={profileUser} />
-                <button
-                  type="button"
-                  className="button button--medium button--border-none button--flat button--pay-up"
+                <Button
+                  className="button--pay-up"
                   title="Pay up"
                   onClick={() => setOpenPayUp(true)}>
                     Pay up
-                  </button>
+                  </Button>
               </>
             } />
             <div className="profile__section profile__section--balance">
@@ -92,9 +92,9 @@ const Profile = () => {
             <div className="profile__section profile__section--transactions">
               <div className="section__heading">
                 <h2>Transactions {showHistory ? 'History' : ''}</h2>
-                <button className="button--icon" onClick={() => setShowHistory(!showHistory)}>
+                <Button variant="icon" onClick={() => setShowHistory(!showHistory)}>
                   <img src={historyImg} className="history-icon" alt="History icon" />
-                </button>
+                </Button>
               </div>
               <div className="profile__transactions">
                 {!debtsFetched || debtsLoading || !paidDebtsFetched || paidDebtsLoading ? (

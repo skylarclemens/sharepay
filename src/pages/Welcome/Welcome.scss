@@ -17,16 +17,13 @@
   width: 100%;
   overflow: hidden;
   touch-action: none;
-
-  .button {
-    margin-top: 30px;
-    width: 154px;
-    line-height: 1rem;
-  }
-
+  
   .link-button {
     text-align: center;
     text-decoration: none;
+    margin-top: 30px;
+    width: 154px;
+    line-height: 1rem;
   }
 
   .outer-logo {

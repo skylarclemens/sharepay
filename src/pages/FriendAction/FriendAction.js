@@ -6,6 +6,7 @@ import { useAddFriendRequestMutation, useGetFriendRequestQuery } from '../../sli
 import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 import downArrow from '../../images/Arrow_down.svg';
 import unfriendImg from '../../images/Unfriend.svg';
+import Button from '../../components/UI/Buttons/Button/Button';
 
 
 const FriendAction = ({ friend }) => {
@@ -90,30 +91,30 @@ const FriendAction = ({ friend }) => {
     <>
       {isFriend && (
         <div ref={dropdownRef} className="friend-actions-container">
-          <button className="button button--with-icon button--medium button--border-none button--flat button--disabled"
+          <Button className="button--with-icon button--disabled"
             onClick={() => handleFriendClick()}>
               <span>{friendButtonText}</span>
               <img src={downArrow} alt="Down arrow" className="button__icon down-arrow" />
-          </button>
+          </Button>
           <div className={`friend-dropdown ${showDropdown ? '' : 'hide'}`}>
-            <button className="button--no-style friend-dropdown__item" onClick={() => handleUnfriend()}>
+            <Button variant="text" className="friend-dropdown__item" onClick={() => handleUnfriend()}>
               <img src={unfriendImg} alt="Unfriend Icon" className="friend-dropdown__icon" />
               <span>Unfriend</span>
-            </button>
+            </Button>
           </div>
         </div>
       )}
       {friendRequestFetched && friendRequest?.status === 0 && (
-        <button className="button button--with-icon button--medium button--border-none button--flat button--disabled" disabled={true}>
+        <Button className="button--with-icon" disabled={true}>
           Requested
-        </button>
+        </Button>
       )}
       {usersFriendError && friendRequest?.length === 0 && (
-        <button className={`button button--with-icon button--medium button--border-none button--flat ${addFriendRequestLoading || addFriendRequestSuccess || addFriendRequestError ? 'button--disabled' : ''}`}
+        <Button className="button--with-icon button--border-none"
           onClick={() => sendFriendRequest()}
           disabled={addFriendRequestLoading || addFriendRequestSuccess || addFriendRequestError}>
           {friendRequestText}
-        </button>
+        </Button>
       )}
     </>
   );

@@ -4,6 +4,8 @@
   &.search-user--add {
     padding: 0.5rem 0.625rem;
   }
+  background: v.$light-gray;
+  border: 2px solid v.$light-gray;
 }
 
 .add-user-search {

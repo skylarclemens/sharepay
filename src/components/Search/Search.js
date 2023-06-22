@@ -1,3 +1,4 @@
+import Button from '../UI/Buttons/Button/Button';
 import './Search.scss';
 import { forwardRef } from 'react';
 
@@ -16,12 +17,9 @@ const Search = forwardRef(({ value, setValue, suggestions, onFocus, onBlur, setO
           ref={ref}
         />
         {setOpen && (
-          <button
-            className="button button--transparent button--icon button--cancel"
-            onClick={() => setOpen(false)}
-          >
+          <Button variant="text" className="button--cancel" onClick={() => setOpen(false)}>
             Cancel
-          </button>
+          </Button>
         )}
       </div>
       <div className="results-container">

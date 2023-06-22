@@ -11,6 +11,7 @@ import { useGetFriendsQuery, useAddNewFriendMutation } from '../../slices/friend
 import { useGetFriendRequestsQuery, useUpdateFriendRequestStatusMutation } from '../../slices/friendRequestSlice';
 import UserResult from '../../components/Search/UserResult/UserResult';
 import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
+import Button from '../../components/UI/Buttons/Button/Button';
 
 
 const Friends = () => {
@@ -57,12 +58,12 @@ const Friends = () => {
       <MainHeader
         title="Friends"
         right={
-          <button type="button" className="button--icon" onClick={() => setOpenSearchPeople(true)}>
+          <Button variant="icon" onClick={() => setOpenSearchPeople(true)}>
             <img style={{
               filter: 'brightness(0) invert(1)',  
             }}
             src={searchImg} className="header-icon" alt="Add Friend Icon" />
-          </button>
+          </Button>
         }
       />
       <div className="friends-container">
@@ -76,20 +77,18 @@ const Friends = () => {
                   <div key={req.id} className="search-user">
                     <UserResult user={req?.from} />
                     <div className="request-buttons">
-                      <button
-                        type="button"
+                      <Button
                         className="add-user"
                         onClick={() => handleRequestAccepted(req)}
                       >
                         <div className="checkmark"></div>
-                      </button>
-                      <button
-                        type="button"
+                      </Button>
+                      <Button
                         className="ignore-button"
                         onClick={() => handleRequestIgnored(req)}
                       >
                         <div className="ignore-user"></div>
-                      </button>
+                      </Button>
                     </div>
                   </div>) : null)
               })}

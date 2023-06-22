@@ -17,6 +17,7 @@ import groupImg from '../../images/Group_white.svg';
 import cameraIcon from '../../images/Camera-outline.svg';
 import Avatar from '../../components/Avatar/Avatar';
 import TitleHeader from '../../components/Layout/Headers/TitleHeader/TitleHeader';
+import Button from '../../components/UI/Buttons/Button/Button';
 
 const NewGroup = () => {
   const user = useSelector(state => state.auth.user);
@@ -106,12 +107,12 @@ const NewGroup = () => {
 
   return (
     <>
-      <div className="new-group-container">
-        <TitleHeader
+      <TitleHeader
           title="Create group"
           backButton={true}
           className="header--transparent"
           color="#787878" />
+      <div className="new-group-container">
         <Atom
           orbitals={groupElectrons}
           image={
@@ -150,14 +151,14 @@ const NewGroup = () => {
               />
             </div>
           </div>
-          <button
+          <Button
             type="submit"
             alt="Create group"
             title="Create group"
-            className="button button--flat group-spacing"
+            className="group-spacing"
           >
             Create
-          </button>
+          </Button>
         </form>
       </div>
       <Modal open={openSelectPeople}>

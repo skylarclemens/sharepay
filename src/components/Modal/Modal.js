@@ -1,3 +1,4 @@
+import Button from '../UI/Buttons/Button/Button';
 import './Modal.scss';
 
 const Modal = ({ handleClose, open = false, children, style = {}, fullScreen = false }) => {
@@ -5,12 +6,9 @@ const Modal = ({ handleClose, open = false, children, style = {}, fullScreen = f
     open && (
       <div className={`modal ${fullScreen ? 'full-screen' : 'include-backdrop'}`}>
         <div style={style} className="modal-content">
-          <button
-            className={`button button--icon modal-close ${!handleClose ? 'hide-close' : ''}`}
-            onClick={handleClose}
-          >
+          <Button variant="icon" className={`modal-close ${!handleClose ? 'hide-close' : ''}`} onClick={handleClose}>
             x
-          </button>
+          </Button>
           {children}
         </div>
       </div>

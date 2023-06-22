@@ -11,7 +11,7 @@ const Welcome = () => {
         <div className="welcome-title">Sharepay</div>
       </div>
       <Link
-        className="link-button button button--medium button--border-none button--box-shadow"
+        className="link-button button button--primary button--medium"
         to="/login"
       >
         Log In
