@@ -1,0 +1,52 @@
+@use '../../../utilities/colors' as v;
+
+.button {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  border-radius: 1rem;
+  color: #ffffff;
+  cursor: pointer;
+  transition: width 0.5s ease-in-out;
+  &:active {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+.button--primary {
+  background: v.$layout-green;
+  border: 1px solid v.$layout-green;
+}
+
+.button--secondary {
+  background: none;
+  border: 1px solid v.$layout-green;
+  color: v.$layout-green;
+}
+
+.button--text {
+  background: none;
+  border: none;
+  padding: none;
+  color: v.$layout-green;
+}
+
+.button--small {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+}
+
+.button--medium {
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+}
+
+.button--disabled {
+  background: v.$accent-gray;
+  color: v.$washed-gray;
+  border: 1px solid v.$accent-gray;
+  cursor: auto;
+}
