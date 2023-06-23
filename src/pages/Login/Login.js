@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
 import { setCredentials } from '../../slices/authSlice';
 import Button from '../../components/UI/Buttons/Button/Button';
+import TextInput from '../../components/Input/TextInput/TextInput';
+import logo from '../../images/Logo.svg';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -33,52 +35,59 @@ const Login = () => {
   };
 
   return (
-    <div className="log-in">
-      <form className="log-in-form form-container" onSubmit={handleLogin}>
-        <h1>Log In</h1>
-        <div className="input-container">
-          <label className="input-label" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="text-input"
-            type="email"
-            name="email"
-            id="email"
-            value={email}
-            placeholder="Email"
-            onChange={e => setEmail(e.target.value)}
-          />
+    <>
+    <div className="login-top">
+      <img src={logo} alt="Celery logo" />
+    </div>
+    <div className="login-container">
+      <form className="log-in-form" onSubmit={handleLogin}>
+        <div className="inputs-container form-container">
+          <h1 className="login-heading">Log In</h1>
+          <div className="input-container">
+            <label className="input-label" htmlFor="email">
+              Email
+            </label>
+            <TextInput
+              type="email"
+              name="email"
+              id="email"
+              value={email}
+              className="form-text-input"
+              onChange={e => setEmail(e.target.value)}
+              />
+          </div>
+          <div className="input-container">
+            <label className="input-label" htmlFor="password">
+              Password
+            </label>
+            <TextInput
+              type="password"
+              name="password"
+              id="password"
+              value={password}
+              className="form-text-input"
+              onChange={e => setPassword(e.target.value)}
+              />
+          </div>
         </div>
-        <div className="input-container">
-          <label className="input-label" htmlFor="password">
-            Password
-          </label>
-          <input
-            className="text-input"
-            type="password"
-            name="password"
-            id="password"
-            value={password}
-            placeholder="Password"
-            onChange={e => setPassword(e.target.value)}
-          />
-        </div>
-        <div className="action-container">
+        <div className="login-bottom">
           <Button
+            style={{width: '100%'}}
             type="submit"
           >
             {loading ? 'Logging In...' : 'Log In'}
           </Button>
-          <span className="login-bottom-text">
-            Need an account?{' '}
-            <Link className="login-bottom-link" to="/signup">
-              Sign up
-            </Link>
-          </span>
+          <div className="login-bottom-text">
+            <span>Need an account?{' '}
+              <Link className="login-bottom-link" to="/signup">
+                Sign up
+              </Link>
+            </span>
+          </div>
         </div>
       </form>
     </div>
+    </>
   );
 };
 

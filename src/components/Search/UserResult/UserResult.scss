@@ -4,7 +4,6 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  font-family: 'Rubik', sans-serif;
   font-weight: 400;
   .user-info-text {
     display: flex;
@@ -13,12 +12,14 @@
     gap: 0.25rem;
   }
   .user-name {
+    font-family: ui-rounded, 'Inter', system-ui, sans-serif;
     font-size: 1rem;
+    font-weight: 500;
     letter-spacing: 0.02em;
     color: #424242;
   }
   .user-email {
-    font-family: 'Rubik', sans-serif;
+    font-family: ui-rounded, 'Rubik', system-ui, sans-serif;
     font-size: 0.875rem;
     letter-spacing: 0.02em;
     color: v.$washed-gray;

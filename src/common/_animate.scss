@@ -41,3 +41,19 @@
     transform: translateY(0px);
   }
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .text-gradient-animation {
+    animation: textGradientAnimation 6s ease-in-out infinite;
+  
+    @keyframes textGradientAnimation {
+      from {
+        background-position: 0%;
+      }
+      to {
+        background-position: 200%;
+      }
+    }
+  }
+}
+

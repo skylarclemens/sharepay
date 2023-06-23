@@ -2,6 +2,8 @@ import './SignUp.scss';
 import { useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import Button from '../../components/UI/Buttons/Button/Button';
+import TextInput from '../../components/Input/TextInput/TextInput';
+import logo from '../../images/Logo.svg';
 
 const SignUp = () => {
   const [loading, setLoading] = useState(false);
@@ -34,53 +36,62 @@ const SignUp = () => {
   };
 
   return (
-    <div className="sign-up">
-      <form className="sign-up-form form-container" onSubmit={handleSignUp}>
-        <h1>Sign up</h1>
-        <div className="input-container">
-          <label className="input-label" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="text-input"
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
+    <>
+    <div className="sign-up-top">
+      <img src={logo} alt="Celery logo" />
+    </div>
+    <div className="sign-up-container">
+      <form className="sign-up-form" onSubmit={handleSignUp}>
+        <div className="form-container">
+          <h1 className="sign-up-heading">Sign up</h1>
+          <div className="input-container">
+            <label className="input-label" htmlFor="email">
+              Email
+            </label>
+            <TextInput
+              className="form-text-input"
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="input-container">
+            <label className="input-label" htmlFor="password">
+              Password
+            </label>
+            <TextInput
+              className="form-text-input"
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="input-container">
+            <label className="input-label" htmlFor="name">
+              Name
+            </label>
+            <TextInput
+              className="form-text-input"
+              type="text"
+              id="name"
+              name="name"
+              value={fullName}
+              onChange={e => setFullName(e.target.value)}
+            />
+          </div>
         </div>
-        <div className="input-container">
-          <label className="input-label" htmlFor="password">
-            Password
-          </label>
-          <input
-            className="text-input"
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
+        <div className="sign-up-bottom">
+          <Button
+            style={{width: '100%'}}
+            type="submit"
+          >
+            {loading ? 'Signing up...' : 'Sign up'}
+          </Button>
         </div>
-        <div className="input-container">
-          <label className="input-label" htmlFor="name">
-            Name
-          </label>
-          <input
-            className="text-input"
-            type="text"
-            id="name"
-            name="name"
-            value={fullName}
-            onChange={e => setFullName(e.target.value)}
-          />
-        </div>
-        <Button
-          type="submit"
-        >
-          {loading ? 'Signing up...' : 'Sign up'}
-        </Button>
       </form>
       {signedUp && (
         <div className="success">
@@ -91,6 +102,7 @@ const SignUp = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
