@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
 import { setCredentials } from '../../slices/authSlice';
 import Button from '../../components/UI/Buttons/Button/Button';
+import TextInput from '../../components/Input/TextInput/TextInput';
+import logo from '../../images/Logo.svg';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -33,39 +35,39 @@ const Login = () => {
   };
 
   return (
-    <div className="log-in">
+    <div className="login-container">
+      <img src={logo} alt="Celery logo" />
       <form className="log-in-form form-container" onSubmit={handleLogin}>
-        <h1>Log In</h1>
+        <h1 className="login-heading">Log In</h1>
         <div className="input-container">
           <label className="input-label" htmlFor="email">
             Email
           </label>
-          <input
-            className="text-input"
+          <TextInput
             type="email"
             name="email"
             id="email"
             value={email}
-            placeholder="Email"
+            className="form-text-input"
             onChange={e => setEmail(e.target.value)}
-          />
+            />
         </div>
         <div className="input-container">
           <label className="input-label" htmlFor="password">
             Password
           </label>
-          <input
-            className="text-input"
+          <TextInput
             type="password"
             name="password"
             id="password"
             value={password}
-            placeholder="Password"
+            className="form-text-input"
             onChange={e => setPassword(e.target.value)}
-          />
+            />
         </div>
         <div className="action-container">
           <Button
+            style={{width: '100%'}}
             type="submit"
           >
             {loading ? 'Logging In...' : 'Log In'}

@@ -17,3 +17,9 @@
     color: #bfbfbf;
   }
 }
+
+.form-text-input input {
+  border-radius: 1rem;
+  border: 1px solid v.$accent-gray;
+  padding: 0.5rem 1rem;
+}
