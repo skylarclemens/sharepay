@@ -49,8 +49,9 @@
 }
 
 .button--text, .button--icon, .button--custom {
+  min-height: 0;
   background: none;
   border: none;
-  padding: revert;
+  padding: unset;
   color: revert;
 }
