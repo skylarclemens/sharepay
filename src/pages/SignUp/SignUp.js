@@ -41,56 +41,58 @@ const SignUp = () => {
       <img src={logo} alt="Celery logo" />
     </div>
     <div className="sign-up-container">
-      <form className="sign-up-form form-container" onSubmit={handleSignUp}>
-        <h1 className="sign-up-heading">Sign up</h1>
-        <div className="input-container">
-          <label className="input-label" htmlFor="email">
-            Email
-          </label>
-          <TextInput
-            className="form-text-input"
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
+      <form className="sign-up-form" onSubmit={handleSignUp}>
+        <div className="form-container">
+          <h1 className="sign-up-heading">Sign up</h1>
+          <div className="input-container">
+            <label className="input-label" htmlFor="email">
+              Email
+            </label>
+            <TextInput
+              className="form-text-input"
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="input-container">
+            <label className="input-label" htmlFor="password">
+              Password
+            </label>
+            <TextInput
+              className="form-text-input"
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="input-container">
+            <label className="input-label" htmlFor="name">
+              Name
+            </label>
+            <TextInput
+              className="form-text-input"
+              type="text"
+              id="name"
+              name="name"
+              value={fullName}
+              onChange={e => setFullName(e.target.value)}
+            />
+          </div>
         </div>
-        <div className="input-container">
-          <label className="input-label" htmlFor="password">
-            Password
-          </label>
-          <TextInput
-            className="form-text-input"
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-        </div>
-        <div className="input-container">
-          <label className="input-label" htmlFor="name">
-            Name
-          </label>
-          <TextInput
-            className="form-text-input"
-            type="text"
-            id="name"
-            name="name"
-            value={fullName}
-            onChange={e => setFullName(e.target.value)}
-          />
+        <div className="sign-up-bottom">
+          <Button
+            style={{width: '100%'}}
+            type="submit"
+          >
+            {loading ? 'Signing up...' : 'Sign up'}
+          </Button>
         </div>
       </form>
-      <div className="sign-up-bottom">
-        <Button
-          style={{width: '100%'}}
-          type="submit"
-        >
-          {loading ? 'Signing up...' : 'Sign up'}
-        </Button>
-      </div>
       {signedUp && (
         <div className="success">
           <div style={{ 'fontFamily': 'Rubik', 'fontWeight': '500' }}>

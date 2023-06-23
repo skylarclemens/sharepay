@@ -40,35 +40,36 @@ const Login = () => {
       <img src={logo} alt="Celery logo" />
     </div>
     <div className="login-container">
-      <form className="log-in-form form-container" onSubmit={handleLogin}>
-        <h1 className="login-heading">Log In</h1>
-        <div className="input-container">
-          <label className="input-label" htmlFor="email">
-            Email
-          </label>
-          <TextInput
-            type="email"
-            name="email"
-            id="email"
-            value={email}
-            className="form-text-input"
-            onChange={e => setEmail(e.target.value)}
-            />
+      <form className="log-in-form" onSubmit={handleLogin}>
+        <div className="inputs-container form-container">
+          <h1 className="login-heading">Log In</h1>
+          <div className="input-container">
+            <label className="input-label" htmlFor="email">
+              Email
+            </label>
+            <TextInput
+              type="email"
+              name="email"
+              id="email"
+              value={email}
+              className="form-text-input"
+              onChange={e => setEmail(e.target.value)}
+              />
+          </div>
+          <div className="input-container">
+            <label className="input-label" htmlFor="password">
+              Password
+            </label>
+            <TextInput
+              type="password"
+              name="password"
+              id="password"
+              value={password}
+              className="form-text-input"
+              onChange={e => setPassword(e.target.value)}
+              />
+          </div>
         </div>
-        <div className="input-container">
-          <label className="input-label" htmlFor="password">
-            Password
-          </label>
-          <TextInput
-            type="password"
-            name="password"
-            id="password"
-            value={password}
-            className="form-text-input"
-            onChange={e => setPassword(e.target.value)}
-            />
-        </div>
-        </form>
         <div className="login-bottom">
           <Button
             style={{width: '100%'}}
@@ -84,6 +85,7 @@ const Login = () => {
             </span>
           </div>
         </div>
+      </form>
     </div>
     </>
   );

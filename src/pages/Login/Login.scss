@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: flex-end;
   padding: 20px;
-  padding-bottom: 56px;
+  padding-bottom: 60px;
   flex: 1;
 }
 .login-bottom {
@@ -60,8 +60,10 @@
     color: v.$layout-green;
   }
 }
-
 .log-in-form {
+  width: 100%;
+}
+.inputs-container {
   background: v.$light-gray;
   padding: 1.25rem;
   border-radius: 1rem;

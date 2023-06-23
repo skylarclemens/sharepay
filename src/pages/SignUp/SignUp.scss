@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: flex-end;
   padding: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 24px;
   flex: 1;
 }
 
@@ -44,16 +44,20 @@
   }
 }
 .sign-up-form {
-  background: v.$light-gray;
-  padding: 1.25rem;
-  border-radius: 1rem;
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  .input-container {
-    gap: 0.5rem;
+  .form-container {
+    background: v.$light-gray;
+    padding: 1.25rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .input-container {
+      gap: 0.5rem;
+    }
   }
 }
+
 .sign-up-bottom {
   display: flex;
   flex-direction: column;
