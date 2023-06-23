@@ -6,15 +6,15 @@ const Welcome = () => {
   return (
     <div className="empty-layout">
       <div className="welcome-container">
-        <img src={logo} alt="Celery logo" />
-        <div className="welcome-text-container">
-          <div className="welcome-text">Welcome to</div>
-          <div className="welcome-title">Celery</div>
+          <div className="welcome-top">
+            <img src={logo} alt="Celery logo" />
+            <div className="welcome-text-container">
+              <div className="welcome-text">Welcome to</div>
+              <div className="welcome-title text-gradient-animation">Celery</div>
+            </div>
         </div>
-        <div className="slides-container">
-
-        </div>
-        <div className="welcome-buttons">
+      </div>
+      <div className="welcome-buttons">
           <Link
             className="link-button button button--primary button--medium"
             to="/signup"
@@ -28,7 +28,6 @@ const Welcome = () => {
             Log In
           </Link>
         </div>
-      </div>
     </div>
   );
 };

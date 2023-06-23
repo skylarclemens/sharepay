@@ -1,7 +1,10 @@
 @use '../../../../utilities/colors' as v;
 
 .button {
-  font-family: 'Inter', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: ui-rounded, 'Inter', sans-serif;
   font-weight: 600;
   border-radius: 1rem;
   color: #ffffff;
@@ -32,8 +35,10 @@
 }
 
 .button--medium {
-  font-size: 0.875rem;
+  font-size: 15px;
+  line-height: 1rem;
   padding: 0.5rem 1rem;
+  min-height: 38px;
 }
 
 .button--disabled {

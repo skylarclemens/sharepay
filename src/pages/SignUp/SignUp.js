@@ -2,6 +2,8 @@ import './SignUp.scss';
 import { useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import Button from '../../components/UI/Buttons/Button/Button';
+import TextInput from '../../components/Input/TextInput/TextInput';
+import logo from '../../images/Logo.svg';
 
 const SignUp = () => {
   const [loading, setLoading] = useState(false);
@@ -34,15 +36,19 @@ const SignUp = () => {
   };
 
   return (
-    <div className="sign-up">
+    <>
+    <div className="sign-up-top">
+      <img src={logo} alt="Celery logo" />
+    </div>
+    <div className="sign-up-container">
       <form className="sign-up-form form-container" onSubmit={handleSignUp}>
-        <h1>Sign up</h1>
+        <h1 className="sign-up-heading">Sign up</h1>
         <div className="input-container">
           <label className="input-label" htmlFor="email">
             Email
           </label>
-          <input
-            className="text-input"
+          <TextInput
+            className="form-text-input"
             type="email"
             id="email"
             name="email"
@@ -54,8 +60,8 @@ const SignUp = () => {
           <label className="input-label" htmlFor="password">
             Password
           </label>
-          <input
-            className="text-input"
+          <TextInput
+            className="form-text-input"
             type="password"
             id="password"
             name="password"
@@ -67,8 +73,8 @@ const SignUp = () => {
           <label className="input-label" htmlFor="name">
             Name
           </label>
-          <input
-            className="text-input"
+          <TextInput
+            className="form-text-input"
             type="text"
             id="name"
             name="name"
@@ -76,12 +82,15 @@ const SignUp = () => {
             onChange={e => setFullName(e.target.value)}
           />
         </div>
+      </form>
+      <div className="sign-up-bottom">
         <Button
+          style={{width: '100%'}}
           type="submit"
         >
           {loading ? 'Signing up...' : 'Sign up'}
         </Button>
-      </form>
+      </div>
       {signedUp && (
         <div className="success">
           <div style={{ 'fontFamily': 'Rubik', 'fontWeight': '500' }}>
@@ -91,6 +100,7 @@ const SignUp = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

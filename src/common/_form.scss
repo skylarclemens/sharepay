@@ -16,6 +16,7 @@
   font-size: 1rem;
   font-weight: 600;
   color: v.$blue-black;
+  padding-left: 1rem;
 }
 
 .text-input {
@@ -23,10 +24,7 @@
   -webkit-appearance: none;
   appearance: none;
   min-height: 42px;
-  border: 1px solid v.$dark-gray;
-  border-radius: 0.25rem;
   width: 100%;
-  padding: 0 0.75rem;
   font-size: 1rem;
   &:disabled {
     font-family: 'Inter', sans-serif;

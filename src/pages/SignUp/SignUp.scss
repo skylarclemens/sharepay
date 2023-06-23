@@ -1,13 +1,23 @@
 @use '../../utilities/colors' as v;
 
-.sign-up {
-  position: relative;
-  height: 100vh;
-  overflow: hidden;
+.sign-up-top {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
+  padding: 20px;
+  padding-bottom: 20px;
+  flex: 1;
+}
+
+.sign-up-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
   touch-action: none;
+  background: #ffffff;
 
   .success {
     display: flex;
@@ -22,24 +32,34 @@
   }
 
   h1 {
-    font-family: 'Rubik', sans-serif;
-    font-weight: 500;
+    font-family: ui-rounded, 'Inter', system-ui, sans-serif;
+    font-weight: 600;
     font-size: 1.5rem;
     line-height: 1.75rem;
-    margin-bottom: 0.25rem;
     background: linear-gradient(90deg, #729b94 0%, v.$layout-green 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    align-self: center;
   }
 }
 .sign-up-form {
+  background: v.$light-gray;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  padding: 100px 20px 16px 20px;
-
-  .button {
-    margin-top: 1rem;
-    width: 154px;
-    align-self: center;
+  .input-container {
+    gap: 0.5rem;
   }
+}
+.sign-up-bottom {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 0;
 }

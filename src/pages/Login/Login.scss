@@ -1,19 +1,33 @@
 @use '../../utilities/colors' as v;
 
+.login-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 20px;
+  padding-bottom: 56px;
+  flex: 1;
+}
+.login-bottom {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 0;
+}
 .login-container {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
   overflow: hidden;
   touch-action: none;
-  background: v.$light-gray;
-  padding: 1.5rem;
-  border-radius: 1rem;
-  flex: 1;
+  background: #ffffff;
   .input-label {
-    font-size: 0.875rem;
+    font-size: 15px;
     font-weight: 500;
   }
   .input-container {
@@ -21,31 +35,23 @@
   }
   .login-heading {
     font-family: ui-rounded, 'Inter', system-ui, sans-serif;
-    color: v.$blue-black;
-    font-size: 24px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.1;
+    background: linear-gradient(90deg, #729b94 0%, v.$layout-green 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     align-self: center;
   }
-}
-
-.log-in-form {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: center;
-  width: 100%;
-
-  .action-container {
+  .login-bottom-text {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    padding-top: 1rem;
-  }
-
-  .login-bottom-text {
-    margin-top: 2px;
-    font-size: 14px;
+    justify-content: center;
+    font-size: 15px;
     font-weight: 400;
+    height: 38px;
   }
   
   .login-bottom-link {
@@ -53,4 +59,13 @@
     text-decoration: none;
     color: v.$layout-green;
   }
+}
+
+.log-in-form {
+  background: v.$light-gray;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }

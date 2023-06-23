@@ -35,8 +35,11 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
+    <>
+    <div className="login-top">
       <img src={logo} alt="Celery logo" />
+    </div>
+    <div className="login-container">
       <form className="log-in-form form-container" onSubmit={handleLogin}>
         <h1 className="login-heading">Log In</h1>
         <div className="input-container">
@@ -65,22 +68,24 @@ const Login = () => {
             onChange={e => setPassword(e.target.value)}
             />
         </div>
-        <div className="action-container">
+        </form>
+        <div className="login-bottom">
           <Button
             style={{width: '100%'}}
             type="submit"
           >
             {loading ? 'Logging In...' : 'Log In'}
           </Button>
-          <span className="login-bottom-text">
-            Need an account?{' '}
-            <Link className="login-bottom-link" to="/signup">
-              Sign up
-            </Link>
-          </span>
+          <div className="login-bottom-text">
+            <span>Need an account?{' '}
+              <Link className="login-bottom-link" to="/signup">
+                Sign up
+              </Link>
+            </span>
+          </div>
         </div>
-      </form>
     </div>
+    </>
   );
 };
 

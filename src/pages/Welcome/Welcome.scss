@@ -5,51 +5,42 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
   height: 100%;
   overflow: hidden;
   touch-action: none;
   background: v.$light-gray;
-  padding: 1.5rem;
+  padding: 1.25rem;
   border-radius: 1rem;
 
-  .welcome-buttons {
+  .welcome-top {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    width: 100%;
-  }
-  
-  .link-button {
-    text-align: center;
-    text-decoration: none;
-    line-height: 1rem;
-  }
-
-  .outer-logo {
-    position: absolute;
-    width: 669px;
-    height: 669px;
-    left: -138px;
-    top: 500px;
-    border-radius: 50%;
-    border: 2px dashed #b1b1b1;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
   }
 }
 
-.slides-container {
-  background: #ffffff;
+.welcome-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   width: 100%;
-  border-radius: 1rem;
-  flex: 1;
-  margin: 0.5rem 0;
+  padding: 1rem 0;
+}
+
+.link-button {
+  text-align: center;
+  text-decoration: none;
 }
 
 .welcome-text-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 0.5rem;
 }
 
 .welcome-text {
@@ -59,17 +50,19 @@
 }
 
 .welcome-title {
-  font-family: ui-rounded, 'Rubik', sans-serif;
-  font-size: 42px;
-  font-weight: 500;
+  font-family: ui-rounded, 'Inter', system-ui, sans-serif;
+  font-size: 48px;
+  font-weight: 600;
   line-height: 1.1;
   background: linear-gradient(
-    140deg,
+    90deg,
     #86B45E 0%,
-    #ACC879 80%,
-    #B8CE81 100%
+    #B8CE81 50%,
+    #86B45E 100%
   );
+  background-size: 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  background-position: 0%;
 }
