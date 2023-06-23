@@ -10,6 +10,9 @@
     -moz-appearance: textfield;
     appearance: textfield;
   }
+  .person-amount-input input {
+    border-radius: 0.5rem;
+  }
   .split-percent {
     border: 1px solid v.$accent-gray;
     border-radius: 0.5rem;
@@ -27,7 +30,6 @@
     }
     input {
       border: none;
-      border-radius: 0.5rem;
       max-width: 20px;
       padding: 0 0.25rem 0 0.5rem;
     }
@@ -50,7 +52,6 @@
     }
     input {
       border: none;
-      border-radius: 0.5rem;
       padding: 0 0.5rem 0 0rem;
     }
   }

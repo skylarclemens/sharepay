@@ -9,6 +9,7 @@ import { userLogout } from '../../slices/authSlice';
 import { supabaseApi } from '../../api/supabaseApi';
 import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 import Button from '../../components/UI/Buttons/Button/Button';
+import TextInput from '../../components/Input/TextInput/TextInput';
 
 const Account = () => {
   const user = useSelector(state => state.auth.user);
@@ -80,8 +81,8 @@ const Account = () => {
               <label className="input-label" htmlFor="email">
                 Email
               </label>
-              <input
-                className="text-input"
+              <TextInput
+                className="form-text-input"
                 id="email"
                 name="email"
                 type="text"
@@ -93,8 +94,8 @@ const Account = () => {
               <label className="input-label" htmlFor="name">
                 Name
               </label>
-              <input
-                className="text-input"
+              <TextInput
+                className="form-text-input"
                 id="name"
                 name="name"
                 type="text"
