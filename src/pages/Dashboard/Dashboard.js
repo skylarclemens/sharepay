@@ -14,8 +14,7 @@ import GroupExpenses from './GroupExpenses/GroupExpenses';
 import Avatar from '../../components/Avatar/Avatar';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import Skeleton from '../../components/Skeleton/Skeleton';
-import Button from '../../components/UI/Buttons/Button/Button';
-import { motion } from 'framer-motion';
+import Tabs from '../../components/UI/Tabs/Tabs';
 
 const Dashboard = () => {
   const user = useSelector(state => state.auth.user);
@@ -90,31 +89,10 @@ const Dashboard = () => {
           <div className="dashboard">
             <div className="details-background"></div>
             <div className="balance-container">
-              <div className="balance-tabs">
-                {balanceTabs.map((tab) => {
-                  return (
-                    <Button key={tab.id} className={`button--text balance-tab balance--${tab.id} ${balanceTab === tab.id && 'active'}`} onClick={() => setBalanceTab(tab.id)}>
-                      {tab.label}
-                      {balanceTab === tab.id ? (
-                        <>
-                          <motion.span layoutId="tab-bubble" className="active-tab"
-                            transition={{
-                              type: 'spring',
-                              bounce: 0.1,
-                              duration: 0.6
-                            }}></motion.span>
-                          <motion.span layoutId="tab-bubble-behind" className="active-tab--behind"
-                            transition={{
-                              type: 'spring',
-                              bounce: 0.1,
-                              duration: 0.6
-                            }}></motion.span>
-                        </>
-                      ) : null}
-                    </Button>
-                  )
-                })}
-              </div>
+              <Tabs tabs={balanceTabs} selected={balanceTab} setSelected={setBalanceTab}
+                style={{ 
+                  background: 'linear-gradient(90deg, rgba(0, 0, 0, 0.20) 12.50%, rgba(106, 155, 93, 0.20) 46.88%, rgba(220, 85, 55, 0.20) 84.90%), rgba(0, 0, 0, 0.10)'
+                 }} />
               <div className="balance">
                 {!debtsWithExpensesFetched || debtsWithExpensesLoading ? (
                   <Skeleton width="180px" height="60px" />
