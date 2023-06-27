@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { balanceCalc } from '../../helpers/balance';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { selectAllFriendExpenses, setBalances, useGetExpensesQuery } from '../../slices/expenseSlice';
+import { setBalances, useGetExpensesQuery } from '../../slices/expenseSlice';
 import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
-import Transactions from '../../components/Transactions/Transactions';
+import SimpleTransaction from '../../components/Transactions/SimpleTransaction/SimpleTransaction';
 import Refresh from '../../components/Refresh/Refresh';
 import { formatMoney } from '../../helpers/money';
-import { useGetDebtsQuery } from '../../slices/debtSlice';
+import { useGetDebtsQuery, useGetDebtsWithExpensesQuery } from '../../slices/debtSlice';
 import { useGetGroupsQuery } from '../../slices/groupSlice';
 import GroupExpenses from './GroupExpenses/GroupExpenses';
 import Avatar from '../../components/Avatar/Avatar';
@@ -24,7 +24,7 @@ const Dashboard = () => {
     data: currentAccount,
   } = useGetAccountQuery(user?.id);
   const balanceTabs = [
-    { id: 'total', label: 'Total balance' },
+    { id: 'all', label: 'All' },
     { id: 'owed', label: 'Owed' },
     { id: 'owe', label: 'Owe' },
   ];
@@ -32,10 +32,15 @@ const Dashboard = () => {
 
   const {
     data: debts,
-    isLoading: debtsLoading,
     isSuccess: debtsFetched,
     refetch: refetchDebts
   } = useGetDebtsQuery(user?.id);
+  const {
+    data: debtsWithExpenses,
+    isLoading: debtsWithExpensesLoading,
+    isSuccess: debtsWithExpensesFetched,
+    refetch: refetchDebtsWithExpenses
+  } = useGetDebtsWithExpensesQuery(user?.id);
   const {
     isSuccess: expensesFetched,
     isLoading: expensesLoading,
@@ -46,10 +51,12 @@ const Dashboard = () => {
     isSuccess: groupsFetched,
     refetch: refetchGroups
   } = useGetGroupsQuery(user?.id);
-  const friendExpenses = useSelector(state => selectAllFriendExpenses(state));
-  const unpaidFriendExpenses = friendExpenses.filter(expense => !expense?.paid);
+  const unpaidUserDebts = debtsWithExpenses?.filter(debt => !debt?.paid && debt?.debtor_id === user?.id);
+  const unpaidFriendDebts = debtsWithExpenses?.filter(debt => !debt?.paid && debt?.creditor_id === user?.id);
+  const allUnpaidDebts = debtsWithExpenses?.filter(debt => !debt?.paid);
 
   const onRefresh = () => {
+    refetchDebtsWithExpenses();
     refetchDebts();
     refetchExpenses();
     refetchGroups();
@@ -59,7 +66,8 @@ const Dashboard = () => {
 
   const dataLoaded =
     user &&
-    debtsFetched;
+    debtsFetched &&
+    debtsWithExpensesFetched;
 
   useEffect(() => {
     if (dataLoaded) {
@@ -108,12 +116,12 @@ const Dashboard = () => {
                 })}
               </div>
               <div className="balance">
-                {!debtsFetched || debtsLoading ? (
+                {!debtsWithExpensesFetched || debtsWithExpensesLoading ? (
                   <Skeleton width="180px" height="60px" />
                 ) : (
                   <>
                     <span className={`balance-amount balance--${balanceTab}`}>
-                      {balanceTab === 'total' ? formatMoney(balances?.total) : 
+                      {balanceTab === 'all' ? formatMoney(balances?.total) : 
                       balanceTab === 'owed' ? formatMoney(balances?.owed, false) : 
                       formatMoney(balances?.owe, false)}
                     </span>
@@ -122,16 +130,54 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="transactions-container">
-              <h2 className="main-heading">Recent Transactions</h2>
+              <h2 className="main-heading">Transactions</h2>
               <div className="recent-transactions">
                 {!expensesFetched || expensesLoading ? (
                   <Skeleton width="100%" height="56px">
                     <div className="skeleton__avatar"></div>
                   </Skeleton>
                 ) : (
-                  unpaidFriendExpenses.length > 0 &&
-                  <Transactions transactions={unpaidFriendExpenses.splice(0,5)} />
-                )}
+                  balanceTab === 'all' && allUnpaidDebts?.length > 0 ?
+                  allUnpaidDebts?.splice(0,5)?.map(debt => {
+                    return (
+                      <SimpleTransaction
+                        key={debt?.id}
+                        to={`/expense/${debt?.expense?.id}`}
+                        description={debt?.expense?.description}
+                        date={debt?.expense?.date}
+                        amount={`${debt?.creditor_id === user?.id ? '+' : '-'}${formatMoney(debt?.amount, false)}`}
+                        category={debt?.expense?.category}
+                        transactionType={debt?.creditor_id === user?.id ? 'owed' : 'owe'}
+                      />
+                    )}) :
+                  balanceTab === 'owed' && unpaidFriendDebts?.length > 0 ?
+                  unpaidFriendDebts?.splice(0,5)?.map(debt => {
+                    return (
+                      <SimpleTransaction
+                        key={debt?.id}
+                        to={`/expense/${debt?.expense?.id}`}
+                        description={debt?.expense?.description}
+                        date={debt?.expense?.date}
+                        amount={formatMoney(debt?.amount, false)}
+                        category={debt?.expense?.category}
+                        transactionType={'owed'}
+                      />
+                    )}) :
+                  balanceTab === 'owe' && unpaidUserDebts?.length > 0 ?
+                  unpaidUserDebts?.splice(0,5)?.map(debt => {
+                    return (
+                      <SimpleTransaction
+                        key={debt?.id}
+                        to={`/expense/${debt?.expense?.id}`}
+                        description={debt?.expense?.description}
+                        date={debt?.expense?.date}
+                        amount={formatMoney(debt?.amount, false)}
+                        category={debt?.expense?.category}
+                        transactionType={'owe'}
+                      />
+                    )}) :
+                    null
+                  )}
                 {(groupsFetched && groups.length > 0) &&
                   groups.map(group => {
                     return <GroupExpenses key={group.id} group={group} />

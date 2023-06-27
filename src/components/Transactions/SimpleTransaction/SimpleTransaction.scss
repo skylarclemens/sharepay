@@ -1,0 +1,61 @@
+@use '../../../utilities/colors' as v;
+
+.simple-transaction {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFFFF;
+  border-radius: 1rem;
+  padding: 0.75rem 0;
+  text-decoration: none;
+}
+
+.simple-transaction__left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  .simple-transaction__desc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .simple-transaction__icon {
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+    background: var(--accent-blue, #6C91C2);
+    box-shadow: 0px -2px 10px 0px rgba(0, 0, 0, 0.10) inset;
+  }
+  .simple-transaction__desc--top {
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+      'Helvetica Neue', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: v.$blue-black-dark;
+  }
+  .simple-transaction__date {
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+      'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    font-size: 0.75rem;
+    color: v.$washed-gray;
+  }
+}
+
+.simple-transaction__right {
+  .simple-transaction__amount {
+    font-family: ui-rounded, system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 1.125rem;
+    background: v.$green-gradient;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    &.amount--owe {
+      background: v.$red-gradient;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  }
+}
