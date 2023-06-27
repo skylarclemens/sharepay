@@ -1,7 +1,7 @@
 import './Dashboard.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { balanceCalc } from '../../helpers/balance';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { selectAllFriendExpenses, setBalances, useGetExpensesQuery } from '../../slices/expenseSlice';
 import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
@@ -14,6 +14,8 @@ import GroupExpenses from './GroupExpenses/GroupExpenses';
 import Avatar from '../../components/Avatar/Avatar';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import Skeleton from '../../components/Skeleton/Skeleton';
+import Button from '../../components/UI/Buttons/Button/Button';
+import { tab } from '@testing-library/user-event/dist/tab';
 
 const Dashboard = () => {
   const user = useSelector(state => state.auth.user);
@@ -21,6 +23,12 @@ const Dashboard = () => {
   const {
     data: currentAccount,
   } = useGetAccountQuery(user?.id);
+  const balanceTabs = [
+    { id: 'total', label: 'Total balance' },
+    { id: 'owed', label: 'Owed' },
+    { id: 'owe', label: 'Owe' },
+  ];
+  const [balanceTab, setBalanceTab] = useState(balanceTabs[0].id);
 
   const {
     data: debts,
@@ -63,6 +71,7 @@ const Dashboard = () => {
     <>
       <MainHeader
         title="Dashboard"
+        className="header--transparent"
         left={
           <Link to="/account">
             <Avatar url={currentAccount?.avatar_url} size={28} classes="white-border"/>
@@ -72,42 +81,29 @@ const Dashboard = () => {
           <Refresh onRefresh={onRefresh} />
           <div className="dashboard">
             <div className="details-background"></div>
-            <div className="details-container">
+            <div className="balance-container">
+              <div className="balance-tabs">
+                {balanceTabs.map((tab) => {
+                  return (
+                    <Button key={tab.id} className={`button--text balance-tab balance--${tab.id} ${balanceTab === tab.id && 'active'}`} onClick={() => setBalanceTab(tab.id)}>
+                      {tab.label}
+                      <div className="active-tab"></div>
+                    </Button>
+                  )
+                })}
+              </div>
               <div className="balance">
-                <div className="balance-block balance-block--total">
-                  <h3>YOUR BALANCE</h3>
-                  <span
-                    className="total"
-                  >
-                    {!debtsFetched || debtsLoading ? (
-                      <Skeleton width="130px" height="36px" />
-                    ) : (
-                      formatMoney(balances?.total)
-                    )}
-                  </span>
-                </div>
-                <div className="secondary-balance">
-                  <div className="balance-block balance-block--green">
-                    <h3>YOU'RE OWED</h3>
-                    <span className="secondary-amount">
-                    {!debtsFetched || debtsLoading ? (
-                      <Skeleton width="57px" height="20px" />
-                    ) : (
-                      `$${balances?.owed.toFixed(2) || 0.00}`
-                    )}
+                {!debtsFetched || debtsLoading ? (
+                  <Skeleton width="130px" height="36px" />
+                ) : (
+                  <>
+                    <span className={`balance-amount balance--${balanceTab}`}>
+                      {balanceTab === 'total' ? formatMoney(balances?.total) : 
+                      balanceTab === 'owed' ? formatMoney(balances?.owed, false) : 
+                      formatMoney(balances?.owe, false)}
                     </span>
-                  </div>
-                  <div className="balance-block balance-block--red">
-                    <h3>YOU OWE</h3>
-                    <span className="secondary-amount">
-                      {!debtsFetched || debtsLoading ? (
-                        <Skeleton width="57px" height="20px" />
-                      ) : (
-                        `$${balances?.owe.toFixed(2) || 0.00}`
-                      )}
-                    </span>
-                  </div>
-                </div>
+                  </> 
+                )}
               </div>
             </div>
             <div className="transactions-container">
