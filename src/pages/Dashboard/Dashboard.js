@@ -63,7 +63,7 @@ const Dashboard = () => {
     <>
       <MainHeader
         title="Dashboard"
-        right={
+        left={
           <Link to="/account">
             <Avatar url={currentAccount?.avatar_url} size={28} classes="white-border"/>
           </Link>
