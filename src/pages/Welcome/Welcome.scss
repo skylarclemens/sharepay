@@ -30,6 +30,15 @@
   gap: 0.75rem;
   width: 100%;
   padding: 1rem 0;
+  .button--primary {
+    position: relative;
+    background: linear-gradient(90deg, #B0CF85 0%, #75A44F 20%, v.$layout-green 40%, v.$layout-green 60%, #75A44F 80%, #B0CF85 100%);
+    border-color: #7BA159;
+  }
+  .button--secondary {
+    border-color: v.$layout-green;
+    color: v.$layout-green;
+  }
 }
 
 .link-button {
@@ -56,9 +65,9 @@
   line-height: 1.1;
   background: linear-gradient(
     90deg,
-    #86B45E 0%,
+    v.$layout-green 0%,
     #B8CE81 50%,
-    #86B45E 100%
+    v.$layout-green 100%
   );
   background-size: 200%;
   -webkit-background-clip: text;
