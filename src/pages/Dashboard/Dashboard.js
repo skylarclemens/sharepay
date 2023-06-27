@@ -15,7 +15,7 @@ import Avatar from '../../components/Avatar/Avatar';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import Button from '../../components/UI/Buttons/Button/Button';
-import { tab } from '@testing-library/user-event/dist/tab';
+import { motion } from 'framer-motion';
 
 const Dashboard = () => {
   const user = useSelector(state => state.auth.user);
@@ -87,14 +87,29 @@ const Dashboard = () => {
                   return (
                     <Button key={tab.id} className={`button--text balance-tab balance--${tab.id} ${balanceTab === tab.id && 'active'}`} onClick={() => setBalanceTab(tab.id)}>
                       {tab.label}
-                      <div className="active-tab"></div>
+                      {balanceTab === tab.id ? (
+                        <>
+                          <motion.span layoutId="tab-bubble" className="active-tab"
+                            transition={{
+                              type: 'spring',
+                              bounce: 0.1,
+                              duration: 0.6
+                            }}></motion.span>
+                          <motion.span layoutId="tab-bubble-behind" className="active-tab--behind"
+                            transition={{
+                              type: 'spring',
+                              bounce: 0.1,
+                              duration: 0.6
+                            }}></motion.span>
+                        </>
+                      ) : null}
                     </Button>
                   )
                 })}
               </div>
               <div className="balance">
                 {!debtsFetched || debtsLoading ? (
-                  <Skeleton width="130px" height="36px" />
+                  <Skeleton width="180px" height="60px" />
                 ) : (
                   <>
                     <span className={`balance-amount balance--${balanceTab}`}>
