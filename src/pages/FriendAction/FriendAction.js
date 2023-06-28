@@ -23,7 +23,6 @@ const FriendAction = ({ friend }) => {
 
   const {
     data: friendRequest,
-    isSuccess: friendRequestFetched,
   } = useGetFriendRequestQuery({ userId: user.id, friendId: friend?.id }, {
     skip: !usersFriendError
   });
@@ -80,6 +79,7 @@ const FriendAction = ({ friend }) => {
   const friendRequestText = 
     addFriendRequestLoading ? 'Sending' :
     addFriendRequestSuccess ? 'Requested' :
+    friendRequest?.status === 0 ? 'Requested' :
     addFriendRequestError ? 'Error' :
     'Add';
   const friendButtonText = 
@@ -88,13 +88,13 @@ const FriendAction = ({ friend }) => {
     'Friends';
 
   return (
-    <>
+    <div className="friend-action">
       {isFriend && (
         <div ref={dropdownRef} className="friend-actions-container">
           <Button className="button--with-icon button--disabled"
             onClick={() => handleFriendClick()}>
               <span>{friendButtonText}</span>
-              <img src={downArrow} alt="Down arrow" className="button__icon down-arrow" />
+              {!removeFriendSuccess && <img src={downArrow} alt="Down arrow" className="button__icon down-arrow" />}
           </Button>
           <div className={`friend-dropdown ${showDropdown ? '' : 'hide'}`}>
             <Button variant="text" className="friend-dropdown__item" onClick={() => handleUnfriend()}>
@@ -104,19 +104,14 @@ const FriendAction = ({ friend }) => {
           </div>
         </div>
       )}
-      {friendRequestFetched && friendRequest?.status === 0 && (
-        <Button className="button--with-icon" disabled={true}>
-          Requested
-        </Button>
-      )}
-      {usersFriendError && friendRequest?.length === 0 && (
+      {usersFriendError && (
         <Button className="button--with-icon button--border-none"
           onClick={() => sendFriendRequest()}
-          disabled={addFriendRequestLoading || addFriendRequestSuccess || addFriendRequestError}>
+          disabled={addFriendRequestLoading || addFriendRequestSuccess || addFriendRequestError || friendRequest?.status === 0}>
           {friendRequestText}
         </Button>
       )}
-    </>
+    </div>
   );
 };
 
