@@ -1,6 +1,7 @@
 import './Tabs.scss';
 import Button from '../Buttons/Button/Button';
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
 
 const Tabs = ({ tabs, selected, setSelected, ...props }) => {
   return (
@@ -22,6 +23,25 @@ const Tabs = ({ tabs, selected, setSelected, ...props }) => {
     })}
     </div>
   )
+}
+
+Tabs.propTypes = {
+  /**
+   * List of tabs for the component to display
+   */
+  tabs: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    label: PropTypes.string,
+  })).isRequired,
+  /**
+   * The currently selected tab
+   * */
+  selected: PropTypes.string.isRequired,
+  /**
+   * Callback function to set the selected tab
+   * @param {string} tab - The tab id
+   */
+  setSelected: PropTypes.func.isRequired,
 }
 
 export default Tabs;

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { CATEGORIES } from '../../../constants/categories';
 import Icon from '../../Icons/Icon';
 
-const SimpleTransaction = ({ description, to, date, amount, category, transactionType = 'owed', ...props }) => {
+const SimpleTransaction = ({ description, to, date, amount, category, transactionType = 'owed', users, ...props }) => {
   const iconName = category || 'GENERAL';
   return (
     <Link to={to} className="simple-transaction" {...props}>
