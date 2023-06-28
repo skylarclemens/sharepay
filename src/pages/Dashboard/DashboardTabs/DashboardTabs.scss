@@ -1,0 +1,7 @@
+@use '../../../utilities/colors' as v;
+
+.no-transactions {
+  font-weight: 500;
+  color: v.$washed-gray;
+  padding: 1rem 0.5rem;
+}
