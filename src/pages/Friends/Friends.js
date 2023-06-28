@@ -12,6 +12,8 @@ import { useGetFriendRequestsQuery, useUpdateFriendRequestStatusMutation } from 
 import UserResult from '../../components/Search/UserResult/UserResult';
 import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 import Button from '../../components/UI/Buttons/Button/Button';
+import Checkmark from '../../components/Icons/Checkmark';
+import Close from '../../components/Icons/Close';
 
 
 const Friends = () => {
@@ -78,16 +80,16 @@ const Friends = () => {
                     <UserResult user={req?.from} />
                     <div className="request-buttons">
                       <Button
-                        className="add-user"
+                        className="button--icon accept-request"
                         onClick={() => handleRequestAccepted(req)}
                       >
-                        <div className="checkmark"></div>
+                        <Checkmark height="35px" width="35px" />
                       </Button>
                       <Button
-                        className="ignore-button"
+                        className="button--icon ignore-request"
                         onClick={() => handleRequestIgnored(req)}
                       >
-                        <div className="ignore-user"></div>
+                        <Close height="35px" width="35px" />
                       </Button>
                     </div>
                   </div>) : null)
