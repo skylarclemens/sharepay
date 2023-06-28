@@ -1,4 +1,3 @@
-import './DashboardTabs.scss';
 import SimpleTransaction from '../../../components/Transactions/SimpleTransaction/SimpleTransaction';
 import { formatMoney } from '../../../helpers/money';
 
@@ -22,7 +21,7 @@ const All = ({ debts, user, ...props }) => {
       })
     )
   } else {
-    return <>None</>;
+    return <div className="no-transactions">You currently have no active transactions</div>;
   }
 }
 

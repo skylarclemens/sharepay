@@ -1,4 +1,3 @@
-import './DashboardTabs.scss';
 import SimpleTransaction from '../../../components/Transactions/SimpleTransaction/SimpleTransaction';
 import { formatMoney } from '../../../helpers/money';
 
@@ -21,7 +20,7 @@ const Owed = ({ debts, user, ...props }) => {
         )})
     )
   } else {
-    return <>None</>;
+    return <div className="no-transactions">You're currently owed no money</div>;
   }
 }
 
