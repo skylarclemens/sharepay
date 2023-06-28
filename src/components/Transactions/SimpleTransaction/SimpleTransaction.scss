@@ -1,0 +1,67 @@
+@use '../../../utilities/colors' as v;
+
+.simple-transaction {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFFFF;
+  border-radius: 1rem;
+  padding: 0.75rem 0;
+  text-decoration: none;
+}
+
+.simple-transaction__left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  .simple-transaction__desc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+  .simple-transaction__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    width: 42px;
+    border-radius: 50px;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.10), 0px -2px 10px 0px rgba(0, 0, 0, 0.10) inset;
+    svg {
+      filter: brightness(0) invert(1);
+    }
+  }
+  .simple-transaction__desc--top {
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+      'Helvetica Neue', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: v.$blue-black-dark;
+  }
+  .simple-transaction__date {
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+      'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    font-size: 0.75rem;
+    color: v.$washed-gray;
+  }
+}
+
+.simple-transaction__right {
+  .simple-transaction__amount {
+    font-family: ui-rounded, system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 1.125rem;
+    background: v.$green-gradient;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    &.amount--owe {
+      background: v.$red-gradient;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  }
+}

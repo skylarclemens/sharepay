@@ -1,8 +1,8 @@
 import Header from "../Header/Header";
 
-const MainHeader = ({ title, right, rightFn, className, ...props }) => {
+const MainHeader = ({ title, left, right, className, ...props }) => {
   return (
-    <Header type="main" className={className} left={title} right={right} {...props} />
+    <Header type="main" className={className} left={left} center={title} right={right} {...props} />
   )
 }
 

@@ -15,6 +15,36 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         ...result.map(({ id }) => ({ type: 'Expense', id }))
       ]
     }),
+    getExpensesOwedJoin: builder.query({
+      queryFn: async (userId) => {
+        const { data, error } = await supabase
+          .from('expense')
+          .select(
+            `id, description, amount, date, paid, category, group_id, debt(*)`
+          )
+          .eq('debt.creditor_id', userId);
+        return { data, error };
+      },
+      providesTags: (result = [], error, arg) => [
+        { type: 'Expense', id: 'LIST' },
+        ...result.map(({ id }) => ({ type: 'Expense', id }))
+      ]
+    }),
+    getExpensesOweJoin: builder.query({
+      queryFn: async (userId) => {
+        const { data, error } = await supabase
+          .from('expense')
+          .select(
+            `id, description, amount, date, paid, category, group_id, debt(*)`
+          )
+          .eq('debt.debtor_id', userId);
+        return { data, error };
+      },
+      providesTags: (result = [], error, arg) => [
+        { type: 'Expense', id: 'LIST' },
+        ...result.map(({ id }) => ({ type: 'Expense', id }))
+      ]
+    }),
     getExpense: builder.query({
       queryFn: async (expenseId) => {
         const { data, error } = await supabase
@@ -76,6 +106,8 @@ export const { useGetExpensesQuery,
   useGetExpenseQuery,
   useAddNewExpenseMutation,
   useUpdateExpenseMutation,
+  useGetExpensesOwedJoinQuery,
+  useGetExpensesOweJoinQuery,
   useUpdateExpensesMutation,
   useRemoveExpenseMutation
 } = extendedSupabaseApi;

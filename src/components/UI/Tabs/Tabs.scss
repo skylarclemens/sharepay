@@ -1,0 +1,32 @@
+.tabs {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 24px;
+  padding: 0.25rem;
+  box-shadow: 0px -2px 25px 0px rgba(0, 0, 0, 0.20) inset;
+  .tab {
+    position: relative;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Inter', sans-serif;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.875rem;
+    padding: 0.5rem 0.875rem;
+    z-index: 1;
+    &.active {
+      .active-tab {
+        position: absolute;
+        background: #FFFFFF;
+        border-radius: 16px;
+        box-shadow: 0px 15px 15px 0px rgba(0, 0, 0, 0.10), 0px -3px 0px 0px rgba(0, 0, 0, 0.05) inset;
+        height: 100%;
+        width: 100%;
+        mix-blend-mode: difference;
+      }
+    }
+    &:hover {
+      color: #FFFFFF;
+      transition: color 0.25s linear;
+    }
+  }
+}
