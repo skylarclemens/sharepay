@@ -1,6 +1,6 @@
 @use '../../../utilities/colors' as v;
 
-.avatar-input {
+.avatar-upload {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -16,13 +16,8 @@
   }
 
   label {
-    border-radius: 1rem;
-    padding: 6px 10px;
-    background: v.$layout-green;
-    color: #FFFFFF;
-    font-weight: 600;
-    font-size: 0.875rem;
-    border: 2px solid v.$layout-green;
+    font-size: 0px;
+    color: transparent;
     cursor: pointer;
   }
 

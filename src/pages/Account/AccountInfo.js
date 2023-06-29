@@ -9,8 +9,7 @@ const AccountInfo = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
-  const { account,
-    avatarUrl } = useOutletContext();
+  const { account } = useOutletContext();
 
   useEffect(() => {
     if(account) {
@@ -30,7 +29,6 @@ const AccountInfo = () => {
       email,
       name,
       username,
-      avatar_url: avatarUrl,
       updated_at: new Date(),
     };
 
