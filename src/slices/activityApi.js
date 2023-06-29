@@ -8,7 +8,23 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         const { data, error } = await supabase
           .from('activity')
           .select()
-          .or(`user_id.eq.${userId},related_user_id.eq.${userId}`);
+          .or(`user_id.eq.${userId},related_user_id.eq.${userId}`)
+          .order('created_at', { ascending: false });
+        return { data, error };
+      },
+      providesTags: (result = [], error, arg) => [
+        { type: 'Activity', id: 'LIST' },
+        ...result.map(({ id }) => ({ type: 'Activity', id: id }))
+      ]
+    }),
+    getNumberOfUserActivities: builder.query({
+      queryFn: async ({ userId, count }) => {
+        const { data, error } = await supabase
+          .from('activity')
+          .select()
+          .or(`user_id.eq.${userId},related_user_id.eq.${userId}`)
+          .order('created_at', { ascending: false })
+          .limit(count);
         return { data, error };
       },
       providesTags: (result = [], error, arg) => [
@@ -54,6 +70,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
 
 export const {
   useGetUserActivitiesQuery,
+  useGetNumberOfUserActivitiesQuery,
   useGetActivityQuery,
   useGetActivityByReferenceIdsQuery,
   useAddActivityMutation,
