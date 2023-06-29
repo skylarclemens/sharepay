@@ -14,7 +14,6 @@ import { useGetAccountQuery } from '../../slices/accountSlice';
 import { useAddNewGroupMutation, useAddNewUserGroupsMutation } from '../../slices/groupSlice';
 import { useAddActivityMutation } from '../../slices/activityApi';
 import groupImg from '../../images/Group_white.svg';
-import { Camera } from '../../components/Icons';
 import Avatar from '../../components/Avatar/Avatar';
 import Button from '../../components/UI/Buttons/Button/Button';
 import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
@@ -30,7 +29,6 @@ const NewGroup = () => {
   const [groupMembers, setGroupMembers] = useState([{ ...account }]);
   const [groupColor, setGroupColor] = useState(GROUP_COLORS[0].color);
   const [openSelectPeople, setOpenSelectPeople] = useState(false);
-  const [openAvatarUpload, setOpenAvatarUpload] = useState(false);
   const [groupAvatarUrl, setGroupAvatarUrl] = useState(null);
   const [groupElectrons, setGroupElectrons] = useState([]);
   const inputRef = useRef(null);
@@ -119,8 +117,16 @@ const NewGroup = () => {
             groupAvatarUrl ? <Avatar url={groupAvatarUrl} size={140} type="group" classes="white-border" /> :
             <img src={groupImg} alt="Group icon" className="group-icon" height="60" width="60"/>
           }
-          icon={<Camera />}
-          iconFn={() => setOpenAvatarUpload(true)}
+          icon={
+            <AvatarUpload
+              className="group-spacing"
+              url={groupAvatarUrl}
+              type="group"
+              onUpload={url => {
+                setGroupAvatarUrl(url);
+              }} 
+            />
+          }
           size={140}
           fade={true} />
         <form className="group-form" onSubmit={handleSubmit}>
@@ -163,24 +169,6 @@ const NewGroup = () => {
       </div>
       <Modal open={openSelectPeople}>
         <SelectPeople handleAdd={handleAddUsers} existingUsers={groupMembers.slice(1)} setOpen={setOpenSelectPeople} />
-      </Modal>
-      <Modal open={openAvatarUpload}
-        style={{
-          background: '#ffffff',
-          borderRadius: '1rem',
-          height: 'auto',
-          width: 'auto',
-          padding: '1rem',
-          margin: '1rem'
-        }}
-        handleClose={() => setOpenAvatarUpload(false)}>
-        <AvatarUpload
-          className="group-spacing"
-          url={groupAvatarUrl}
-          type="group"
-          onUpload={url => {
-            setGroupAvatarUrl(url);
-          }} />
       </Modal>
     </>
   );

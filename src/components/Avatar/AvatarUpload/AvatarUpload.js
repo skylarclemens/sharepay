@@ -9,7 +9,7 @@ import { Camera } from '../../Icons';
 const AvatarUpload = ({ onUpload, type = 'user', className = '', ...props }) => {
   const user = useSelector(state => state.auth.user);
   const [uploading, setUploading] = useState(false);
-  const updateAccount = useUpdateAccountMutation();
+  const [updateAccount] = useUpdateAccountMutation();
 
   const uploadAvatar = async e => {
     try {
@@ -23,7 +23,7 @@ const AvatarUpload = ({ onUpload, type = 'user', className = '', ...props }) => 
       const fileName = `${uuid()}.${fileExtension}`;
       const filePath = `${fileName}`;
 
-      const storageType = type === 'account' ? 'avatars' : 'group-avatars';
+      const storageType = type === 'user' ? 'avatars' : 'group-avatars';
 
       const { data, error } = await supabase.storage
         .from(storageType)

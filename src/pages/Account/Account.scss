@@ -19,17 +19,6 @@
     top: 12px;
     right: 35%;
     transform: translateX(-50%);
-    height: 25px;
-    width: 25px;
-    background: v.$light-gray;
-    border: 2px solid #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    svg path {
-      fill: v.$dark-gray;
-    }
   }
 }
 

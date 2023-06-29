@@ -25,7 +25,7 @@ const Account = () => {
       <div className="account-container">
         <DetailsCard
           title={account?.name}
-          subTitle={`@${account?.username}`}
+          subTitle={account?.username ? `@${account?.username}` : null}
           avatarUrl={avatarUrl}
           skeleton={!isSuccess}>
           <AvatarUpload

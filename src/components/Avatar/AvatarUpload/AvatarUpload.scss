@@ -21,13 +21,17 @@
     cursor: pointer;
   }
 
-  input::-webkit-file-upload-button {
-    border-radius: 1rem;
-    padding: 6px 10px;
-    background: v.$layout-green;
-    color: #FFFFFF;
-    font-weight: 600;
-    font-size: 0.875rem;
-    border: 2px solid v.$layout-green;
+  .avatar-camera {
+    height: 25px;
+    width: 25px;
+    background: v.$light-gray;
+    border: 2px solid #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    svg path {
+      fill: v.$dark-gray;
+    }
   }
 }
