@@ -3,7 +3,6 @@ import { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import TextInput from '../../components/Input/TextInput/TextInput';
-import DropdownSelect from '../../components/Input/DropdownSelect/DropdownSelect';
 import Modal from '../../components/Modal/Modal';
 import AddUsers from '../NewExpense/AddUsers/AddUsers';
 import SelectPeople from '../../components/SelectPeople/SelectPeople';
