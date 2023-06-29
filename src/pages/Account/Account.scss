@@ -1,7 +1,53 @@
 @use '../../utilities/colors' as v;
 
+.layout:has(.account-container) {
+  background: v.$light-gray;
+}
+
 .account-container {
-  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .details__user {
+    gap: 0.5rem;
+  }
+  .details__user .details__info-text {
+    gap: 0.5rem;
+  }  
+}
+
+.account-menu-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #FFFFFF;
+  border-radius: 1.5rem 1.5rem 0 0;
+  padding: 1.5rem 1.25rem 1.25rem 1.25rem;
+  margin-top: 2.25rem;
+  .account-menu {
+    display: flex;
+    flex-direction: column;
+    li {
+      flex: 1;
+    }
+  }
+  .button--menu {
+    display: flex;
+    padding: 1rem 1.25rem;
+    background: v.$light-gray;
+    border-radius: 1rem;
+    font-weight: 500;
+    color: v.$blue-black;
+    border: none;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    text-decoration: none;
+  }
+  .log-out-button {
+    flex: 0 1;
+  }
 }
 
 .account-form {
@@ -16,4 +62,14 @@
     gap: 0.5rem;
     flex-grow: 1;
   }
+}
+
+.account-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  border-radius: 1.5rem 1.5rem 0 0;
+  padding: 1.5rem 1.25rem 1.25rem 1.25rem;
+  margin-top: 2.25rem;
+  background: #FFFFFF;
 }
