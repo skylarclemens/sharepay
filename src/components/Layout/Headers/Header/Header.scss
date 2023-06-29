@@ -46,10 +46,9 @@
 .header--gray, .header--transparent {
   .header-center {
     text-shadow: none;
-    font-size: 1rem;
   }
   .arrow {
-    border: solid v.$washed-gray;
+    border: solid v.$dark-gray;
     border-width: 0 0 2px 2px;
   }
 }

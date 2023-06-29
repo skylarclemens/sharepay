@@ -1,4 +1,3 @@
-import Button from '../UI/Buttons/Button/Button';
 import './Atom.scss';
 import Orbital from './Orbital/Orbital';
 

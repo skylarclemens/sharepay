@@ -20,8 +20,12 @@ const Account = () => {
   return (
     <>
       <MainHeader title="Account"
-        backButton={pathname.replaceAll('/', '') !== 'account' ? true : false}
-        backFn={() => navigate('./')} />
+        backButton={true}
+        backFn={() => {
+          const newPath = pathname.replaceAll('/', '') !== 'account' ? './' : '/';
+          navigate(newPath);
+        }}
+      />
       <div className="account-container">
         <DetailsCard
           title={account?.name}
