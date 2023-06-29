@@ -1,22 +1,11 @@
 import './Activities.scss';
-import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { createSelector } from '@reduxjs/toolkit';
 import Activity from '../../components/Activity/Activity';
 import { useGetNumberOfUserActivitiesQuery } from '../../slices/activityApi';
 import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 
 const Activities = () => {
   const user = useSelector(state => state.auth.user);
-
-  /*const sortActivities = useMemo(() => {
-    return createSelector(
-      res => res.data,
-      (data) => data?.slice(-10).sort((a, b) => {
-          return new Date(b.created_at) - new Date(a.created_at);
-        }) ?? []
-      )
-  }, []);*/
 
   const {
     data: activities,
