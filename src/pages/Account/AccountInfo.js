@@ -1,24 +1,22 @@
 import { useOutletContext } from "react-router-dom";
 import { useUpdateAccountMutation } from "../../slices/accountSlice";
 import { useState, useEffect } from "react";
-import AvatarUpload from "../../components/Avatar/AvatarUpload/AvatarUpload";
 import TextInput from "../../components/Input/TextInput/TextInput";
 import Button from "../../components/UI/Buttons/Button/Button";
 
 
-const ProfileInfo = () => {
+const AccountInfo = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState(null);
-  const { account } = useOutletContext();
+  const { account,
+    avatarUrl } = useOutletContext();
 
   useEffect(() => {
     if(account) {
       setEmail(account?.email);
       setName(account?.name);
       setUsername(account?.username);
-      setAvatarUrl(account?.avatar_url);
     }
   }, [account]);
 
@@ -47,12 +45,6 @@ const ProfileInfo = () => {
     <div className="account-info">
       <>
         <form className="account-form" onSubmit={handleAccountUpdate}>
-          <AvatarUpload
-            url={avatarUrl}
-            onUpload={url => {
-              setAvatarUrl(url);
-            }}
-          />
           <div className="account-input">
             <label className="input-label" htmlFor="email">
               Email
@@ -105,4 +97,4 @@ const ProfileInfo = () => {
   )
 }
 
-export default ProfileInfo;
+export default AccountInfo;

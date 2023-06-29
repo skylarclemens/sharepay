@@ -2,22 +2,37 @@
 
 .avatar-input {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 1rem;
+
+  input[type="file"] {
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    padding: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border: 0;
+  }
+
+  label {
+    border-radius: 1rem;
+    padding: 6px 10px;
+    background: v.$layout-green;
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border: 2px solid v.$layout-green;
+    cursor: pointer;
+  }
 
   input::-webkit-file-upload-button {
     border-radius: 1rem;
     padding: 6px 10px;
-    background: #ffffff;
-    color: v.$green;
+    background: v.$layout-green;
+    color: #FFFFFF;
     font-weight: 600;
     font-size: 0.875rem;
-    border: 2px solid v.$green;
+    border: 2px solid v.$layout-green;
   }
-}
-
-.img-input {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
 }

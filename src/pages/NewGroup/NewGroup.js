@@ -14,7 +14,7 @@ import { useGetAccountQuery } from '../../slices/accountSlice';
 import { useAddNewGroupMutation, useAddNewUserGroupsMutation } from '../../slices/groupSlice';
 import { useAddActivityMutation } from '../../slices/activityApi';
 import groupImg from '../../images/Group_white.svg';
-import cameraIcon from '../../images/Camera-outline.svg';
+import { Camera } from '../../components/Icons';
 import Avatar from '../../components/Avatar/Avatar';
 import Button from '../../components/UI/Buttons/Button/Button';
 import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
@@ -119,7 +119,7 @@ const NewGroup = () => {
             groupAvatarUrl ? <Avatar url={groupAvatarUrl} size={140} type="group" classes="white-border" /> :
             <img src={groupImg} alt="Group icon" className="group-icon" height="60" width="60"/>
           }
-          icon={cameraIcon}
+          icon={<Camera />}
           iconFn={() => setOpenAvatarUpload(true)}
           size={140}
           fade={true} />

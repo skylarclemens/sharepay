@@ -39,20 +39,16 @@ const AvatarUpload = ({ url, onUpload, type = 'user', className = '' }) => {
 
   return (
     <div className={`avatar-input ${className}`}>
-      <label className="input-label" htmlFor="avatar">
-        Avatar
-      </label>
-      <div className="img-input">
-        <Avatar url={url} size={60} type={type} />
-        <input
-          id="avatar"
-          name="avatar"
-          type="file"
-          accept="image/*"
-          onChange={uploadAvatar}
-          disabled={uploading}
-        />
-      </div>
+      <Avatar url={url} size={60} type={type} />
+      <label htmlFor="avatar">Choose image</label>
+      <input
+        id="avatar"
+        name="avatar"
+        type="file"
+        accept="image/*"
+        onChange={uploadAvatar}
+        disabled={uploading}
+      />
     </div>
   );
 };

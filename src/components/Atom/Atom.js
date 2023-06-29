@@ -12,7 +12,7 @@ const Atom = ({ orbitals = [], numOrbitals = null, size, image = null, icon = nu
         {image}
         {icon ? 
           <Button variant="icon" className="atom__icon button__no-style" onClick={iconFn}>
-            <img src={icon} alt="Icon" height="20" width="20" />
+            {icon}
           </Button> : null}
         {children}
       </div>

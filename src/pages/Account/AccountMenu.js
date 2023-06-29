@@ -25,7 +25,7 @@ const AccountMenu = () => {
     <div className="account-menu-container">
       <ul className="account-menu">
         <li>
-          <Link to="edit-profile"
+          <Link to="edit-account"
             className="button--menu"
           >
             Edit Profile

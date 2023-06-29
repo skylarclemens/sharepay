@@ -2,7 +2,7 @@ import './DetailsCard.scss';
 import Avatar from '../Avatar/Avatar';
 import Skeleton from '../Skeleton/Skeleton';
 
-const DetailsCard = ({ title, subTitle, avatarUrl = null, actions, type = 'user', classes, skeleton = false }) => {
+const DetailsCard = ({ title, subTitle, avatarUrl = null, actions, type = 'user', classes, skeleton = false, children }) => {
   return (
     <>
       <div className={`details-card-background ${classes}`}></div>
@@ -24,6 +24,7 @@ const DetailsCard = ({ title, subTitle, avatarUrl = null, actions, type = 'user'
             </div>}
           </>)}
         </div>
+        {children}
       </div>
     </>
   )
