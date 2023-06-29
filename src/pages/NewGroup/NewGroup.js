@@ -16,8 +16,8 @@ import { useAddActivityMutation } from '../../slices/activityApi';
 import groupImg from '../../images/Group_white.svg';
 import cameraIcon from '../../images/Camera-outline.svg';
 import Avatar from '../../components/Avatar/Avatar';
-import TitleHeader from '../../components/Layout/Headers/TitleHeader/TitleHeader';
 import Button from '../../components/UI/Buttons/Button/Button';
+import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 
 const NewGroup = () => {
   const user = useSelector(state => state.auth.user);
@@ -107,7 +107,7 @@ const NewGroup = () => {
 
   return (
     <>
-      <TitleHeader
+      <MainHeader
           title="Create group"
           backButton={true}
           className="header--transparent"

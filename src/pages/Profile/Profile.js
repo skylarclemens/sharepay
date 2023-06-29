@@ -14,8 +14,8 @@ import { useGetExpensesQuery, selectUnpaidSharedExpensesByDebt } from '../../sli
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import { balanceCalc } from '../../helpers/balance';
 import historyImg from '../../images/History.svg'
-import TitleHeader from '../../components/Layout/Headers/TitleHeader/TitleHeader';
 import Button from '../../components/UI/Buttons/Button/Button';
+import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 
 const Profile = () => {
   const user = useSelector(state => state.auth.user);
@@ -62,7 +62,7 @@ const Profile = () => {
 
   return (
     <>
-      <TitleHeader backButton={true} />
+      <MainHeader backButton={true} />
         <>
           <div className="profile">
             <DetailsCard

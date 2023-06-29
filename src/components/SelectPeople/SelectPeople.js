@@ -9,8 +9,8 @@ import { useGetGroupsQuery, selectGroupsBySearchQuery } from '../../slices/group
 import { useDebounce } from '../../hooks/useDebounce';
 import Avatar from '../Avatar/Avatar';
 import removeImg from '../../images/Remove.svg';
-import TitleHeader from '../Layout/Headers/TitleHeader/TitleHeader';
 import Button from '../UI/Buttons/Button/Button';
+import MainHeader from '../Layout/Headers/MainHeader/MainHeader';
 
 const SelectPeople = ({ showGroups = false, handleAdd, existingUsers = [], setOpen }) => {
   const [value, setValue] = useState('');
@@ -76,7 +76,7 @@ const SelectPeople = ({ showGroups = false, handleAdd, existingUsers = [], setOp
 
   return (
     <>
-      <TitleHeader backButton={true} backFn={() => setOpen(false)} color="#787878" className="header--gray" title="Select people" right={
+      <MainHeader backButton={true} backFn={() => setOpen(false)} color="#787878" className="header--gray" title="Select people" right={
         <Button
           variant="text"
           style={{

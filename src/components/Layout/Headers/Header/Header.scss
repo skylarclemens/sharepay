@@ -44,14 +44,19 @@
 }
 
 .header--gray, .header--transparent {
-  .title {
-    color: v.$dark-gray;
+  .header-center {
     text-shadow: none;
     font-size: 1rem;
   }
   .arrow {
     border: solid v.$washed-gray;
     border-width: 0 0 2px 2px;
+  }
+}
+
+.header--gray {
+  .header-center {
+    color: v.$dark-gray;
   }
 }
 
