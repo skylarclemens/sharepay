@@ -40,11 +40,10 @@ const Group = () => {
 
   return (
       <>
-      <MainHeader backButton={true} className={`group--${group?.color}`} />
+      <MainHeader backButton={true} />
       <DetailsCard 
         title={group?.group_name}
         avatarUrl={group?.avatar_url}
-        classes={`group--${group?.color}`}
         skeleton={!groupFetched}
         type="group" />
       <div className="group-container">

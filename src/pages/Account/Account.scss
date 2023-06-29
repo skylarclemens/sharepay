@@ -68,6 +68,19 @@
     gap: 0.5rem;
     flex-grow: 1;
   }
+
+  .username-input {
+    ::before {
+      content: '@';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0.75rem;
+    }
+    input {
+      padding-left: 1.75rem;
+    }
+  }
 }
 
 .account-info {

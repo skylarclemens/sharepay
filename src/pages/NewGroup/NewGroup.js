@@ -9,7 +9,6 @@ import AddUsers from '../NewExpense/AddUsers/AddUsers';
 import SelectPeople from '../../components/SelectPeople/SelectPeople';
 import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 import Atom from '../../components/Atom/Atom';
-import { GROUP_COLORS } from '../../constants/groups';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import { useAddNewGroupMutation, useAddNewUserGroupsMutation } from '../../slices/groupSlice';
 import { useAddActivityMutation } from '../../slices/activityApi';
@@ -27,7 +26,6 @@ const NewGroup = () => {
   
   const [groupName, setGroupName] = useState('');
   const [groupMembers, setGroupMembers] = useState([{ ...account }]);
-  const [groupColor, setGroupColor] = useState(GROUP_COLORS[0].color);
   const [openSelectPeople, setOpenSelectPeople] = useState(false);
   const [groupAvatarUrl, setGroupAvatarUrl] = useState(null);
   const [groupElectrons, setGroupElectrons] = useState([]);
@@ -49,7 +47,6 @@ const NewGroup = () => {
     const newGroup = {
       group_name: groupName,
       avatar_url: groupAvatarUrl,
-      color: groupColor,
     };
 
     let groupData;
@@ -119,7 +116,6 @@ const NewGroup = () => {
           }
           icon={
             <AvatarUpload
-              className="group-spacing"
               url={groupAvatarUrl}
               type="group"
               onUpload={url => {
@@ -131,8 +127,8 @@ const NewGroup = () => {
           fade={true} />
         <form className="group-form" onSubmit={handleSubmit}>
           <TextInput
-            className="group-spacing group-name-input"
-            name="name"
+            className="group-name-input"
+            name="group-name"
             value={groupName}
             placeholder="Group name"
             ref={inputRef}
@@ -145,23 +141,11 @@ const NewGroup = () => {
             setUsersList={handleAddUsers}
             setOpenSelectPeople={setOpenSelectPeople}
           /> : null}
-          <div className="input-container group-spacing">
-            <div className="input-label">Group color</div>
-            <div className="group-colors">
-              <DropdownSelect 
-                options={GROUP_COLORS.map(color => color.color)}
-                value={groupColor}
-                name="group-color-select"
-                onChange={e => setGroupColor(e.target.value)}
-                classes="group-color-select"
-              />
-            </div>
-          </div>
           <Button
             type="submit"
             alt="Create group"
             title="Create group"
-            className="group-spacing"
+            className="group-create-button"
           >
             Create
           </Button>

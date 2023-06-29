@@ -44,32 +44,6 @@ const AccountInfo = () => {
       <>
         <form className="account-form" onSubmit={handleAccountUpdate}>
           <div className="account-input">
-            <label className="input-label" htmlFor="email">
-              Email
-            </label>
-            <TextInput
-              className="form-text-input"
-              id="email"
-              name="email"
-              type="text"
-              value={email || ''}
-              disabled
-            />
-          </div>
-          <div className="account-input">
-            <label className="input-label" htmlFor="username">
-              Username
-            </label>
-            <TextInput
-              className="form-text-input"
-              id="username"
-              name="username"
-              type="text"
-              value={username || ''}
-              onChange={e => setUsername(e.target.value)}
-            />
-          </div>
-          <div className="account-input">
             <label className="input-label" htmlFor="name">
               Name
             </label>
@@ -80,6 +54,32 @@ const AccountInfo = () => {
               type="text"
               value={name || ''}
               onChange={e => setName(e.target.value)}
+            />
+          </div>
+          <div className="account-input">
+            <label className="input-label" htmlFor="username">
+              Username
+            </label>
+            <TextInput
+              className="form-text-input username-input"
+              id="username"
+              name="username"
+              type="text"
+              value={username || ''}
+              onChange={e => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="account-input">
+            <label className="input-label" htmlFor="email">
+              Email
+            </label>
+            <TextInput
+              className="form-text-input"
+              id="email"
+              name="email"
+              type="text"
+              value={email || ''}
+              disabled
             />
           </div>
           <Button
