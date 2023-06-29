@@ -9,8 +9,7 @@ import FriendAction from '../FriendAction/FriendAction';
 import TransactionsByDate from '../../components/Transactions/TransactionsByDate/TransactionsByDate';
 import Balances from '../../components/Balances/Balances';
 import Skeleton from '../../components/Skeleton/Skeleton';
-import { useGetDebtsQuery, selectUnpaidSharedDebtsByFriendId, selectPaidSharedDebtsByFriendId } from '../../slices/debtSlice';
-import { useGetExpensesQuery, selectUnpaidSharedExpensesByDebt } from '../../slices/expenseSlice';
+import { useGetSharedDebtsWithExpensesQuery } from '../../slices/debtSlice';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import { balanceCalc } from '../../helpers/balance';
 import historyImg from '../../images/History.svg'
@@ -22,41 +21,33 @@ const Profile = () => {
   let { id } = useParams();
   const {
     data: profileUser,
+    isLoading: profileUserLoading,
     isSuccess: profileUserFetched,
   } = useGetAccountQuery(id);
   const [balances, setBalances] = useState({ total: 0, owed: 0, owe: 0 });
+  const [unpaidSharedDebts, setUnpaidSharedDebts] = useState([]);
+  const [paidSharedDebts, setPaidSharedDebts] = useState([]);
+  const [currentExpenses, setCurrentExpenses] = useState([]);
   const [openPayUp, setOpenPayUp] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
 
-  const { sharedDebts,
+  const {
+    data: sharedDebts,
     isLoading: debtsLoading,
-    isSuccess: debtsFetched } = useGetDebtsQuery(user?.id, {
-    selectFromResult: (result) => ({
-      ...result,
-      sharedDebts: selectUnpaidSharedDebtsByFriendId(result, id)
-    })
+    isSuccess: debtsFetched
+  } = useGetSharedDebtsWithExpensesQuery({ userId: user?.id, friendId: profileUser?.id }, {
+    skip: !profileUserFetched || profileUserLoading
   });
-
-  const { paidSharedDebts, 
-    isLoading: paidDebtsLoading,
-    isSuccess: paidDebtsFetched } = useGetDebtsQuery(user?.id, { 
-    selectFromResult: (result) => ({
-      ...result,
-      paidSharedDebts: selectPaidSharedDebtsByFriendId(result, id)
-    })
-  });
-
-  const { currentExpenses } = useGetExpensesQuery(undefined, {
-    skip: !debtsFetched,
-    selectFromResult: (result) => ({
-      ...result,
-      currentExpenses: selectUnpaidSharedExpensesByDebt(result, sharedDebts)
-    })
-  })
 
   useEffect(() => {
-    if(debtsFetched) {
-      setBalances(balanceCalc(sharedDebts, user.id));
+    if(debtsFetched && sharedDebts) {
+      const unpaidDebts = sharedDebts.filter(debt => !debt.paid);
+      const paidDebts = sharedDebts.filter(debt => debt.paid);
+      const currentExpenses = unpaidDebts.map(debt => debt.expense);
+      setBalances(balanceCalc(sharedDebts, user?.id));
+      setUnpaidSharedDebts(unpaidDebts);
+      setPaidSharedDebts(paidDebts);
+      setCurrentExpenses(currentExpenses);
     }
   }, [sharedDebts, debtsFetched, user]);
 
@@ -83,7 +74,7 @@ const Profile = () => {
             } />
             <div className="profile__section profile__section--balance">
               <h2>Balance</h2>
-              <Balances debts={sharedDebts} debtsStatus={{
+              <Balances debtBalances={balances} debtsStatus={{
                 loading: debtsLoading,
                 fetched: debtsFetched
               }} />
@@ -96,12 +87,12 @@ const Profile = () => {
                 </Button>
               </div>
               <div className="profile__transactions">
-                {!debtsFetched || debtsLoading || !paidDebtsFetched || paidDebtsLoading ? (
+                {!debtsFetched || debtsLoading ? (
                   <Skeleton height={52} width={329}>
                     <div className="skeleton__avatar"></div>
                   </Skeleton>) : (
                 !showHistory && balances.total !== 0 &&
-                  <TransactionsByDate transactions={sharedDebts} showYear={false} />)}
+                  <TransactionsByDate transactions={unpaidSharedDebts} showYear={false} />)}
                 {!showHistory && balances.total === 0 &&
                   <div className="medium-gray">No transactions available</div>}
                 {showHistory && paidSharedDebts?.length > 0 &&
