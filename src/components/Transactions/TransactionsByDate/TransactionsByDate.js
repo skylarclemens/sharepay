@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react';
 import './TransactionsByDate.scss';
-import DebtTransaction from '../DebtTransaction/DebtTransaction';
+import SimpleTransaction from '../SimpleTransaction/SimpleTransaction';
+import { formatMoney } from '../../../helpers/money';
+import { useSelector } from 'react-redux';
 
 const TransactionsByDate = ({ transactions, type = 'debt', showYear = true }) => {
+  const user = useSelector(state => state.auth.user);
   const [sortedTransactions, setSortedTransactions] = useState(transactions);
   const [transactionsByYearAndMonth, setTransactionsByYearAndMonth] = useState([]);
 
   useEffect(() => {
     const transactionsCopy = [...transactions];
     transactionsCopy?.sort((a, b) => {
-      return new Date(b?.created_at) - new Date(a?.created_at)
+      const aDate = a?.expense?.date || a?.created_at;
+      const bDate = b?.expense?.date || b?.created_at;
+      return new Date(bDate) - new Date(aDate)
     })
     setSortedTransactions(transactionsCopy);
   }, [transactions])
@@ -22,7 +27,7 @@ const TransactionsByDate = ({ transactions, type = 'debt', showYear = true }) =>
   const getTransactionsByYearAndMonth = (transactions) => {
     const byYearAndMonth = {};
     transactions?.forEach(transaction => {
-      const date = new Date(transaction?.created_at);
+      const date = new Date(transaction?.expense?.date || transaction?.created_at);
       const year = date.getFullYear();
       const month = date.getMonth();
       if(!byYearAndMonth[year]) {
@@ -54,7 +59,13 @@ const TransactionsByDate = ({ transactions, type = 'debt', showYear = true }) =>
                     {transactionsByYearAndMonth[year][month]?.map(transaction => {
                       if(type === 'debt') {
                         return (
-                          <DebtTransaction key={transaction?.id} transaction={transaction} />
+                          <SimpleTransaction key={transaction?.id}
+                            to={`/expense/${transaction?.expense?.id}`}
+                            description={transaction?.expense?.description}
+                            date={transaction?.expense?.date || transaction?.created_at}
+                            amount={`${transaction?.creditor_id === user?.id ? '+' : '-'}${formatMoney(transaction?.amount, false)}`}
+                            category={transaction?.expense?.category}
+                            transactionType={transaction?.creditor_id === user?.id ? 'owed' : 'owe'} />
                         )
                       }
                       return null;

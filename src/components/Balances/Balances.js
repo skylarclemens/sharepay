@@ -7,15 +7,17 @@ import Skeleton from '../Skeleton/Skeleton';
 import receiveImg from '../../images/Receive.svg';
 import sendImg from '../../images/Send.svg';
 
-const Balances = ({ debts, debtsStatus }) => {
+const Balances = ({ debts, debtsStatus, debtBalances = null }) => {
   const user = useSelector(state => state.auth.user);
   const [balances, setBalances] = useState({ total: 0, owed: 0, owe: 0 });
 
   useEffect(() => {
-    if(debtsStatus.fetched) {
-      setBalances(balanceCalc(debts, user.id));
+    if(debtsStatus.fetched && debtBalances) {
+      setBalances(debtBalances);
+    } else if (debtsStatus.fetched) {
+      setBalances(balanceCalc(debts, user?.id));
     }
-  }, [debts, debtsStatus, user])
+  }, [debts, debtsStatus, debtBalances, user])
 
   return (
     <div className="balance__items">

@@ -1,6 +1,7 @@
 import './SimpleTransaction.scss';
 import { Link } from 'react-router-dom';
 import { CATEGORIES } from '../../../constants/categories';
+import { formatExpenseDate } from '../../../helpers/date';
 import Icon from '../../Icons/Icon';
 
 const SimpleTransaction = ({ description, to, date, amount, category, transactionType = 'owed', users, ...props }) => {
@@ -18,7 +19,7 @@ const SimpleTransaction = ({ description, to, date, amount, category, transactio
             {description}
           </div>
           <div className="simple-transaction__desc--bottom simple-transaction__date">
-            {date}
+            {formatExpenseDate(date)}
           </div>
         </div>
       </div>
