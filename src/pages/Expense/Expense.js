@@ -17,8 +17,8 @@ import { useAddActivityMutation, useGetActivityByReferenceIdsQuery } from '../..
 import { formatExpenseDate } from '../../helpers/date';
 import successImg from '../../images/Success.svg';
 import Skeleton from '../../components/Skeleton/Skeleton';
-import TitleHeader from '../../components/Layout/Headers/TitleHeader/TitleHeader';
 import Button from '../../components/UI/Buttons/Button/Button';
+import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 
 
 const UserDebtor = ({ debt }) => {
@@ -140,7 +140,7 @@ const Expense = () => {
 
   return (
     <>
-      <TitleHeader
+      <MainHeader
         backButton={true}
         right={
           <Button

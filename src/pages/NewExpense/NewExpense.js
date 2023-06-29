@@ -11,7 +11,7 @@ import Modal from '../../components/Modal/Modal';
 import SelectPeople from '../../components/SelectPeople/SelectPeople';
 import NewExpenseDetails from './NewExpenseDetails/NewExpenseDetails';
 import NewExpenseSplit from './NewExpenseSplit/NewExpenseSplit';
-import TitleHeader from '../../components/Layout/Headers/TitleHeader/TitleHeader';
+import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 
 const NewExpense = () => {
   const user = useSelector(state => state.auth.user);
@@ -115,7 +115,7 @@ const NewExpense = () => {
 
   return (
     <>
-      <TitleHeader
+      <MainHeader
         title={page === 1 ? 'New expense' : description}
         backButton={true}
         backFn={page === 1 ? () => navigate(-1) : () => setPage(1)}

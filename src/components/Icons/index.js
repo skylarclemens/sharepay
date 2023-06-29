@@ -1,3 +1,4 @@
+export { default as Camera } from './Camera';
 export { default as Checkmark } from './Checkmark';
 export { default as Close } from './Close';
 export { default as Food } from './Food';

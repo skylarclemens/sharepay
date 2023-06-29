@@ -136,6 +136,7 @@ button {
 .layout {
   padding-top: calc(46px + env(safe-area-inset-top));
   padding-bottom: calc(52px + env(safe-area-inset-bottom));
+  height: 100%;
   min-height: 100vh;
   overflow: auto;
   scroll-behavior: smooth;

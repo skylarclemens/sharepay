@@ -7,7 +7,7 @@ import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import Balances from '../../components/Balances/Balances';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import ExpenseTransaction from '../../components/Transactions/ExpenseTransaction/ExpenseTransaction';
-import TitleHeader from '../../components/Layout/Headers/TitleHeader/TitleHeader';
+import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 
 const Group = () => {
   const { id } = useParams();
@@ -40,11 +40,10 @@ const Group = () => {
 
   return (
       <>
-      <TitleHeader backButton={true} className={`group--${group?.color}`} />
+      <MainHeader backButton={true} />
       <DetailsCard 
         title={group?.group_name}
         avatarUrl={group?.avatar_url}
-        classes={`group--${group?.color}`}
         skeleton={!groupFetched}
         type="group" />
       <div className="group-container">

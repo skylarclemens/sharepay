@@ -1,23 +1,37 @@
 @use '../../../utilities/colors' as v;
 
-.avatar-input {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-
-  input::-webkit-file-upload-button {
-    border-radius: 1rem;
-    padding: 6px 10px;
-    background: #ffffff;
-    color: v.$green;
-    font-weight: 600;
-    font-size: 0.875rem;
-    border: 2px solid v.$green;
-  }
-}
-
-.img-input {
+.avatar-upload {
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  input[type="file"] {
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    padding: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border: 0;
+  }
+
+  label {
+    font-size: 0px;
+    color: transparent;
+    cursor: pointer;
+  }
+
+  .avatar-camera {
+    height: 25px;
+    width: 25px;
+    background: v.$light-gray;
+    border: 2px solid #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    svg path {
+      fill: v.$dark-gray;
+    }
+  }
 }

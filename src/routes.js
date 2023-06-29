@@ -3,6 +3,8 @@ import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
 import Account from './pages/Account/Account';
+import AccountMenu from './pages/Account/AccountMenu';
+import AccountInfo from './pages/Account/AccountInfo';
 import Expense from './pages/Expense/Expense';
 import NewExpense from './pages/NewExpense/NewExpense';
 import NewGroup from './pages/NewGroup/NewGroup';
@@ -24,7 +26,10 @@ const RoutesContainer = () => {
         <Route element={<RequireAuth />}>
           <Route index element={<Home />} />
           <Route element={<MainLayout />}>
-            <Route path="account" element={<Account />} />
+            <Route path="account" element={<Account />}>
+              <Route index element={<AccountMenu />} />
+              <Route path="edit-account" element={<AccountInfo />} />
+            </Route>
             <Route path="activity" element={<Activities />} />
             <Route path="friends" element={<Friends />} />
             <Route path="groups" element={<Groups />} />

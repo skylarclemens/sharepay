@@ -3,21 +3,18 @@ import { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import TextInput from '../../components/Input/TextInput/TextInput';
-import DropdownSelect from '../../components/Input/DropdownSelect/DropdownSelect';
 import Modal from '../../components/Modal/Modal';
 import AddUsers from '../NewExpense/AddUsers/AddUsers';
 import SelectPeople from '../../components/SelectPeople/SelectPeople';
 import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 import Atom from '../../components/Atom/Atom';
-import { GROUP_COLORS } from '../../constants/groups';
 import { useGetAccountQuery } from '../../slices/accountSlice';
 import { useAddNewGroupMutation, useAddNewUserGroupsMutation } from '../../slices/groupSlice';
 import { useAddActivityMutation } from '../../slices/activityApi';
 import groupImg from '../../images/Group_white.svg';
-import cameraIcon from '../../images/Camera-outline.svg';
 import Avatar from '../../components/Avatar/Avatar';
-import TitleHeader from '../../components/Layout/Headers/TitleHeader/TitleHeader';
 import Button from '../../components/UI/Buttons/Button/Button';
+import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 
 const NewGroup = () => {
   const user = useSelector(state => state.auth.user);
@@ -28,9 +25,7 @@ const NewGroup = () => {
   
   const [groupName, setGroupName] = useState('');
   const [groupMembers, setGroupMembers] = useState([{ ...account }]);
-  const [groupColor, setGroupColor] = useState(GROUP_COLORS[0].color);
   const [openSelectPeople, setOpenSelectPeople] = useState(false);
-  const [openAvatarUpload, setOpenAvatarUpload] = useState(false);
   const [groupAvatarUrl, setGroupAvatarUrl] = useState(null);
   const [groupElectrons, setGroupElectrons] = useState([]);
   const inputRef = useRef(null);
@@ -51,7 +46,6 @@ const NewGroup = () => {
     const newGroup = {
       group_name: groupName,
       avatar_url: groupAvatarUrl,
-      color: groupColor,
     };
 
     let groupData;
@@ -107,7 +101,7 @@ const NewGroup = () => {
 
   return (
     <>
-      <TitleHeader
+      <MainHeader
           title="Create group"
           backButton={true}
           className="header--transparent"
@@ -119,14 +113,21 @@ const NewGroup = () => {
             groupAvatarUrl ? <Avatar url={groupAvatarUrl} size={140} type="group" classes="white-border" /> :
             <img src={groupImg} alt="Group icon" className="group-icon" height="60" width="60"/>
           }
-          icon={cameraIcon}
-          iconFn={() => setOpenAvatarUpload(true)}
+          icon={
+            <AvatarUpload
+              url={groupAvatarUrl}
+              type="group"
+              onUpload={url => {
+                setGroupAvatarUrl(url);
+              }} 
+            />
+          }
           size={140}
           fade={true} />
         <form className="group-form" onSubmit={handleSubmit}>
           <TextInput
-            className="group-spacing group-name-input"
-            name="name"
+            className="group-name-input"
+            name="group-name"
             value={groupName}
             placeholder="Group name"
             ref={inputRef}
@@ -139,23 +140,11 @@ const NewGroup = () => {
             setUsersList={handleAddUsers}
             setOpenSelectPeople={setOpenSelectPeople}
           /> : null}
-          <div className="input-container group-spacing">
-            <div className="input-label">Group color</div>
-            <div className="group-colors">
-              <DropdownSelect 
-                options={GROUP_COLORS.map(color => color.color)}
-                value={groupColor}
-                name="group-color-select"
-                onChange={e => setGroupColor(e.target.value)}
-                classes="group-color-select"
-              />
-            </div>
-          </div>
           <Button
             type="submit"
             alt="Create group"
             title="Create group"
-            className="group-spacing"
+            className="group-create-button"
           >
             Create
           </Button>
@@ -163,24 +152,6 @@ const NewGroup = () => {
       </div>
       <Modal open={openSelectPeople}>
         <SelectPeople handleAdd={handleAddUsers} existingUsers={groupMembers.slice(1)} setOpen={setOpenSelectPeople} />
-      </Modal>
-      <Modal open={openAvatarUpload}
-        style={{
-          background: '#ffffff',
-          borderRadius: '1rem',
-          height: 'auto',
-          width: 'auto',
-          padding: '1rem',
-          margin: '1rem'
-        }}
-        handleClose={() => setOpenAvatarUpload(false)}>
-        <AvatarUpload
-          className="group-spacing"
-          url={groupAvatarUrl}
-          type="group"
-          onUpload={url => {
-            setGroupAvatarUrl(url);
-          }} />
       </Modal>
     </>
   );

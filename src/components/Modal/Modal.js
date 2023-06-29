@@ -7,7 +7,7 @@ const Modal = ({ handleClose, open = false, children, style = {}, fullScreen = f
       <div className={`modal ${fullScreen ? 'full-screen' : 'include-backdrop'}`}>
         <div style={style} className="modal-content">
           <Button variant="icon" className={`modal-close ${!handleClose ? 'hide-close' : ''}`} onClick={handleClose}>
-            x
+            &times;
           </Button>
           {children}
         </div>

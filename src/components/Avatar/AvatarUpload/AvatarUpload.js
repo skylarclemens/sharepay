@@ -2,17 +2,18 @@ import './AvatarUpload.scss';
 import { useState } from 'react';
 import { supabase } from '../../../supabaseClient';
 import { v4 as uuid } from 'uuid';
-import Avatar from '../Avatar';
 import { useSelector } from 'react-redux';
+import { useUpdateAccountMutation } from '../../../slices/accountSlice';
+import { Camera } from '../../Icons';
 
-const AvatarUpload = ({ url, onUpload, type = 'user', className = '' }) => {
+const AvatarUpload = ({ onUpload, type = 'user', className = '', ...props }) => {
   const user = useSelector(state => state.auth.user);
   const [uploading, setUploading] = useState(false);
+  const [updateAccount] = useUpdateAccountMutation();
 
   const uploadAvatar = async e => {
     try {
       setUploading(true);
-
       if (!e.target.files || e.target.files.length === 0) {
         throw new Error('Select an image to upload.');
       }
@@ -22,7 +23,7 @@ const AvatarUpload = ({ url, onUpload, type = 'user', className = '' }) => {
       const fileName = `${uuid()}.${fileExtension}`;
       const filePath = `${fileName}`;
 
-      const storageType = type === 'account' ? 'avatars' : 'group-avatars';
+      const storageType = type === 'user' ? 'avatars' : 'group-avatars';
 
       const { data, error } = await supabase.storage
         .from(storageType)
@@ -30,29 +31,45 @@ const AvatarUpload = ({ url, onUpload, type = 'user', className = '' }) => {
           cacheControl: '604800',
         });
       if (error) throw error;
-      onUpload(data.path);
+      if(type === 'user') updateUserAvatar(data.path);
+      if(type === 'group') onUpload(data.path);
     } catch (error) {
       console.error(error);
     }
     setUploading(false);
   };
 
+  const updateUserAvatar = async (path) => {
+    try {
+      const updates = {
+        id: user.id,
+        avatar_url: path,
+        updated_at: new Date(),
+      };
+
+      await updateAccount(updates).unwrap();
+      onUpload(path);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
-    <div className={`avatar-input ${className}`}>
-      <label className="input-label" htmlFor="avatar">
-        Avatar
+    <div className={`avatar-upload ${className}`} {...props}>
+      <label htmlFor="avatar-upload">
+        Upload new avatar
+        <div className="avatar-camera">
+          <Camera fill="#787878" />
+        </div>
       </label>
-      <div className="img-input">
-        <Avatar url={url} size={60} type={type} />
-        <input
-          id="avatar"
-          name="avatar"
-          type="file"
-          accept="image/*"
-          onChange={uploadAvatar}
-          disabled={uploading}
-        />
-      </div>
+      <input
+        id="avatar-upload"
+        name="avatar-upload"
+        type="file"
+        accept="image/*"
+        onChange={uploadAvatar}
+        disabled={uploading}
+      />
     </div>
   );
 };
