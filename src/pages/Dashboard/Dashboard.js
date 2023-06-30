@@ -56,6 +56,9 @@ const Dashboard = () => {
       <MainHeader
         title="Dashboard"
         className="header--transparent"
+        style={{
+          background: '#51754C',
+        }}
         left={
           <Link to="/account">
             <Avatar url={currentAccount?.avatar_url} size={28} classes="white-border"/>
@@ -64,7 +67,6 @@ const Dashboard = () => {
       />
       <Refresh onRefresh={onRefresh} />
       <div className="dashboard">
-        <div className="details-background"></div>
         <div className="balance-container">
           <Tabs tabs={balanceTabs}
             selected={balanceTab}
