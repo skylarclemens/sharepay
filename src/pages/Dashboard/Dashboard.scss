@@ -37,24 +37,11 @@
     letter-spacing: 0.96px;
   }
 }
-.details-background {
-  position: absolute;
-  margin-top: calc(-1 * env(safe-area-inset-top)); 
-  top: calc(-28px + env(safe-area-inset-top));
-  left: 0;
-  width: 100%;
-  padding-top: env(safe-area-inset-top);
-  height: 190px;
-  z-index: 0;
-  background: #51754C;
-}
 
 .dashboard {
   display: flex;
   flex-direction: column;
-  height: calc(
-    100% + 96px + env(safe-area-inset-top) + env(safe-area-inset-bottom)
-  );
+  margin-bottom: calc(56px + env(safe-area-inset-bottom));
   background: v.$light-gray;
 }
 
