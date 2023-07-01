@@ -31,6 +31,18 @@
   justify-content: center;
   align-items: center;
   gap: 1.25rem;
+  .details__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -44.5px;
+    height: 65px;
+    width: 65px;
+    border-radius: 50%;
+    outline: 4px solid #ffffff;
+    background-color: v.$light-gray;
+    transition: background-color 0.2s ease-in-out;
+  }
   .details__avatar {
     margin-top: -44.5px;
   }
