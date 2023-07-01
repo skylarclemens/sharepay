@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import Atom from '../../../components/Atom/Atom';
 import DropdownSelect from '../../../components/Input/DropdownSelect/DropdownSelect';
 import TextInput from '../../../components/Input/TextInput/TextInput';
@@ -7,21 +7,15 @@ import DateInput from '../../../components/Input/DateInput/DateInput';
 
 import { CATEGORIES } from '../../../constants/categories';
 import Button from '../../../components/UI/Buttons/Button/Button';
+import Icon from '../../../components/Icons/Icon';
 
 const NewExpenseDetails = ({ description, setDescription, amount, setAmount, category, setCategory, date, setDate, fieldErrors, setFieldErrors, setPage }) => {
-  const [categoryImg, setCategoryImg] = useState(null);
-
   const categoriesList = useRef(Object.entries(CATEGORIES))?.current.map(([key, value]) => {
     return {
       value: key,
       text: value?.text,
     }
   });
-
-  useEffect(() => {
-    const getCategoryImage = CATEGORIES[category]?.image;
-    setCategoryImg(getCategoryImage);
-  }, [category]);
 
   const handleAmount = value => {
     const validInput = value.match(/^(\d*\.{0,1}\d{0,2}$)/);
@@ -67,15 +61,11 @@ const NewExpenseDetails = ({ description, setDescription, amount, setAmount, cat
         size={120}
         numOrbitals={4}
         fade={true}
+        nucleusColor={CATEGORIES[category]?.color}
         image={
-          
-          <img src={categoryImg ?
-            /* eslint-disable global-require */
-            require(`../../../${categoryImg}`)
-            /* eslint-enable global-require */
-            : null} alt={`${category} icon`} style={{
-            filter: 'brightness(0) invert(1)',
-          }} height={48} width={41} />
+          <Icon name={category}
+            height="50"
+            width="50" />
         }
       >
         <DropdownSelect

@@ -16,6 +16,9 @@
     font-size: 0.875rem;
     font-family: 'Rubik', sans-serif;
     font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   min-width: 161px;
   border-radius: 1rem;
@@ -25,7 +28,7 @@
     min-width: 101px;
     select {
       min-height: 34px;
-      padding: 0.5rem 0.625rem;
+      padding: 0.5rem 1.125rem 0.5rem 0.625rem;
       border: 1px solid v.$accent-gray;
     }
   }
