@@ -5,7 +5,7 @@ import { formatExpenseDate } from '../../../helpers/date';
 import Icon from '../../Icons/Icon';
 
 const SimpleTransaction = ({ description, to, date, amount, category, transactionType = 'owed', users, ...props }) => {
-  const iconName = category || 'GENERAL';
+  const iconName = CATEGORIES[category] ? category : 'GENERAL';
   return (
     <Link to={to} className="simple-transaction" {...props}>
       <div className="simple-transaction__left">

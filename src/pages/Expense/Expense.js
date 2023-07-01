@@ -153,10 +153,11 @@ const Expense = () => {
           <div className="expense-details-container">
             <DetailsCard 
               title={expense?.description}
-              subTitle={`Added ${expenseFetchSuccess && formatExpenseDate(expense?.created_at)}`}
+              subTitle={`${expenseFetchSuccess && formatExpenseDate(expense?.date || expense?.created_at)}`}
               type="expense"
               actions={expense?.paid || userDebtsPaid?.length ? null : payButton}
               skeleton={expenseLoading || !expenseFetchSuccess}
+              category={expense?.category}
             />
             <div className="expense-transactions-container">
               <div className="details-paid">

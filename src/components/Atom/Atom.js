@@ -1,12 +1,13 @@
 import './Atom.scss';
 import Orbital from './Orbital/Orbital';
 
-const Atom = ({ orbitals = [], numOrbitals = null, size, image = null, icon = null, iconFn = null, fade = false, children }) => {
+const Atom = ({ orbitals = [], numOrbitals = null, size, nucleusColor, image = null, icon = null, iconFn = null, fade = false, children }) => {
   return (
     <div className={`atom-container ${fade ? 'atom--fade' : ''}`}>
       <div className="atom__nucleus" style={{
         height: `${size}px`,
         width: `${size}px`,
+        backgroundColor: nucleusColor,
       }}>
         {image}
         {icon ? (
