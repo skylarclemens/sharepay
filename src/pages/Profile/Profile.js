@@ -58,7 +58,7 @@ const Profile = () => {
           <div className="profile">
             <DetailsCard
               title={profileUser?.name}
-              subTitle={profileUser?.email}
+              subTitle={profileUser?.username ? `@${profileUser?.username}` : null}
               avatarUrl={profileUser?.avatar_url}
               skeleton={!profileUserFetched}
               actions={

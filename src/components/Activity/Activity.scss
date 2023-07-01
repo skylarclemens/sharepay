@@ -21,20 +21,20 @@
   gap: 0.5rem;
   background: v.$light-gray;
   border-radius: 3rem;
-  padding: 2px 0.5rem 2px 0;
+  padding: 2px 0.75rem 2px 0;
 }
 .activity__left {
   gap: 0.5rem;
   flex: 1 1 auto;
 }
 .activity__amount {
-  background: v.$layout-green;
-  border-radius: 1rem;
-  border-bottom: 2px solid v.$dark-green;
-  color: #ffffff;
+  font-family: ui-rounded, system-ui, sans-serif;
   font-weight: 600;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
+  background: v.$green-gradient;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .activity__text {
