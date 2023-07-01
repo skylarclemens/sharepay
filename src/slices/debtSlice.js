@@ -68,6 +68,20 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         ...result.map(({ id }) => ({ type: 'Debt', id: id }))
       ]
     }),
+    getSharedGroupDebtsWithExpenses: builder.query({
+      queryFn: async ({ userId, groupId }) => {
+        const { data, error } = await supabase
+          .from('debt')
+          .select('*, expense: expense_id(*)')
+          .or(`and(debtor_id.eq.${userId},group_id.eq.${groupId}),and(creditor_id.eq.${userId},group_id.eq.${groupId})`)
+          .order('created_at', { ascending: false });
+        return { data, error };
+      },
+      providesTags: (result = [], error, arg) => [
+        { type: 'Debt', id: 'LIST' },
+        ...result.map(({ id }) => ({ type: 'Debt', id: id }))
+      ]
+    }),
     getDebtsByExpenseIds: builder.query({
       queryFn: async expenseIdList => {
         const { data, error } = await supabase
@@ -120,6 +134,7 @@ export const {
   useGetExpenseDebtsQuery,
   useGetDebtsWithExpensesQuery,
   useGetSharedDebtsWithExpensesQuery,
+  useGetSharedGroupDebtsWithExpensesQuery,
   useGetDebtsByExpenseIdsQuery,
   useAddNewDebtMutation,
   useUpdateDebtMutation,

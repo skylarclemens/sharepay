@@ -1,17 +1,25 @@
 import './Group.scss';
 import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useGetGroupExpensesQuery, useGetGroupQuery } from '../../slices/groupSlice';
-import { selectUserDebtsByGroupId, useGetDebtsQuery } from '../../slices/debtSlice';
+import { useGetGroupQuery } from '../../slices/groupSlice';
+import { useGetSharedGroupDebtsWithExpensesQuery } from '../../slices/debtSlice';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import Balances from '../../components/Balances/Balances';
 import Skeleton from '../../components/Skeleton/Skeleton';
-import ExpenseTransaction from '../../components/Transactions/ExpenseTransaction/ExpenseTransaction';
 import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
+import TransactionsByDate from '../../components/Transactions/TransactionsByDate/TransactionsByDate';
+import Button from '../../components/UI/Buttons/Button/Button';
+import historyImg from '../../images/History.svg';
 
 const Group = () => {
   const { id } = useParams();
   const user = useSelector(state => state.auth.user);
+
+  const [unpaidSharedDebts, setUnpaidSharedDebts] = useState([]);
+  const [paidSharedDebts, setPaidSharedDebts] = useState([]);
+  const [currentExpenses, setCurrentExpenses] = useState([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   const {
     data: group,
@@ -19,57 +27,59 @@ const Group = () => {
    } = useGetGroupQuery(id);
 
   const {
-    data: groupExpenses,
-    isLoading: groupExpensesLoading,
-    isSuccess: groupExpensesFetched
-  } = useGetGroupExpensesQuery(id, {
+    data: sharedDebts,
+    isLoading: debtsLoading,
+    isSuccess: debtsFetched
+  } = useGetSharedGroupDebtsWithExpensesQuery({ userId: user?.id, groupId: id }, {
     skip: !id
   });
 
-  const {
-    userGroupDebts,
-    isLoading: debtsLoading,
-    isSuccess: debtsFetched } = useGetDebtsQuery(user?.id, {
-    selectFromResult: (result) => ({
-      ...result,
-      userGroupDebts: selectUserDebtsByGroupId(result, id)
-    })
-  });
-
-  const unpaidGroupExpenses = groupExpenses?.filter(expense => !expense?.paid);
+  useEffect(() => {
+    if(debtsFetched && sharedDebts) {
+      const unpaidDebts = sharedDebts.filter(debt => !debt.paid);
+      const paidDebts = sharedDebts.filter(debt => debt.paid);
+      const currentExpenses = unpaidDebts.map(debt => debt.expense);
+      setUnpaidSharedDebts(unpaidDebts);
+      setPaidSharedDebts(paidDebts);
+      setCurrentExpenses(currentExpenses);
+    }
+  }, [sharedDebts, debtsFetched, user]);
 
   return (
       <>
       <MainHeader backButton={true} />
-      <DetailsCard 
-        title={group?.group_name}
-        avatarUrl={group?.avatar_url}
-        skeleton={!groupFetched}
-        type="group" />
       <div className="group-container">
+        <DetailsCard 
+          title={group?.group_name}
+          avatarUrl={group?.avatar_url}
+          skeleton={!groupFetched}
+          type="group" />
         <div className="group__section group__section--balance">
           <h2>Balance</h2>
-          <Balances debts={userGroupDebts} debtsStatus={{
+          <Balances debts={sharedDebts} debtsStatus={{
             loading: debtsLoading,
             fetched: debtsFetched
           }} />
         </div>
         <div className="group__section group__section--transactions">
-          <h2>Group expenses</h2>
+          <div className="section__heading">
+            <h2>Transactions {showHistory ? 'History' : ''}</h2>
+            <Button variant="icon" onClick={() => setShowHistory(!showHistory)}>
+              <img src={historyImg} className="history-icon" alt="History icon" />
+            </Button>
+          </div>
           <div className="group__transactions">
-            {!groupExpensesFetched || groupExpensesLoading ? (
+            {!debtsFetched || debtsLoading ? (
               <Skeleton width="100%" height="56px" />
             ) : (
-              groupExpenses.length > 0 && unpaidGroupExpenses.map(expense => {
-                return (
-                  <ExpenseTransaction
-                    key={expense?.id}
-                    transaction={expense}
-                    />
-                );
-              })
+            !showHistory && unpaidSharedDebts?.length > 0 && 
+              <TransactionsByDate transactions={unpaidSharedDebts} showYear={false} />)}
+            {!showHistory && unpaidSharedDebts?.length === 0 && (
+              <div className="medium-gray">No group expenses available</div>
             )}
-            {groupExpensesFetched && unpaidGroupExpenses.length === 0 && (
+            {showHistory && paidSharedDebts?.length > 0 &&
+              <TransactionsByDate transactions={paidSharedDebts} showYear={false} />}
+            {showHistory && paidSharedDebts?.length === 0 && (
               <div className="medium-gray">No group expenses available</div>
             )}
           </div>
