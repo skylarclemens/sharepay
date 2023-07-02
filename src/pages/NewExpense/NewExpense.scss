@@ -23,6 +23,12 @@
   .amount-input-container {
     z-index: 3;
   }
+  .amount-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
   .expense-input-container {
     position: relative;

@@ -1,6 +1,7 @@
-import { Receipt, Food, Shopping, Furniture, Camera, Drinks, Entertainment, Gifts, Home, Maintenance, Nightlife, PersonalCare, Pets, Rent, Subscriptions, Transportation, Travel, Utilities, Work } from '../components/Icons';
+import { Receipt, Food, Shopping, Furniture, Camera, Drinks, Entertainment, Gifts, Home, Maintenance, Nightlife, PersonalCare, Pets, Rent, Subscriptions, Transportation, Travel, Utilities, Work, Edit } from '../components/Icons';
 
 export const ICONS = {
+  EDIT: Edit,
   GENERAL: Receipt,
   FOOD: Food,
   SHOPPING: Shopping,

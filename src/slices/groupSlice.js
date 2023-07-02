@@ -13,10 +13,10 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
         const returnData = data.map(obj => obj.group);
         return { data: returnData, error }
       },
-      providesTags: (result = [], error,  arg) => [
+      providesTags: (result = []) => result ? [
         { type: 'Group', id: 'LIST' },
         ...result.map(({ id }) => ({ type: 'Group', id: id }))
-      ]
+      ] : [{ type: 'Group', id: 'LIST' }]
     }),
     getGroup: builder.query({
       queryFn: async groupId => {
@@ -29,6 +29,19 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
       },
       providesTags: (result, error, arg) => [{ type: 'Group', id: arg }]
     }),
+    getGroupMembers: builder.query({
+      queryFn: async groupId => {
+        const { data, error } = await supabase
+          .from('user_group')
+          .select('id, user: users!inner(*)')
+          .eq('group_id', groupId);
+        return { data, error }
+      },
+      providesTags: (result = []) => result ? [
+        { type: 'GroupMembers', id: 'LIST' },
+        ...result.map(({ id }) => ({ type: 'GroupMember', id: id }))
+      ] : [{ type: 'GroupMembers', id: 'LIST' }]
+    }),
     getGroupExpenses: builder.query({
       queryFn: async groupId => {
         const { data, error } = await supabase
@@ -37,7 +50,7 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
           .eq('group_id', groupId);
       return { data, error }
       },
-      providesTags: (result, error, arg) => [
+      providesTags: (result) => [
         ...result.map(({ id }) => ({ type: 'Expense', id: id }))
       ]
     }),
@@ -59,7 +72,40 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
           .select();
         return { data, error };
       },
-      invalidatesTags: [{ type: 'Group', id: 'LIST' }],
+      invalidatesTags: [{ type: 'GroupMember', id: 'LIST' }],
+    }),
+    updateGroupUsers: builder.mutation({
+      queryFn: async (updatedMembers) => {
+        const { data, error } = await supabase
+          .from('user_group')
+          .upsert(updatedMembers, { onConflict: 'user_id, group_id' })
+          .select();
+        return { data, error };
+      },
+      invalidatesTags: (result, error, arg) => [
+        ...arg.map(({ id }) => [{ type: 'GroupMember', id: id }])
+      ],
+    }),
+    deleteGroupUsers: builder.mutation({
+      queryFn: async (deletedMembers) => {
+        const { data, error } = await supabase
+          .from('user_group')
+          .delete()
+          .in('id', deletedMembers);
+        return { data, error };
+      },
+      invalidatesTags: [{ type: 'GroupMember', id: 'LIST' }],
+    }),
+    updateGroup: builder.mutation({
+      queryFn: async (updatedGroup) => {
+        const { data, error } = await supabase
+          .from('group')
+          .update(updatedGroup)
+          .eq('id', updatedGroup.id)
+          .select();
+        return { data, error };
+      },
+      invalidatesTags: (result, error, arg) => [{ type: 'Group', id: arg.id }],
     }),
   })
 })
@@ -67,9 +113,13 @@ export const extendedSupabaseApi = supabaseApi.injectEndpoints({
 export const {
   useGetGroupsQuery,
   useGetGroupQuery,
+  useGetGroupMembersQuery,
   useGetGroupExpensesQuery,
   useAddNewGroupMutation,
   useAddNewUserGroupsMutation,
+  useUpdateGroupUsersMutation,
+  useDeleteGroupUsersMutation,
+  useUpdateGroupMutation,
 } = extendedSupabaseApi;
 
 export const selectGroupsBySearchQuery = createSelector(

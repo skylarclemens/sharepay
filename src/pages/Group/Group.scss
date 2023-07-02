@@ -2,54 +2,31 @@
 
 .group-container {
   background: v.$light-gray;
-
   h2 {
-    font-family: 'Inter', sans-serif;
     font-size: 1rem;
-    font-weight: 600;
-    text-transform: none;
-    color: v.$blue-black;
-    padding-left: 0.25rem;
-  }
-}
-
-.group--blue {
-  background: v.$accent-blue;
-}
-.group--purple {
-  background: v.$plum;
-}
-
-.details-card-background {
-  &.group--blue {
-    background: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0) 50%,
-        rgba(0, 0, 0, 0.13) 100%
-      ),
-      v.$accent-blue;
-  }
-  &.group--purple {
-    background: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0) 50%,
-        rgba(0, 0, 0, 0.13) 100%
-      ),
-      v.$plum;
   }
 }
 
 .group__section {
+  .section__heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 0 20px;
+    .button--icon {
+      display: flex;
+    }
+    .history-icon {
+      padding: 0.25rem 0.25rem 0 0.5rem;
+      filter: brightness(0) saturate(100%) invert(21%) sepia(15%)
+        saturate(427%) hue-rotate(176deg) brightness(93%) contrast(86%);
+    }
+  }
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   &--balance {
     padding: 20px;
-  }
-  &--transactions {
-    h2 {
-      padding-left: 20px;
-    }
   }
 }
 

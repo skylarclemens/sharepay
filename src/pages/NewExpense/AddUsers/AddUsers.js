@@ -5,7 +5,7 @@ import Button from "../../../components/UI/Buttons/Button/Button";
 
 const AddUsers = ({ label, account, usersList, setUsersList, selectedGroup, setOpenSelectPeople, removeGroupSelect }) => {
   useEffect(() => {
-    setUsersList([account]);
+    setUsersList(usersList ? usersList : [account]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
