@@ -9,36 +9,39 @@ import SelectPeople from '../../components/SelectPeople/SelectPeople';
 import AvatarUpload from '../../components/Avatar/AvatarUpload/AvatarUpload';
 import Atom from '../../components/Atom/Atom';
 import { useGetAccountQuery } from '../../slices/accountSlice';
-import { useAddNewGroupMutation, useAddNewUserGroupsMutation } from '../../slices/groupSlice';
+import { useAddNewGroupMutation, useAddNewUserGroupsMutation, useDeleteGroupUsersMutation, useUpdateGroupMutation, useUpdateGroupUsersMutation } from '../../slices/groupSlice';
 import { useAddActivityMutation } from '../../slices/activityApi';
 import groupImg from '../../images/Group_white.svg';
 import Avatar from '../../components/Avatar/Avatar';
 import Button from '../../components/UI/Buttons/Button/Button';
 import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 
-const NewGroup = () => {
+const NewGroup = ({ modify = false, groupData, members, setOpen, className = '' }) => {
   const user = useSelector(state => state.auth.user);
   const {
     data: account,
     isSuccess: accountFetched
   } = useGetAccountQuery(user?.id);
   
-  const [groupName, setGroupName] = useState('');
-  const [groupMembers, setGroupMembers] = useState([{ ...account }]);
+  const [groupName, setGroupName] = useState(modify ? groupData?.group_name : '');
+  const [groupMembers, setGroupMembers] = useState(modify ? members.map(member => member.user) : [account]);
   const [openSelectPeople, setOpenSelectPeople] = useState(false);
-  const [groupAvatarUrl, setGroupAvatarUrl] = useState(null);
+  const [groupAvatarUrl, setGroupAvatarUrl] = useState(modify ? groupData?.avatar_url : null);
   const [groupElectrons, setGroupElectrons] = useState([]);
   const inputRef = useRef(null);
   const navigate = useNavigate();
   const [addNewGroup, { isLoading: isGroupLoading }] = useAddNewGroupMutation();
   const [addNewUserGroups, { isLoading: isUserGroupLoading }] = useAddNewUserGroupsMutation();
   const [addActivity, { isLoading: isActivityLoading }] = useAddActivityMutation();
+  const [updateGroup, { isLoading: isUpdateGroupLoading }] = useUpdateGroupMutation();
+  const [updateGroupUsers, { isLoading: isUpdateGroupUsersLoading }] = useUpdateGroupUsersMutation();
+  const [deleteGroupUsers] = useDeleteGroupUsersMutation();
 
   useEffect(() => {
-    inputRef?.current?.click();
-  }, [inputRef]);
+    if(!modify) inputRef?.current?.click();
+  }, [inputRef, modify]);
 
-  const handleSubmit = async e => {
+  const handleNewSubmit = async e => {
     e.preventDefault();
 
     if (isGroupLoading || isUserGroupLoading || isActivityLoading) return;
@@ -75,14 +78,60 @@ const NewGroup = () => {
         type: 'GROUP',
         action: 'CREATE',
       }).unwrap();
-      navigate(`/group/${groupData.id}`);
     } catch (error) {
       console.error(error);
     }
+    navigate(`/group/${groupData.id}`);
   };
 
+  const handleEditSubmit = async e => {
+    e.preventDefault();
+    if (isUpdateGroupLoading) return;
+    try {
+      await updateGroup({
+        id: groupData.id,
+        group_name: groupName,
+        avatar_url: groupAvatarUrl,
+      }).unwrap();
+    } catch (error) {
+      console.error(error);
+    }
+    handleUpdateUsers();
+  }
+
+  const handleUpdateUsers = async () => {
+    // Return if update is already sent
+    if (isUpdateGroupUsersLoading) return;
+    // Get all the users that are removed from the group members list
+    const checkDeleteMembers = members?.filter(member => {
+      return !groupMembers.find(user => user.id === member.user.id);
+    });
+    const updatedMembers = groupMembers.map(member => {
+      return {
+        user_id: member.id,
+        group_id: groupData.id,
+      };
+    });
+    try {
+      await updateGroupUsers(updatedMembers).unwrap();
+    } catch (error) {
+      console.error(error);
+    }
+
+    if(checkDeleteMembers.length > 0) {
+      const deleteMembers = checkDeleteMembers.map(member => member.id);
+      try {
+        await deleteGroupUsers(deleteMembers).unwrap();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    setOpen(false);
+  }
+
   const handleAddUsers = users => {
-    setGroupMembers(users);
+    setGroupMembers([account, ...users]);
     setOpenSelectPeople(false);
   };
 
@@ -102,11 +151,22 @@ const NewGroup = () => {
   return (
     <>
       <MainHeader
-          title="Create group"
-          backButton={true}
+          title={modify ? 'Edit group' : 'Create group'}
+          backButton={!modify}
           className="header--transparent"
+          right={modify ? <Button
+            type="button"
+            variant="icon"
+            alt="Close"
+            title="Close"
+            className="close-button"
+            onClick={() => setOpen(false)}
+          >
+            &times;
+          </Button> : null
+          }
           color="#787878" />
-      <div className="new-group-container">
+      <div className={`new-group-container ${modify ? 'edit-group' : ''} ${className}`}>
         <Atom
           orbitals={groupElectrons}
           image={
@@ -124,7 +184,7 @@ const NewGroup = () => {
           }
           size={140}
           fade={true} />
-        <form className="group-form" onSubmit={handleSubmit}>
+        <form className="group-form" onSubmit={modify ? handleEditSubmit : handleNewSubmit}>
           <TextInput
             className="group-name-input"
             name="group-name"
@@ -137,7 +197,7 @@ const NewGroup = () => {
             label={'Group members'}
             account={account}
             usersList={groupMembers}
-            setUsersList={handleAddUsers}
+            setUsersList={setGroupMembers}
             setOpenSelectPeople={setOpenSelectPeople}
           /> : null}
           <Button
@@ -146,12 +206,12 @@ const NewGroup = () => {
             title="Create group"
             className="group-create-button"
           >
-            Create
+            {modify ? 'Save' : 'Create'}
           </Button>
         </form>
       </div>
       <Modal open={openSelectPeople}>
-        <SelectPeople handleAdd={handleAddUsers} existingUsers={groupMembers.slice(1)} setOpen={setOpenSelectPeople} />
+        <SelectPeople handleAdd={handleAddUsers} existingUsers={groupMembers.filter(member => member.id !== user.id)} setOpen={setOpenSelectPeople} />
       </Modal>
     </>
   );

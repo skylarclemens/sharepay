@@ -2,7 +2,7 @@ import './Group.scss';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useGetGroupQuery } from '../../slices/groupSlice';
+import { useGetGroupMembersQuery, useGetGroupQuery } from '../../slices/groupSlice';
 import { useGetSharedGroupDebtsWithExpensesQuery } from '../../slices/debtSlice';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import Balances from '../../components/Balances/Balances';
@@ -11,6 +11,9 @@ import MainHeader from '../../components/Layout/Headers/MainHeader/MainHeader';
 import TransactionsByDate from '../../components/Transactions/TransactionsByDate/TransactionsByDate';
 import Button from '../../components/UI/Buttons/Button/Button';
 import historyImg from '../../images/History.svg';
+import Modal from '../../components/Modal/Modal';
+import NewGroup from '../NewGroup/NewGroup';
+import Icon from '../../components/Icons/Icon';
 
 const Group = () => {
   const { id } = useParams();
@@ -18,8 +21,8 @@ const Group = () => {
 
   const [unpaidSharedDebts, setUnpaidSharedDebts] = useState([]);
   const [paidSharedDebts, setPaidSharedDebts] = useState([]);
-  const [currentExpenses, setCurrentExpenses] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
+  const [openGroupEdit, setOpenGroupEdit] = useState(false);
 
   const {
     data: group,
@@ -34,20 +37,34 @@ const Group = () => {
     skip: !id
   });
 
+  const {
+    data: groupMembers,
+  } = useGetGroupMembersQuery(id, {
+    skip: !id
+  });
+
   useEffect(() => {
     if(debtsFetched && sharedDebts) {
       const unpaidDebts = sharedDebts.filter(debt => !debt.paid);
       const paidDebts = sharedDebts.filter(debt => debt.paid);
-      const currentExpenses = unpaidDebts.map(debt => debt.expense);
       setUnpaidSharedDebts(unpaidDebts);
       setPaidSharedDebts(paidDebts);
-      setCurrentExpenses(currentExpenses);
     }
   }, [sharedDebts, debtsFetched, user]);
 
   return (
       <>
-      <MainHeader backButton={true} />
+      <MainHeader
+        backButton={true}
+        right={
+          <Button
+            variant="icon"
+            onClick={() => setOpenGroupEdit(true)}
+          >
+            <Icon name="EDIT" />
+          </Button>
+        }
+      />
       <div className="group-container">
         <DetailsCard 
           title={group?.group_name}
@@ -85,7 +102,10 @@ const Group = () => {
           </div>
         </div>
       </div>
-      </>
+      <Modal open={openGroupEdit}>
+        <NewGroup modify={true} groupData={group} members={groupMembers} setOpen={setOpenGroupEdit} />
+      </Modal>
+    </>
   );
 };
 

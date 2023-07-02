@@ -13,6 +13,9 @@
   padding-top: 46px;
   height: 100%;
 
+  &.edit-group {
+    padding-top: calc(46px + env(safe-area-inset-top));
+  }
   .group-form {
     position: relative;
     display: flex;
@@ -28,7 +31,7 @@
     font-weight: 600;
     text-transform: none;
     color: v.$blue-black;
-    margin: 0 20px;
+    margin: 0;
   }
 
   .group-name-input {
@@ -109,5 +112,18 @@
     position: absolute;
     bottom: -1.75rem;
     width: calc(100% - 40px);
+  }
+}
+
+.modal:has(.edit-group) {
+  .close-button {
+    font-size: 1.5rem;
+    color: v.$dark-gray;
+  }
+}
+
+.edit-group {
+  .group-create-button {
+    bottom: calc(1rem + env(safe-area-inset-bottom));
   }
 }
